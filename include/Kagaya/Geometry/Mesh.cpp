@@ -275,10 +275,6 @@ void exportVBO(Mesh* tri_mesh, int &size,
 		auto cur_fid = tri_mesh->fids[i];
 		for (int j = 0; j < 3; j++)
 		{
-			if (cur_fid->vtx[j] == 507)
-			{
-				cout << "hehe";
-			}
 			auto cur_vtx = tri_mesh->vertices[cur_fid->vtx[j] - 1];
 			*verts++ = cur_vtx->x; *verts++ = cur_vtx->y; *verts++ = cur_vtx->z;
 
