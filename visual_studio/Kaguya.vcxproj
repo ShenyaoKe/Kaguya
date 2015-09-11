@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E26467AF-7A85-484E-A54D-0488CA2D9F07}</ProjectGuid>
+    <RootNamespace>cgClasses</RootNamespace>
+    <ProjectName>Kaguya</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)../lib/$(PlatformTarget)</OutDir>
+    <IntDir>$(SolutionDir)../tmp/$(Configuration)/</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)../lib/$(PlatformTarget)</OutDir>
+    <IntDir>$(SolutionDir)../tmp/$(Configuration)/</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\Kagaya;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include\Kagaya;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Kagaya\Accel\BBox.h" />
+    <ClInclude Include="..\include\Kagaya\Accel\KdTreeAccel.h" />
+    <ClInclude Include="..\include\Kagaya\Accel\Primitive.h" />
+    <ClInclude Include="..\include\Kagaya\Camera\Camera.h" />
+    <ClInclude Include="..\include\Kagaya\Camera\Film.h" />
+    <ClInclude Include="..\include\Kagaya\Core\MemoryControl.h" />
+    <ClInclude Include="..\include\Kagaya\Core\rtdef.h" />
+    <ClInclude Include="..\include\Kagaya\Geometry\Curve.h" />
+    <ClInclude Include="..\include\Kagaya\Geometry\DifferentialGeometry.h" />
+    <ClInclude Include="..\include\Kagaya\Geometry\Mesh.h" />
+    <ClInclude Include="..\include\Kagaya\Geometry\Shape.h" />
+    <ClInclude Include="..\include\Kagaya\Image\ColorData.h" />
+    <ClInclude Include="..\include\Kagaya\Image\Filter.h" />
+    <ClInclude Include="..\include\Kagaya\Image\ImageData.h" />
+    <ClInclude Include="..\include\Kagaya\Image\ImagePyramid.h" />
+    <ClInclude Include="..\include\Kagaya\Image\TextureSynthesis.h" />
+    <ClInclude Include="..\include\Kagaya\Light\EnvironmentMap.h" />
+    <ClInclude Include="..\include\Kagaya\Light\Light.h" />
+    <ClInclude Include="..\include\Kagaya\Light\Spectrum.h" />
+    <ClInclude Include="..\include\Kagaya\Math\CGVector.h" />
+    <ClInclude Include="..\include\Kagaya\Math\MathUtil.h" />
+    <ClInclude Include="..\include\Kagaya\Math\Matrix3D.h" />
+    <ClInclude Include="..\include\Kagaya\Math\Matrix4D.h" />
+    <ClInclude Include="..\include\Kagaya\Math\MonteCarlo.h" />
+    <ClInclude Include="..\include\Kagaya\Math\Transform.h" />
+    <ClInclude Include="..\include\Kagaya\Shading\Noise.h" />
+    <ClInclude Include="..\include\Kagaya\Shading\Shader.h" />
+    <ClInclude Include="..\include\Kagaya\Shading\Texture.h" />
+    <ClInclude Include="..\include\Kagaya\Shading\TextureMapping.h" />
+    <ClInclude Include="..\include\Kagaya\Tracer\Ray.h" />
+    <ClInclude Include="..\include\Kagaya\Tracer\renderBuffer.h" />
+    <ClInclude Include="..\include\Kagaya\Tracer\Tracer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\include\Kagaya\Accel\BBox.cpp" />
+    <ClCompile Include="..\include\Kagaya\Accel\KdTreeAccel.cpp" />
+    <ClCompile Include="..\include\Kagaya\Accel\Primitive.cpp" />
+    <ClCompile Include="..\include\Kagaya\Camera\Camera.cpp" />
+    <ClCompile Include="..\include\Kagaya\Camera\Film.cpp" />
+    <ClInclude Include="..\include\Kagaya\Geometry\DifferentialGeometry.cpp" />
+    <ClCompile Include="..\include\Kagaya\Geometry\Curve.cpp" />
+    <ClCompile Include="..\include\Kagaya\Geometry\Mesh.cpp" />
+    <ClCompile Include="..\include\Kagaya\Geometry\Shape.cpp" />
+    <ClCompile Include="..\include\Kagaya\Image\Filter.cpp" />
+    <ClCompile Include="..\include\Kagaya\Image\ImageData.cpp" />
+    <ClCompile Include="..\include\Kagaya\Image\ImagePyramid.cpp" />
+    <ClCompile Include="..\include\Kagaya\Image\TextureSynthesis.cpp" />
+    <ClCompile Include="..\include\Kagaya\Light\EnvironmentMap.cpp" />
+    <ClCompile Include="..\include\Kagaya\Light\Light.cpp" />
+    <ClCompile Include="..\include\Kagaya\Light\Spectrum.cpp" />
+    <ClCompile Include="..\include\Kagaya\Math\MonteCarlo.cpp" />
+    <ClCompile Include="..\include\Kagaya\Shading\Shader.cpp" />
+    <ClCompile Include="..\include\Kagaya\Shading\Texture.cpp" />
+    <ClCompile Include="..\include\Kagaya\Shading\TextureMapping.cpp" />
+    <ClCompile Include="..\include\Kagaya\Tracer\Ray.cpp" />
+    <ClCompile Include="..\include\Kagaya\Tracer\renderBuffer.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
