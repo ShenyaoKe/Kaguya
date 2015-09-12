@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\Kagaya;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,6 +67,9 @@
       <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -75,7 +78,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include\Kagaya;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,64 +91,68 @@
       <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Kagaya\Accel\BBox.h" />
-    <ClInclude Include="..\include\Kagaya\Accel\KdTreeAccel.h" />
-    <ClInclude Include="..\include\Kagaya\Accel\Primitive.h" />
-    <ClInclude Include="..\include\Kagaya\Camera\Camera.h" />
-    <ClInclude Include="..\include\Kagaya\Camera\Film.h" />
-    <ClInclude Include="..\include\Kagaya\Core\MemoryControl.h" />
-    <ClInclude Include="..\include\Kagaya\Core\rtdef.h" />
-    <ClInclude Include="..\include\Kagaya\Geometry\Curve.h" />
-    <ClInclude Include="..\include\Kagaya\Geometry\DifferentialGeometry.h" />
-    <ClInclude Include="..\include\Kagaya\Geometry\Mesh.h" />
-    <ClInclude Include="..\include\Kagaya\Geometry\Shape.h" />
-    <ClInclude Include="..\include\Kagaya\Image\ColorData.h" />
-    <ClInclude Include="..\include\Kagaya\Image\Filter.h" />
-    <ClInclude Include="..\include\Kagaya\Image\ImageData.h" />
-    <ClInclude Include="..\include\Kagaya\Image\ImagePyramid.h" />
-    <ClInclude Include="..\include\Kagaya\Image\TextureSynthesis.h" />
-    <ClInclude Include="..\include\Kagaya\Light\EnvironmentMap.h" />
-    <ClInclude Include="..\include\Kagaya\Light\Light.h" />
-    <ClInclude Include="..\include\Kagaya\Light\Spectrum.h" />
-    <ClInclude Include="..\include\Kagaya\Math\CGVector.h" />
-    <ClInclude Include="..\include\Kagaya\Math\MathUtil.h" />
-    <ClInclude Include="..\include\Kagaya\Math\Matrix3D.h" />
-    <ClInclude Include="..\include\Kagaya\Math\Matrix4D.h" />
-    <ClInclude Include="..\include\Kagaya\Math\MonteCarlo.h" />
-    <ClInclude Include="..\include\Kagaya\Math\Transform.h" />
-    <ClInclude Include="..\include\Kagaya\Shading\Noise.h" />
-    <ClInclude Include="..\include\Kagaya\Shading\Shader.h" />
-    <ClInclude Include="..\include\Kagaya\Shading\Texture.h" />
-    <ClInclude Include="..\include\Kagaya\Shading\TextureMapping.h" />
-    <ClInclude Include="..\include\Kagaya\Tracer\Ray.h" />
-    <ClInclude Include="..\include\Kagaya\Tracer\renderBuffer.h" />
-    <ClInclude Include="..\include\Kagaya\Tracer\Tracer.h" />
+    <ClInclude Include="..\src\Accel\BBox.h" />
+    <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
+    <ClInclude Include="..\src\Accel\Primitive.h" />
+    <ClInclude Include="..\src\Camera\Camera.h" />
+    <ClInclude Include="..\src\Camera\Film.h" />
+    <ClInclude Include="..\src\Core\MemoryControl.h" />
+    <ClInclude Include="..\src\Core\rtdef.h" />
+    <ClInclude Include="..\src\Geometry\Curve.h" />
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
+    <ClInclude Include="..\src\Geometry\Mesh.h" />
+    <ClInclude Include="..\src\Geometry\Shape.h" />
+    <ClInclude Include="..\src\Image\ColorData.h" />
+    <ClInclude Include="..\src\Image\Filter.h" />
+    <ClInclude Include="..\src\Image\ImageData.h" />
+    <ClInclude Include="..\src\Image\ImagePyramid.h" />
+    <ClInclude Include="..\src\Image\TextureSynthesis.h" />
+    <ClInclude Include="..\src\Light\EnvironmentMap.h" />
+    <ClInclude Include="..\src\Light\Light.h" />
+    <ClInclude Include="..\src\Light\Spectrum.h" />
+    <ClInclude Include="..\src\Math\CGVector.h" />
+    <ClInclude Include="..\src\Math\MathUtil.h" />
+    <ClInclude Include="..\src\Math\Matrix3D.h" />
+    <ClInclude Include="..\src\Math\Matrix4D.h" />
+    <ClInclude Include="..\src\Math\MonteCarlo.h" />
+    <ClInclude Include="..\src\Math\Transform.h" />
+    <ClInclude Include="..\src\Shading\Noise.h" />
+    <ClInclude Include="..\src\Shading\Shader.h" />
+    <ClInclude Include="..\src\Shading\Texture.h" />
+    <ClInclude Include="..\src\Shading\TextureMapping.h" />
+    <ClInclude Include="..\src\Tracer\Ray.h" />
+    <ClInclude Include="..\src\Tracer\renderBuffer.h" />
+    <ClInclude Include="..\src\Tracer\Tracer.h" />
+    <ClInclude Include="..\src\Core\Kaguya.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\Kagaya\Accel\BBox.cpp" />
-    <ClCompile Include="..\include\Kagaya\Accel\KdTreeAccel.cpp" />
-    <ClCompile Include="..\include\Kagaya\Accel\Primitive.cpp" />
-    <ClCompile Include="..\include\Kagaya\Camera\Camera.cpp" />
-    <ClCompile Include="..\include\Kagaya\Camera\Film.cpp" />
-    <ClInclude Include="..\include\Kagaya\Geometry\DifferentialGeometry.cpp" />
-    <ClCompile Include="..\include\Kagaya\Geometry\Curve.cpp" />
-    <ClCompile Include="..\include\Kagaya\Geometry\Mesh.cpp" />
-    <ClCompile Include="..\include\Kagaya\Geometry\Shape.cpp" />
-    <ClCompile Include="..\include\Kagaya\Image\Filter.cpp" />
-    <ClCompile Include="..\include\Kagaya\Image\ImageData.cpp" />
-    <ClCompile Include="..\include\Kagaya\Image\ImagePyramid.cpp" />
-    <ClCompile Include="..\include\Kagaya\Image\TextureSynthesis.cpp" />
-    <ClCompile Include="..\include\Kagaya\Light\EnvironmentMap.cpp" />
-    <ClCompile Include="..\include\Kagaya\Light\Light.cpp" />
-    <ClCompile Include="..\include\Kagaya\Light\Spectrum.cpp" />
-    <ClCompile Include="..\include\Kagaya\Math\MonteCarlo.cpp" />
-    <ClCompile Include="..\include\Kagaya\Shading\Shader.cpp" />
-    <ClCompile Include="..\include\Kagaya\Shading\Texture.cpp" />
-    <ClCompile Include="..\include\Kagaya\Shading\TextureMapping.cpp" />
-    <ClCompile Include="..\include\Kagaya\Tracer\Ray.cpp" />
-    <ClCompile Include="..\include\Kagaya\Tracer\renderBuffer.cpp" />
+    <ClCompile Include="..\src\Accel\BBox.cpp" />
+    <ClCompile Include="..\src\Accel\KdTreeAccel.cpp" />
+    <ClCompile Include="..\src\Accel\Primitive.cpp" />
+    <ClCompile Include="..\src\Camera\Camera.cpp" />
+    <ClCompile Include="..\src\Camera\Film.cpp" />
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
+    <ClCompile Include="..\src\Geometry\Curve.cpp" />
+    <ClCompile Include="..\src\Geometry\Mesh.cpp" />
+    <ClCompile Include="..\src\Geometry\Shape.cpp" />
+    <ClCompile Include="..\src\Image\Filter.cpp" />
+    <ClCompile Include="..\src\Image\ImageData.cpp" />
+    <ClCompile Include="..\src\Image\ImagePyramid.cpp" />
+    <ClCompile Include="..\src\Image\TextureSynthesis.cpp" />
+    <ClCompile Include="..\src\Light\EnvironmentMap.cpp" />
+    <ClCompile Include="..\src\Light\Light.cpp" />
+    <ClCompile Include="..\src\Light\Spectrum.cpp" />
+    <ClCompile Include="..\src\Math\MonteCarlo.cpp" />
+    <ClCompile Include="..\src\Shading\Shader.cpp" />
+    <ClCompile Include="..\src\Shading\Texture.cpp" />
+    <ClCompile Include="..\src\Shading\TextureMapping.cpp" />
+    <ClCompile Include="..\src\Tracer\Ray.cpp" />
+    <ClCompile Include="..\src\Tracer\renderBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
