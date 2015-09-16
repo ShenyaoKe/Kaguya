@@ -7,7 +7,7 @@
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 
-#include "Math/CGVector.h"
+//#include "Math/CGVector.h"
 #include "Math/Matrix4D.h"
 
 class Transform
@@ -20,8 +20,12 @@ public:
 		mInv.setIdentity();
 	}
 	Transform(const Float mat[4][4])
-		: m(mat[4][4])
 	{
+		m = Matrix4D(
+			mat[0][0], mat[0][1], mat[0][2], mat[0][3],
+			mat[1][0], mat[1][1], mat[1][2], mat[1][3],
+			mat[2][0], mat[2][1], mat[2][2], mat[2][3],
+			mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
 		mInv = m.inverseMat();
 	}
 	Transform(const Matrix4D &mat)
@@ -34,7 +38,13 @@ public:
 
 	
 	Vector4D operator () (const Vector4D &vec) const;
+	//Transform operator * (const Matrix4D &mat);
 	Vector4D xformNormal(const Vector3D &vec) const;
+
+	Matrix4D getMat() const;
+	Matrix4D getInvMat() const;
+	void setMat(const Matrix4D &mat);
+	void setInvMat(const Matrix4D &mat);
 
 	friend Transform inverse(const Transform &t)
 	{
@@ -48,8 +58,9 @@ public:
 private:
 	Matrix4D m, mInv;
 	friend class Quaternion;
+	friend class baseCamera;
 };
-Vector4D Transform::operator()(const Vector4D &vec) const
+inline Vector4D Transform::operator()(const Vector4D &vec) const
 {
 	Vector4D ret = m * vec;
 	if (ret.w != 0.0 || ret.w != 1.0)
@@ -59,19 +70,41 @@ Vector4D Transform::operator()(const Vector4D &vec) const
 	return ret;
 }
 
-Vector4D Transform::xformNormal(const Vector3D &vec) const
+inline Vector4D Transform::xformNormal(const Vector3D &vec) const
 {
-
+	return Vector4D();
 }
-Transform xformTRS(
+
+inline Matrix4D Transform::getMat() const
+{
+	return m;
+}
+
+inline Matrix4D Transform::getInvMat() const
+{
+	return mInv;
+}
+
+inline void Transform::setMat(const Matrix4D &mat)
+{
+	m = mat;
+	mInv = m.inverseMat();
+}
+
+inline void Transform::setInvMat(const Matrix4D &matInv)
+{
+	mInv = matInv;
+	m = mInv.inverseMat();
+}
+
+inline Transform xformTRS(
 	Float tx, Float ty, Float tz,
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz
 	);
-Transform Rotate(const Vector3D &axis, Float theta);
-Transform lookAt(const Point3D &pos, const Point3D &target, const Vector3D &up);
+inline Transform Rotate(const Vector3D &axis, Float theta);
 
-Transform xformTRS(
+inline Transform xformTRS(
 	Float tx, Float ty, Float tz,
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz)
@@ -82,7 +115,7 @@ Transform xformTRS(
 	return Transform(T * R * S);
 }
 
-Transform Rotate(const Vector3D &axis, Float theta)
+inline Transform Rotate(const Vector3D &axis, Float theta)
 {
 	Vector3D u = Normalize(axis);
 	Float rad = DegreeToRadian(theta);
@@ -115,21 +148,27 @@ Transform Rotate(const Vector3D &axis, Float theta)
 	return Transform(mat);
 }
 
-Transform lookAt(const Point3D &pos, const Point3D &target, const Vector3D &up)
+inline Transform lookAt(const Point3D &pos, const Point3D &target, const Vector3D &up)
 {
 	//Camera to World
 	Vector3D nz = Normalize(target - pos);
-	Vector3D nx = Normalize(Cross(nz, up));//right dir
+	Vector3D nx = Normalize(Cross(up, nz));//left dir
 	Vector3D ny = Cross(nz, nx);
-
-	Float mat[4][4] = {
+	
+	/*Float mat[4][4] = {
 		nx.x, ny.x, nz.x, pos.x,
 		nx.y, ny.y, nz.y, pos.y,
 		nx.z, ny.z, nz.z, pos.z,
 		0.0, 0.0, 0.0, 1.0
+	};*/
+	Float mat[4][4] = {
+		nx.x, nx.y, nx.z, 0.0,
+		ny.x, ny.y, ny.z, 0.0,
+		nz.x, nz.y, nz.z, 0.0,
+		pos.x, pos.y, pos.z, 1.0
 	};
 
-	return Transform(mat);
+	return (Transform(mat));
 }
 
 #endif // __TRANSFORM__

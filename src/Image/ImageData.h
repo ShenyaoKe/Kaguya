@@ -8,6 +8,10 @@
 #ifndef __ImageData__
 #define __ImageData__
 
+#ifndef KAGUYA_DOUBLE_AS_FLOAT
+#define KAGUYA_DOUBLE_AS_FLOAT
+#endif // !KAGUYA_DOUBLE_AS_FLOAT
+
 #include <stdio.h>
 #include <time.h>
 #include <iostream>

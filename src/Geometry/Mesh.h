@@ -53,8 +53,10 @@ public:
 	void getNormal(const DifferentialGeometry *queryPoint) const;
 	void getUV(const DifferentialGeometry *queryPoint) const;
 
+	/*template <typename vbo_t>
+	friend void exportVBO(const Mesh *tri_mesh, int &size, vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array);*/
 	template <typename vbo_t>
-	friend void exportVBO(const Mesh *tri_mesh, int &size, vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array);
+	void exportVBO(int &size, vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const;
 };
 class Triangle :public Shape
 {
@@ -88,7 +90,7 @@ protected:
 private:
 };
 
-template void exportVBO(const Mesh *tri_mesh, int &size, float* &vtx_array, float* &uv_array, float* &norm_array);
-template void exportVBO(const Mesh *tri_mesh, int &size, double* &vtx_array, double* &uv_array, double* &norm_array);
+template void Mesh::exportVBO(int &size, float* &vtx_array, float* &uv_array, float* &norm_array) const;
+template void Mesh::exportVBO(int &size, double* &vtx_array, double* &uv_array, double* &norm_array) const;
 
 #endif // __MESH__

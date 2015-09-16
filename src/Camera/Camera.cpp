@@ -4,13 +4,21 @@
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-baseCamera::baseCamera(Vector3D& eyePos, Vector3D& viewDir, Vector3D& upVec)
+baseCamera::baseCamera(Vector3D& eyePos, Vector3D& target, Vector3D& upVec)
+	: CameraToWorld(lookAt(eyePos, target, upVec)), CameraToScreen(setPerspective())
 {
-	pos = eyePos;
-	nz = Normalize(viewDir);
+	/*pos = eyePos;
+	nz = Normalize(target - eyePos);
 	nx = Normalize(Cross(nz, nz));
-	ny = Normalize(Cross(nx, nz));
+	ny = Normalize(Cross(nx, nz));*/
 }
+
+
+baseCamera::baseCamera()
+{
+
+}
+
 void baseCamera::setResolution(int resX, int resY)
 {
 	film.resize(resX, resY);
@@ -28,6 +36,7 @@ void baseCamera::setFilmType(FILM_TYPE filmType)
 {
 	film.setFilmType(filmType);
 }
+/*
 void baseCamera::lookAt(const Vector3D& targPos)
 {
 	nz = Normalize(targPos - pos);
@@ -40,7 +49,7 @@ void baseCamera::lookAt(const Vector3D& camPos, const Vector3D& targPos, const V
 	nz = Normalize(targPos - camPos);
 	nx = Cross(nz, upDir);
 	ny = Cross(nx, nz);
-}
+}*/
 void baseCamera::setBuffer(int x, int y, const bufferData tmpBuff)
 {
 	buffer.data[x][y] = tmpBuff;
@@ -49,25 +58,63 @@ bufferData baseCamera::getBufferData(int x, int y) const
 {
 	return buffer.data[x][y];
 }
-//////////////////////////////////////////////////////////////////////////
-perspCamera::perspCamera() :lensRadius(0), focalDistance(INFINITY)
+
+void baseCamera::updateCamToWorld(const Matrix4D &cam2wMat)
 {
-	nx = X_AXIS3D;
-	ny = Y_AXIS3D;
-	nz = Z_AXIS3D;
+	CameraToWorld = Transform(cam2wMat);
 }
-perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& viewDir, const Vector3D& upVec,
+void baseCamera::updateProjection(const Matrix4D &perspMat)
+{
+	CameraToScreen = Transform(perspMat);
+}
+
+void baseCamera::exportVBO(float *view, float *proj, float *raster) const
+{
+	if (view != nullptr)
+	{
+		CameraToWorld.mInv.exportVBO(view);
+	}
+	if (proj != nullptr)
+	{
+		CameraToScreen.m.exportVBO(proj);
+	}
+	if (raster != nullptr)
+	{
+		RasterToScreen.m.exportVBO(raster);
+	}
+}
+//////////////////////////////////////////////////////////////////////////
+perspCamera::perspCamera()
+	:lensRadius(0), focalDistance(INFINITY)
+
+{
+	/*nx = X_AXIS3D;
+	ny = Y_AXIS3D;
+	nz = Z_AXIS3D;*/
+}
+perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target, const Vector3D& upVec,
 	Float lr, Float fd) : lensRadius(lr), focalDistance(fd)
 {
-	pos = eyePos;
-	nz = Normalize(viewDir);
-	nx = Cross(nz, upVec);
-	ny = Cross(nx, nz);
+	/*pos = eyePos;
+	nz = Normalize(target - eyePos);
+	nx = Normalize(Cross(nz, upVec));
+	ny = Cross(nx, nz);*/
+	Matrix4D projMat = setPerspective();
+	CameraToWorld = lookAt(eyePos, target, upVec);
+	CameraToScreen = Transform(projMat);
 }
+
+perspCamera::perspCamera(const Transform& cam2wo, const Transform& projection)
+{
+	CameraToWorld = cam2wo;
+	CameraToScreen = projection;
+}
+
 perspCamera::~perspCamera()
 {
 
 }
+
 
 Ray perspCamera::shootRay(Float imgX, Float imgY) const
 {
@@ -105,12 +152,31 @@ void perspCamera::saveResult(const char* filename)
 	film.writeFile(filename);
 }
 
+void perspCamera::zoom(Float x_val, Float y_val, Float z_val)
+{
+	Matrix4D newLookAt = CameraToWorld.getMat()
+		* Matrix4D(1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		x_val, y_val, z_val, 1.0
+		);
+	CameraToWorld.setMat(newLookAt);
+}
+
+void perspCamera::resizeViewport(Float aspr /*= 1.0*/)
+{
+	Matrix4D newProj= CameraToScreen.getMat();
+	newProj[0][0] = -newProj[1][1] / aspr;
+	CameraToScreen.setMat(newProj);
+}
+
 void perspCamera::setDoF(Float lr, Float fd)
 {
 	lensRadius = lr;
 	focalDistance = fd;
 }
 //////////////////////////////////////////////////////////////////////////
+/*
 abstractCamera::abstractCamera() : perspCamera()
 {
 }
@@ -149,14 +215,15 @@ Ray abstractCamera::shootRay(Float imgX, Float imgY) const
 	return ret;
 }
 
-void abstractCamera::setImage(Texture *posImg /*= nullptr*/, Texture *dirImg /*= nullptr*/)
+void abstractCamera::setImage(Texture *posImg / *= nullptr* /, Texture *dirImg / *= nullptr* /)
 {
 	posTex = posImg;
 	dirTex = dirImg;
 }
 
-void abstractCamera::setAbstraction(Float tp /*= 0*/, Float td /*= 0*/)
+void abstractCamera::setAbstraction(Float tp / *= 0* /, Float td / *= 0* /)
 {
 	tpos = tp;
 	tdir = td;
 }
+*/

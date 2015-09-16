@@ -241,16 +241,20 @@ void Mesh::getUV(const DifferentialGeometry *queryPoint) const
 {
 }
 
+/*
 template <typename vbo_t>
 void exportVBO(const Mesh *tri_mesh, int &size,
-	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array)
+	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array)*/
+template <typename vbo_t>
+void Mesh::exportVBO(int &size,
+	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const
 {
 	vbo_t *verts, *texcoord(nullptr), *nms(nullptr);
 	bool has_texcoord(false), has_normal(false);
-	size = tri_mesh->fids.size();
+	size = this->fids.size();
 	vtx_array = new vbo_t[size * 9];
 	verts = vtx_array;
-	if (tri_mesh->fids[0]->uv >= 0)
+	if (this->fids[0]->uv >= 0)
 	{
 		uv_array = new vbo_t[size * 6];
 		texcoord = uv_array;
@@ -260,7 +264,7 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 	{
 		uv_array = nullptr;
 	}
-	if (tri_mesh->fids[0]->n >= 0)
+	if (this->fids[0]->n >= 0)
 	{
 		norm_array = new vbo_t[size * 9];
 		nms = norm_array;
@@ -273,10 +277,10 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 	
 	for (int i = 0; i < size; i++)
 	{
-		auto cur_fid = tri_mesh->fids[i];
+		auto cur_fid = this->fids[i];
 		for (int j = 0; j < 3; j++)
 		{
-			auto cur_vtx = tri_mesh->vertices[cur_fid->vtx[j] - 1];
+			auto cur_vtx = this->vertices[cur_fid->vtx[j] - 1];
 			*verts++ = static_cast<vbo_t>(cur_vtx->x);
 			*verts++ = static_cast<vbo_t>(cur_vtx->y);
 			*verts++ = static_cast<vbo_t>(cur_vtx->z);
@@ -286,7 +290,7 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 
 			for (int j = 0; j < 3; j++)
 			{
-				auto cur_texcoord = tri_mesh->uvs[cur_fid->uv[j] - 1];
+				auto cur_texcoord = this->uvs[cur_fid->uv[j] - 1];
 				*texcoord++ = static_cast<vbo_t>(cur_texcoord->x);
 				*texcoord++ = static_cast<vbo_t>(cur_texcoord->y);
 			}
@@ -296,7 +300,7 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 
 			for (int j = 0; j < 3; j++)
 			{
-				auto cur_normal = tri_mesh->normals[cur_fid->n[j] - 1];
+				auto cur_normal = this->normals[cur_fid->n[j] - 1];
 				*nms++ = static_cast<vbo_t>(cur_normal->x);
 				*nms++ = static_cast<vbo_t>(cur_normal->y);
 				*nms++ = static_cast<vbo_t>(cur_normal->z);

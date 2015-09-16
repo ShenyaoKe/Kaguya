@@ -7,6 +7,11 @@
 #pragma once
 #ifndef __Ray__
 #define __Ray__
+
+#ifndef KAGUYA_DOUBLE_AS_FLOAT
+#define KAGUYA_DOUBLE_AS_FLOAT
+#endif // !KAGUYA_DOUBLE_AS_FLOAT
+
 #include "Math/CGVector.h"
 
 class Ray
@@ -22,9 +27,9 @@ public:
 	int dp;//ray depth count
 
 	Ray();
-	virtual ~Ray();
+	~Ray();
 
-	virtual Point3D operator()(const Float& t) const;
+	Point3D operator()(const Float& t) const;
 	Ray(const Point3D& p, const Vector3D& d);
 	void setPos(Point3D& vp);
 	void setDir(Vector3D& vd);

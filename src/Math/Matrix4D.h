@@ -97,10 +97,12 @@ public:
 	friend Matrix4D setScale(Float scale);
 	friend Matrix4D setShear(Vector3D& vec);
 	friend Matrix4D setReflection(Vector3D& vec);
-	friend Matrix4D setPerspective(Vector3D& vPnt);
+	friend Matrix4D setPerspective(Float verticalAngle = 90, Float aspectRatio = 1.6, Float nearPlane = 0.001, Float farPlane = 100);
 
+	/*template <typename vbo_t>
+	friend void exportVBO(const Matrix4D &mat, vbo_t *vtx_array);*/
 	template <typename vbo_t>
-	friend void exportVBO(const Matrix4D &mat, vbo_t *vtx_array);
+	void exportVBO(vbo_t *vtx_array) const;
 };
 inline Float* Matrix4D::operator[](int i)
 {
@@ -249,7 +251,7 @@ inline Float Matrix4D::getMinor(int x, int y) const
 	{
 		for (int j = 1; j < 4; j++)
 		{
-			tmpM.mtx[i][j] = mtx[(x + i) % 4][(y + j) % 4];
+			tmpM.mtx[i - 1][j - 1] = mtx[(x + i) % 4][(y + j) % 4];
 		}
 	}
 	//tmpM.determinant();
@@ -331,18 +333,39 @@ inline Matrix4D Matrix4D::inverseMat() const
 	return ret;
 }
 
+inline Matrix4D setPerspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
+{
+	// nz is camera dir, different from opengl
+	/*Float yRangeInv = 1.0 / tan(DegreeToRadian(verticalAngle * 0.5));
+	Float xRangeInv = ;*/
+
+	Float sy = 1.0 / tan(DegreeToRadian(verticalAngle * 0.5));
+	Float sx = -sy / aspectRatio;
+	Float sz = (farPlane + nearPlane) / (farPlane - nearPlane);
+	Float pz = 2.0 * farPlane * nearPlane / (nearPlane - farPlane);
+	return Matrix4D(
+		sx, 0.0, 0.0, 0.0,
+		0.0, sy, 0.0, 0.0,
+		0.0, 0.0, sz, 1.0,
+		0.0, 0.0, pz, 0.0
+		);
+}
+
+/*
 template <typename vbo_t>
-void exportVBO(const Matrix4D &mat, vbo_t *vtx_array)
+void exportVBO(const Matrix4D &mat, vbo_t *vtx_array)*/
+template <typename vbo_t>
+void Matrix4D::exportVBO(vbo_t *vtx_array) const
 {
 	if (sizeof(Float) == sizeof(vbo_t))
 	{
-		memcpy(vtx_array, mat.mtx[0], sizeof(mat.mtx));
+		memcpy(vtx_array, this->mtx[0], sizeof(this->mtx));
 	}
 	else
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			vtx_array[i] = static_cast<vbo_t>(mat.mtx[0][i]);
+			vtx_array[i] = static_cast<vbo_t>(this->mtx[0][i]);
 		}
 	}
 }
@@ -469,6 +492,6 @@ inline Matrix4D setScale(Float scale)
 // 	setIdentify();
 // 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
 // }
-template void exportVBO<float>(const Matrix4D &, float *);
-//template void exportVBO(const Matrix4D &, double *);
+template void Matrix4D::exportVBO<float>(float *) const;
+template void Matrix4D::exportVBO<double>(double *) const;
 #endif
