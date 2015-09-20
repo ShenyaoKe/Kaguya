@@ -15,9 +15,11 @@
 #include "Core/rtdef.h"
 #include "Math/CGVector.h"
 #include "Image/ColorData.h"
+#include "Math/Transform.h"
 #include "Accel/BBox.h"
 
-const Float reCE = 5e-8;//ray epsillon coefficiency
+const Float reCE = 5e-8;//ray epsilon coefficiency
+const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon coefficiency
 //////////////////////////////////////////////////////////////////////////
 //Shader defaultShader(ColorRGBA(1.0, 1.0, 1.0), ColorRGBA(), 0, 1);
 /************************************************************************/
@@ -29,7 +31,7 @@ public:
 	Shape();
 	virtual ~Shape();
 	virtual void bounding();
-	virtual const BBox& getBounding() const;
+	virtual const BBox& getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
 	virtual bool intersectP(const Ray& inRay) const;
 	virtual bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
@@ -50,12 +52,16 @@ public:
 	virtual ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
 
 	virtual bool getOpacity() const;
-protected:
+public:
+	virtual const Point3D& closestPoint(const Point3D &p) const;
+
+public:
+	Transform *ObjectToWorld;
 	Point3D c;//center
 	BBox ObjBound;
-	Shader* material = NULL;
-	TextureMapping* UV_Mapping = NULL;
-	Texture* normalMap = NULL;
+	Shader* material = nullptr;
+	TextureMapping* UV_Mapping = nullptr;
+	Texture* normalMap = nullptr;
 };
 /************************************************************************/
 /* Sphere Function Definition                                           */
@@ -68,15 +74,18 @@ public:
 	~geoSphere();
 
 	void bounding();
+	const BBox& getWorldBounding() const;
+
 	void setCenter(const Vector3D& pos);
 	void setRadius(Float radius);
 
 	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
 	Vector3D getNormal(const Vector3D& pos) const;
 	void getNormal(const DifferentialGeometry *queryPoint) const;
+	Float getRadius() const;
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Float r;//radius
 };
 /************************************************************************/
@@ -99,7 +108,7 @@ public:
 
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Vector3D n;
 };
 /************************************************************************/
@@ -118,7 +127,7 @@ public:
 	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Vector3D c;//center
 	Float r = 1, sr = 0.5;// radius and section radius
 };
@@ -139,7 +148,7 @@ public:
 
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Vector3D c;//center
 	Float sa, sb, sc;//semi-principal axes of length a, b, c
 };
@@ -167,7 +176,7 @@ public:
 
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Vector3D c;//center
 	Float sa, sb, sc;//semi-principal axes of length a, b, c
 	PARABOLOID_TYPE pbType;
@@ -197,7 +206,7 @@ public:
 
 	bool isInside(const Vector3D& pPos) const;
 
-private:
+public:
 	Vector3D c;//center
 	Float sa, sb, sc;//semi-principal axes of length a, b, c
 	HYPERBOLOID_TYPE hbType;

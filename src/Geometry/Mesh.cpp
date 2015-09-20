@@ -494,6 +494,70 @@ ColorRGBA Triangle::getColor(const DifferentialGeometry *queryPoint, const Light
 	return ret;
 }
 
+const Point3D& Triangle::closestPoint(const Point3D &point) const
+{
+	Vector3D ab = *p[1] - *p[0];
+	Vector3D ac = *p[2] - *p[0];
+	Vector3D ap = point - *p[0];
+
+	// Check if in vertex region outside A
+	Float d1 = ab * ap;
+	Float d2 = ac * ap;
+	if (d1 <= 0.0 && d2 <= 0.0)
+	{
+		return *p[0];
+	}
+
+	// Check if in vertex region outside B
+	Vector3D bp = point - *p[1];
+	Float d3 = ab * bp;
+	Float d4 = ac * bp;
+	if (d3 >= 0.0 && d4 <= d3)
+	{
+		return *p[1];
+	}
+	// Check if in edge region of AB, return projection on AB
+	Float vc = d1 * d4 - d3 * d2;
+	if (vc <= 0.0 && d1 >= 0.0 && d3 <= 0.0)
+	{
+		Float v = d1 / (d1 - d3); 
+		return *p[0] + v * ab;
+	}
+	
+
+	// Check if in vertex region outside C
+	Vector3D cp = point - *p[2];
+	Float d5 = ab * cp;
+	Float d6 = ac * cp;
+	if (d6 >= 0.0 && d5 <= d6)
+	{
+		return *p[2];
+	}
+
+	// Check if in edge region of AC, return projection on AC
+	Float vb = d5 * d2 - d1 * d6;
+	if (vb <= 0.0 && d2 >= 0.0 && d6 <= 0.0)
+	{
+		Float w = d2 / (d2 - d6);
+		return *p[0] + w * ac;
+	}
+	// Check if in edge region of BC, return projection on BC
+	Float va = d3 * d6 - d5 * d4;
+	Vector3D bc = *p[2] - *p[1];
+	if (va <= 0.0 && (d4 - d3) >= 0.0 && (d5 - d6) <= 0.0)
+	{
+		Float w = (d4 - d3) / (d4 - d3 + d5 - d6);
+		return *p[0] + w * bc;
+	}
+
+
+	
+	Float denom = 1.0 / (va + vb + vc);
+	Float v = vb * denom;
+	Float w = vc * denom;
+	return *p[0] + v * ab + w * ac;	
+}
+
 /*
 void exportVertices(Triangle* tri_mesh, Float* buffer)
 {

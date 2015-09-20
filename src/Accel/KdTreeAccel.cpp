@@ -21,7 +21,7 @@ KdTreeAccel::KdTreeAccel(const vector<Shape*> &prims, int md, int mp,
 	//Initialize bouding box for all primitives in stack
 	for (int i = 0; i < np; ++i)
 	{
-		treeBound.Union(prims[i]->getBounding());
+		treeBound.Union(prims[i]->ObjBound);
 	}
 	//Allocate bound edge info
 	BoundEdge *edges[3];
@@ -76,7 +76,7 @@ RETRY_SPLIT:
 	for (int i = 0; i < np; ++i)
 	{
 		int prmIdx = prims[i];
-		const BBox tmpBox = primitives[prmIdx]->getBounding();
+		const BBox tmpBox = primitives[prmIdx]->ObjBound;
 		edges[axis][i * 2] = BoundEdge(tmpBox.pMin[axis], prmIdx, true);
 		edges[axis][i * 2 + 1] = BoundEdge(tmpBox.pMax[axis], prmIdx, false);
 	}
@@ -122,7 +122,7 @@ RETRY_SPLIT:
 		}
 	}
 	
-	if (bestAxis == -1 && retries < 2)//(retries < 2)//
+	if (retries < 2)//(bestAxis == -1 && retries < 2)//
 	{
 		++retries;
 		axis = (axis + 1) % 3;
@@ -320,7 +320,7 @@ void KdTreeAccel::update()
 	treeBound = BBox();
 	for (int i = 0; i < np; ++i)
 	{
-		treeBound.Union(primitives[i]->getBounding());
+		treeBound.Union(primitives[i]->ObjBound);
 	}
 	//Allocate bound edge info
 	BoundEdge *edges[3];
@@ -343,6 +343,69 @@ void KdTreeAccel::update()
 		delete[] edges[i];
 //		edges[i] = nullptr;
 	}
+}
+
+bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
+	DifferentialGeometry *queryPoint, Float *tHit) const
+{
+	return collide(inObj, worldbound, queryPoint, root, tHit);
+}
+
+bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
+	DifferentialGeometry *queryPoint,
+	const KdAccelNode *node, Float *tHit) const
+{
+	//Compute initial parametric range of ray inside kd-tree extent
+	Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
+	if (!collideP(worldbound, node->bbox))
+	{
+		return false;
+	}
+	//return true;
+	//Traversal kd-tree node in order of ray
+	bool isCollide = false;
+	if (node != nullptr)
+	{
+		if (node->isLeaf())
+		{
+			// collision determination
+			// 
+			for (int i = 0; i < node->primIndex.size(); i++)
+			{
+				if (collideP(worldbound, primitives[node->primIndex[i]]->ObjBound))
+				{
+					return true;
+				}
+			}
+		}
+		else//if hit interior node
+		{
+			/*process interior node*/
+			//calculate parametric distance from ray to split plane
+			//int axis = node->flags;
+			//Float tsplit = (node->split - inRay.pos[axis]) * invDir[axis];
+
+			//get children node for ray
+			const KdAccelNode *nearChild, *farChild;
+			nearChild = node->belowNode;
+			farChild = node->aboveNode;
+
+			if (collideP(worldbound, nearChild->bbox))
+			{
+				isCollide = this->collide(inObj, worldbound,
+					queryPoint, nearChild, tHit);
+			}
+			if (!isCollide)
+			{ 
+				if (collideP(worldbound, farChild->bbox))
+				{
+					isCollide = this->collide(inObj, worldbound,
+						queryPoint, nearChild, tHit);
+				}
+			}
+		}
+	}
+	return isCollide;
 }
 
 void KdAccelNode::initLeaf(vector<int> &prims)

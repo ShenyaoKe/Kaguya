@@ -82,6 +82,8 @@ public:
 	/*friend void exportVertices(Triangle* triface, Float* buffer);
 	friend void exportTexCoords(Triangle* triface, Float* buffer);
 	friend void exportNormals(Triangle* triface, Float* buffer);*/
+public:
+	const Point3D& closestPoint(const Point3D &point) const;
 protected:
 	const Mesh* mesh;
 	vector<Point3D*> p;

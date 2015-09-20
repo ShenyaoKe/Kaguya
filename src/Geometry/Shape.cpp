@@ -19,7 +19,7 @@ void Shape::bounding()
 {
 	//return;
 }
-const BBox& Shape::getBounding() const
+const BBox& Shape::getWorldBounding() const
 {
 	return this->ObjBound;
 }
@@ -106,9 +106,14 @@ bool Shape::getOpacity() const
 	return material->getOpacity();
 }
 
+const Point3D& Shape::closestPoint(const Point3D &p) const
+{
+	return this->c;
+}
+
 Vector3D Shape::getCenter() const
 {
-	return c;
+	return this->c;
 }
 
 /************************************************************************/
@@ -135,6 +140,14 @@ void geoSphere::bounding()
 	ObjBound.expand(r);
 	//return false;
 }
+
+const BBox& geoSphere::getWorldBounding() const
+{
+	BBox ret(c);
+	ret.expand(r);
+	return ret;
+}
+
 void geoSphere::setCenter(const Vector3D& pos)
 {
 	c = pos;
@@ -209,6 +222,11 @@ void geoSphere::getNormal(const DifferentialGeometry *queryPoint) const
 			queryPoint->vDir = Normalize(-Vector3D(pp.x * pp.y / rsintheta, -rsintheta, pp.y * pp.z / rsintheta));
 		}
 	}
+}
+
+Float geoSphere::getRadius() const
+{
+	return r;
 }
 
 bool geoSphere::isInside(const Vector3D& pPos) const

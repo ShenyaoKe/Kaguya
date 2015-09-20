@@ -103,6 +103,7 @@
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\rtdef.h" />
+    <ClInclude Include="..\src\Dynamics\Collision.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Mesh.h" />

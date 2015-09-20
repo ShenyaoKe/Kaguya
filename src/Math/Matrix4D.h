@@ -377,13 +377,13 @@ inline Matrix4D setTranslation(Vector3D& vec)
 inline Matrix4D setTranslation(Float tx, Float ty, Float tz)
 {
 	return Matrix4D(
-		1.0, 0.0, 0.0, tx,
-		0.0, 1.0, 0.0, ty,
-		0.0, 0.0, 1.0, tz,
-		0.0, 0.0, 0.0, 1.0
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		tx, ty, tz, 1.0
 		);
 }
-inline Matrix4D setRoationX(Float theta)
+inline Matrix4D setRotationX(Float theta)
 {
 	Matrix4D ret;
 
@@ -393,13 +393,13 @@ inline Matrix4D setRoationX(Float theta)
 
 	ret.mtx[0][0] = ret.mtx[3][3] = 1.0;
 	ret.mtx[1][1] = ret.mtx[2][2] = costh;
-	ret.mtx[1][2] = -sinth;
-	ret.mtx[2][1] = sinth;
+	ret.mtx[1][2] = sinth;
+	ret.mtx[2][1] = -sinth;
 
 	return ret;
 }
 
-inline Matrix4D setRoationY(Float theta)
+inline Matrix4D setRotationY(Float theta)
 {
 	Matrix4D ret;
 
@@ -409,13 +409,13 @@ inline Matrix4D setRoationY(Float theta)
 
 	ret.mtx[1][1] = ret.mtx[3][3] = 1.0;
 	ret.mtx[0][0] = ret.mtx[2][2] = costh;
-	ret.mtx[2][0] = -sinth;
-	ret.mtx[0][2] = sinth;
+	ret.mtx[2][0] = sinth;
+	ret.mtx[0][2] = -sinth;
 
 	return ret;
 }
 
-inline Matrix4D setRoationZ(Float theta)
+inline Matrix4D setRotationZ(Float theta)
 {
 	Matrix4D ret;
 
@@ -425,8 +425,8 @@ inline Matrix4D setRoationZ(Float theta)
 
 	ret.mtx[2][2] = ret.mtx[3][3] = 1.0;
 	ret.mtx[0][0] = ret.mtx[1][1] = costh;
-	ret.mtx[0][1] = -sinth;
-	ret.mtx[1][0] = sinth;
+	ret.mtx[0][1] = sinth;
+	ret.mtx[1][0] = -sinth;
 
 	return ret;
 }

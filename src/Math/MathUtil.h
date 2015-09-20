@@ -37,6 +37,20 @@ inline const T& max(const T& d1, const T& d2)
 	return (d1 > d2 ? d1 : d2);
 }
 */
+
+inline bool chechSign(double val)
+{
+	//Positive 0
+	if (val > std::numeric_limits<double>::epsilon())
+	{
+		return 0;
+	}
+	//Negative 1
+	else
+	{
+		return 1;
+	}
+}
 template <typename T>
 inline const T& clamp(const T& data, const T& minValue, const T& maxValue)
 {

@@ -22,12 +22,13 @@ public:
 	const Point3D getMidPoint() const;
 	/*bool intersectP(const Ray& inRay) const;*/
 	bool intersectP(const Ray& inRay, Float *hitt0 = nullptr, Float *hitt1 = nullptr) const;
-	bool overlaps(const BBox& box) const;
+	Float sqDist(const Point3D &p) const;
 	void expand(Float delta);
 	void Union(const Point3D& p);
 	void Union(const BBox& box);
 	friend BBox Union(const BBox& box, const Point3D& p);
 	friend BBox Union(const BBox& box1, const BBox& box2);
+	friend bool overlaps(const BBox &box0, const BBox& box1);
 
 	int maxExtent() const;
 	Float surfaceArea() const;

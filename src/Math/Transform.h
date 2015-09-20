@@ -9,6 +9,7 @@
 
 //#include "Math/CGVector.h"
 #include "Math/Matrix4D.h"
+#include "Accel/BBox.h"
 
 class Transform
 {
@@ -36,8 +37,9 @@ public:
 	{}
 	~Transform() {}
 
-	
+	Vector3D operator () (const Vector3D &vec, Float w) const;
 	Vector4D operator () (const Vector4D &vec) const;
+	BBox operator () (const BBox &bbox) const;
 	//Transform operator * (const Matrix4D &mat);
 	Vector4D xformNormal(const Vector3D &vec) const;
 
@@ -67,6 +69,30 @@ inline Vector4D Transform::operator()(const Vector4D &vec) const
 	{
 		ret /= ret.w;
 	}
+	return ret;
+}
+inline Vector3D Transform::operator()(const Vector3D &vec, Float w) const
+{
+	Vector4D ret = m * Vector4D(vec, w);
+	if (ret.w != 0.0 || ret.w != 1.0)
+	{
+		ret /= ret.w;
+	}
+	return Vector3D(ret.x, ret.y, ret.z);
+}
+
+
+inline BBox Transform::operator()(const BBox &b) const
+{
+	const Transform &M = *this;
+	BBox ret(M(b.pMin, 1.0));
+	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMin.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMax.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMin.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMax.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMax.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMin.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMax.y, b.pMax.z), 1.0));
 	return ret;
 }
 

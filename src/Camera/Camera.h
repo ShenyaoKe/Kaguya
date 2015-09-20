@@ -76,6 +76,7 @@ public:
 	void saveResult(const char* filename);
 
 	void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
+	void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
 	void resizeViewport(Float aspr = 1.0);
 
 	//void setUpVec(Vector3D& upVec);

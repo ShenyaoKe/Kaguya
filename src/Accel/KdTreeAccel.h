@@ -2,7 +2,12 @@
 #ifndef __KDTREEACCEL__
 #define __KDTREEACCEL__
 
-#include "Core/rtdef.h"
+
+#ifndef KAGUYA_DOUBLE_AS_FLOAT
+#define KAGUYA_DOUBLE_AS_FLOAT
+#endif // !KAGUYA_DOUBLE_AS_FLOAT
+#include "Core/Kaguya.h"
+#include "Dynamics/Collision.h"
 #include "Geometry/Shape.h"
 #include "Geometry/DifferentialGeometry.h"
 
@@ -67,6 +72,11 @@ public:
 		Float *tHit, Float *rayEpsilon) const;
 	bool hit(const Ray &inRay, DifferentialGeometry *queryPoint, const KdAccelNode *node,
 		Float *tHit, Float *rayEpsilon) const;
+	bool collide(const Shape* inObj, const BBox &worldbound,
+		DifferentialGeometry *queryPoint = nullptr, Float *tHit = nullptr) const;
+	bool collide(const Shape* inObj, const BBox &worldbound,
+		DifferentialGeometry *queryPoint,
+		const KdAccelNode *node, Float *tHit) const;
 	//update tree?
 	void update();
 
