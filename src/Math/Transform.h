@@ -174,7 +174,9 @@ inline Transform Rotate(const Vector3D &axis, Float theta)
 	return Transform(mat);
 }
 
-inline Transform lookAt(const Point3D &pos, const Point3D &target, const Vector3D &up)
+inline Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
+	const Point3D &target = Point3D(0, 0, 1),
+	const Vector3D &up = Point3D(0, 1, 0))
 {
 	//Camera to World
 	Vector3D nz = Normalize(target - pos);

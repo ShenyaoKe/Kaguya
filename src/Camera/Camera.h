@@ -42,6 +42,9 @@ public:
 	virtual void updateProjection(const Matrix4D &perspMat);
 	virtual void updateCamToWorld(const Matrix4D &cam2wMat);
 
+	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
+	virtual void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
+	virtual void resizeViewport(Float aspr = 1.0);
 	virtual void exportVBO(float *view, float *proj, float *raster) const;
 
 	Transform CameraToWorld;
@@ -56,8 +59,29 @@ protected:
 	int sample = 1;
 private:
 };
+//////////////////////////////////////////////////////////////////////////
+class orthoCamera : public baseCamera
+{
+public:
+	orthoCamera();
+	orthoCamera(const Transform& cam2wo, const Transform& projection);
+	~orthoCamera();
+	//Vector3D getPos() { return pos; }
+	//void setResolution(int resX, int resY);
+	//void setSample(int aaSample);
 
+	Ray shootRay(Float imgX, Float imgY) const;
 
+	//void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
+	//void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
+	//void resizeViewport(Float aspr = 1.0);
+
+	//void setUpVec(Vector3D& upVec);
+protected:
+	Float nearPlane = -1.0, farPlane = 1.0;
+private:
+};
+//////////////////////////////////////////////////////////////////////////
 class perspCamera : public baseCamera
 {
 public:
@@ -75,9 +99,6 @@ public:
 	void renderImg(int x, int y, ColorRGBA& pixColor);
 	void saveResult(const char* filename);
 
-	void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
-	void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
-	void resizeViewport(Float aspr = 1.0);
 
 	//void setUpVec(Vector3D& upVec);
 protected:

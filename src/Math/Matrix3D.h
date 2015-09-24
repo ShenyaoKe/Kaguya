@@ -77,14 +77,14 @@ public:
 	Matrix3D inverseMat() const;
 
 	//Set transformation matrix
-	void setTranslation(Vector2D& vec);
+	void setTranslation(const Vector2D& vec);
 	void setRotation(Float theta);
 	void setRotation(Float sinth, Float costh);
 	void setScale(Float sx, Float sy);
 	void setScale(Float scale);
-	void setShear(Vector2D& vec);
-	void setReflection(Vector2D& vec);
-	void setPerspective(Vector2D& vPnt);
+	void setShear(const Vector2D& vec);
+	void setReflection(const Vector2D& vec);
+	void setPerspective(const Vector2D& vPnt);
 };
 inline Float* Matrix3D::operator[](int i)
 {
@@ -227,7 +227,7 @@ inline Matrix3D Matrix3D::inverseMat() const
 	//buffer.determinant();
 	return buffer;
 }
-inline void Matrix3D::setTranslation(Vector2D& vec)
+inline void Matrix3D::setTranslation(const Vector2D& vec)
 {
 	setIdentity();
 	mtx[0][2] = vec.x;
@@ -260,14 +260,14 @@ inline void Matrix3D::setScale(Float scale)
 	mtx[0][0] = scale;	mtx[1][1] = scale; mtx[2][2] = 1;
 	//determinant();
 }
-inline void Matrix3D::setShear(Vector2D& vec)
+inline void Matrix3D::setShear(const Vector2D& vec)
 {
 	setIdentity();
 	mtx[0][1] = vec.x;
 	mtx[1][0] = vec.y;
 	//determinant();
 }
-inline void Matrix3D::setReflection(Vector2D& vec)
+inline void Matrix3D::setReflection(const Vector2D& vec)
 {
 	// vec is a vector in the direction of the line
 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
@@ -275,7 +275,7 @@ inline void Matrix3D::setReflection(Vector2D& vec)
 	mtx[2][2] = 1;
 	//determinant();
 }
-inline void Matrix3D::setPerspective(Vector2D& vPnt)
+inline void Matrix3D::setPerspective(const Vector2D& vPnt)
 {
 	setIdentity();
 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;

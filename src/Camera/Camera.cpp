@@ -15,8 +15,8 @@ baseCamera::baseCamera(Vector3D& eyePos, Vector3D& target, Vector3D& upVec)
 
 
 baseCamera::baseCamera()
+	: CameraToWorld(lookAt())
 {
-
 }
 
 void baseCamera::setResolution(int resX, int resY)
@@ -152,20 +152,20 @@ void perspCamera::saveResult(const char* filename)
 	film.writeFile(filename);
 }
 
-void perspCamera::zoom(Float x_val, Float y_val, Float z_val)
+void baseCamera::zoom(Float x_val, Float y_val, Float z_val)
 {
 	Matrix4D newLookAt = setTranslation(x_val, y_val, z_val) * CameraToWorld.getMat();
 	CameraToWorld.setMat(newLookAt);
 }
 
-void perspCamera::rotate(Float x_rot /*= 0*/, Float y_rot /*= 0*/, Float z_rot /*= 0*/)
+void baseCamera::rotate(Float x_rot /*= 0*/, Float y_rot /*= 0*/, Float z_rot /*= 0*/)
 {
 	Matrix4D newLookAt = setRotationX(x_rot) * setRotationY(y_rot) * setRotationZ(z_rot) * CameraToWorld.getInvMat();
 
 	CameraToWorld.setInvMat(newLookAt);
 }
 
-void perspCamera::resizeViewport(Float aspr /*= 1.0*/)
+void baseCamera::resizeViewport(Float aspr /*= 1.0*/)
 {
 	Matrix4D newProj= CameraToScreen.getMat();
 	newProj[0][0] = -newProj[1][1] / aspr;
@@ -229,3 +229,25 @@ void abstractCamera::setAbstraction(Float tp / *= 0* /, Float td / *= 0* /)
 	tdir = td;
 }
 */
+
+orthoCamera::orthoCamera()
+{
+	CameraToWorld = lookAt();
+	CameraToScreen = Transform(setOrthographic());
+}
+
+orthoCamera::orthoCamera(const Transform& cam2wo, const Transform& projection)
+{
+	CameraToWorld = cam2wo;
+	CameraToScreen = projection;
+}
+
+orthoCamera::~orthoCamera()
+{
+
+}
+
+Ray orthoCamera::shootRay(Float imgX, Float imgY) const
+{
+	return Ray();
+}
