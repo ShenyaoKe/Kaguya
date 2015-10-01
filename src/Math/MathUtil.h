@@ -128,7 +128,7 @@ inline int Random(int range)
 }
 inline Float unitRandom(int segment)
 {
-	return Random(segment) / static_cast<Float>(segment);
+	return static_cast<Float>(Random(segment)) / static_cast<Float>(segment);
 }
 template <typename T>
 inline T sqr(const T& data)

@@ -53,6 +53,7 @@ public:
 	virtual const ColorRGBA& getRGBA(int idx) const;
 	virtual void setRGBA(int x, int y, const ColorRGBA& color);
 	virtual void getPixels(unsigned char* &pixMap) const;
+	virtual void getPixelsRGBA(unsigned char* &pixMap) const;
 	virtual int** genHist() const;//Generate histogram
 	virtual Float** getLuma() const;// Generate Luma
 	

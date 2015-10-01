@@ -1,4 +1,5 @@
 #include "Accel/KdTreeAccel.h"
+#include "Dynamics/Collision.h"
 
 static int leafCount(0);
 char axisChar[4] = { 'X', 'Y', 'Z', 'L' };
@@ -357,7 +358,7 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 {
 	//Compute initial parametric range of ray inside kd-tree extent
 	Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
-	if (!collideP(worldbound, node->bbox))
+	if (!Collision::collideP(worldbound, node->bbox))
 	{
 		return false;
 	}
@@ -372,7 +373,7 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 			// 
 			for (int i = 0; i < node->primIndex.size(); i++)
 			{
-				if (collideP(worldbound, primitives[node->primIndex[i]]->ObjBound))
+				if (Collision::collideP(worldbound, primitives[node->primIndex[i]]->ObjBound))
 				{
 					return true;
 				}
@@ -390,14 +391,14 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 			nearChild = node->belowNode;
 			farChild = node->aboveNode;
 
-			if (collideP(worldbound, nearChild->bbox))
+			if (Collision::collideP(worldbound, nearChild->bbox))
 			{
 				isCollide = this->collide(inObj, worldbound,
 					queryPoint, nearChild, tHit);
 			}
 			if (!isCollide)
 			{ 
-				if (collideP(worldbound, farChild->bbox))
+				if (Collision::collideP(worldbound, farChild->bbox))
 				{
 					isCollide = this->collide(inObj, worldbound,
 						queryPoint, nearChild, tHit);
@@ -406,6 +407,38 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 		}
 	}
 	return isCollide;
+}
+
+bool KdTreeAccel::inLeaf(const Point3D& pos) const
+{
+	/*if (!treeBound.isInside(pos))
+	{
+		return false;
+	}*/
+	return inLeaf(pos, root);
+}
+
+bool KdTreeAccel::inLeaf(const Point3D& pos, const KdAccelNode *node) const
+{
+	bool isInLeaf = false;
+	if (node!=nullptr)
+	{
+		if (!node->bbox.isInside(pos))
+		{
+			return false;
+		}
+		if (node->isLeaf())
+		{
+			return true;
+		}
+
+		isInLeaf = this->inLeaf(pos, node->belowNode);
+		if (!isInLeaf)
+		{
+			isInLeaf = this->inLeaf(pos, node->aboveNode);
+		}
+	}
+	return isInLeaf;
 }
 
 void KdAccelNode::initLeaf(vector<int> &prims)

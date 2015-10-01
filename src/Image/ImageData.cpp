@@ -265,7 +265,7 @@ const ColorRGBA& ImageData::getRGBA(int idx) const
 {
 	return pixels[0][idx];
 }
-
+// RGB
 void ImageData::getPixels(unsigned char* &pixMap) const
 {
 	delete pixMap;
@@ -279,6 +279,22 @@ void ImageData::getPixels(unsigned char* &pixMap) const
 		pixMap[index] = pixels[0][i].b * 255;
 	}
 }
+
+void ImageData::getPixelsRGBA(unsigned char* &pixMap) const
+{
+	delete[] pixMap;
+	pixMap = new unsigned char[width * height * 4];
+
+	for (int i = 0; i < width * height; ++i)
+	{
+		int index = (i % height * width + (i / height)) * 4;
+		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].r * 255);
+		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].g * 255);
+		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].b * 255);
+		pixMap[index] = static_cast<unsigned char>(pixels[0][i].a * 255);
+	}
+}
+
 void ImageData::printRGBA(int x, int y) const
 {
 	cout << pixels[x][y] << endl;

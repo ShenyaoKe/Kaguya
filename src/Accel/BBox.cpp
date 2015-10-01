@@ -1,9 +1,7 @@
 #include "Accel/BBox.h"
 
-BBox::BBox()
+BBox::BBox() : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -INFINITY)
 {
-	pMin = Point3D(INFINITY, INFINITY, INFINITY);
-	pMax = Point3D(-INFINITY, -INFINITY, -INFINITY);
 }
 
 
@@ -15,6 +13,15 @@ BBox::BBox(const Point3D& p1, const Point3D& p2)
 	pMin = Point3D(min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z));
 	pMax = Point3D(max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z));
 }
+
+BBox::BBox(const vector<Point3D*> &pts) : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -INFINITY)
+{
+	for (int i = 0; i < pts.size(); i++)
+	{
+		this->Union(*pts[i]);
+	}
+}
+
 BBox::~BBox()
 {
 }
@@ -22,6 +29,29 @@ const Point3D BBox::getMidPoint() const
 {
 	return (pMax + pMin) / 2.0;
 }
+
+const Vector3D BBox::getDiagnal() const
+{
+	return pMax - pMin;
+}
+
+bool BBox::isInside(const Point3D& pos) const
+{
+	if (pos.x < pMin.x || pos.x > pMax.x)
+	{
+		return false;
+	}
+	if (pos.y < pMin.y || pos.y > pMax.y)
+	{
+		return false;
+	}
+	if (pos.z < pMin.z || pos.z > pMax.z)
+	{
+		return false;
+	}
+	return true;
+}
+
 void BBox::expand(Float delta)
 {
 	pMin -= Point3D(delta, delta, delta);
@@ -95,7 +125,7 @@ bool overlaps(const BBox &box0, const BBox& box1)
 	{
 		return false;
 	}
-	if (box0.pMax.y < box1.pMin.y || box0.pMin.y > box1.pMax.y);
+	if (box0.pMax.y < box1.pMin.y || box0.pMin.y > box1.pMax.y)
 	{
 		return false;
 	}
@@ -142,6 +172,25 @@ BBox Union(const BBox& box1, const BBox& box2)
 	}
 	return ret;
 }
+
+/*
+bool touch(const BBox &box0, const BBox& box1)
+{
+	if (box0.pMax.x < box1.pMin.x || box0.pMin.x > box1.pMax.x)
+	{
+		return false;
+	}
+	if (box0.pMin.y > box1.pMax.y || box0.pMax.y < box1.pMin.y)
+	{
+		return false;
+	}
+	if (box0.pMax.z < box1.pMin.z || box0.pMin.z > box1.pMax.z)
+	{
+		return false;
+	}
+	return true;
+}*/
+
 int BBox::maxExtent() const
 {
 	Vector3D diag = pMax - pMin;

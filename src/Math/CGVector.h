@@ -23,7 +23,8 @@ public:
     
 	Vector2D() :x(0), y(0){}
 	virtual ~Vector2D(){}
-	Vector2D(Float posX, Float posY) :x(posX), y(posY){};
+	Vector2D(const Vector2D &vec) : x(vec.x), y(vec.y){}
+	Vector2D(Float posX, Float posY) :x(posX), y(posY){}
     //Vector2D zero(){ x = 0; y = 0; }
 	virtual void printInfo() const{ cout << "x:" << x << "\ty:" << y << endl; }
 	
@@ -51,6 +52,8 @@ public:
 
 	Vector2D getPerpendicular() const{ return Vector2D(y, -x); }
 	Vector2D getNorm() const;
+	friend Vector2D Normalize(const Vector2D &vec);
+	friend Float Cross(const Vector2D& vec0, const Vector2D &vec1);
 };
 
 class Vector3D// :public Vector2D
@@ -60,6 +63,7 @@ public:
 
 	Vector3D() :x(0), y(0), z(0){}
 	~Vector3D(){}
+	Vector3D(const Vector3D &vec) : x(vec.x), y(vec.y), z(vec.z){}
 	Vector3D(Float posX, Float posY, Float posZ) :x(posX), y(posY), z(posZ){}
 	Vector3D(const Vector2D& v0, Float z0) :x(v0.x), y(v0.y), z(z0){}
 	//Vector3D zero();
@@ -78,6 +82,7 @@ public:
 	Vector3D crossMul(const Vector3D& vec) const;
 
 	friend Vector3D operator*(Float n, const Vector3D& vec){ return vec * n; }
+	friend ostream& operator << (ostream& os, const Vector3D& vec);
 	void printInfo() const{ cout << "x:" << x << "\ty:" << y << "\tz:" << z << endl; }
 	void getData(Float* data) const;
 	Float getLength() const;
@@ -93,6 +98,7 @@ public:
 
 	Vector4D(){}
 	~Vector4D(){}
+	Vector4D(const Vector4D &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w){}
 	Vector4D(Float posX, Float posY, Float posZ, Float posW) :x(posX), y(posY), z(posZ), w(posW){}
 	Vector4D(const Vector3D& vec, Float posW) :x(vec.x), y(vec.y), z(vec.z), w(posW){}
 
@@ -222,7 +228,16 @@ inline Vector2D Vector2D::getNorm() const
 	Float len = getLength();
 	return Vector2D(x / len, y / len);
 }
+inline Vector2D Normalize(const Vector2D &vec)
+{
+	Float rvsLen = 1.0 / vec.getLength();
+	return vec * rvsLen;
+}
 
+inline Float Cross(const Vector2D& vec0, const Vector2D &vec1)
+{
+	return vec0.x * vec1.y - vec1.x * vec0.y;
+}
 /************************************************************************/
 /* Vector3D Definition                                                  */
 /************************************************************************/
@@ -321,6 +336,7 @@ inline Vector3D Normalize(const Vector3D &vec)
 	Float rvsLen = 1.0 / vec.getLength();
 	return vec * rvsLen;
 }
+
 inline Vector3D Cross(const Vector3D& vec0, const Vector3D &vec1)
 {
 	return Vector3D(
@@ -329,7 +345,6 @@ inline Vector3D Cross(const Vector3D& vec0, const Vector3D &vec1)
 		vec0.x * vec1.y - vec0.y * vec1.x
 		);
 }
-
 /************************************************************************/
 /* Vector4D Definition                                                  */
 /************************************************************************/
@@ -383,6 +398,11 @@ inline Vector4D& Vector4D::operator/=(Float n)
 {
 	*this = *this / n;
 	return *this;
+}
+inline ostream& operator << (ostream& os, const Vector3D& vec)
+{
+	os << vec.x << ", " << vec.y << ", " << vec.z;
+	return os;
 }
 /*
 inline Float Vector4D::dotMul(const Vector4D& vec) const

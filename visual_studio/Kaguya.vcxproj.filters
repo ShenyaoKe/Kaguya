@@ -242,5 +242,8 @@
     <ClCompile Include="..\src\Image\TextureSynthesis.cpp">
       <Filter>Source Files\image</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Dynamics\Collision.cpp">
+      <Filter>Source Files\dynamics</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

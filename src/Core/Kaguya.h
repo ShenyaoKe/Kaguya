@@ -6,7 +6,18 @@
 #include <cstdint>
 #include <assert.h>
 #include <iostream>
+#include <algorithm>
+
+// Containers
 #include <vector>
+#include <list>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+
 #include <time.h>
 
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
@@ -34,6 +45,8 @@ class Spectrum;
 class Light;
 
 class BBox;
+class KdTreeAccel;
+class KdAccelNode;
 class Shape;
 class Ray;
 struct DifferentialGeometry;

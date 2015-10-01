@@ -22,15 +22,15 @@ private:
 public:
 	Point3D pos;// origin point position
 	Vector3D dir;//Direction
-	mutable Float tmin = 0, tmax = INFINITY;
+	mutable Float tmin = 0.0, tmax = INFINITY;
 	Float time;
 	int dp;//ray depth count
 
 	Ray();
+	Ray(const Point3D& p, const Vector3D& d);
 	~Ray();
 
 	Point3D operator()(const Float& t) const;
-	Ray(const Point3D& p, const Vector3D& d);
 	void setPos(Point3D& vp);
 	void setDir(Vector3D& vd);
 	void setT(const Float& t1, const Float& t2) const;

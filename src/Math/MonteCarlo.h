@@ -18,5 +18,7 @@ public:
 	~MonteCarlo();
 };
 Vector3D SampleHemisphere(Float u, Float v);
+Vector3D SampleSphere(Float u, Float v);
+void ConcentricSampleDisk(Float u, Float v, Float& dx, Float &dy);
 
 #endif // __MONTECARLO__

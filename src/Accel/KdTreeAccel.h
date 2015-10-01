@@ -72,6 +72,9 @@ public:
 		Float *tHit, Float *rayEpsilon) const;
 	bool hit(const Ray &inRay, DifferentialGeometry *queryPoint, const KdAccelNode *node,
 		Float *tHit, Float *rayEpsilon) const;
+	bool inLeaf(const Point3D& pos) const;
+	bool inLeaf(const Point3D& pos, const KdAccelNode *node) const;
+
 	bool collide(const Shape* inObj, const BBox &worldbound,
 		DifferentialGeometry *queryPoint = nullptr, Float *tHit = nullptr) const;
 	bool collide(const Shape* inObj, const BBox &worldbound,
@@ -93,6 +96,8 @@ private:
 
 	void buildTree(KdAccelNode *node, const BBox &bound, vector<int> &prims,
 		int depth, BoundEdge *edges[3]);
+
+	friend class Collision;
 };
 
 struct KdToDo
