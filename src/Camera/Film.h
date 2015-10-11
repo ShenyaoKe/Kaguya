@@ -7,7 +7,7 @@
 #pragma once
 #ifndef __FILM__
 #define __FILM__
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Image/ImageData.h"
 
 typedef unsigned char RES_FIT_TYPE;

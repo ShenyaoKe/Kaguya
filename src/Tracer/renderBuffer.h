@@ -7,7 +7,7 @@
 #pragma once
 #ifndef __renderBuffer__
 #define __renderBuffer__
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 // #include "Math/CGVector.h"
 // #include "Image/ColorData.h"
 #include "Image/ImageData.h"

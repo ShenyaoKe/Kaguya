@@ -5,14 +5,14 @@ ImageData::ImageData()
 	width = default_resX;
 	height = default_resY;
 
-	Aligned_2DArray(pixels, width, height);//pixels = new ColorRGBA[width * height];
+	Aligned_2DArray(pixels, width, height, ROW_STORAGE);//pixels = new ColorRGBA[width * height];
 }
 ImageData::ImageData(int wd, int ht)
 {
 	width = wd;
 	height = ht;
 
-	Aligned_2DArray(pixels, width, height);
+	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 }
 ImageData::ImageData(int wd, int ht, Float* &pixMap)
 {
@@ -20,7 +20,7 @@ ImageData::ImageData(int wd, int ht, Float* &pixMap)
 	width = wd;
 	height = ht;
 
-	Aligned_2DArray(pixels, width, height);
+	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 
 	for (int i = 0; i < width * height; ++i)
 	{
@@ -33,7 +33,7 @@ ImageData::ImageData(int wd, int ht, unsigned char* &pixMap)
 	width = wd;
 	height = ht;
 
-	Aligned_2DArray(pixels, width, height);
+	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 	
 	for (int i = 0; i < width * height; ++i)
 	{
@@ -93,7 +93,7 @@ ImageData::ImageData(const string &filename)
 	}
 	else
 	{
-		Aligned_2DArray(pixels, width, height);
+		Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 	}
 
 	// color order is BGR
@@ -213,9 +213,9 @@ ImageData::ImageData(const string &filename)
 	{
 		WORD* pixels = (WORD*)bits;
 		//cout << "num: " << depth / sizeof(pixels[0]) / 8 << endl;
-		for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
 		{
-			for (int j = 0; j < height; j++)
+			for (int i = 0; i < width; i++)
 			{
 				int idx = (i + width * j) * 3;
 				setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 65535.0,
@@ -242,7 +242,7 @@ ImageData::ImageData(const ImageData& src)
 	width = src.getWidth();
 	height = src.getHeight();
 
-	Aligned_2DArray(pixels, width, height);
+	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 
 	memcpy(pixels[0], src.pixels[0], width * height * sizeof(ColorRGBA));
 }
@@ -254,11 +254,11 @@ ImageData::~ImageData()
 }
 void ImageData::setRGBA(int x, int y, const ColorRGBA &color)
 {
-	pixels[x][y] = color;
+	pixels[y][x] = color;
 }
 const ColorRGBA& ImageData::getRGBA(int x, int y) const
 {
-	return pixels[x][y];
+	return pixels[y][x];
 }
 
 const ColorRGBA& ImageData::getRGBA(int idx) const
@@ -268,26 +268,28 @@ const ColorRGBA& ImageData::getRGBA(int idx) const
 // RGB
 void ImageData::getPixels(unsigned char* &pixMap) const
 {
-	delete pixMap;
+	delete[] pixMap;
+	
 	pixMap = new unsigned char[width * height * 3];
 
 	for (int i = 0; i < width * height; ++i)
 	{
-		int index = (i % height * width + (i / height)) * 3;
-		pixMap[index++] = pixels[0][i].r * 255;
-		pixMap[index++] = pixels[0][i].g * 255;
-		pixMap[index] = pixels[0][i].b * 255;
+		int index = i * 3;//(i % height * width + (i / height)) * 3;
+		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].r * 255);
+		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].g * 255);
+		pixMap[index] = static_cast<unsigned char>(pixels[0][i].b * 255);
 	}
 }
 
 void ImageData::getPixelsRGBA(unsigned char* &pixMap) const
 {
 	delete[] pixMap;
+
 	pixMap = new unsigned char[width * height * 4];
 
 	for (int i = 0; i < width * height; ++i)
 	{
-		int index = (i % height * width + (i / height)) * 4;
+		int index = i << 2;// (i % height * width + (i / height)) * 4;
 		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].r * 255);
 		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].g * 255);
 		pixMap[index++] = static_cast<unsigned char>(pixels[0][i].b * 255);
@@ -297,7 +299,7 @@ void ImageData::getPixelsRGBA(unsigned char* &pixMap) const
 
 void ImageData::printRGBA(int x, int y) const
 {
-	cout << pixels[x][y] << endl;
+	cout << pixels[y][x] << endl;
 }
 void ImageData::resize(int x, int y)
 {
@@ -308,7 +310,7 @@ void ImageData::resize(int x, int y)
 	Aligned_2DArray(pixels, width, height);
 	//pixels = new ColorRGBA[width * height];
 }
-const ColorRGBA& ImageData::bilinearPixel(Float x, Float y) const
+ColorRGBA ImageData::bilinearPixel(Float x, Float y) const
 {
 	while (x < 0)
 	{
@@ -328,22 +330,18 @@ const ColorRGBA& ImageData::bilinearPixel(Float x, Float y) const
 	}
 	ColorRGBA pixC[4];
 	//cout << "x:" << x << "\ty:" << y << endl;
-	int floorX = floor(x), floorY = floor(y);
+	int floorX = Floor2Int(x), floorY = Floor2Int(y);
 	Float tX = x - floorX, tY = y - floorY;
 	//int ceilX = (tX == 0 || floorX == width - 1) ? floorX : (floorX + 1);
 	//int ceilY = (tY == 0 || floorY == height - 1) ? floorY : (floorY + 1);
 	int ceilX = (floorX == width - 1) ? 0 : (floorX + 1);
 	int ceilY = (floorY == height - 1) ? 0 : (floorY + 1);
-	pixC[0] = getRGBA(floorX, floorY);//data[floorX][floorY];
-	pixC[2] = getRGBA(floorX, ceilY);//data[floorX][ceilY];
-	pixC[1] = getRGBA(ceilX, floorY);//data[ceilX][floorY];
-	pixC[3] = getRGBA(ceilX, ceilY);//data[ceilX][ceilY];
-	//cout << 
-	//cout << "floorx:" << floorX << "\tceilX:" << ceilX << endl;
+	pixC[0] = getRGBA(floorX, floorY);
+	pixC[2] = getRGBA(floorX, ceilY);
+	pixC[1] = getRGBA(ceilX, floorY);
+	pixC[3] = getRGBA(ceilX, ceilY);
 
-	//return (pixC[0] * (1 - tX) + pixC[1] * tX) * (1 - tY) + (pixC[2] * (1 - tX) + pixC[3] * tX) * tY;
 	return lerp(lerp(pixC[0], pixC[1], tX), lerp(pixC[2], pixC[3], tX), tY);
-	//tmpC.updateLuma();
 }
 
 bool ImageData::writeFile(const string &filename) const
@@ -358,9 +356,10 @@ bool ImageData::writeFile(const string &filename) const
 		return false;
 	}
 
-	for (int i = 0; i < width; i++)
+
+	for (int j = 0; j < height; j++)
 	{
-		for (int j = 0; j < height; j++)
+		for (int i = 0; i < width; i++)
 		{
 			//Set color from image data.
 			//......
@@ -377,6 +376,7 @@ bool ImageData::writeFile(const string &filename) const
 		cout << "Image successfully saved!" << endl;
 		return true;
 	}
+	return false;
 }
 
 int** ImageData::genHist() const

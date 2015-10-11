@@ -8,7 +8,7 @@
 #ifndef __Light__
 #define __Light__
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Math/CGVector.h"
 #include "Light/Spectrum.h"
 

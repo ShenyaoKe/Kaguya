@@ -1,6 +1,6 @@
 #ifndef __TRACER__
 #define __TRACER__
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Image/ColorData.h"
 #include "Accel/KdTreeAccel.h"
 

@@ -220,9 +220,10 @@ ColorRGBA Phong::getSpecularAt(const DifferentialGeometry *queryPoint, const Lig
 /************************************************************************/
 /* Gooch Shader                                                         */
 /************************************************************************/
+/*
 Gooch::Gooch()
 {
-}
+}*/
 Gooch::~Gooch()
 {
 }

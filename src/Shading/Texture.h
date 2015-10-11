@@ -2,7 +2,7 @@
 #ifndef __TEXTURE__
 #define __TEXTURE__
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Image/ImageData.h"
 #include "Geometry/Shape.h"
 #include "Shading/Noise.h"

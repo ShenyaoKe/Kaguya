@@ -7,7 +7,7 @@
 #pragma once
 #ifndef __TextureMapping__
 #define __TextureMapping__
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Math/CGVector.h"
 
 class TextureMapping

@@ -2,7 +2,7 @@
 #ifndef __BBox__
 #define __BBox__
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Math/CGVector.h"
 #include "Tracer/Ray.h"
 

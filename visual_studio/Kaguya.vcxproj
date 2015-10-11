@@ -41,14 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)../lib/$(PlatformTarget)/</OutDir>
-    <IntDir>$(SolutionDir)../tmp/$(Configuration)/</IntDir>
+    <IntDir>$(SolutionDir)../tmp/$(Configuration)/$(ProjectName)/</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)../lib/$(PlatformTarget)/</OutDir>
-    <IntDir>$(SolutionDir)../tmp/$(Configuration)/</IntDir>
+    <IntDir>$(SolutionDir)../tmp/$(Configuration)/$(ProjectName)/</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
@@ -103,7 +103,6 @@
     <ClInclude Include="..\src\Camera\Camera.h" />
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
-    <ClInclude Include="..\src\Core\rtdef.h" />
     <ClInclude Include="..\src\Dynamics\Collision.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />

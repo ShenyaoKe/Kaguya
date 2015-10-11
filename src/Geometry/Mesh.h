@@ -6,7 +6,7 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Geometry/Shape.h"
 #include <fstream>
 #include <sstream>

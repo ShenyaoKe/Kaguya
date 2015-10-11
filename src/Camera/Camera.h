@@ -87,7 +87,7 @@ class perspCamera : public baseCamera
 public:
 	perspCamera();
 	perspCamera(const Point3D& eyePos, const Vector3D& target, const Vector3D& upVec,
-		Float lr = 0, Float fd = INFINITY);
+		Float lr = 0.0, Float fd = INFINITY);
 	perspCamera(const Transform& cam2wo, const Transform& projection);
 	~perspCamera();
 	//Vector3D getPos() { return pos; }

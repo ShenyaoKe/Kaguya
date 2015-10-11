@@ -31,7 +31,11 @@
 const int default_resX = 640;
 const int default_resY = 480;
 
-
+// 
+/************************************************************************/
+// Image pixel values are stored in a row-major-storage matrix
+// The pixel at (row, col) is stored in pixels[col][row]
+/************************************************************************/
 class ImageData {
 protected:
 	unsigned int width, height, bpp;
@@ -59,7 +63,7 @@ public:
 	
 	virtual void printRGBA(int x, int y) const;
 	virtual void resize(int x, int y);
-	virtual const ColorRGBA& bilinearPixel(Float x, Float y) const;
+	virtual ColorRGBA bilinearPixel(Float x, Float y) const;
 	//virtual const ColorRGBA& bicubicPixel(Float x, Float y) const;
 	virtual bool writeFile(const string &filename) const;
 	//ColorRGB bicubicPixel(Float x, Float y);

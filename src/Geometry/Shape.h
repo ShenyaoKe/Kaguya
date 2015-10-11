@@ -12,7 +12,7 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Math/CGVector.h"
 #include "Image/ColorData.h"
 #include "Math/Transform.h"

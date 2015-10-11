@@ -55,9 +55,9 @@ inline Float interpolateNoise(Float x)
 }
 inline Float interpolateNoise(Float x, Float y)
 {
-	int floorX = floor(x);
+	int floorX = static_cast<int>(floor(x));
 	Float tx = curve_t(x - floorX);
-	int floorY = floor(y);
+	int floorY = static_cast<int>(floor(y));
 	Float ty = curve_t(y - floorY);
 
 	Float v1 = SmoothNoise2D(floorX, floorY);
@@ -69,11 +69,11 @@ inline Float interpolateNoise(Float x, Float y)
 }
 inline Float interpolateNoise(Float x, Float y, Float z)
 {
-	int floorX = floor(x);
+	int floorX = static_cast<int>(floor(x));
 	Float tx = curve_t(x - floorX);
-	int floorY = floor(y);
+	int floorY = static_cast<int>(floor(y));
 	Float ty = curve_t(y - floorY);
-	int floorZ = floor(z);
+	int floorZ = static_cast<int>(floor(z));
 	Float tz = curve_t(z - floorZ);
 
 	Float v1 = SmoothNoise3D(floorX, floorY, floorZ);

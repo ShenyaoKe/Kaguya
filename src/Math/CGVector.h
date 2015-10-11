@@ -8,7 +8,9 @@
 #ifndef __CGVector__
 #define __CGVector__
 
+//#ifndef KAGUYA_DOUBLE_AS_FLOAT
 #define KAGUYA_DOUBLE_AS_FLOAT
+//#endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 #include <stdio.h>
 #include <iostream>
@@ -125,6 +127,7 @@ public:
 protected:
 private:
 };
+/*
 class Versor
 {
 public:
@@ -144,7 +147,7 @@ public:
 protected:
 	
 private:
-};
+};*/
 /************************************************************************/
 /* Vector2D Definition                                                  */
 /************************************************************************/

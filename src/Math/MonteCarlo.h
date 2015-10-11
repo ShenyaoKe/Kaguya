@@ -7,7 +7,7 @@
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 #include "Math/MathUtil.h"
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Math/CGVector.h"
 #include "Math/Matrix3D.h"
 

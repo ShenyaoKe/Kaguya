@@ -2,7 +2,7 @@
 #ifndef __SPECTRUM__
 #define __SPECTRUM__
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Image/ColorData.h"
 
 /************************************************************************/

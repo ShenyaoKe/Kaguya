@@ -2,7 +2,7 @@
 #ifndef __ENVIRONMENTMAP__
 #define __ENVIRONMENTMAP__
 
-#include "Core/rtdef.h"
+//#include "Core/rtdef.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
 

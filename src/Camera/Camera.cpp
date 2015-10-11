@@ -95,10 +95,10 @@ perspCamera::perspCamera()
 perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target, const Vector3D& upVec,
 	Float lr, Float fd) : lensRadius(lr), focalDistance(fd)
 {
-	/*pos = eyePos;
+	pos = eyePos;
 	nz = Normalize(target - eyePos);
 	nx = Normalize(Cross(nz, upVec));
-	ny = Cross(nx, nz);*/
+	ny = Cross(nx, nz);
 	Matrix4D projMat = setPerspective();
 	CameraToWorld = lookAt(eyePos, target, upVec);
 	CameraToScreen = Transform(projMat);

@@ -94,7 +94,7 @@ public:
 	virtual Float getLuma(){ return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
 	virtual void printInfo() const{ cout << "Color data\n\tRed:\t" << this->r << "\n\tGreen:\t" << this->g << "\n\tBlue:\t" << this->b << endl; }
     
-	const ColorHSV& conv2hsv() const;
+	ColorHSV conv2hsv() const;
     //inline ColorRGB hsv2rgb();
     //inline void setHSV(Float hue, Float saturation, Float value);
     //inline void updateLuma();
@@ -108,11 +108,15 @@ private:
 public:
 	Float a;//alpha channel
 	ColorRGBA() : ColorRGB(), a(1){}
-	ColorRGBA(int red, int green, int blue) : ColorRGB(red, green, blue), a(1){}
-	ColorRGBA(Float red, Float green, Float blue) : ColorRGB(red, green, blue), a(1){}
-	ColorRGBA(Float red, Float green, Float blue, Float alpha) : ColorRGB(red, green, blue), a(alpha){}
-	ColorRGBA(ColorRGB rgb) : ColorRGB(rgb.r, rgb.g, rgb.b), a(1){}
-	ColorRGBA(ColorRGB rgb, Float alpha) : ColorRGB(rgb.r, rgb.g, rgb.b), a(alpha){}
+	explicit ColorRGBA(int red, int green, int blue)
+		: ColorRGB(red, green, blue), a(1){}
+	explicit ColorRGBA(Float red, Float green, Float blue)
+		: ColorRGB(red, green, blue), a(1){}
+	explicit ColorRGBA(Float red, Float green, Float blue, Float alpha)
+		: ColorRGB(red, green, blue), a(alpha){}
+	explicit ColorRGBA(ColorRGB rgb) : ColorRGB(rgb.r, rgb.g, rgb.b), a(1){}
+	explicit ColorRGBA(ColorRGB rgb, Float alpha)
+		: ColorRGB(rgb.r, rgb.g, rgb.b), a(alpha){}
 	~ColorRGBA(){}
 
 	ColorRGBA operator+(const ColorRGBA& color2) const { return ColorRGBA(r + color2.r, g + color2.g, b + color2.b, a + color2.a); }
@@ -141,7 +145,7 @@ public:
 	//void setRGBA(unsigned short red, unsigned short green, unsigned short blue, unsigned short alpha){ setRGB(red, green, blue); a = alpha / 255.0; };
 	void printInfo() const{ cout << "Color data\n\tRed:\t" << this->r << "\n\tGreen:\t" << this->g << "\n\tBlue:\t" << this->b << "\n\tAlpha:\t" << this->a << endl; };
 
-	const ColorHSVA& conv2hsva() const;
+	ColorHSVA conv2hsva() const;
 
 	void clamp();
 	ColorRGBA returnClamp();
@@ -160,15 +164,16 @@ public:
 	ColorHSV();
 	ColorHSV(Float hue, Float saturation, Float value){ h = hue; s = saturation; v = value; }
 
-	const ColorRGB& conv2rgb() const;
+	ColorRGBA conv2rgb() const;
 
 	void clamp();
 };
 
 
-inline const ColorRGB& ColorHSV::conv2rgb() const
+inline ColorRGBA ColorHSV::conv2rgb() const
 {
-	Float r, g, b;
+	ColorRGBA ret;
+	//Float r, g, b;
 	Float h0 = h / 60.0;
 
 	Float chroma = s * v;
@@ -178,47 +183,47 @@ inline const ColorRGB& ColorHSV::conv2rgb() const
 
 	if (h0 == 0)
 	{
-		r = min;
-		g = min;
-		b = min;
+		ret.r = min;
+		ret.g = min;
+		ret.b = min;
 	}
 	else if (h0 < 1.0)
 	{
-		r = (min + chroma);
-		g = (min + x);
-		b = min;
+		ret.r = (min + chroma);
+		ret.g = (min + x);
+		ret.b = min;
 	}
 	else if (h0 < 2.0)
 	{
-		r = (min + x);
-		g = (min + chroma);
-		b = min;
+		ret.r = (min + x);
+		ret.g = (min + chroma);
+		ret.b = min;
 	}
 	else if (h0 < 3.0)
 	{
-		r = min;
-		g = (min + chroma);
-		b = (min + x);
+		ret.r = min;
+		ret.g = (min + chroma);
+		ret.b = (min + x);
 	}
 	else if (h0 < 4.0)
 	{
-		r = min;
-		g = (min + x);
-		b = (min + chroma);
+		ret.r = min;
+		ret.g = (min + x);
+		ret.b = (min + chroma);
 	}
 	else if (h0 < 5.0)
 	{
-		r = (min + x);
-		g = min;
-		b = (min + chroma);
+		ret.r = (min + x);
+		ret.g = min;
+		ret.b = (min + chroma);
 	}
 	else if (h0 < 6.0)
 	{
-		r = (min + chroma);
-		g = min;
-		b = (min + x);
+		ret.r = (min + chroma);
+		ret.g = min;
+		ret.b = (min + x);
 	}
-	return ColorRGB(r, g, b);
+	return ret;
 	//cout << "New RGB:" << r << ", " << g << ", " << b << ", " << endl;
 	//cout << "HSV:" << h << ", " << s << ", " << v << ", " << endl;
 }
@@ -258,11 +263,12 @@ inline void ColorRGBA::clamp()
 
 inline ColorRGBA ColorRGBA::returnClamp()
 {
-	Float retR = r > 1 ? 1 : (r < 0 ? 0 : r);
-	Float retG = g > 1 ? 1 : (g < 0 ? 0 : g);
-	Float retB = b > 1 ? 1 : (b < 0 ? 0 : b);
-	Float retA = a > 1 ? 1 : (a < 0 ? 0 : a);
-	ColorRGBA ret(retR, retG, retB, retA);
+	ColorRGBA ret;
+	ret.r = r > 1 ? 1 : (r < 0 ? 0 : r);
+	ret.g = g > 1 ? 1 : (g < 0 ? 0 : g);
+	ret.b = b > 1 ? 1 : (b < 0 ? 0 : b);
+	ret.a = a > 1 ? 1 : (a < 0 ? 0 : a);
+	//ColorRGBA ret(retR, retG, retB, retA);
 	return ret;// ColorRGBA(retR, retG, retB, retA);
 }
 
@@ -273,43 +279,44 @@ const ColorHSVA& ColorRGBA::conv2hsva() const
 }*/
 
 //Convert RGB color data to HSV
-inline const ColorHSV& ColorRGB::conv2hsv() const
+inline ColorHSV ColorRGB::conv2hsv() const
 {
-	Float h, s, v;
-	Float max = (r > g ? (r > b ? r : b) : (g > b ? g : b));
-	Float min = (r < g ? (r < b ? r : b) : (g < b ? g : b));
+	ColorHSV ret;
+	//Float h, s, v;
+	Float maxVal = (r > g ? (r > b ? r : b) : (g > b ? g : b));
+	Float minVal = (r < g ? (r < b ? r : b) : (g < b ? g : b));
 
-	v = max;
-	Float chroma = max - min;
-	if (max == 0)
+	ret.v = maxVal;
+	Float chroma = maxVal - minVal;
+	if (maxVal == 0)
 	{
-		h = 0.0;
-		s = 0.0;
+		ret.h = 0.0;
+		ret.s = 0.0;
 	}
 	else
 	{
-		s = chroma / max;
+		ret.s = chroma / maxVal;
 
 		if (chroma == 0)
 		{
-			h = 0.0;
+			ret.h = 0.0;
 		} 
-		else if (max == r)
+		else if (maxVal == r)
 		{
-			h = 60 * fmod(static_cast<Float>(g - b) / chroma, 6);
+			ret.h = 60 * fmod(static_cast<Float>(g - b) / chroma, 6);
 		}
-		else if (max == g)
+		else if (maxVal == g)
 		{
-			h = 60 * ((b - r) / chroma + 2);
+			ret.h = 60 * ((b - r) / chroma + 2);
 		}
-		else if (max == b)
+		else if (maxVal == b)
 		{
-			h = 60 * ((r - g) / chroma + 4);
+			ret.h = 60 * ((r - g) / chroma + 4);
 		}
 		
-		h = (h >= 0) ? h : (h + 360.0); //
+		ret.h = (ret.h >= 0) ? ret.h : (ret.h + 360.0); //
 	}
-	return ColorHSV(h, s, v);
+	return ret;
 //cout << "RGB:" << r << ", " << g << ", " << b << ", " << endl;
 //cout << "HSV:" << h << ", " << s << ", " << v << ", " << endl;
 }

@@ -7,7 +7,12 @@
 #pragma once
 #ifndef __Shader__
 #define __Shader__
-#include "Core/rtdef.h"
+
+#ifndef KAGUYA_DOUBLE_AS_FLOAT
+#define KAGUYA_DOUBLE_AS_FLOAT
+#endif // !KAGUYA_DOUBLE_AS_FLOAT
+
+#include "Core/Kaguya.h"
 #include "Geometry/DifferentialGeometry.h"
 #include "Shading/Texture.h"
 #include "Light/Light.h"
@@ -45,13 +50,13 @@ public:
 	virtual ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
 
 protected:
-	ColorRGBA diffuse = ColorRGBA(COLOR_WHITE);
-	ColorRGBA specular = ColorRGBA(COLOR_WHITE);
-	ColorRGBA ambient = ColorRGBA(COLOR_BLACK);
+	ColorRGBA diffuse = COLOR_WHITE;
+	ColorRGBA specular = COLOR_WHITE;
+	ColorRGBA ambient = COLOR_BLACK;
 
-	Texture* ambiTex = NULL;
-	Texture* diffTex = NULL;
-	Texture* specTex = NULL;
+	Texture* ambiTex = nullptr;
+	Texture* diffTex = nullptr;
+	Texture* specTex = nullptr;
 
 	Float diff_max = 1;
 	Float diff_min = 0;
@@ -108,7 +113,8 @@ private:
 class Gooch :public Shader
 {
 public:
-	Gooch();
+	Gooch()
+		: warmColor(1.0, 1.0, 0.0), coolColor(0.0, 0.0, 1.0), silhoutteColor(0.0, 0.0, 0.0) {}
 	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff);
 	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh);
 	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh, const Float& dmin, const Float& dmax);
@@ -122,9 +128,9 @@ public:
 protected:
 
 private:
-	ColorRGBA warmColor = ColorRGB(1, 1, 0);
-	ColorRGBA coolColor = ColorRGB(0, 0, 1);
-	ColorRGBA silhoutteColor = COLOR_BLACK;
+	ColorRGBA warmColor;
+	ColorRGBA coolColor;
+	ColorRGBA silhoutteColor;
 	//Float specularThreshold = 0.8;
 };
 /************************************************************************/

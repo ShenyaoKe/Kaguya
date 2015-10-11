@@ -45,8 +45,8 @@ class Spectrum;
 class Light;
 
 class BBox;
+struct KdAccelNode;
 class KdTreeAccel;
-class KdAccelNode;
 class Shape;
 class Ray;
 struct DifferentialGeometry;

@@ -90,9 +90,6 @@
     <ClInclude Include="..\src\Tracer\Ray.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Core\rtdef.h">
-      <Filter>Header Files\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Geometry\Shape.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
