@@ -27,7 +27,8 @@ public:
 	int dp;//ray depth count
 
 	Ray();
-	Ray(const Point3D& p, const Vector3D& d);
+	Ray(const Point3D& p, const Vector3D& d,
+		double minT = 0.0, double maxT = INFINITY);
 	~Ray();
 
 	Point3D operator()(const Float& t) const;

@@ -4,8 +4,10 @@
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-baseCamera::baseCamera(Vector3D& eyePos, Vector3D& target, Vector3D& upVec)
+baseCamera::baseCamera(const Vector3D& eyePos, const Vector3D& targetPos,
+	const Vector3D& upVec)
 	: CameraToWorld(lookAt(eyePos, target, upVec)), CameraToScreen(setPerspective())
+	, target(targetPos)
 {
 	/*pos = eyePos;
 	nz = Normalize(target - eyePos);
@@ -119,9 +121,10 @@ perspCamera::~perspCamera()
 Ray perspCamera::shootRay(Float imgX, Float imgY) const
 {
 	Vector2D fPos = film.getFilmPos(imgX, imgY);//point on film
-	Vector3D rayDir = nz * focLen + nx * fPos.x + ny * fPos.y;
+	//Vector3D rayDir = nz * focLen + nx * fPos.x + ny * fPos.y;
+	Vector3D rayDir = (CameraToWorld.getMat() * Vector4D(fPos.x, fPos.y, focLen, 0)).toVector3D();
 
-	Ray ret(pos, Normalize(rayDir));
+	Ray ret(Point3D(CameraToWorld.getMat()[3]), Normalize(rayDir));
 	if (lensRadius > 0)
 	{
 		//sample point on lens
@@ -154,15 +157,82 @@ void perspCamera::saveResult(const char* filename)
 
 void baseCamera::zoom(Float x_val, Float y_val, Float z_val)
 {
+	Matrix4D w2cam = CameraToWorld.getInvMat();
+	Matrix4D cameraMat = CameraToWorld.getMat();
+	
+	// Pw: world space position, Pc: Camera space position
+	// Pw = c2w1 * Pc1 = c2w1 * T^-1 * Pc = c2w * Pc
+	// c2w1 = T * c2w
 	Matrix4D newLookAt = setTranslation(x_val, y_val, z_val) * CameraToWorld.getMat();
+	cout << "befor: " << target << endl;
+
+	/*target = ((CameraToWorld.getMat() * setTranslation(-x_val, -y_val, 0)) * CameraToWorld.getInvMat() * Vector4D(target, 1)).toVector3D();*/
+	/*Matrix4D T = setTranslation(-x_val, -y_val, 0);
+	Vector4D newTarget = w2cam * Vector4D(target, 1);*/
+	cout << "after: " << target << endl;
 	CameraToWorld.setMat(newLookAt);
 }
 
-void baseCamera::rotate(Float x_rot /*= 0*/, Float y_rot /*= 0*/, Float z_rot /*= 0*/)
+void baseCamera::rotate(Float x_rot, Float y_rot, Float z_rot)
+//pitch, yaw, roll
 {
-	Matrix4D newLookAt = setRotationX(x_rot) * setRotationY(y_rot) * setRotationZ(z_rot) * CameraToWorld.getInvMat();
+	Matrix4D lookAtMat = CameraToWorld.getMat();
 
-	CameraToWorld.setInvMat(newLookAt);
+	Vector3D _pos(lookAtMat[3]);
+	Vector3D vt = _pos - target;
+	Float vt_len = vt.getLength();
+	//vt.normalize();
+	//this.rho = sqrt((x*x) + (y*y) + (z*z));//vt
+	double phi = atan2(vt.x, vt.z) + DegreeToRadian(y_rot);
+	/*double phi;
+	if (abs(vt.z) < std::numeric_limits<Float>::epsilon())
+	{
+		phi = vt.z > 0 ? M_PI * 0.5 : M_PI;
+	}
+	else
+	{
+		phi = atan2(vt.x, vt.z);
+	}
+	phi += (y_rot);*/
+	double theta = asin(vt.y / vt_len) + DegreeToRadian(x_rot);
+	if (abs(theta) > M_PI * 0.99)
+	{
+
+	}
+	Vector3D newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
+	CameraToWorld = lookAt(target + newVt * vt_len, target, Vector3D(0,1,0));
+}
+
+void baseCamera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
+{
+
+	Matrix4D lookAtMat = CameraToWorld.getMat();
+	Vector4D _nx(lookAtMat[0]), _ny(lookAtMat[1]), _nz(lookAtMat[2]);
+	Vector4D _pos(lookAtMat[3]);
+	Vector4D vt(_pos - Vector4D(target, 1));
+	Float vt_len = vt.getLength();
+
+	printf("Original VT: %lf\n", vt.getLength());
+	// Rotate pitch
+	Matrix4D pitchMat = setRotation(_nx.toVector3D(), pitchAngle);//setRotationX(pitchAngle);
+	_ny = pitchMat * _ny;
+	_nz = pitchMat * _nz;
+	vt = pitchMat * vt;
+
+	printf("\tafter pitch: %lf\n", vt.getLength());
+	Matrix4D yawMat = setRotation(_ny.toVector3D(), yawAngle);//setRotationY(yawAngle);
+	_nx = yawMat * _nx;
+	_nz = yawMat * _nz;
+	vt = yawMat * vt;
+
+	printf("\tafter yaw: %lf\n", vt.getLength());
+	_nx.normalize();
+	_ny.normalize();
+	_nz.normalize();
+	vt.normalize();
+	_pos = Vector4D(target, 1.0) + vt * vt_len;
+	//Matrix4D newLookAt(_nx, _ny, _nz, _pos);
+	CameraToWorld = lookAt(_pos.toVector3D(), target, _ny.toVector3D());
 }
 
 void baseCamera::resizeViewport(Float aspr /*= 1.0*/)

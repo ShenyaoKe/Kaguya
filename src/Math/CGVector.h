@@ -68,7 +68,9 @@ public:
 	Vector3D(const Vector3D &vec) : x(vec.x), y(vec.y), z(vec.z){}
 	Vector3D(Float posX, Float posY, Float posZ) :x(posX), y(posY), z(posZ){}
 	Vector3D(const Vector2D& v0, Float z0) :x(v0.x), y(v0.y), z(z0){}
+	Vector3D(Float pos[3]) : x(pos[0]), y(pos[1]), z(pos[2]) {}
 	//Vector3D zero();
+
 	Vector3D operator-() const;
 	Vector3D operator+(const Vector3D& vec) const;
 	Vector3D operator-(const Vector3D& vec) const;
@@ -78,6 +80,8 @@ public:
 	Vector3D& operator = (const Vector2D& vec);
 	Vector3D& operator += (const Vector3D& vec);
 	Vector3D& operator -= (const Vector3D& vec);
+	Vector3D& operator *= (Float n);
+	Vector3D& operator /= (Float n);
 	Float operator[](int i) const;
 	Float& operator[](int i);
 	Float dotMul(const Vector3D& vec) const;
@@ -103,6 +107,7 @@ public:
 	Vector4D(const Vector4D &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w){}
 	Vector4D(Float posX, Float posY, Float posZ, Float posW) :x(posX), y(posY), z(posZ), w(posW){}
 	Vector4D(const Vector3D& vec, Float posW) :x(vec.x), y(vec.y), z(vec.z), w(posW){}
+	Vector4D(Float pos[4]) : x(pos[0]), y(pos[1]), z(pos[2]), w(pos[3]) {}
 
 	Vector4D operator-() const;
 	Vector4D operator+(const Vector4D& vec) const;
@@ -116,6 +121,10 @@ public:
 	Vector4D& operator -= (const Vector4D& vec);
 	Vector4D& operator *= (Float n);
 	Vector4D& operator /= (Float n);
+	Float operator[](int i) const;
+	Float& operator[](int i);
+
+	Vector3D toVector3D() const;
 	Float dotMul(const Vector4D& vec) const;
 	//Vector4D crossMul(const Vector4D& vec) const;
 	void getData(Float* data) const;
@@ -289,6 +298,16 @@ inline Vector3D& Vector3D::operator -= (const Vector3D& vec)
 	*this = *this - vec;
 	return *this;
 }
+inline Vector3D& Vector3D::operator *= (Float n)
+{
+	*this = *this * n;
+	return *this;
+}
+inline Vector3D& Vector3D::operator /= (Float n)
+{
+	*this = *this / n;
+	return *this;
+}
 inline Float Vector3D::operator[](int i) const
 {
 	assert(i >= 0 && i <= 2);
@@ -333,6 +352,8 @@ inline void Vector3D::normalize()
 	y *= rvsLen;
 	z *= rvsLen;
 }
+
+
 
 inline Vector3D Normalize(const Vector3D &vec)
 {
@@ -402,6 +423,16 @@ inline Vector4D& Vector4D::operator/=(Float n)
 	*this = *this / n;
 	return *this;
 }
+inline Float Vector4D::operator[](int i) const
+{
+	assert(i >= 0 && i <= 3);
+	return (&x)[i];
+}
+inline Float& Vector4D::operator[](int i)
+{
+	assert(i >= 0 && i <= 3);
+	return (&x)[i];
+}
 inline ostream& operator << (ostream& os, const Vector3D& vec)
 {
 	os << vec.x << ", " << vec.y << ", " << vec.z;
@@ -444,6 +475,11 @@ inline void Vector4D::normalize()
 	y *= invLen;
 	z *= invLen;
 	w *= invLen;
+}
+
+inline Vector3D Vector4D::toVector3D() const
+{
+	return Vector3D(x, y, z);
 }
 
 const Vector2D X_AXIS2D(1, 0);

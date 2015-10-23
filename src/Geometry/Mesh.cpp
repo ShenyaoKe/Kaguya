@@ -7,11 +7,15 @@
 
 Mesh::Mesh()
 {
+	index = Shape::assignIndex();
 }
 Mesh::Mesh(const char* filename)
 {
+	index = Shape::assignIndex();
 	loadOBJ(filename);
 	bounding();
+	index = Shape::assignIndex();
+	Shape::offsetUID(fids.size());
 }
 Mesh::~Mesh()
 {
@@ -43,6 +47,7 @@ void Mesh::refine(vector<Shape*> &refined)
 	for (int i = 0; i < fids.size(); i++)
 	{
 		Triangle* face = new Triangle(this, i);
+		face->index = index + i;
 		refined.push_back(face);
 	}
 }
@@ -247,13 +252,16 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array)*/
 template <typename vbo_t>
 void Mesh::exportVBO(int &size,
-	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const
+	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array, int* &idx_array) const
 {
 	vbo_t *verts, *texcoord(nullptr), *nms(nullptr);
+	int *idxs(nullptr);
 	bool has_texcoord(false), has_normal(false);
 	size = this->fids.size();
 	vtx_array = new vbo_t[size * 9];
+	idx_array = new int[size];
 	verts = vtx_array;
+	idxs = idx_array;
 	if (this->fids[0]->uv >= 0)
 	{
 		uv_array = new vbo_t[size * 6];
@@ -275,6 +283,7 @@ void Mesh::exportVBO(int &size,
 		norm_array = nullptr;
 	}
 	
+	
 	for (int i = 0; i < size; i++)
 	{
 		auto cur_fid = this->fids[i];
@@ -285,6 +294,7 @@ void Mesh::exportVBO(int &size,
 			*verts++ = static_cast<vbo_t>(cur_vtx->y);
 			*verts++ = static_cast<vbo_t>(cur_vtx->z);
 		}
+		*idxs++ = this->index + i;
 		if (has_texcoord)
 		{
 
@@ -315,6 +325,7 @@ void Mesh::exportVBO(int &size,
 /************************************************************************/
 Triangle::Triangle()
 {
+	index = Shape::assignIndex();
 	mesh = nullptr;
 	p.reserve(3);
 	uv.reserve(3);
@@ -323,6 +334,7 @@ Triangle::Triangle()
 
 Triangle::Triangle(Mesh *inMesh, int fn)
 {
+	this->index = inMesh->index + fn;
 	this->attachMesh(inMesh);
 	p.reserve(3);
 	uv.reserve(3);

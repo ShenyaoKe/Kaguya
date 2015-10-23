@@ -128,7 +128,7 @@ inline Transform xformTRS(
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz
 	);
-inline Transform Rotate(const Vector3D &axis, Float theta);
+//inline Transform Rotate(const Vector3D &axis, Float theta);
 
 inline Transform xformTRS(
 	Float tx, Float ty, Float tz,

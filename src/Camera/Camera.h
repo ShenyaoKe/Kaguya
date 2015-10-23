@@ -25,7 +25,7 @@ class baseCamera
 {
 public:
 	baseCamera();
-	baseCamera(Vector3D& eyePos, Vector3D& target, Vector3D& upVec);
+	baseCamera(const Vector3D& eyePos, const Vector3D& targetPos, const Vector3D& upVec);
 	virtual~baseCamera(){};
 
 	virtual void setResolution(int resX, int resY);
@@ -44,13 +44,14 @@ public:
 
 	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
 	virtual void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
+	virtual void rotatePYR(Float pitchAngle = 0, Float yawAngle = 0, Float rollAngle = 0);
 	virtual void resizeViewport(Float aspr = 1.0);
 	virtual void exportVBO(float *view, float *proj, float *raster) const;
 
 	Transform CameraToWorld;
 	Transform CameraToScreen, RasterToScreen;
 protected:
-	Point3D pos;
+	Point3D pos, target;
 	Vector3D nx, ny, nz;
 
 	Film film;//contains image size, film size(horApec, verApec)

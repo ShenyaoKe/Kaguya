@@ -93,6 +93,7 @@ public:
 	friend Matrix4D setRoationY(Float theta);
 	friend Matrix4D setRoationZ(Float theta);
 	friend Matrix4D setRotation(Float alpha, Float beta, Float gamma);// in degree
+	friend Matrix4D setRotation(const Vector3D &axis, Float theta, bool isNormalized = false);
 	friend Matrix4D setScale(Float sx, Float sy, Float sz);
 	friend Matrix4D setScale(Float scale);
 	friend Matrix4D setShear(const Vector3D& vec);
@@ -110,7 +111,7 @@ inline Float* Matrix4D::operator[](int i)
 {
 	return mtx[i];
 }
-inline const Float* Matrix4D::operator[](int i)const
+inline const Float* Matrix4D::operator[](int i) const
 {
 	return mtx[i];
 }
@@ -138,7 +139,7 @@ inline Matrix4D Matrix4D::operator - (const Matrix4D &mat) const
 }
 inline Matrix4D Matrix4D::operator * (const Matrix4D &mat) const
 {
-	Matrix4D buffer;
+	Matrix4D ret;
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -146,20 +147,27 @@ inline Matrix4D Matrix4D::operator * (const Matrix4D &mat) const
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				buffer.mtx[i][j] += mtx[i][k] * mat.mtx[k][j];
+				ret.mtx[i][j] += mtx[i][k] * mat.mtx[k][j];
 			}
 		}
 	}
-	return buffer;
+	return ret;
 }
 inline Vector4D Matrix4D::operator * (const Vector4D& p) const
 {
-	return Vector4D(
+	/*Vector4D ret(
 		p.x * mtx[0][0] + p.y * mtx[0][1] + p.z * mtx[0][2] + p.w * mtx[0][3],
 		p.x * mtx[1][0] + p.y * mtx[1][1] + p.z * mtx[1][2] + p.w * mtx[1][3],
 		p.x * mtx[2][0] + p.y * mtx[2][1] + p.z * mtx[2][2] + p.w * mtx[2][3],
 		p.x * mtx[3][0] + p.y * mtx[3][1] + p.z * mtx[3][2] + p.w * mtx[3][3]
+		);*/
+	Vector4D ret(
+		p.x * mtx[0][0] + p.y * mtx[1][0] + p.z * mtx[2][0] + p.w * mtx[3][0],
+		p.x * mtx[0][1] + p.y * mtx[1][1] + p.z * mtx[2][1] + p.w * mtx[3][1],
+		p.x * mtx[0][2] + p.y * mtx[1][2] + p.z * mtx[2][2] + p.w * mtx[3][2],
+		p.x * mtx[0][3] + p.y * mtx[1][3] + p.z * mtx[2][3] + p.w * mtx[3][3]
 		);
+	 return ret;
 }
 
 inline const Matrix4D& Matrix4D::operator = (const Matrix4D &mat)
@@ -464,6 +472,37 @@ inline Matrix4D setRotation(Float alpha, Float beta, Float gamma)
 	ret.mtx[2][2] = cosB;
 	ret.mtx[3][3] = 1.0;
 
+	return ret;
+}
+inline Matrix4D setRotation(const Vector3D &axis, Float theta, bool isNormalized)
+{
+	Vector3D u = isNormalized ? axis : Normalize(axis);
+	Float rad = DegreeToRadian(theta);
+	Float c = cos(rad);
+	Float s = sin(rad);
+	Float t = 1 - c;
+
+	Matrix4D ret;
+
+	ret.mtx[0][0] = t * sqr(u.x) + c;
+	ret.mtx[0][1] = t * u.x * u.y - s * u.x;
+	ret.mtx[0][2] = t * u.x * u.z + s * u.y;
+	ret.mtx[0][3] = 0.0;
+
+	ret.mtx[1][0] = t * u.x * u.y + s * u.z;
+	ret.mtx[1][1] = t * sqr(u.y) + c;
+	ret.mtx[1][2] = t * u.y * u.z - s * u.x;
+	ret.mtx[1][3] = 0.0;
+
+	ret.mtx[2][0] = t * u.x * u.z - s * u.y;
+	ret.mtx[2][1] = t * u.y * u.z + s * u.x;
+	ret.mtx[2][2] = t * sqr(u.z) + c;
+	ret.mtx[2][3] = 0.0;
+
+	ret.mtx[3][0] = 0.0;
+	ret.mtx[3][1] = 0.0;
+	ret.mtx[3][2] = 0.0;
+	ret.mtx[3][3] = 1.0;
 	return ret;
 }
 inline Matrix4D setScale(Float sx, Float sy, Float sz)

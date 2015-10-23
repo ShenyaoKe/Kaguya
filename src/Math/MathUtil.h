@@ -61,6 +61,19 @@ inline const T2& clampFromZeroToOne(const T2& data)
 {
 	return clamp(data, static_cast<T2>(0), static_cast<T2>(1));
 }
+template <typename T>
+inline const T& remap(const T& data, const T& oldMin, const T& oldMax,
+	const T& newMin, const T& newMax)
+{
+	T tmp = (data * (newMax - newMin) - (newMin * oldMax - newMax * oldMin))
+		/ (oldMax - oldMin);
+	return clamp(tmp, newMin, newMax);
+}
+template <typename T>
+inline const T& RemapToUnit(const T& data, const T& minV, const T& maxV)
+{
+	return clampFromZeroToOne((data - minV) / (maxV - minV));
+}
 template <typename T> inline bool inRange(const T& data, const T& minv, const T& maxv)
 {
 	if (data >= minv && data <= maxv)
@@ -129,6 +142,10 @@ inline int Random(int range)
 inline Float unitRandom(int segment)
 {
 	return static_cast<Float>(Random(segment)) / static_cast<Float>(segment);
+}
+inline Float symUnitRandom(int segment)
+{
+	return (static_cast<Float>(Random(segment)) / static_cast<Float>(segment)-0.5) * 2.0;
 }
 template <typename T>
 inline T sqr(const T& data)

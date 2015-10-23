@@ -27,9 +27,12 @@ const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon 
 /************************************************************************/
 class Shape
 {
+	static int uid;
 public:
 	Shape();
 	virtual ~Shape();
+	static int assignIndex() { return uid++; }
+	static void offsetUID(int offset) { uid += offset; }
 	virtual void bounding();
 	virtual const BBox& getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
@@ -43,10 +46,13 @@ public:
 	virtual void assignTextureMapping(TextureMapping* &mapping);// { UV_Mapping = mapping; }
 	virtual void assignNormalMap(Texture* nMap);
 
+	virtual int getIndex() const;
+	//virtual int assignIndex(int);
 	virtual void printInfo() const;
 	virtual void getUV(const DifferentialGeometry *queryPoint) const;
 	virtual Vector3D getCenter() const;
 
+	// Shading
 	virtual ColorRGBA getAmbient(const DifferentialGeometry *queryPoint) const;
 	virtual ColorRGBA getDiffuse(const DifferentialGeometry *queryPoint, const Light* light) const;
 	virtual ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
@@ -56,6 +62,7 @@ public:
 	virtual const Point3D& closestPoint(const Point3D &p) const;
 
 public:
+	int index;
 	Transform *ObjectToWorld;
 	Point3D c;//center
 	BBox ObjBound;

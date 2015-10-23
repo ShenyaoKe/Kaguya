@@ -3,10 +3,13 @@
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
 #include "Geometry/DifferentialGeometry.h"
+
 /************************************************************************/
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
+int Shape::uid = 1;
 Shape::Shape()
+	: index(assignIndex())
 {
 }
 Shape::~Shape()
@@ -70,6 +73,12 @@ void Shape::assignNormalMap(Texture* nMap)
 {
 	normalMap = nMap;
 }
+
+int Shape::getIndex() const
+{
+	return index;
+}
+
 void Shape::printInfo() const
 {
 	cout << "Center:\t";

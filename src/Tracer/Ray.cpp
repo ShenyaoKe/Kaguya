@@ -11,9 +11,13 @@ Ray::~Ray()
 {
 }
 
-Ray::Ray(const Point3D& p, const Vector3D& d) : time(0), dp(0)
+Ray::Ray(const Point3D& p, const Vector3D& d,
+	double minT, double maxT)
+	: pos(p)
+	, time(0), dp(0)
+	, tmin(minT), tmax(maxT)
 {
-	pos = p;
+	//pos = p;
 	dir = Normalize(d);
 }
 Point3D Ray::operator()(const Float& t) const
