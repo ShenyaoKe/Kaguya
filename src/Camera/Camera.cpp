@@ -94,8 +94,9 @@ perspCamera::perspCamera()
 	ny = Y_AXIS3D;
 	nz = Z_AXIS3D;*/
 }
-perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target, const Vector3D& upVec,
-	Float lr, Float fd) : lensRadius(lr), focalDistance(fd)
+perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target,
+	const Vector3D& upVec, Float lr, Float fd)
+	: lensRadius(lr), focalDistance(fd)
 {
 	pos = eyePos;
 	nz = Normalize(target - eyePos);

@@ -252,16 +252,14 @@ void exportVBO(const Mesh *tri_mesh, int &size,
 	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array)*/
 template <typename vbo_t>
 void Mesh::exportVBO(int &size,
-	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array, int* &idx_array) const
+	vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const
 {
 	vbo_t *verts, *texcoord(nullptr), *nms(nullptr);
-	int *idxs(nullptr);
 	bool has_texcoord(false), has_normal(false);
 	size = this->fids.size();
 	vtx_array = new vbo_t[size * 9];
-	idx_array = new int[size];
 	verts = vtx_array;
-	idxs = idx_array;
+	
 	if (this->fids[0]->uv >= 0)
 	{
 		uv_array = new vbo_t[size * 6];
@@ -282,8 +280,7 @@ void Mesh::exportVBO(int &size,
 	{
 		norm_array = nullptr;
 	}
-	
-	
+
 	for (int i = 0; i < size; i++)
 	{
 		auto cur_fid = this->fids[i];
@@ -294,7 +291,6 @@ void Mesh::exportVBO(int &size,
 			*verts++ = static_cast<vbo_t>(cur_vtx->y);
 			*verts++ = static_cast<vbo_t>(cur_vtx->z);
 		}
-		*idxs++ = this->index + i;
 		if (has_texcoord)
 		{
 
@@ -315,6 +311,83 @@ void Mesh::exportVBO(int &size,
 				*nms++ = static_cast<vbo_t>(cur_normal->y);
 				*nms++ = static_cast<vbo_t>(cur_normal->z);
 			}
+		}
+	}
+
+}
+template <typename vbo_t>
+void Mesh::exportVBO(int &size,
+	vbo_t** vtx_array, vbo_t** uv_array, vbo_t** norm_array, int** uid_array) const
+{
+	vbo_t *verts(nullptr), *texcoord(nullptr), *nms(nullptr);
+	int *uids(nullptr);
+	bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
+	size = this->fids.size();
+	if (vtx_array != nullptr)
+	{
+		*vtx_array = new vbo_t[size * 9];
+		verts = *vtx_array;
+		has_vert = true;
+	}
+	if (this->fids[0]->uv >= 0 && uv_array != nullptr)
+	{
+		*uv_array = new vbo_t[size * 6];
+		texcoord = *uv_array;
+		has_texcoord = true;
+	}
+	if (this->fids[0]->n >= 0 && norm_array != nullptr)
+	{
+		*norm_array = new vbo_t[size * 9];
+		nms = *norm_array;
+		has_normal = true;
+	}
+	if (uid_array != nullptr)
+	{
+		*uid_array = new int[size * 3];
+		uids = *uid_array;
+		has_uid = true;
+	}
+	
+	
+	for (int i = 0; i < size; i++)
+	{
+		auto cur_fid = this->fids[i];
+		if (has_vert)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				auto cur_vtx = this->vertices[cur_fid->vtx[j] - 1];
+				*verts++ = static_cast<vbo_t>(cur_vtx->x);
+				*verts++ = static_cast<vbo_t>(cur_vtx->y);
+				*verts++ = static_cast<vbo_t>(cur_vtx->z);
+			}
+		}
+		if (has_texcoord)
+		{
+
+			for (int j = 0; j < 3; j++)
+			{
+				auto cur_texcoord = this->uvs[cur_fid->uv[j] - 1];
+				*texcoord++ = static_cast<vbo_t>(cur_texcoord->x);
+				*texcoord++ = static_cast<vbo_t>(cur_texcoord->y);
+			}
+		}
+		if (has_normal)
+		{
+
+			for (int j = 0; j < 3; j++)
+			{
+				auto cur_normal = this->normals[cur_fid->n[j] - 1];
+				*nms++ = static_cast<vbo_t>(cur_normal->x);
+				*nms++ = static_cast<vbo_t>(cur_normal->y);
+				*nms++ = static_cast<vbo_t>(cur_normal->z);
+			}
+		}
+		if (has_uid)
+		{
+			*uids++ = this->index + i;
+			*uids++ = this->index + i;
+			*uids++ = this->index + i;
 		}
 	}
 		

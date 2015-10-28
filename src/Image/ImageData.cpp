@@ -4,6 +4,7 @@ ImageData::ImageData()
 {
 	width = default_resX;
 	height = default_resY;
+	bpp = 24;
 
 	Aligned_2DArray(pixels, width, height, ROW_STORAGE);//pixels = new ColorRGBA[width * height];
 }
@@ -11,6 +12,7 @@ ImageData::ImageData(int wd, int ht)
 {
 	width = wd;
 	height = ht;
+	bpp = 24;
 
 	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 }
@@ -19,6 +21,7 @@ ImageData::ImageData(int wd, int ht, Float* &pixMap)
 	// Declare width and height
 	width = wd;
 	height = ht;
+	bpp = 24;
 
 	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 
@@ -32,15 +35,16 @@ ImageData::ImageData(int wd, int ht, unsigned char* &pixMap)
 	// Declare width and height
 	width = wd;
 	height = ht;
+	bpp = 24;
 
 	Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 	
 	for (int i = 0; i < width * height; ++i)
 	{
 		pixels[0][i] = ColorRGBA(
-			static_cast<Float>(pixMap[i * 3    ]) / 255.0f,
-			static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
-			static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f);
+			static_cast<Float>(pixMap[i * 3    ]) / 255.0,
+			static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
+			static_cast<Float>(pixMap[i * 3 + 2]) / 255.0);
 	}
 }
 ImageData::ImageData(const string &filename)
@@ -52,7 +56,7 @@ ImageData::ImageData(const string &filename)
 	// Define a pointer to the pixel data
 	BYTE* bits(0);
 	// Define image data type, e.g. RGB16, UINT16, DOUBLE, etc.
-	unsigned int imgType(0);
+	int imgType(0);
 
 	// Check the file signature and deduce its format
 	fif = FreeImage_GetFileType(filename.c_str(), 0);

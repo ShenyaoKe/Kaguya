@@ -38,7 +38,7 @@ const int default_resY = 480;
 /************************************************************************/
 class ImageData {
 protected:
-	unsigned int width, height, bpp;
+	int width, height, bpp;
 	ColorRGBA **pixels;
 public:
 	ImageData();
