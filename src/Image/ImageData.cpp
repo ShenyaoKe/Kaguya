@@ -30,7 +30,7 @@ ImageData::ImageData(int wd, int ht, Float* &pixMap)
 		pixels[0][i] = ColorRGBA(pixMap[i * 3], pixMap[i * 3 + 1], pixMap[i * 3 + 2]);
 	}
 }
-ImageData::ImageData(int wd, int ht, unsigned char* &pixMap)
+ImageData::ImageData(int wd, int ht, const unsigned char* &pixMap, int pixtype)
 {
 	// Declare width and height
 	width = wd;
@@ -41,10 +41,29 @@ ImageData::ImageData(int wd, int ht, unsigned char* &pixMap)
 	
 	for (int i = 0; i < width * height; ++i)
 	{
-		pixels[0][i] = ColorRGBA(
-			static_cast<Float>(pixMap[i * 3    ]) / 255.0,
-			static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
-			static_cast<Float>(pixMap[i * 3 + 2]) / 255.0);
+		switch (pixtype)
+		{
+		case RGB:
+			pixels[0][i] = ColorRGBA(
+				static_cast<Float>(pixMap[i * 3]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0);
+		case RGBA:
+			pixels[0][i] = ColorRGBA(
+				static_cast<Float>(pixMap[i * 3]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 3]) / 255.0);
+		case BGRA:
+			pixels[0][i] = ColorRGBA(
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
+				static_cast<Float>(pixMap[i * 3]) / 255.0,
+				static_cast<Float>(pixMap[i * 3 + 3]) / 255.0);
+		default:
+			break;
+		}
+		
 	}
 }
 ImageData::ImageData(const string &filename)

@@ -51,14 +51,14 @@ void Mesh::refine(vector<Shape*> &refined)
 		refined.push_back(face);
 	}
 }
-vector<int> split(const string &s) {
+vector<int> split(const string &s, const char &spliter = '/') {
 	stringstream ss(s);
 	string item;
 	vector<int> tokens;
 	while (getline(ss, item, ' '))
 	{
 		stringstream sub(item);
-		while (getline(sub, item, '/'))
+		while (getline(sub, item, spliter))
 		{
 			if (item == "")
 			{
@@ -147,7 +147,10 @@ bool Mesh::loadOBJ(const char* filename)
 	/************************************************************************/
 	/* C++ Style                                                            */
 	/************************************************************************/
-	/*ifstream file(filename, ios::binary);
+	/*std::ios::sync_with_stdio(false);
+	std::fstream::sync_with_stdio(false);
+	std::ifstream::sync_with_stdio(false);
+	ifstream file(filename, ios::binary);
 	if (!file)
 	{
 		cout << "Unable to open the file!" << endl;
@@ -183,20 +186,16 @@ bool Mesh::loadOBJ(const char* filename)
 		{
 			//string vertex[3];
 			file >> strs[0] >> strs[1] >> strs[2];
-			//TriangleFaceIndex* faceIndex = new TriangleFaceIndex;
-			/ *vector<int> v0 = split(strs[0], '/');
+			TriangleFaceIndex* faceIndex = new TriangleFaceIndex;
+			vector<int> v0 = split(strs[0], '/');
 			vector<int> v1 = split(strs[1], '/');
 			vector<int> v2 = split(strs[2], '/');
 			faceIndex->vtx[0] = v0[0]; faceIndex->uv[0] = v0[1]; faceIndex->n[0] = v0[2];
 			faceIndex->vtx[1] = v1[0]; faceIndex->uv[1] = v1[1]; faceIndex->n[1] = v1[2];
-			faceIndex->vtx[2] = v2[0]; faceIndex->uv[2] = v2[1]; faceIndex->n[2] = v2[2];* /
+			faceIndex->vtx[2] = v2[0]; faceIndex->uv[2] = v2[1]; faceIndex->n[2] = v2[2];
 			//int faceIndex[3][3];
-			/ *fscanf_s(file, " %d/%d/%d %d/%d/%d %d/%d/%d\n",
-				&faceIndex->vtx[0], &faceIndex->uv[0], &faceIndex->n[0],
-				&faceIndex->vtx[1], &faceIndex->uv[1], &faceIndex->n[1],
-				&faceIndex->vtx[2], &faceIndex->uv[2], &faceIndex->n[2]);* /
-			
-			//fids.push_back(faceIndex);
+
+			fids.push_back(faceIndex);
 		}
 		else
 		{

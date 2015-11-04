@@ -25,7 +25,7 @@
 #include "Math/Matrix3D.h"
 
 //read image files
-#include <FreeImage.h>
+#include "FreeImage.h"
 //using namespace std;
 
 const int default_resX = 640;
@@ -36,16 +36,26 @@ const int default_resY = 480;
 // Image pixel values are stored in a row-major-storage matrix
 // The pixel at (row, col) is stored in pixels[col][row]
 /************************************************************************/
-class ImageData {
+class ImageData
+{
 protected:
 	int width, height, bpp;
 	ColorRGBA **pixels;
 public:
+	enum PixmapType
+	{
+		RGB,
+		RGBA,
+		ARGB,
+		BGR,
+		BGRA,
+		ABGR
+	};
 	ImageData();
 	//ImageData(ppmImage &ppmData);
 	ImageData(int wd = default_resX, int ht = default_resY);
 	ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data
-	ImageData(int wd, int ht, unsigned char* &pixMap);//pixMap stores rgb data
+	ImageData(int wd, int ht, const unsigned char* &pixMap, int pixtype = RGB);//pixMap stores rgb data
 	ImageData(const string &filename);
 	ImageData(const ImageData& src);
 	virtual~ImageData();
