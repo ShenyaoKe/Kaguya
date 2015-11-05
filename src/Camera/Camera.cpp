@@ -61,6 +61,11 @@ bufferData baseCamera::getBufferData(int x, int y) const
 	return buffer.data[x][y];
 }
 
+Vector3D baseCamera::getTarget() const
+{
+	return target;
+}
+
 void baseCamera::updateCamToWorld(const Matrix4D &cam2wMat)
 {
 	CameraToWorld = Transform(cam2wMat);
@@ -158,19 +163,18 @@ void perspCamera::saveResult(const char* filename)
 
 void baseCamera::zoom(Float x_val, Float y_val, Float z_val)
 {
-	Matrix4D w2cam = CameraToWorld.getInvMat();
-	Matrix4D cameraMat = CameraToWorld.getMat();
+	//Matrix4D w2cam = CameraToWorld.getInvMat();
+	Matrix4D cam2w = CameraToWorld.getMat();
 	
 	// Pw: world space position, Pc: Camera space position
 	// Pw = c2w1 * Pc1 = c2w1 * T^-1 * Pc = c2w * Pc
 	// c2w1 = T * c2w
-	Matrix4D newLookAt = setTranslation(x_val, y_val, z_val) * CameraToWorld.getMat();
-	cout << "befor: " << target << endl;
+	Matrix4D newLookAt = setTranslation(x_val, y_val, z_val) * cam2w;
+	//cout << "befor: " << target << endl;
 
-	/*target = ((CameraToWorld.getMat() * setTranslation(-x_val, -y_val, 0)) * CameraToWorld.getInvMat() * Vector4D(target, 1)).toVector3D();*/
-	/*Matrix4D T = setTranslation(-x_val, -y_val, 0);
-	Vector4D newTarget = w2cam * Vector4D(target, 1);*/
-	cout << "after: " << target << endl;
+	Vector3D _nx(cam2w[0]), _ny(cam2w[1]);
+	target += _nx * x_val + _ny * y_val;
+	//cout << "after: " << target << endl;
 	CameraToWorld.setMat(newLookAt);
 }
 
@@ -180,28 +184,29 @@ void baseCamera::rotate(Float x_rot, Float y_rot, Float z_rot)
 	Matrix4D lookAtMat = CameraToWorld.getMat();
 
 	Vector3D _pos(lookAtMat[3]);
+	Vector3D _up(lookAtMat[1]);
 	Vector3D vt = _pos - target;
 	Float vt_len = vt.getLength();
-	//vt.normalize();
-	//this.rho = sqrt((x*x) + (y*y) + (z*z));//vt
+	
 	double phi = atan2(vt.x, vt.z) + DegreeToRadian(y_rot);
-	/*double phi;
-	if (abs(vt.z) < std::numeric_limits<Float>::epsilon())
+	//vt += _up * x_rot;
+	double theta = asin(vt.y / vt_len) + DegreeToRadian(x_rot);
+	/*double upy = _up.y < 0.01 ? -1.0 : 1.0;
+	if (abs(abs(theta) - M_PI * 0.5) < 0.01)
 	{
-		phi = vt.z > 0 ? M_PI * 0.5 : M_PI;
+		theta += 2 * upy * DegreeToRadian(x_rot);
 	}
 	else
 	{
-		phi = atan2(vt.x, vt.z);
+		theta += upy * DegreeToRadian(x_rot);
 	}
-	phi += (y_rot);*/
-	double theta = asin(vt.y / vt_len) + DegreeToRadian(x_rot);
-	if (abs(theta) > M_PI * 0.99)
+	if (upy < 0)
 	{
-
+		cout << "hahahaha" << endl;
 	}
+	cout << "Theta: " << RadianToDegree(theta) << "\tPhi: " << RadianToDegree(phi) << endl;*/
 	Vector3D newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
-	CameraToWorld = lookAt(target + newVt * vt_len, target, Vector3D(0,1,0));
+	CameraToWorld = lookAt(target + newVt * vt_len, target, Vector3D(0, 1, 0));
 }
 
 void baseCamera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)

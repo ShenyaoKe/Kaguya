@@ -38,6 +38,7 @@ public:
 	virtual Ray shootRay(Float imgX, Float imgY) const = 0;
 
 	virtual bufferData getBufferData(int x, int y) const;
+	virtual Vector3D getTarget() const;
 
 	virtual void updateProjection(const Matrix4D &perspMat);
 	virtual void updateCamToWorld(const Matrix4D &cam2wMat);
