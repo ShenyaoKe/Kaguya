@@ -392,6 +392,52 @@ void Mesh::exportVBO(int &size,
 		
 }
 
+void Mesh::exportIndexedVBO(vector<float>* vtx_array, vector<float>* uv_array,
+	vector<float>* norm_array, vector<unsigned int>* idx_array) const
+{
+	bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
+	
+	if (vtx_array != nullptr)
+	{
+		vtx_array->clear();
+		vtx_array->reserve(vertices.size() * 3);
+		has_vert = true;
+	}
+	/*if (this->fids[0]->uv >= 0 && uv_array != nullptr)
+	{
+		*uv_array = new vbo_t[size * 6];
+		texcoord = *uv_array;
+		has_texcoord = true;
+	}
+	if (this->fids[0]->n >= 0 && norm_array != nullptr)
+	{
+		*norm_array = new vbo_t[size * 9];
+		nms = *norm_array;
+		has_normal = true;
+	}*/
+	if (idx_array != nullptr)
+	{
+		idx_array->clear();
+		idx_array->reserve(fids.size() * 3);
+		has_uid = true;
+	}
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		auto& point = vertices[i];
+		vtx_array->push_back(static_cast<float>(point->x));
+		vtx_array->push_back(static_cast<float>(point->y));
+		vtx_array->push_back(static_cast<float>(point->z));
+	}
+	for (int i = 0; i < fids.size(); i++)
+	{
+		auto& fid = fids[i];
+		idx_array->push_back(static_cast<unsigned int>(fid->vtx[0] - 1));
+		idx_array->push_back(static_cast<unsigned int>(fid->vtx[1] - 1));
+		idx_array->push_back(static_cast<unsigned int>(fid->vtx[2] - 1));
+	}
+}
+
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/

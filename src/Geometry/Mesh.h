@@ -56,7 +56,11 @@ public:
 	template <typename vbo_t>
 	void exportVBO(int &size, vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const;
 	template <typename vbo_t>
-	void exportVBO(int &size, vbo_t** vtx_array = nullptr, vbo_t** uv_array = nullptr, vbo_t** norm_array = nullptr, int** idx_array = nullptr) const;
+	void exportVBO(int &size, vbo_t** vtx_array = nullptr, vbo_t** uv_array = nullptr,
+		vbo_t** norm_array = nullptr, int** idx_array = nullptr) const;
+	
+	void exportIndexedVBO(vector<float>* vtx_array = nullptr, vector<float>* uv_array = nullptr,
+		vector<float>* norm_array = nullptr, vector<unsigned int>* idx_array = nullptr) const;
 };
 class Triangle :public Shape
 {
