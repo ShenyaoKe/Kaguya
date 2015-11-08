@@ -83,30 +83,32 @@ Point2D Film::getFilmPos(Float imgX, Float imgY) const
 		return Point2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
 	case FRG_VERTICAL_FIT:
 		return Point2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
-		// 	case FRG_FILL_FIT:
-		// 		filmRatio = horiApect / vertApect;
-		// 		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
-		// 		if (imgRatio >= filmRatio)
-		// 		{
-		// 			return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
-		// 		}
-		// 		else
-		// 		{
-		// 			return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
-		// 		}
-		// 	case FRG_OVERSCAN_FIT:
-		// 		filmRatio = horiApect / vertApect;
-		// 		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
-		// 		if (imgRatio < filmRatio)
-		// 		{
-		// 			return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
-		// 		}
-		// 		else
-		// 		{
-		// 			return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
-		// 		}
+	/*
+	case FRG_FILL_FIT:
+		filmRatio = horiApect / vertApect;
+		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+		if (imgRatio >= filmRatio)
+		{
+			return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+		}
+		else
+		{
+			return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		}
+	case FRG_OVERSCAN_FIT:
+		filmRatio = horiApect / vertApect;
+		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+		if (imgRatio < filmRatio)
+		{
+			return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+		}
+		else
+		{
+			return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		}
+	*/
 	default:
-		break;
+		return Point2D();
 	}
 }
 Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later

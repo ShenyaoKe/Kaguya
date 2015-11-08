@@ -18,7 +18,7 @@ class Matrix3D
 {
 public:
 	// Column Major
-	Float mtx[3][3] = {};
+	Float mtx[3][3];
 	//Float det = 0;
 
 	Matrix3D() : mtx{}
