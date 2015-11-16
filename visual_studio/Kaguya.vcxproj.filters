@@ -70,6 +70,12 @@
     <Filter Include="Source Files\dynamics">
       <UniqueIdentifier>{7ba9d242-6c49-4e30-9c4d-962412c9ea26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\volume">
+      <UniqueIdentifier>{1546571e-9871-4d4d-9791-0230d2643797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\volume">
+      <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -174,6 +180,9 @@
     <ClInclude Include="..\src\Dynamics\Collision.h">
       <Filter>Header Files\dynamics</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Volume\RasterizedVolume.h">
+      <Filter>Header Files\volume</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp">
@@ -241,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Dynamics\Collision.cpp">
       <Filter>Source Files\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Volume\RasterizedVolume.cpp">
+      <Filter>Source Files\volume</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

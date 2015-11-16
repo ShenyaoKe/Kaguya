@@ -130,6 +130,7 @@
     <ClInclude Include="..\src\Tracer\renderBuffer.h" />
     <ClInclude Include="..\src\Tracer\Tracer.h" />
     <ClInclude Include="..\src\Core\Kaguya.h" />
+    <ClInclude Include="..\src\Volume\RasterizedVolume.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="..\src\Accel\Primitive.cpp" />
     <ClCompile Include="..\src\Camera\Camera.cpp" />
     <ClCompile Include="..\src\Camera\Film.cpp" />
+    <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Dynamics\Collision.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />
