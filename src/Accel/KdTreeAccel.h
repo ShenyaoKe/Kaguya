@@ -87,6 +87,8 @@ public:
 	void printNode(KdAccelNode* node) const;
 
 private:
+	friend class RasterizedVolume;
+private:
 	//int isectCost, traversalCost, 
 	int maxDepth, maxPrims;
 	Float emptyBonus;

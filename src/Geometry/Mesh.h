@@ -49,18 +49,29 @@ public:
 	bool loadOBJ(const char* filename);
 	void printInfo() const;
 
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool getDifferentialGeometry(const Ray& inRay,
+		DifferentialGeometry *queryPoint,
+		Float *tHit, Float *rayEpsilon) const;
 	void getNormal(const DifferentialGeometry *queryPoint) const;
 	void getUV(const DifferentialGeometry *queryPoint) const;
 
 	template <typename vbo_t>
-	void exportVBO(int &size, vbo_t* &vtx_array, vbo_t* &uv_array, vbo_t* &norm_array) const;
+	void exportVBO(int &size, vbo_t* &vtx_array,
+		vbo_t* &uv_array, vbo_t* &norm_array) const;
 	template <typename vbo_t>
-	void exportVBO(int &size, vbo_t** vtx_array = nullptr, vbo_t** uv_array = nullptr,
-		vbo_t** norm_array = nullptr, int** idx_array = nullptr) const;
+	void exportVBO(int &size, vbo_t** vtx_array = nullptr,
+		vbo_t** uv_array = nullptr, vbo_t** norm_array = nullptr,
+		int** idx_array = nullptr) const;
+	void exportVBO(
+		vector<float>* vtx_array = nullptr,
+		vector<float>* uv_array = nullptr,
+		vector<float>* norm_array = nullptr) const;
 	
-	void exportIndexedVBO(vector<float>* vtx_array = nullptr, vector<float>* uv_array = nullptr,
-		vector<float>* norm_array = nullptr, vector<unsigned int>* idx_array = nullptr) const;
+	void exportIndexedVBO(
+		vector<float>* vtx_array = nullptr,
+		vector<float>* uv_array = nullptr,
+		vector<float>* norm_array = nullptr,
+		vector<unsigned int>* idx_array = nullptr) const;
 };
 class Triangle :public Shape
 {
@@ -78,10 +89,13 @@ public:
 	void setUV(Point2D* uv0, Point2D* uv1, Point2D* uv2);
 	void setNormal(Vector3D* n0, Vector3D* v1, Vector3D* v2);
 
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool getDifferentialGeometry(const Ray& inRay,
+		DifferentialGeometry *queryPoint,
+		Float *tHit, Float *rayEpsilon) const;
 	void getNormal(const DifferentialGeometry *queryPoint) const;
 	void getUV(const DifferentialGeometry *queryPoint) const;
-	ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
+	ColorRGBA getColor(const DifferentialGeometry *queryPoint,
+		const Light* light) const;
 	
 	/*friend void exportVertices(Triangle* triface, Float* buffer);
 	friend void exportTexCoords(Triangle* triface, Float* buffer);

@@ -392,7 +392,30 @@ void Mesh::exportVBO(int &size,
 		
 }
 
-void Mesh::exportIndexedVBO(vector<float>* vtx_array, vector<float>* uv_array,
+void Mesh::exportVBO(
+	vector<float>* vtx_array,
+	vector<float>* uv_array,
+	vector<float>* norm_array) const
+{
+	if (vtx_array != nullptr)
+	{
+		vtx_array->reserve(fids.size() * 9);
+		for (int i = 0; i < fids.size(); i++)
+		{
+			auto cur_fid = this->fids[i];
+			for (int j = 0; j < 3; j++)
+			{
+				auto cur_vtx = this->vertices[cur_fid->vtx[j] - 1];
+				vtx_array->push_back(static_cast<float>(cur_vtx->x));
+				vtx_array->push_back(static_cast<float>(cur_vtx->y));
+				vtx_array->push_back(static_cast<float>(cur_vtx->z));
+			}
+		}
+	}
+}
+
+void Mesh::exportIndexedVBO(
+	vector<float>* vtx_array, vector<float>* uv_array,
 	vector<float>* norm_array, vector<unsigned int>* idx_array) const
 {
 	bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
