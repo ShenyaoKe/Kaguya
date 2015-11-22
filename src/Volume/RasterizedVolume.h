@@ -17,6 +17,7 @@ public:
 	~RasterizedVolume();
 
 	Point3D center() const;
+	vector<Point3D> getGrids() const;
 	void exportVBO(vector<float>* vtx_array = nullptr) const;
 
 private:

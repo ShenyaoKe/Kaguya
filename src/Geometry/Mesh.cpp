@@ -412,6 +412,21 @@ void Mesh::exportVBO(
 			}
 		}
 	}
+	if (norm_array != nullptr)
+	{
+		norm_array->reserve(fids.size() * 9);
+		for (int i = 0; i < fids.size(); i++)
+		{
+			auto cur_fid = this->fids[i];
+			for (int j = 0; j < 3; j++)
+			{
+				auto cur_norm = this->normals[cur_fid->n[j] - 1];
+				norm_array->push_back(static_cast<float>(cur_norm->x));
+				norm_array->push_back(static_cast<float>(cur_norm->y));
+				norm_array->push_back(static_cast<float>(cur_norm->z));
+			}
+		}
+	}
 }
 
 void Mesh::exportIndexedVBO(

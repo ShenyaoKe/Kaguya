@@ -23,6 +23,11 @@ Point3D RasterizedVolume::center() const
 	return centroid;
 }
 
+vector<Point3D> RasterizedVolume::getGrids() const
+{
+	return grids;
+}
+
 void RasterizedVolume::exportVBO(vector<float>* vtx_array) const
 {
 	if (vtx_array == nullptr)
@@ -74,9 +79,10 @@ void RasterizedVolume::rasterize()
 			if (hitLen.size() > 1)
 			{
 				Point3D curPos = rayPos;
-				curPos[zaxis] += hitLen[0];
+				//curPos[zaxis] += hitLen[0];
 				for (int i = 0; i < hitLen.size() - 1; i += 2)
 				{
+					curPos[zaxis] += hitLen[i];
 					double newDP = hitLen[i + 1] + curPos[zaxis];
 					while (curPos[zaxis] < newDP)
 					{
