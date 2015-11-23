@@ -31,6 +31,10 @@ public:
 	{
 		memcpy(mtx, mat, sizeof(mtx));
 	}
+	Matrix4D(const Float mat[16])
+	{
+		memcpy(mtx, mat, sizeof(mtx));
+	}
 	Matrix4D(const Matrix4D &mat)
 	{
 		memcpy(mtx, mat.mtx, sizeof(mtx));

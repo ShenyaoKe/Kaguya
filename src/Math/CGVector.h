@@ -132,6 +132,7 @@ public:
 	Float getLenSq() const;
 	Vector4D getNorm() const;
 	void normalize();
+	void printInfo() const { cout << "x:" << x << "\ty:" << y << "\tz:" << z << "\tw:" << w << endl; }
 
 protected:
 private:

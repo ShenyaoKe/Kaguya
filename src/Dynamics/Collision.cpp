@@ -16,7 +16,19 @@ bool Collision::collideP(const BBox &box0, const BBox &box1)
 	}
 	return true;
 }
-
+bool Collision::collideP(const BBox &box0, const Matrix4D &b0mat, const BBox &box1)
+{
+	BBox newbox(box0, b0mat);
+	return collideP(newbox, box1);
+}
+bool Collision::collideP(
+	const BBox &box0, const Matrix4D &b0mat,
+	const BBox &box1, const Matrix4D &b1mat)
+{
+	BBox newbox0(box0, b0mat);
+	BBox newbox1(box1, b1mat);
+	return collideP(newbox0, newbox1);
+}
 bool Collision::collideP(const geoSphere &sphere, const BBox &box)
 {
 	return box.sqDist(sphere.getCenter()) <= sqr(sphere.getRadius());
@@ -40,10 +52,38 @@ bool Collision::collide(const Point3D& prePos, const Point3D& curPos,
 	*tHit = ray.tmax;
 	return tree->hit(ray, queryPoint, tHit, hitEpsilon);
 }
-
-/*
-bool Collision::collide(const Point3D& prePos, const Point3D& curPos, const KdAccelNode *node, DifferentialGeometry *queryPoint)
+bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
+	const KdTreeAccel* tree, BBox* &collisionBound)
 {
-	return false;
+	if (!collideP(tree->treeBound, treeMat, targetBound))
+	{
+		return false;
+	}
+	collide(targetBound, treeMat, tree->root, collisionBound);
 }
-*/
+
+bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
+	const KdAccelNode* treeNode, BBox* &collisionBound)
+{
+	if (!collideP(treeNode->bbox, treeMat, targetBound))
+	{
+		return false;
+	}
+	// If collideP check if node is leaf
+	if (!treeNode->isLeaf())
+	{
+		auto belowNode = treeNode->belowNode;
+		auto aboveNode = treeNode->aboveNode;
+		bool res = collide(targetBound, treeMat, belowNode, collisionBound);
+		if (!res)
+		{
+			res = collide(targetBound, treeMat, belowNode, collisionBound);
+		}
+		return res;
+	}
+	else// If node is leaf
+	{
+		collisionBound = new BBox(treeNode->bbox);
+		return true;
+	}
+}

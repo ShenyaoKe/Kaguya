@@ -88,6 +88,7 @@ public:
 
 private:
 	friend class RasterizedVolume;
+	friend class Collision;
 private:
 	//int isectCost, traversalCost, 
 	int maxDepth, maxPrims;
@@ -99,7 +100,6 @@ private:
 	void buildTree(KdAccelNode *node, const BBox &bound, vector<int> &prims,
 		int depth, BoundEdge *edges[3]);
 
-	friend class Collision;
 };
 
 struct KdToDo

@@ -17,13 +17,20 @@ class Collision
 {
 public:
 	static bool collideP(const BBox &box0, const BBox &box1);
+	static bool collideP(const BBox &box0, const Matrix4D &b0mat, const BBox &box1);
+	static bool collideP(const BBox &box0, const Matrix4D &b0mat,
+		const BBox &box1, const Matrix4D &b1mat);
 	static bool collideP(const geoSphere &sphere, const BBox &box);
 	static bool collideP(const geoSphere &sphere, const Triangle &triangle);
 	static bool collideP(const geoSphere &sph0, const geoSphere &sph1);
 
-	static bool collide(const Point3D& prePos, const Point3D& curPos,
-		const KdTreeAccel *tree, DifferentialGeometry *queryPoint,
-		Float *tHit, Float* hitEpsilon);
+	static bool collide(const Point3D &prePos, const Point3D &curPos,
+		const KdTreeAccel* tree, DifferentialGeometry* queryPoint,
+		Float* tHit, Float* hitEpsilon);
+	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
+		const KdTreeAccel* tree, BBox* &collisionBound);
+	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
+		const KdAccelNode* treeNode, BBox* &collisionBound);
 protected:
 private:
 };

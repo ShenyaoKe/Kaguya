@@ -22,6 +22,29 @@ BBox::BBox(const vector<Point3D*> &pts) : pMin(INFINITY, INFINITY, INFINITY), pM
 	}
 }
 
+BBox::BBox(const BBox &bound, const Matrix4D &mat)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		pMin[i] = pMax[i] = mat[3][i];
+		for (int j = 0; j < 3; j++)
+		{
+			double e = mat[j][i] * bound.pMin[j];
+			double f = mat[j][i] * bound.pMax[j];
+			if (e < f)
+			{
+				pMin[i] += e;
+				pMax[i] += f;
+			} 
+			else
+			{
+				pMin[i] += f;
+				pMax[i] += e;
+			}
+		}
+	}
+}
+
 BBox::~BBox()
 {
 }
