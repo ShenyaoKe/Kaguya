@@ -77,9 +77,9 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 		auto belowNode = treeNode->belowNode;
 		auto aboveNode = treeNode->aboveNode;
 		bool res = collide(targetBound, treeMat, belowNode, tree, collisionBound, primpts);
-		if (!res)
+		//if (!res)
 		{
-			res = collide(targetBound, treeMat, aboveNode, tree, collisionBound, primpts);
+			res |= collide(targetBound, treeMat, aboveNode, tree, collisionBound, primpts);
 		}
 		return res;
 	}
@@ -89,6 +89,7 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 		return true;*/
 		BBox* imBox = new BBox;
 		treeNode->primIndex;
+		vector<Point3D*> curPrimPts;
 		for (auto idx : treeNode->primIndex)
 		{
 			auto prim = dynamic_cast<Triangle*>(tree->primitives[idx]);
@@ -96,22 +97,23 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 			{
 				auto wPt = new Point3D((treeMat * Vector4D(*pt, 1.0)).toVector3D());
 				imBox->Union(*wPt);
-				primpts.push_back(wPt);
+				curPrimPts.push_back(wPt);
+				//primpts.push_back(wPt);
 			}
 		}
 		if (collideP(*imBox, targetBound))
 		{
 			collisionBound = imBox;
-
-			
+			//primpts.push_back(curPrimPts);
+			primpts.insert(primpts.end(), curPrimPts.begin(), curPrimPts.end());
 
 			return true;
 		}
-		for (auto pt : primpts)
+		for (auto pt : curPrimPts)
 		{
 			delete pt;
 		}
-		primpts.clear();
+		curPrimPts.clear();
 		delete imBox;
 		return false;
 	}
