@@ -27,10 +27,13 @@ public:
 	static bool collide(const Point3D &prePos, const Point3D &curPos,
 		const KdTreeAccel* tree, DifferentialGeometry* queryPoint,
 		Float* tHit, Float* hitEpsilon);
+
+	static bool collide(const BBox &targetBound,
+		const Matrix4D &treeMat, const KdTreeAccel* tree,
+		BBox* &collisionBound);
 	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
-		const KdTreeAccel* tree, BBox* &collisionBound);
-	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
-		const KdAccelNode* treeNode, BBox* &collisionBound);
+		const KdAccelNode* treeNode, const KdTreeAccel* tree,
+		BBox* &collisionBound);
 protected:
 private:
 };

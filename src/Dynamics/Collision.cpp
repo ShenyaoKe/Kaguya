@@ -59,11 +59,12 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 	{
 		return false;
 	}
-	collide(targetBound, treeMat, tree->root, collisionBound);
+	collide(targetBound, treeMat, tree->root, tree, collisionBound);
 }
 
 bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
-	const KdAccelNode* treeNode, BBox* &collisionBound)
+	const KdAccelNode* treeNode, const KdTreeAccel* tree,
+	BBox* &collisionBound)
 {
 	if (!collideP(treeNode->bbox, treeMat, targetBound))
 	{
@@ -74,16 +75,33 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 	{
 		auto belowNode = treeNode->belowNode;
 		auto aboveNode = treeNode->aboveNode;
-		bool res = collide(targetBound, treeMat, belowNode, collisionBound);
+		bool res = collide(targetBound, treeMat, belowNode, tree, collisionBound);
 		if (!res)
 		{
-			res = collide(targetBound, treeMat, belowNode, collisionBound);
+			res = collide(targetBound, treeMat, aboveNode, tree, collisionBound);
 		}
 		return res;
 	}
 	else// If node is leaf
 	{
-		collisionBound = new BBox(treeNode->bbox);
-		return true;
+		/*collisionBound = new BBox(treeNode->bbox);
+		return true;*/
+		BBox* imBox = new BBox;
+		treeNode->primIndex;
+		for (auto idx : treeNode->primIndex)
+		{
+			auto prim = dynamic_cast<Triangle*>(tree->primitives[idx]);
+			for (auto pt : prim->p)
+			{
+				imBox->Union((treeMat * Vector4D(*pt, 1.0)).toVector3D());
+			}
+		}
+		if (collideP(*imBox, targetBound))
+		{
+			collisionBound = imBox;
+			return true;
+		}
+		delete imBox;
+		return false;
 	}
 }

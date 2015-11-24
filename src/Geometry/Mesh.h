@@ -108,6 +108,7 @@ protected:
 	vector<Point2D*> uv;
 	vector<Point3D*> n;
 private:
+	friend class Collision;
 };
 
 template void Mesh::exportVBO(int &size, int** vtx_array, int** uv_array, int** norm_array, int** idx_array) const;
