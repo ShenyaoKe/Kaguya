@@ -52,19 +52,20 @@ bool Collision::collide(const Point3D& prePos, const Point3D& curPos,
 	*tHit = ray.tmax;
 	return tree->hit(ray, queryPoint, tHit, hitEpsilon);
 }
-bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
-	const KdTreeAccel* tree, BBox* &collisionBound)
+bool Collision::collide(const BBox &targetBound,
+	const Matrix4D &treeMat, const KdTreeAccel* tree,
+	BBox* &collisionBound, vector<Point3D*> &primpts)
 {
 	if (!collideP(tree->treeBound, treeMat, targetBound))
 	{
 		return false;
 	}
-	collide(targetBound, treeMat, tree->root, tree, collisionBound);
+	collide(targetBound, treeMat, tree->root, tree, collisionBound, primpts);
 }
 
 bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 	const KdAccelNode* treeNode, const KdTreeAccel* tree,
-	BBox* &collisionBound)
+	BBox* &collisionBound, vector<Point3D*> &primpts)
 {
 	if (!collideP(treeNode->bbox, treeMat, targetBound))
 	{
@@ -75,10 +76,10 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 	{
 		auto belowNode = treeNode->belowNode;
 		auto aboveNode = treeNode->aboveNode;
-		bool res = collide(targetBound, treeMat, belowNode, tree, collisionBound);
+		bool res = collide(targetBound, treeMat, belowNode, tree, collisionBound, primpts);
 		if (!res)
 		{
-			res = collide(targetBound, treeMat, aboveNode, tree, collisionBound);
+			res = collide(targetBound, treeMat, aboveNode, tree, collisionBound, primpts);
 		}
 		return res;
 	}
@@ -93,14 +94,24 @@ bool Collision::collide(const BBox &targetBound, const Matrix4D &treeMat,
 			auto prim = dynamic_cast<Triangle*>(tree->primitives[idx]);
 			for (auto pt : prim->p)
 			{
-				imBox->Union((treeMat * Vector4D(*pt, 1.0)).toVector3D());
+				auto wPt = new Point3D((treeMat * Vector4D(*pt, 1.0)).toVector3D());
+				imBox->Union(*wPt);
+				primpts.push_back(wPt);
 			}
 		}
 		if (collideP(*imBox, targetBound))
 		{
 			collisionBound = imBox;
+
+			
+
 			return true;
 		}
+		for (auto pt : primpts)
+		{
+			delete pt;
+		}
+		primpts.clear();
 		delete imBox;
 		return false;
 	}

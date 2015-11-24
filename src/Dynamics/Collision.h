@@ -30,10 +30,10 @@ public:
 
 	static bool collide(const BBox &targetBound,
 		const Matrix4D &treeMat, const KdTreeAccel* tree,
-		BBox* &collisionBound);
+		BBox* &collisionBound, vector<Point3D*> &primpts);
 	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
 		const KdAccelNode* treeNode, const KdTreeAccel* tree,
-		BBox* &collisionBound);
+		BBox* &collisionBound, vector<Point3D*> &primpts);
 protected:
 private:
 };
