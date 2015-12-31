@@ -179,34 +179,25 @@ void baseCamera::zoom(Float x_val, Float y_val, Float z_val)
 }
 
 void baseCamera::rotate(Float x_rot, Float y_rot, Float z_rot)
-//pitch, yaw, roll
 {
+	//pitch, yaw, roll
 	Matrix4D lookAtMat = CameraToWorld.getMat();
 
 	Vector3D _pos(lookAtMat[3]);
-	Vector3D _up(lookAtMat[1]);
 	Vector3D vt = _pos - target;
 	Float vt_len = vt.getLength();
+	Float upCoef = lookAtMat[1][1] < 0 ? -1 : 1;
 	
-	double phi = atan2(vt.x, vt.z) + DegreeToRadian(y_rot);
-	//vt += _up * x_rot;
-	double theta = asin(vt.y / vt_len) + DegreeToRadian(x_rot);
-	/*double upy = _up.y < 0.01 ? -1.0 : 1.0;
-	if (abs(abs(theta) - M_PI * 0.5) < 0.01)
+	Float phi = atan2(vt.x, vt.z) + DegreeToRadian(y_rot) * upCoef;
+	Float old_theta = asin(vt.y / vt_len);
+	Float theta = old_theta + DegreeToRadian(x_rot) * upCoef;
+	
+	if ((old_theta < M_HALFPI && theta > M_HALFPI) || (old_theta > -M_HALFPI && theta < -M_HALFPI))
 	{
-		theta += 2 * upy * DegreeToRadian(x_rot);
+		upCoef *= -1;
 	}
-	else
-	{
-		theta += upy * DegreeToRadian(x_rot);
-	}
-	if (upy < 0)
-	{
-		cout << "hahahaha" << endl;
-	}
-	cout << "Theta: " << RadianToDegree(theta) << "\tPhi: " << RadianToDegree(phi) << endl;*/
 	Vector3D newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
-	CameraToWorld = lookAt(target + newVt * vt_len, target, Vector3D(0, 1, 0));
+	CameraToWorld = lookAt(target + newVt * vt_len, target, Vector3D(0, upCoef, 0));
 }
 
 void baseCamera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
