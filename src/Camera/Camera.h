@@ -49,8 +49,7 @@ public:
 	virtual void resizeViewport(Float aspr = 1.0);
 	virtual void exportVBO(float *view, float *proj, float *raster) const;
 
-	Transform CameraToWorld;
-	Transform CameraToScreen, RasterToScreen;
+	Transform CameraToWorld, CameraToScreen, RasterToScreen;
 protected:
 	Point3D pos, target;
 	Vector3D nx, ny, nz;

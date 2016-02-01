@@ -1,11 +1,13 @@
 #include "Camera/Film.h"
 
 //////////////////////////////////////////////////////////////////////////
-Film::Film(FILM_TYPE filmType, int resX, int resY) :ImageData(resX, resY)
+Film::Film(FILM_TYPE filmType, int resX, int resY)
+	:ImageData(resX, resY)
 {
 	setFilmType(filmType);
 }
-Film::Film(FILM_TYPE filmType, int resX, int resY, FIT_RESOLUTION_GATE fitTyep) : ImageData(resX, resY)
+Film::Film(FILM_TYPE filmType, int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
+	: ImageData(resX, resY)
 {
 	setFilmType(filmType);
 	setFitType(fitTyep);

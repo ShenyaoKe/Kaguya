@@ -6,7 +6,11 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
+#ifndef RIGHT_HAND_ORDER
+#define RIGHT_HAND_ORDER
+#endif
 
+#include "Core/Kaguya.h"
 //#include "Math/CGVector.h"
 #include "Math/Matrix4D.h"
 #include "Accel/BBox.h"
@@ -179,24 +183,38 @@ inline Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
 	const Vector3D &up = Point3D(0, 1, 0))
 {
 	//Camera to World
-	Vector3D nz = Normalize(target - pos);
-	Vector3D nx = Normalize(Cross(up, nz));//left dir
-	Vector3D ny = Cross(nz, nx);
+	Vector3D nz = target - pos;//pos - target;
+	// distance between target and camera position is too small
+	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
+	{
+		return Transform();
+	}
 	
-	/*Float mat[4][4] = {
-		nx.x, ny.x, nz.x, pos.x,
-		nx.y, ny.y, nz.y, pos.y,
-		nx.z, ny.z, nz.z, pos.z,
-		0.0, 0.0, 0.0, 1.0
-	};*/
+	nz.normalize();
+	//Vector3D nx = Normalize(Cross(up, nz));//left dir
+	//Vector3D ny = Cross(nz, nx);
+#ifdef RIGHT_HAND_ORDER // OpenGL style
+	Vector3D nx = Normalize(Cross(up, nz));
+	Vector3D ny = Cross(nz, nx);
+	Float mat[4][4] = {
+		nx.x, nx.y, nx.z, 0.0,
+		ny.x, ny.y, ny.z, 0.0,
+		-nz.x, -nz.y, -nz.z, 0.0,
+		pos.x, pos.y, pos.z, 1.0
+	};
+#else // DirectX style
+	nz = -nz;
+	Vector3D nx = Normalize(Cross(nz, up));//left dir
+	Vector3D ny = Cross(nx, nz);
 	Float mat[4][4] = {
 		nx.x, nx.y, nx.z, 0.0,
 		ny.x, ny.y, ny.z, 0.0,
 		nz.x, nz.y, nz.z, 0.0,
 		pos.x, pos.y, pos.z, 1.0
 	};
+#endif
 
-	return (Transform(mat));
+	return Transform(mat);
 }
 
 #endif // __TRANSFORM__

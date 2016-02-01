@@ -106,6 +106,14 @@ inline Float DegreeToRadian(Float degree)
 {
 	return degree * M_PI / 180.0;
 }
+inline float isFuzzyNull(float val)
+{
+	return abs(val) < 0.00001f;
+}
+inline double isFuzzyNull(double val)
+{
+	return abs(val) < 0.000000000001;
+}
 inline int Ceil2Int(Float val)
 {
 	return static_cast<int>(ceil(val));

@@ -19,10 +19,6 @@
 class Matrix4D
 {
 public:
-	// Column Major
-	Float mtx[4][4];
-	//Float det = 0;
-
 	Matrix4D() : mtx{}
 	{
 		//determinant();
@@ -67,15 +63,28 @@ public:
 	~Matrix4D()
 	{
 	}
+
+	static Matrix4D identityMat()
+	{
+		Matrix4D ret(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, 0.0, 0.0, 1.0
+			);
+		return ret;
+	}
+
+	// Operators
 	Float* operator [] (int i);
 	const Float* operator [] (int i) const;
-	Matrix4D operator + (const Matrix4D &mat) const;
-	Matrix4D operator - (const Matrix4D &mat) const;
-	Matrix4D operator * (const Matrix4D &mat) const;
-	Vector4D operator * (const Vector4D& p) const;
 	const Matrix4D &operator = (const Matrix4D &mat);
-	bool operator == (const Matrix4D &mat) const;
-	bool operator != (const Matrix4D &mat) const;
+	friend Matrix4D operator + (const Matrix4D &m1, const Matrix4D &m2);
+	friend Matrix4D operator - (const Matrix4D &m1, const Matrix4D &m2);
+	friend Matrix4D operator * (const Matrix4D &m1, const Matrix4D &m2);
+	friend Vector4D operator * (const Matrix4D &m, const Vector4D& p);
+	friend bool operator == (const Matrix4D &m1, const Matrix4D &m2);
+	friend bool operator != (const Matrix4D &m1, const Matrix4D &m2);
 	//Vector3D operator * (Vector3D& p) const;
 	//Matrix4D operator / (const Matrix4D &) const;
 
@@ -97,12 +106,16 @@ public:
 	friend Matrix4D setRoationY(Float theta);
 	friend Matrix4D setRoationZ(Float theta);
 	friend Matrix4D setRotation(Float alpha, Float beta, Float gamma);// in degree
-	friend Matrix4D setRotation(const Vector3D &axis, Float theta, bool isNormalized = false);
+	friend Matrix4D setRotation(const Vector3D &axis, Float theta,
+		bool isNormalized = false);
 	friend Matrix4D setScale(Float sx, Float sy, Float sz);
 	friend Matrix4D setScale(Float scale);
 	friend Matrix4D setShear(const Vector3D& vec);
 	friend Matrix4D setReflection(const Vector3D& vec);
-	friend Matrix4D setPerspective(Float verticalAngle = 90, Float aspectRatio = 1.6, Float nearPlane = 0.001, Float farPlane = 100);
+	friend Matrix4D setLookAt(const Point3D &pos = Point3D(0, 0, 0),
+		const Point3D &target = Point3D(0, 0, 1), const Vector3D &up = Point3D(0, 1, 0));
+	friend Matrix4D setPerspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
+		Float nearPlane = 0.001, Float farPlane = 100);
 	friend Matrix4D setOrthographic(Float lf = -1, Float rt = 1,
 		Float bt = -1, Float tp = 1, Float nr = -1, Float fr = 1);
 
@@ -110,6 +123,11 @@ public:
 	friend void exportVBO(const Matrix4D &mat, vbo_t *vtx_array);*/
 	template <typename vbo_t>
 	void exportVBO(vbo_t *vtx_array) const;
+
+public:		
+	// Column Major
+	Float mtx[4][4];
+	//Float det = 0;
 };
 inline Float* Matrix4D::operator[](int i)
 {
@@ -119,29 +137,57 @@ inline const Float* Matrix4D::operator[](int i) const
 {
 	return mtx[i];
 }
-inline Matrix4D Matrix4D::operator + (const Matrix4D &mat) const
+inline Matrix4D operator+(const Matrix4D& m1, const Matrix4D& m2)
 {
-	Matrix4D ret;
+	return Matrix4D(
+			m1.mtx[0][0] + m2.mtx[0][0],
+			m1.mtx[0][1] + m2.mtx[0][1],
+			m1.mtx[0][2] + m2.mtx[0][2],
+			m1.mtx[0][3] + m2.mtx[0][3],
 
-	for (int i = 0; i < 16; i++)
-	{
-		ret.mtx[0][i] = mtx[0][i] + mat.mtx[0][i];
-	}
+			m1.mtx[1][0] + m2.mtx[1][0],
+			m1.mtx[1][1] + m2.mtx[1][1],
+			m1.mtx[1][2] + m2.mtx[1][2],
+			m1.mtx[1][3] + m2.mtx[1][3],
 
-	return ret;
+			m1.mtx[2][0] + m2.mtx[2][0],
+			m1.mtx[2][1] + m2.mtx[2][1],
+			m1.mtx[2][2] + m2.mtx[2][2],
+			m1.mtx[2][3] + m2.mtx[2][3],
+
+			m1.mtx[3][0] + m2.mtx[3][0],
+			m1.mtx[3][1] + m2.mtx[3][1],
+			m1.mtx[3][2] + m2.mtx[3][2],
+			m1.mtx[3][3] + m2.mtx[3][3]
+			);
 }
-inline Matrix4D Matrix4D::operator - (const Matrix4D &mat) const
+
+inline Matrix4D operator-(const Matrix4D& m1, const Matrix4D& m2)
 {
-	Matrix4D ret;
+	return Matrix4D(
+		m1.mtx[0][0] - m2.mtx[0][0],
+		m1.mtx[0][1] - m2.mtx[0][1],
+		m1.mtx[0][2] - m2.mtx[0][2],
+		m1.mtx[0][3] - m2.mtx[0][3],
 
-	for (int i = 0; i < 16; i++)
-	{
-		ret.mtx[0][i] = mtx[0][i] - mat.mtx[0][i];
-	}
+		m1.mtx[1][0] - m2.mtx[1][0],
+		m1.mtx[1][1] - m2.mtx[1][1],
+		m1.mtx[1][2] - m2.mtx[1][2],
+		m1.mtx[1][3] - m2.mtx[1][3],
 
-	return ret;
+		m1.mtx[2][0] - m2.mtx[2][0],
+		m1.mtx[2][1] - m2.mtx[2][1],
+		m1.mtx[2][2] - m2.mtx[2][2],
+		m1.mtx[2][3] - m2.mtx[2][3],
+
+		m1.mtx[3][0] - m2.mtx[3][0],
+		m1.mtx[3][1] - m2.mtx[3][1],
+		m1.mtx[3][2] - m2.mtx[3][2],
+		m1.mtx[3][3] - m2.mtx[3][3]
+		);
 }
-inline Matrix4D Matrix4D::operator * (const Matrix4D &mat) const
+
+inline Matrix4D operator*(const Matrix4D& m1, const Matrix4D& m2)
 {
 	Matrix4D ret;
 
@@ -151,75 +197,67 @@ inline Matrix4D Matrix4D::operator * (const Matrix4D &mat) const
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				ret.mtx[i][j] += mtx[i][k] * mat.mtx[k][j];
+				ret.mtx[i][j] += m1.mtx[i][k] * m2.mtx[k][j];
 			}
 		}
 	}
 	return ret;
 }
-inline Vector4D Matrix4D::operator * (const Vector4D& p) const
+
+inline Vector4D operator*(const Matrix4D& m, const Vector4D& p)
 {
-	/*Vector4D ret(
-		p.x * mtx[0][0] + p.y * mtx[0][1] + p.z * mtx[0][2] + p.w * mtx[0][3],
-		p.x * mtx[1][0] + p.y * mtx[1][1] + p.z * mtx[1][2] + p.w * mtx[1][3],
-		p.x * mtx[2][0] + p.y * mtx[2][1] + p.z * mtx[2][2] + p.w * mtx[2][3],
-		p.x * mtx[3][0] + p.y * mtx[3][1] + p.z * mtx[3][2] + p.w * mtx[3][3]
-		);*/
-	Vector4D ret(
-		p.x * mtx[0][0] + p.y * mtx[1][0] + p.z * mtx[2][0] + p.w * mtx[3][0],
-		p.x * mtx[0][1] + p.y * mtx[1][1] + p.z * mtx[2][1] + p.w * mtx[3][1],
-		p.x * mtx[0][2] + p.y * mtx[1][2] + p.z * mtx[2][2] + p.w * mtx[3][2],
-		p.x * mtx[0][3] + p.y * mtx[1][3] + p.z * mtx[2][3] + p.w * mtx[3][3]
+	return Vector4D(
+		p.x * m.mtx[0][0] + p.y * m.mtx[1][0] + p.z * m.mtx[2][0] + p.w * m.mtx[3][0],
+		p.x * m.mtx[0][1] + p.y * m.mtx[1][1] + p.z * m.mtx[2][1] + p.w * m.mtx[3][1],
+		p.x * m.mtx[0][2] + p.y * m.mtx[1][2] + p.z * m.mtx[2][2] + p.w * m.mtx[3][2],
+		p.x * m.mtx[0][3] + p.y * m.mtx[1][3] + p.z * m.mtx[2][3] + p.w * m.mtx[3][3]
 		);
-	 return ret;
+}
+
+inline bool operator==(const Matrix4D& m1, const Matrix4D& m2)
+{
+	return m1.mtx[0][0] == m2.mtx[0][0]
+		&& m1.mtx[0][1] == m2.mtx[0][1]
+		&& m1.mtx[0][2] == m2.mtx[0][2]
+		&& m1.mtx[0][3] == m2.mtx[0][3]
+		&& m1.mtx[1][0] == m2.mtx[1][0]
+		&& m1.mtx[1][1] == m2.mtx[1][1]
+		&& m1.mtx[1][2] == m2.mtx[1][2]
+		&& m1.mtx[1][3] == m2.mtx[1][3]
+		&& m1.mtx[2][0] == m2.mtx[2][0]
+		&& m1.mtx[2][1] == m2.mtx[2][1]
+		&& m1.mtx[2][2] == m2.mtx[2][2]
+		&& m1.mtx[2][3] == m2.mtx[2][3]
+		&& m1.mtx[3][0] == m2.mtx[3][0]
+		&& m1.mtx[3][1] == m2.mtx[3][1]
+		&& m1.mtx[3][2] == m2.mtx[3][2]
+		&& m1.mtx[3][3] == m2.mtx[3][3];
+}
+
+inline bool operator!=(const Matrix4D& m1, const Matrix4D& m2)
+{
+	return m1.mtx[0][0] != m2.mtx[0][0]
+		|| m1.mtx[0][1] != m2.mtx[0][1]
+		|| m1.mtx[0][2] != m2.mtx[0][2]
+		|| m1.mtx[0][3] != m2.mtx[0][3]
+		|| m1.mtx[1][0] != m2.mtx[1][0]
+		|| m1.mtx[1][1] != m2.mtx[1][1]
+		|| m1.mtx[1][2] != m2.mtx[1][2]
+		|| m1.mtx[1][3] != m2.mtx[1][3]
+		|| m1.mtx[2][0] != m2.mtx[2][0]
+		|| m1.mtx[2][1] != m2.mtx[2][1]
+		|| m1.mtx[2][2] != m2.mtx[2][2]
+		|| m1.mtx[2][3] != m2.mtx[2][3]
+		|| m1.mtx[3][0] != m2.mtx[3][0]
+		|| m1.mtx[3][1] != m2.mtx[3][1]
+		|| m1.mtx[3][2] != m2.mtx[3][2]
+		|| m1.mtx[3][3] != m2.mtx[3][3];
 }
 
 inline const Matrix4D& Matrix4D::operator = (const Matrix4D &mat)
 {
 	memcpy(mtx, mat.mtx, sizeof(mtx));
 	return *this;
-}
-
-
-inline bool Matrix4D::operator == (const Matrix4D &mat) const
-{
-	return mtx[0][0] == mat.mtx[0][0]
-		&& mtx[0][1] == mat.mtx[0][1]
-		&& mtx[0][2] == mat.mtx[0][2]
-		&& mtx[0][3] == mat.mtx[0][3]
-		&& mtx[1][0] == mat.mtx[1][0]
-		&& mtx[1][1] == mat.mtx[1][1]
-		&& mtx[1][2] == mat.mtx[1][2]
-		&& mtx[1][3] == mat.mtx[1][3]
-		&& mtx[2][0] == mat.mtx[2][0]
-		&& mtx[2][1] == mat.mtx[2][1]
-		&& mtx[2][2] == mat.mtx[2][2]
-		&& mtx[2][3] == mat.mtx[2][3]
-		&& mtx[3][0] == mat.mtx[3][0]
-		&& mtx[3][1] == mat.mtx[3][1]
-		&& mtx[3][2] == mat.mtx[3][2]
-		&& mtx[3][3] == mat.mtx[3][3];
-}
-
-
-inline bool Matrix4D::operator != (const Matrix4D &mat) const
-{
-	return mtx[0][0] != mat.mtx[0][0]
-		&& mtx[0][1] != mat.mtx[0][1]
-		&& mtx[0][2] != mat.mtx[0][2]
-		&& mtx[0][3] != mat.mtx[0][3]
-		&& mtx[1][0] != mat.mtx[1][0]
-		&& mtx[1][1] != mat.mtx[1][1]
-		&& mtx[1][2] != mat.mtx[1][2]
-		&& mtx[1][3] != mat.mtx[1][3]
-		&& mtx[2][0] != mat.mtx[2][0]
-		&& mtx[2][1] != mat.mtx[2][1]
-		&& mtx[2][2] != mat.mtx[2][2]
-		&& mtx[2][3] != mat.mtx[2][3]
-		&& mtx[3][0] != mat.mtx[3][0]
-		&& mtx[3][1] != mat.mtx[3][1]
-		&& mtx[3][2] != mat.mtx[3][2]
-		&& mtx[3][3] != mat.mtx[3][3];
 }
 
 inline void Matrix4D::zero()
@@ -229,12 +267,19 @@ inline void Matrix4D::zero()
 
 inline void Matrix4D::setIdentity()
 {
-	*this = {
+	mtx[0][0] = mtx[1][1] = mtx[2][2] = mtx[3][3] = 1.0;
+
+	mtx[0][1] = mtx[0][2] = mtx[0][3] =
+	mtx[1][0] = mtx[1][2] = mtx[1][3] =
+	mtx[2][0] = mtx[2][1] = mtx[2][3] =
+	mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0;
+
+	/**this = {
 		1.0, 0.0, 0.0, 0.0,
 		0.0, 1.0, 0.0, 0.0,
 		0.0, 0.0, 1.0, 0.0,
 		0.0, 0.0, 0.0, 1.0
-	};
+	};*/
 }
 
 inline void Matrix4D::printMat()
@@ -282,6 +327,8 @@ inline Float Matrix4D::getCofactor(int x, int y) const
 		return -getMinor(x, y);
 	}
 }
+
+
 
 
 inline Matrix4D identityMat4()
@@ -347,22 +394,72 @@ inline Matrix4D Matrix4D::inverseMat() const
 	return ret;
 }
 
+inline Matrix4D setLookAt(const Point3D& pos, const Point3D& target, const Vector3D& up)
+{
+	//Camera to World
+	Vector3D nz = target - pos;
+	// distance between target and camera position is too small
+	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
+	{
+		return Matrix4D();
+	}
+
+	nz.normalize();
+#ifdef RIGHT_HAND_ORDER // OpenGL style
+	Vector3D nx = Normalize(Cross(up, nz));
+	Vector3D ny = Cross(nz, nx);
+	return Matrix4D(
+		nx.x, nx.y, nx.z, 0.0,
+		ny.x, ny.y, ny.z, 0.0,
+		-nz.x, -nz.y, -nz.z, 0.0,
+		pos.x, pos.y, pos.z, 1.0
+	);
+#else // DirectX style
+	nz = -nz;
+	Vector3D nx = Normalize(Cross(nz, up));//left dir
+	Vector3D ny = Cross(nx, nz);
+	return Matrix4D(
+		nx.x, nx.y, nx.z, 0.0,
+		ny.x, ny.y, ny.z, 0.0,
+		nz.x, nz.y, nz.z, 0.0,
+		pos.x, pos.y, pos.z, 1.0
+	);
+#endif
+}
+
 inline Matrix4D setPerspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
 {
-	// nz is camera dir, different from opengl
-	/*Float yRangeInv = 1.0 / tan(DegreeToRadian(verticalAngle * 0.5));
-	Float xRangeInv = ;*/
 
-	Float sy = 1.0 / tan(DegreeToRadian(verticalAngle * 0.5));
-	Float sx = -sy / aspectRatio;
-	Float sz = (farPlane + nearPlane) / (farPlane - nearPlane);
-	Float pz = 2.0 * farPlane * nearPlane / (nearPlane - farPlane);
+	Float radAngle = DegreeToRadian(verticalAngle * 0.5);
+	Float sy = std::sin(DegreeToRadian(verticalAngle * 0.5));
+	if (sy == 0)
+	{
+		return Matrix4D();
+	}
+	sy = std::cos(radAngle) / sy;
+//	Float sx = -sy / aspectRatio;
+//	Float sz = (farPlane + nearPlane) / (farPlane - nearPlane);
+//	Float pz = 2.0 * farPlane * nearPlane / (nearPlane - farPlane);
+	
+	Float sx = sy / aspectRatio;
+	Float clip = nearPlane - farPlane;
+#ifdef RIGHT_HAND_ORDER // OpenGL style
+	Float sz = (farPlane + nearPlane) / clip;
+	Float pz = 2.0 * farPlane * nearPlane / clip;
+	Float w = -1.0;
+#else // DirectX style
+	Float sz = -(farPlane + nearPlane) / clip;
+	Float pz = 2.0 * farPlane * nearPlane / clip;
+	Float w = 1.0;
+#endif
+
 	return Matrix4D(
 		sx, 0.0, 0.0, 0.0,
 		0.0, sy, 0.0, 0.0,
-		0.0, 0.0, sz, 1.0,
+		0.0, 0.0, sz, w,
 		0.0, 0.0, pz, 0.0
 		);
+
 }
 
 inline Matrix4D setOrthographic(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)

@@ -51,7 +51,7 @@ public:
 		BGRA,
 		ABGR
 	};
-	ImageData();
+	//ImageData();
 	//ImageData(ppmImage &ppmData);
 	ImageData(int wd = default_resX, int ht = default_resY);
 	ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data

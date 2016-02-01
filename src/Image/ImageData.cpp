@@ -1,13 +1,5 @@
 #include "Image/ImageData.h"
 
-ImageData::ImageData()
-{
-	width = default_resX;
-	height = default_resY;
-	bpp = 24;
-
-	Aligned_2DArray(pixels, width, height, ROW_STORAGE);//pixels = new ColorRGBA[width * height];
-}
 ImageData::ImageData(int wd, int ht)
 {
 	width = wd;

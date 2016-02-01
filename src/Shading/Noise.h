@@ -28,30 +28,39 @@ inline Float SmoothNoise1D(int x)
 }
 inline Float SmoothNoise2D(int x, int y)
 {
-	Float corner = (Noise(x - 1, y - 1) + Noise(x + 1, y - 1) + Noise(x - 1, y + 1) + Noise(x + 1, y + 1)) / 16;
-	Float sides = (Noise(x - 1, y) + Noise(x + 1, y) + Noise(x, y - 1) + Noise(x, y + 1)) / 8;
+	Float corner = (Noise(x - 1, y - 1) + Noise(x + 1, y - 1)
+		+ Noise(x - 1, y + 1) + Noise(x + 1, y + 1)) / 16;
+	Float sides = (Noise(x - 1, y) + Noise(x + 1, y)
+		+ Noise(x, y - 1) + Noise(x, y + 1)) / 8;
 	Float center = Noise(x, y) / 4;
 
 	return corner + sides + center;
 }
 inline Float SmoothNoise3D(int x, int y, int z)
 {
-	Float corner = (Noise(x - 1, y - 1, z - 1) + Noise(x + 1, y - 1, z - 1) + Noise(x - 1, y + 1, z - 1) + Noise(x + 1, y + 1, z - 1)
-		+ Noise(x - 1, y - 1, z + 1) + Noise(x + 1, y - 1, z + 1) + Noise(x - 1, y + 1, z + 1) + Noise(x + 1, y + 1, z + 1)) / 64;
-	Float sides = (Noise(x - 1, y, z - 1) + Noise(x + 1, y, z - 1) + Noise(x, y - 1, z - 1) + Noise(x, y + 1, z - 1)
-		+ Noise(x - 1, y - 1, z) + Noise(x + 1, y - 1, z) + Noise(x - 1, y + 1, z) + Noise(x + 1, y + 1, z)
-		+ Noise(x - 1, y, z + 1) + Noise(x + 1, y, z + 1) + Noise(x, y - 1, z + 1) + Noise(x, y + 1, z + 1)) / 32;
+	Float corner = (Noise(x - 1, y - 1, z - 1) + Noise(x + 1, y - 1, z - 1)
+		+ Noise(x - 1, y + 1, z - 1) + Noise(x + 1, y + 1, z - 1)
+		+ Noise(x - 1, y - 1, z + 1) + Noise(x + 1, y - 1, z + 1)
+		+ Noise(x - 1, y + 1, z + 1) + Noise(x + 1, y + 1, z + 1)) / 64;
+	Float sides = (Noise(x - 1, y, z - 1) + Noise(x + 1, y, z - 1)
+		+ Noise(x, y - 1, z - 1) + Noise(x, y + 1, z - 1)
+		+ Noise(x - 1, y - 1, z) + Noise(x + 1, y - 1, z)
+		+ Noise(x - 1, y + 1, z) + Noise(x + 1, y + 1, z)
+		+ Noise(x - 1, y, z + 1) + Noise(x + 1, y, z + 1)
+		+ Noise(x, y - 1, z + 1) + Noise(x, y + 1, z + 1)) / 32;
 	Float faces = (Noise(x, y, z - 1) + Noise(x, y, z + 1) 
-		+ Noise(x - 1, y, z) + Noise(x + 1, y, z) + Noise(x, y - 1, z) + Noise(x, y + 1, z)) / 16;
+		+ Noise(x - 1, y, z) + Noise(x + 1, y, z)
+		+ Noise(x, y - 1, z) + Noise(x, y + 1, z)) / 16;
 	Float center = Noise(x, y, z) / 8;
 
 	return corner + sides + faces + center;
 }
 inline Float interpolateNoise(Float x)
 {
-	int floorX = floor(x);
+	Float floorX = floor(x);
 	Float t = curve_t(x - floorX);
-	return lerp(SmoothNoise1D(x), SmoothNoise1D(x + 1), t);
+	return lerp(SmoothNoise1D(static_cast<int>(floorX)),
+		SmoothNoise1D(static_cast<int>(floorX + 1)), t);
 }
 inline Float interpolateNoise(Float x, Float y)
 {
@@ -90,15 +99,15 @@ inline Float interpolateNoise(Float x, Float y, Float z)
 }
 inline Float PerlinNoise1D(Float x)
 {
-	Float total = 0;
-	Float p = 1;//persistence
+	Float total = 0.0;
+	Float p = 1.0;//persistence
 	int n = 4 - 1;//numOfOctaves - 1
 
 	for (int i = 0; i < n; i++)
 	{
-		Float freq = pow(2, i);
+		Float freq = pow(2.0, i);
 		Float amp = pow(p, i);
-		total += interpolateNoise(x*freq) * amp;
+		total += interpolateNoise(x * freq) * amp;
 	}
 	return total;
 }
@@ -107,7 +116,7 @@ inline Float PerlinNoise1D(Float x)
 /************************************************************************/
 class PerlinNoise1D
 {
-	Float p = 1;//persistence
+	Float p = 1.0;//persistence
 	int oct = 1;//Octaves
 	int len = 100;
 public:
@@ -133,13 +142,13 @@ inline PerlinNoise1D::~PerlinNoise1D()
 }
 inline Float PerlinNoise1D::getValue(Float x)
 {
-	Float total = 0;
+	Float total = 0.0;
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2, i);
+		Float freq = pow(2.0, i);
 		Float amp = pow(p, i);
-		total += interpolateNoise(x*freq) * amp;
+		total += interpolateNoise(x * freq) * amp;
 	}
 	return total;
 }
@@ -149,7 +158,7 @@ inline Float PerlinNoise1D::getValue(Float x)
 class PerlinNoise2D
 {
 public:
-	Float p = 1;//persistence
+	Float p = 1.0;//persistence
 	int oct = 1;//Octaves
 	int width = 100;
 	int height = 100;
@@ -185,11 +194,11 @@ inline void PerlinNoise2D::setData(Float persistence, int octaves, int wd, int h
 }
 inline Float PerlinNoise2D::getValue(const Point3D& uv) const
 {
-	Float total = 0;
+	Float total = 0.0;
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2, i);
+		Float freq = pow(2.0, i);
 		Float amp = pow(p, i);
 		total += interpolateNoise(uv.x * width * freq, uv.y * height * freq) * amp;
 		//total += interpolateNoise(uv.x * freq, uv.y * freq) * amp;
@@ -241,13 +250,14 @@ inline void PerlinNoise3D::setData(Float persistence, int octaves, int wd, int h
 }
 inline Float PerlinNoise3D::getValue(const Point3D& uv) const
 {
-	Float total = 0;
+	Float total = 0.0;
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2, i);
+		Float freq = pow(2.0, i);
 		Float amp = pow(p, i);
-		total += interpolateNoise(uv.x * width * freq, uv.y * height * freq, uv.z * depth * freq) * amp;
+		total += interpolateNoise(uv.x * width * freq, uv.y * height * freq,
+			uv.z * depth * freq) * amp;
 		//total += interpolateNoise(uv.x * freq, uv.y * freq) * amp;
 	}
 	return total;

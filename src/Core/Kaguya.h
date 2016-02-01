@@ -26,6 +26,9 @@ typedef double Float;
 typedef float Float;
 #endif // Float
 
+#ifndef RIGHT_HAND_ORDER
+#define RIGHT_HAND_ORDER
+#endif
 /*
 #ifndef GLfloat
 typedef float GLfloat

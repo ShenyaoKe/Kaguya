@@ -357,7 +357,7 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 	const KdAccelNode *node, Float *tHit) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
-	Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
+	//Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
 	if (!Collision::collideP(worldbound, node->bbox))
 	{
 		return false;
@@ -443,7 +443,7 @@ bool KdTreeAccel::inLeaf(const Point3D& pos, const KdAccelNode *node) const
 
 void KdAccelNode::initLeaf(vector<int> &prims)
 {
-	int np = prims.size();
+	//int np = prims.size();
 	flags = 3;
 
 	primIndex = prims;

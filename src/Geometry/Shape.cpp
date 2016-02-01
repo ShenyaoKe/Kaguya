@@ -22,7 +22,7 @@ void Shape::bounding()
 {
 	//return;
 }
-const BBox& Shape::getWorldBounding() const
+BBox Shape::getWorldBounding() const
 {
 	return this->ObjBound;
 }
@@ -150,7 +150,7 @@ void geoSphere::bounding()
 	//return false;
 }
 
-const BBox& geoSphere::getWorldBounding() const
+BBox geoSphere::getWorldBounding() const
 {
 	BBox ret(c);
 	ret.expand(r);

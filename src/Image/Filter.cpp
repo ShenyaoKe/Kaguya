@@ -290,7 +290,7 @@ ImageData* filter::posterize(const ImageData* src, int level)
 		post_val[i] = post_val[i - 1] + color_div;
 	}
 
-	int rRange, gRange, bRange;
+	//int rRange, gRange, bRange;
 	for (int i = 0; i < src->getWidth(); i++)
 	{
 		for (int j = 0; j < src->getHeight(); j++)

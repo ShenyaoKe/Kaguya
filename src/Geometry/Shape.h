@@ -34,7 +34,7 @@ public:
 	static int assignIndex() { return uid++; }
 	static void offsetUID(int offset) { uid += offset; }
 	virtual void bounding();
-	virtual const BBox& getWorldBounding() const;
+	virtual BBox getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
 	virtual bool intersectP(const Ray& inRay) const;
 	virtual bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
@@ -81,7 +81,7 @@ public:
 	~geoSphere();
 
 	void bounding();
-	const BBox& getWorldBounding() const;
+	BBox getWorldBounding() const;
 
 	void setCenter(const Vector3D& pos);
 	void setRadius(Float radius);

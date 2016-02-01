@@ -9,6 +9,7 @@
 #define __FILM__
 //#include "Core/rtdef.h"
 #include "Image/ImageData.h"
+#include "Math/Transform.h"
 
 typedef unsigned char RES_FIT_TYPE;
 
@@ -27,8 +28,6 @@ typedef enum
 	FRG_OVERSCAN_FIT = 3
 }FIT_RESOLUTION_GATE;
 
-
-
 class Film:public ImageData
 {
 public:
@@ -46,9 +45,11 @@ public:
 	Point2D getImgPos(Float filmX, Float filmY) const;
 	Point3D getFilmUV(Float imgX, Float imgY) const;
 protected:
-	
+	friend class baseCamera;
 private:
 	Float horiApect = 0.036, vertApect = 0.024;
+	Transform RasterToFilm, FilmToScreen;
+
 	FIT_RESOLUTION_GATE resFT = FRG_HORIZONTAL_FIT;
 };
 
