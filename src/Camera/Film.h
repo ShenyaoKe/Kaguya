@@ -31,10 +31,10 @@ typedef enum
 class Film:public ImageData
 {
 public:
-	Film() : ImageData(default_resX, default_resY){};
+	Film(FILM_TYPE filmType = FT_16MM_THEATRICAL,
+		int resX = default_resX, int resY = default_resY,
+		FIT_RESOLUTION_GATE fitType = FRG_HORIZONTAL_FIT);
 	~Film();
-	Film(FILM_TYPE filmType, int resX, int resY);
-	Film(FILM_TYPE filmType, int resX, int resY, FIT_RESOLUTION_GATE fitType);
 
 	void setFilmType(FILM_TYPE filmType);
 	void setFitType(FIT_RESOLUTION_GATE fitType);
@@ -44,6 +44,7 @@ public:
 	Point2D getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
 	Point2D getImgPos(Float filmX, Float filmY) const;
 	Point3D getFilmUV(Float imgX, Float imgY) const;
+	Matrix4D rasterToFilm() const;
 protected:
 	friend class baseCamera;
 private:

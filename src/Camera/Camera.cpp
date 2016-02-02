@@ -1,12 +1,8 @@
 #include "Camera/Camera.h"
-#include "Shading/Texture.h"
 
-/************************************************************************/
-/*                                                                      */
-/************************************************************************/
 baseCamera::baseCamera(const Vector3D& eyePos, const Vector3D& targetPos,
 	const Vector3D& upVec)
-	: CameraToWorld(lookAt(eyePos, target, upVec)), CameraToScreen(setPerspective())
+	: CameraToWorld(setLookAt(eyePos, target, upVec)), CameraToScreen(setPerspective())
 	, target(targetPos)
 {
 	/*pos = eyePos;
@@ -17,7 +13,7 @@ baseCamera::baseCamera(const Vector3D& eyePos, const Vector3D& targetPos,
 
 
 baseCamera::baseCamera()
-	: CameraToWorld(lookAt())
+	: CameraToWorld(setLookAt())
 {
 }
 
@@ -37,6 +33,11 @@ void baseCamera::setFocLen(Float fl)
 void baseCamera::setFilmType(FILM_TYPE filmType)
 {
 	film.setFilmType(filmType);
+}
+void baseCamera::updateMatrices()
+{
+	// Raster to camera
+	// Raster to screen
 }
 /*
 void baseCamera::lookAt(const Vector3D& targPos)
@@ -89,76 +90,6 @@ void baseCamera::exportVBO(float *view, float *proj, float *raster) const
 	{
 		RasterToScreen.m.exportVBO(raster);
 	}
-}
-//////////////////////////////////////////////////////////////////////////
-perspCamera::perspCamera()
-	:lensRadius(0), focalDistance(INFINITY)
-
-{
-	/*nx = X_AXIS3D;
-	ny = Y_AXIS3D;
-	nz = Z_AXIS3D;*/
-}
-perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target,
-	const Vector3D& upVec, Float lr, Float fd)
-	: lensRadius(lr), focalDistance(fd)
-{
-	pos = eyePos;
-	nz = Normalize(target - eyePos);
-	nx = Normalize(Cross(nz, upVec));
-	ny = Cross(nx, nz);
-	Matrix4D projMat = setPerspective();
-	CameraToWorld = lookAt(eyePos, target, upVec);
-	CameraToScreen = Transform(projMat);
-}
-
-perspCamera::perspCamera(const Transform& cam2wo, const Transform& projection)
-{
-	CameraToWorld = cam2wo;
-	CameraToScreen = projection;
-}
-
-perspCamera::~perspCamera()
-{
-
-}
-
-
-Ray perspCamera::shootRay(Float imgX, Float imgY) const
-{
-	Vector2D fPos = film.getFilmPos(imgX, imgY);//point on film
-	//Vector3D rayDir = nz * focLen + nx * fPos.x + ny * fPos.y;
-	Vector3D rayDir = (CameraToWorld.getMat() * Vector4D(fPos.x, fPos.y, focLen, 0)).toVector3D();
-
-	Ray ret(Point3D(CameraToWorld.getMat()[3]), Normalize(rayDir));
-	if (lensRadius > 0)
-	{
-		//sample point on lens
-		Float lensU, lensV;
-		//sample lensU and lensV to (-1,1)
-		lensU = unitRandom(20) * 2.0 - 1.0;
-		lensV = unitRandom(20) * 2.0 - 1.0;
-		lensU *= lensRadius;
-		lensV *= lensRadius;//scale to focal radius
-
-		//compute point on plane of focus
-		Float ft = focalDistance / (ret.dir * nz);
-		Point3D focusP = ret(ft);
-		//update ray of lens
-		ret.pos += pos + nx * lensU + ny * lensV;
-		ret.dir = Normalize(focusP - ret.pos);
-
-	}
-
-	return ret;
-}
-void perspCamera::renderImg(int x, int y, ColorRGBA& pixColor)
-{
-	film.setRGBA(x, y, pixColor);
-}
-void perspCamera::saveResult(const char* filename)
-{
-	film.writeFile(filename);
 }
 
 void baseCamera::zoom(Float x_val, Float y_val, Float z_val)
@@ -237,84 +168,4 @@ void baseCamera::resizeViewport(Float aspr /*= 1.0*/)
 	Matrix4D newProj= CameraToScreen.getMat();
 	newProj[0][0] = -newProj[1][1] / aspr;
 	CameraToScreen.setMat(newProj);
-}
-
-void perspCamera::setDoF(Float lr, Float fd)
-{
-	lensRadius = lr;
-	focalDistance = fd;
-}
-//////////////////////////////////////////////////////////////////////////
-/*
-abstractCamera::abstractCamera() : perspCamera()
-{
-}
-
-abstractCamera::abstractCamera(const Point3D& eyePos, const Vector3D& viewDir, const Vector3D& upVec,
-	Texture *posImg, Texture *dirImg, Float tp, Float td, Float lr, Float fd)
-	: perspCamera(eyePos, viewDir, upVec, lr, fd), tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
-{
-}
-abstractCamera::~abstractCamera()
-{
-	posTex = nullptr;
-	dirTex = nullptr;
-}
-
-Ray abstractCamera::shootRay(Float imgX, Float imgY) const
-{
-	Vector2D fPos;// = film.getFilmPos(imgX, imgY);//point on film
-	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;
-
-	Float newU = imgX / film.getWidth(), newV = imgY / film.getHeight();
-	Point3D rayPoint = pos;
-
-	if (posTex != nullptr)
-	{
-		ColorRGBA shiftPos = tpos * (posTex->getColor(Point3D(newU, newV, 0)) - ColorRGBA(0.5, 0.5, 0.5, 1));
-		fPos = film.getFilmPos(shiftPos.r * film.getWidth() + imgX, shiftPos.g * film.getHeight() + imgY);
-		rayDir = nx * fPos.x + ny * fPos.y + nz * focLen * (1 + shiftPos.b);
-		rayPoint = pos + shiftPos.r * nx + shiftPos.g * ny + shiftPos.b * nz;
-	}
-	//Vector3D rayDir = nz * focLen + nx * fPos.x + ny * fPos.y;
-
-	Ray ret(rayPoint, Normalize(rayDir));
-	
-
-	return ret;
-}
-
-void abstractCamera::setImage(Texture *posImg / *= nullptr* /, Texture *dirImg / *= nullptr* /)
-{
-	posTex = posImg;
-	dirTex = dirImg;
-}
-
-void abstractCamera::setAbstraction(Float tp / *= 0* /, Float td / *= 0* /)
-{
-	tpos = tp;
-	tdir = td;
-}
-*/
-
-orthoCamera::orthoCamera()
-{
-	CameraToWorld = lookAt();
-	CameraToScreen = Transform(setOrthographic());
-}
-
-orthoCamera::orthoCamera(const Transform& cam2wo, const Transform& projection)
-{
-	CameraToWorld = cam2wo;
-	CameraToScreen = projection;
-}
-
-orthoCamera::~orthoCamera()
-{
-
-}
-
-Ray orthoCamera::shootRay(Float imgX, Float imgY) const
-{
-	return Ray();
 }

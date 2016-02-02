@@ -1,76 +1,6 @@
-#pragma once
-#ifndef __TRANSFORM__
-#define __TRANSFORM__
+#include "Math/Transform.h"
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
-#ifndef RIGHT_HAND_ORDER
-#define RIGHT_HAND_ORDER
-#endif
-
-#include "Core/Kaguya.h"
-//#include "Math/CGVector.h"
-#include "Math/Matrix4D.h"
-#include "Accel/BBox.h"
-
-class Transform
-{
-public:
-
-	Transform()
-	{
-		m.setIdentity();
-		mInv.setIdentity();
-	}
-	Transform(const Float mat[4][4])
-	{
-		m = Matrix4D(
-			mat[0][0], mat[0][1], mat[0][2], mat[0][3],
-			mat[1][0], mat[1][1], mat[1][2], mat[1][3],
-			mat[2][0], mat[2][1], mat[2][2], mat[2][3],
-			mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
-		mInv = m.inverseMat();
-	}
-	Transform(const Matrix4D &mat)
-		: m(mat), mInv(mat.inverseMat())
-	{}
-	Transform(const Matrix4D &mat, const Matrix4D &matInv)
-		: m(mat), mInv(matInv)
-	{}
-	~Transform() {}
-
-	Vector3D operator () (const Vector3D &vec, Float w) const;
-	Vector4D operator () (const Vector4D &vec) const;
-	BBox operator () (const BBox &bbox) const;
-	//Ray operator () (const Ray &ray) const;
-	void operator () (const Ray& ray, Ray* ret) const;
-
-	//Transform operator * (const Matrix4D &mat);
-	Vector4D xformNormal(const Vector3D &vec) const;
-
-	Matrix4D getMat() const;
-	Matrix4D getInvMat() const;
-	void setMat(const Matrix4D &mat);
-	void setInvMat(const Matrix4D &mat);
-
-	friend Transform inverse(const Transform &t)
-	{
-		return Transform(t.mInv, t.m);
-	}
-	friend Transform transpose(const Transform &t)
-	{
-		return Transform(t.m.transposeMat(),
-			t.mInv.transposeMat());
-	}
-private:
-	Matrix4D m, mInv;
-	friend class Quaternion;
-	friend class baseCamera;
-};
-/*
-inline Vector4D Transform::operator()(const Vector4D &vec) const
+Vector4D Transform::operator()(const Vector4D &vec) const
 {
 	Vector4D ret = m * vec;
 	if (ret.w != 0.0 || ret.w != 1.0)
@@ -79,18 +9,18 @@ inline Vector4D Transform::operator()(const Vector4D &vec) const
 	}
 	return ret;
 }
-inline Vector3D Transform::operator()(const Vector3D &vec, Float w) const
+Vector3D Transform::operator()(const Vector3D &vec, Float w) const
 {
-	Vector4D ret = m * Vector4D(vec, w);
+	return m(vec, w);
+	/*Vector4D ret = m * Vector4D(vec, w);
 	if (ret.w != 0.0 || ret.w != 1.0)
 	{
 		ret /= ret.w;
 	}
-	return Vector3D(ret.x, ret.y, ret.z);
+	return Vector3D(ret.x, ret.y, ret.z);*/
 }
 
-
-inline BBox Transform::operator()(const BBox &b) const
+BBox Transform::operator()(const BBox &b) const
 {
 	const Transform &M = *this;
 	BBox ret(M(b.pMin, 1.0));
@@ -104,41 +34,54 @@ inline BBox Transform::operator()(const BBox &b) const
 	return ret;
 }
 
-inline Vector4D Transform::xformNormal(const Vector3D &vec) const
+void Transform::operator()(const Ray& ray, Ray* ret) const
+{
+	ret->dir = m(ray.dir, 0.0);
+	ret->pos = m(ray.pos, 1.0);
+	if (&ray != ret)
+	{
+		ret->tmin = ray.tmin;
+		ret->tmax = ray.tmax;
+		ret->time = ray.time;
+		ret->dp = ray.dp;
+	}
+}
+
+Vector4D Transform::xformNormal(const Vector3D &vec) const
 {
 	return Vector4D();
 }
 
-inline Matrix4D Transform::getMat() const
+Matrix4D Transform::getMat() const
 {
 	return m;
 }
 
-inline Matrix4D Transform::getInvMat() const
+Matrix4D Transform::getInvMat() const
 {
 	return mInv;
 }
 
-inline void Transform::setMat(const Matrix4D &mat)
+void Transform::setMat(const Matrix4D &mat)
 {
 	m = mat;
 	mInv = m.inverseMat();
 }
 
-inline void Transform::setInvMat(const Matrix4D &matInv)
+void Transform::setInvMat(const Matrix4D &matInv)
 {
 	mInv = matInv;
 	m = mInv.inverseMat();
 }
 
-inline Transform xformTRS(
+Transform xformTRS(
 	Float tx, Float ty, Float tz,
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz
 	);
-//inline Transform Rotate(const Vector3D &axis, Float theta);
+//Transform Rotate(const Vector3D &axis, Float theta);
 
-inline Transform xformTRS(
+Transform xformTRS(
 	Float tx, Float ty, Float tz,
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz)
@@ -149,7 +92,7 @@ inline Transform xformTRS(
 	return Transform(T * R * S);
 }
 
-inline Transform Rotate(const Vector3D &axis, Float theta)
+Transform Rotate(const Vector3D &axis, Float theta)
 {
 	Vector3D u = Normalize(axis);
 	Float rad = DegreeToRadian(theta);
@@ -182,7 +125,7 @@ inline Transform Rotate(const Vector3D &axis, Float theta)
 	return Transform(mat);
 }
 
-inline Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
+Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
 	const Point3D &target = Point3D(0, 0, 1),
 	const Vector3D &up = Point3D(0, 1, 0))
 {
@@ -220,5 +163,3 @@ inline Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
 
 	return Transform(mat);
 }
-*/
-#endif // __TRANSFORM__

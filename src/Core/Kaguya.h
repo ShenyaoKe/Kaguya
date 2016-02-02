@@ -1,15 +1,30 @@
+#if defined(_MSC_VER)
 #pragma once
-#ifndef __KAGUYA__
-#define __KAGUYA__
+#endif
+
+#ifndef KAGUYA_CORE
+#define KAGUYA_CORE
+
+#if defined(_WIN32) || defined(_WIN64)
+#define KAGUYA_IS_WINDOWS
+#elif defined(__APPLE__)
+#define KAGUYA_IS_APPLE
+#endif
+
 //#include <stdio.h>
 #include <cstdio>
 #include <cstdint>
 #include <assert.h>
 #include <iostream>
 #include <algorithm>
+using std::min;
+using std::max;
+using std::swap;
+using std::sort;
 
 // Containers
 #include <vector>
+using std::vector;
 #include <list>
 #include <queue>
 #include <stack>
@@ -29,10 +44,12 @@ typedef float Float;
 #ifndef RIGHT_HAND_ORDER
 #define RIGHT_HAND_ORDER
 #endif
-/*
-#ifndef GLfloat
-typedef float GLfloat
-#endif // !GLfloat*/
+
+#if defined(KAGUYA_IS_WINDOWS)
+#pragma warning (disable : 4305) // double constant assigned to float
+#pragma warning (disable : 4244) // int -> float conversion
+#pragma warning (disable : 4267) // size_t -> unsigned int conversion
+#endif
 
 using namespace std;
 

@@ -1,12 +1,8 @@
 #include "Camera/Film.h"
 
 //////////////////////////////////////////////////////////////////////////
-Film::Film(FILM_TYPE filmType, int resX, int resY)
-	:ImageData(resX, resY)
-{
-	setFilmType(filmType);
-}
-Film::Film(FILM_TYPE filmType, int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
+Film::Film(FILM_TYPE filmType,
+	int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
 	: ImageData(resX, resY)
 {
 	setFilmType(filmType);
@@ -151,4 +147,43 @@ Point3D Film::getFilmUV(Float imgX, Float imgY) const
 	default:
 		break;
 	}
+}
+Matrix4D Film::rasterToFilm() const
+{
+	Matrix4D ret;
+	switch (resFT)
+	{
+	case FRG_HORIZONTAL_FIT:
+//		ret.mtx[3][2] = 
+//		return Point2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+	case FRG_VERTICAL_FIT:
+//		return Point2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		/*
+		case FRG_FILL_FIT:
+		filmRatio = horiApect / vertApect;
+		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+		if (imgRatio >= filmRatio)
+		{
+		return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+		}
+		else
+		{
+		return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		}
+		case FRG_OVERSCAN_FIT:
+		filmRatio = horiApect / vertApect;
+		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+		if (imgRatio < filmRatio)
+		{
+		return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+		}
+		else
+		{
+		return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		}
+		*/
+	default:
+		break;
+	}
+	return Matrix4D();
 }

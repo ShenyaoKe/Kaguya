@@ -100,8 +100,11 @@
     <ClInclude Include="..\src\Accel\BBox.h" />
     <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
     <ClInclude Include="..\src\Accel\Primitive.h" />
+    <ClInclude Include="..\src\Camera\abstractCamera.h" />
     <ClInclude Include="..\src\Camera\Camera.h" />
     <ClInclude Include="..\src\Camera\Film.h" />
+    <ClInclude Include="..\src\Camera\orthoCamera.h" />
+    <ClInclude Include="..\src\Camera\perspCamera.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Dynamics\Collision.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
@@ -136,8 +139,12 @@
     <ClCompile Include="..\src\Accel\BBox.cpp" />
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp" />
     <ClCompile Include="..\src\Accel\Primitive.cpp" />
+    <ClCompile Include="..\src\Camera\abstractCamera.cpp" />
     <ClCompile Include="..\src\Camera\Camera.cpp" />
     <ClCompile Include="..\src\Camera\Film.cpp" />
+    <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
+    <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Dynamics\Collision.cpp" />

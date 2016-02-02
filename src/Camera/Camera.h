@@ -17,6 +17,7 @@
 //#include "Math/CGVector.h"
 #include "Math/Matrix4D.h"
 #include "Math/Transform.h"
+#include "Core/Sampler.h"
 #include "Tracer/Ray.h"
 #include "Camera/Film.h"
 #include "Tracer/renderBuffer.h"
@@ -32,10 +33,12 @@ public:
 	virtual void setSample(int aaSample);
 	virtual void setFocLen(Float fl);
 	virtual void setFilmType(FILM_TYPE filmType);
+	virtual void updateMatrices();
 	//virtual void lookAt(const Vector3D& targPos);
 	//virtual void lookAt(const Vector3D& camPos, const Vector3D& targPos, const Vector3D& upDir);
 	virtual void setBuffer(int x, int y, const bufferData tmpBuff);
 	virtual Ray shootRay(Float imgX, Float imgY) const = 0;
+	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
 
 	virtual bufferData getBufferData(int x, int y) const;
 	virtual Vector3D getTarget() const;
@@ -43,13 +46,16 @@ public:
 	virtual void updateProjection(const Matrix4D &perspMat);
 	virtual void updateCamToWorld(const Matrix4D &cam2wMat);
 
+	// Camera Roaming Operation
 	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
 	virtual void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
-	virtual void rotatePYR(Float pitchAngle = 0, Float yawAngle = 0, Float rollAngle = 0);
+	virtual void rotatePYR(Float pitch = 0, Float yaw = 0, Float roll = 0);
 	virtual void resizeViewport(Float aspr = 1.0);
 	virtual void exportVBO(float *view, float *proj, float *raster) const;
 
-	Transform CameraToWorld, CameraToScreen, RasterToScreen;
+	Transform CameraToWorld;
+	Transform CameraToScreen, RasterToCamera, RasterToScreen;
+
 protected:
 	Point3D pos, target;
 	Vector3D nx, ny, nz;
@@ -60,69 +66,5 @@ protected:
 	int sample = 1;
 private:
 };
-//////////////////////////////////////////////////////////////////////////
-class orthoCamera : public baseCamera
-{
-public:
-	orthoCamera();
-	orthoCamera(const Transform& cam2wo, const Transform& projection);
-	~orthoCamera();
-	//Vector3D getPos() { return pos; }
-	//void setResolution(int resX, int resY);
-	//void setSample(int aaSample);
 
-	Ray shootRay(Float imgX, Float imgY) const;
-
-	//void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
-	//void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
-	//void resizeViewport(Float aspr = 1.0);
-
-	//void setUpVec(Vector3D& upVec);
-protected:
-	Float nearPlane = -1.0, farPlane = 1.0;
-private:
-};
-//////////////////////////////////////////////////////////////////////////
-class perspCamera : public baseCamera
-{
-public:
-	perspCamera();
-	perspCamera(const Point3D& eyePos, const Vector3D& target, const Vector3D& upVec,
-		Float lr = 0.0, Float fd = INFINITY);
-	perspCamera(const Transform& cam2wo, const Transform& projection);
-	~perspCamera();
-	//Vector3D getPos() { return pos; }
-	//void setResolution(int resX, int resY);
-	//void setSample(int aaSample);
-
-	void setDoF(Float lr, Float fd);
-	Ray shootRay(Float imgX, Float imgY) const;
-	void renderImg(int x, int y, ColorRGBA& pixColor);
-	void saveResult(const char* filename);
-
-
-	//void setUpVec(Vector3D& upVec);
-protected:
-	Float fov;
-	Float lensRadius, focalDistance;
-private:
-};
-
-/*
-class abstractCamera : public perspCamera
-{
-public:
-	abstractCamera();
-	abstractCamera(const Point3D& eyePos, const Vector3D& viewDir, const Vector3D& upVec,
-		Texture *posImg = nullptr, Texture *dirImg = nullptr, Float tp = 0, Float td = 0,
-		Float lr = 0, Float fd = INFINITY);
-	~abstractCamera();
-	void setImage(Texture *posImg = nullptr, Texture *dirImg = nullptr);
-	void setAbstraction(Float tp = 0, Float td = 0);
-	Ray shootRay(Float imgX, Float imgY) const;
-
-protected:
-	Texture *posTex, *dirTex;
-	Float tpos, tdir;
-};*/
 #endif

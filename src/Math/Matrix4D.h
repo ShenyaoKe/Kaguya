@@ -78,6 +78,7 @@ public:
 	// Operators
 	Float* operator [] (int i);
 	const Float* operator [] (int i) const;
+	Vector3D operator ()(const Vector3D& v, Float w = 1.0) const;
 	const Matrix4D &operator = (const Matrix4D &mat);
 	friend Matrix4D operator + (const Matrix4D &m1, const Matrix4D &m2);
 	friend Matrix4D operator - (const Matrix4D &m1, const Matrix4D &m2);
@@ -136,6 +137,27 @@ inline Float* Matrix4D::operator[](int i)
 inline const Float* Matrix4D::operator[](int i) const
 {
 	return mtx[i];
+}
+inline Vector3D Matrix4D::operator ()(const Vector3D& v, Float w) const
+{
+	Float x = v.x, y = v.y, z = v.z;
+	Float xp = mtx[0][0] * x + mtx[1][0] * y + mtx[2][0] * z;
+	Float yp = mtx[0][1] * x + mtx[1][1] * y + mtx[2][1] * z;
+	Float zp = mtx[0][2] * x + mtx[1][2] * y + mtx[2][2] * z;
+	if (w == 1.0)
+	{
+		xp += mtx[3][0];
+		yp += mtx[3][1];
+		zp += mtx[3][2];
+		w = mtx[0][3] * x + mtx[1][3] * y + mtx[2][3] * z + mtx[3][3];
+		if (w != 1.0)
+		{
+			xp /= w;
+			yp /= w;
+			zp /= w;
+		}
+	}
+	return Vector3D(xp, yp, zp);
 }
 inline Matrix4D operator+(const Matrix4D& m1, const Matrix4D& m2)
 {
