@@ -18,7 +18,7 @@ abstractCamera::~abstractCamera()
 	dirTex = nullptr;
 }
 
-Ray abstractCamera::shootRay(Float imgX, Float imgY) const
+Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 {
 	Vector2D fPos;// = film.getFilmPos(imgX, imgY);//point on film
 	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;

@@ -1027,7 +1027,7 @@ ImageData* filter::translate(const ImageData* src, Vector2D& tVec, int& winWid, 
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D tMat, itMat;
 	tMat.setTranslation(tVec);
-	tMat.printMat();
+	tMat.printInfo();
 	Float dt = tMat.det;
 	itMat = tMat.inverseMat();
 
@@ -1172,7 +1172,7 @@ ImageData* filter::perspective(const ImageData* src, Vector2D& vPnt1, int& winWi
 	Matrix3D mat, iMat;
 	mat.setPerspective(vPnt1);
 	iMat = mat.inverseMat();
-	//mat.printMat();
+	//mat.printInfo();
 	Vector3D pos[4] = { Vector3D(0, 0, 1), Vector3D(src->getWidth(), 0, 1), Vector3D(0, src->getHeight(), 1), Vector3D(src->getWidth(), src->getHeight(), 1) };
 	Vector3D tmp;
 	for (int i = 0; i < 4; i++)

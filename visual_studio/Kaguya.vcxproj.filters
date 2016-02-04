@@ -192,6 +192,9 @@
     <ClInclude Include="..\src\Camera\orthoCamera.h">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\Sampler.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp">

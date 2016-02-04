@@ -629,7 +629,7 @@ void Triangle::getNormal(const DifferentialGeometry *queryPoint) const
 		Float dv1 = uv[0]->y - uv[2]->y;
 		Float dv2 = uv[1]->y - uv[2]->y;
 		Vector3D dp1 = *p[0] - *p[2], dp2 = *p[1] - *p[2];
-		Float det = du1 * dv2 - dv1 * du2;//determinant
+		Float det = du1 * dv2 - dv1 * du2;//Determinant
 		if (det == 0)
 		{
 			//Do something

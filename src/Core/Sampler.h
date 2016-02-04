@@ -9,4 +9,4 @@ struct cameraSampler
 	int imgX, imgY;
 	Float lensU, lensV;
 	Float time;
-}
+};

@@ -46,7 +46,7 @@ public:
 	Point3D getFilmUV(Float imgX, Float imgY) const;
 	Matrix4D rasterToFilm() const;
 protected:
-	friend class baseCamera;
+	friend class Camera;
 private:
 	Float horiApect = 0.036, vertApect = 0.024;
 	Transform RasterToFilm, FilmToScreen;

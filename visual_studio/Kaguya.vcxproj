@@ -106,6 +106,7 @@
     <ClInclude Include="..\src\Camera\orthoCamera.h" />
     <ClInclude Include="..\src\Camera\perspCamera.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
+    <ClInclude Include="..\src\Core\Sampler.h" />
     <ClInclude Include="..\src\Dynamics\Collision.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />

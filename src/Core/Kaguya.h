@@ -78,7 +78,7 @@ class Texture;
 class TextureMapping;
 class Shader;
 
-class baseCamera;
+class Camera;
 class perspCamera;
 class abstractCamera;
 

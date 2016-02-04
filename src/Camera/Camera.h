@@ -22,12 +22,12 @@
 #include "Camera/Film.h"
 #include "Tracer/renderBuffer.h"
 
-class baseCamera
+class Camera
 {
 public:
-	baseCamera();
-	baseCamera(const Vector3D& eyePos, const Vector3D& targetPos, const Vector3D& upVec);
-	virtual~baseCamera(){};
+	Camera();
+	Camera(const Vector3D& eyePos, const Vector3D& targetPos, const Vector3D& upVec);
+	virtual~Camera(){};
 
 	virtual void setResolution(int resX, int resY);
 	virtual void setSample(int aaSample);
@@ -37,7 +37,7 @@ public:
 	//virtual void lookAt(const Vector3D& targPos);
 	//virtual void lookAt(const Vector3D& camPos, const Vector3D& targPos, const Vector3D& upDir);
 	virtual void setBuffer(int x, int y, const bufferData tmpBuff);
-	virtual Ray shootRay(Float imgX, Float imgY) const = 0;
+	virtual Ray generateRay(Float imgX, Float imgY) const = 0;
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
 
 	virtual bufferData getBufferData(int x, int y) const;

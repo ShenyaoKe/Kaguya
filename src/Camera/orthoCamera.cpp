@@ -2,8 +2,8 @@
 
 orthoCamera::orthoCamera()
 {
-	CameraToWorld = lookAt();
-	CameraToScreen = Transform(setOrthographic());
+	CameraToWorld.setMat(Matrix4D::LookAt());
+	CameraToScreen = Transform(Matrix4D::Orthography());
 }
 
 orthoCamera::orthoCamera(const Transform& cam2wo, const Transform& projection)
@@ -17,7 +17,7 @@ orthoCamera::~orthoCamera()
 
 }
 
-Ray orthoCamera::shootRay(Float imgX, Float imgY) const
+Ray orthoCamera::generateRay(Float imgX, Float imgY) const
 {
 	return Ray();
 }

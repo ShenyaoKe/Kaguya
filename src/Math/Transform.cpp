@@ -65,13 +65,13 @@ Matrix4D Transform::getInvMat() const
 void Transform::setMat(const Matrix4D &mat)
 {
 	m = mat;
-	mInv = m.inverseMat();
+	mInv = m.Inverse();
 }
 
 void Transform::setInvMat(const Matrix4D &matInv)
 {
 	mInv = matInv;
-	m = mInv.inverseMat();
+	m = mInv.Inverse();
 }
 
 Transform xformTRS(
@@ -86,9 +86,9 @@ Transform xformTRS(
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz)
 {
-	Matrix4D T = setTranslation(tx, ty, tz);
-	Matrix4D R = setRotation(rx, ry, rz);
-	Matrix4D S = setScale(sx, sy, sz);
+	Matrix4D T = Matrix4D::Translate(tx, ty, tz);
+	Matrix4D R = Matrix4D::Rotate(rx, ry, rz);
+	Matrix4D S = Matrix4D::Scale(sx, sy, sz);
 	return Transform(T * R * S);
 }
 

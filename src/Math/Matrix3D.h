@@ -23,7 +23,7 @@ public:
 
 	Matrix3D() : mtx{}
 	{
-		//determinant();
+		//Determinant();
 	}
 	Matrix3D(const Float mat[3][3])
 	{
@@ -46,12 +46,12 @@ public:
 		mtx[0][0] = col0.x;	mtx[0][1] = col0.y;	mtx[0][2] = col0.z;
 		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;
 		mtx[2][0] = col2.x;	mtx[2][1] = col2.y;	mtx[2][2] = col2.z;
-		//determinant();
+		//Determinant();
 	}
 	Matrix3D(Float val)// : mtx{ { val } }
 	{
 		memset(mtx, val, sizeof(mtx));
-		//determinant();
+		//Determinant();
 	}
 	~Matrix3D()
 	{
@@ -136,7 +136,7 @@ inline Matrix3D Matrix3D::operator * (const Matrix3D &mat) const
 			}
 		}
 	}
-	//buffer.determinant();
+	//buffer.Determinant();
 	return buffer;
 }
 inline Vector3D Matrix3D::operator * (Vector3D& p) const
@@ -224,7 +224,7 @@ inline Matrix3D Matrix3D::inverseMat() const
 			buffer.mtx[i][j] = adjM.mtx[i][j] / det;
 		}
 	}
-	//buffer.determinant();
+	//buffer.Determinant();
 	return buffer;
 }
 inline void Matrix3D::setTranslation(const Vector2D& vec)
@@ -232,7 +232,7 @@ inline void Matrix3D::setTranslation(const Vector2D& vec)
 	setIdentity();
 	mtx[0][2] = vec.x;
 	mtx[1][2] = vec.y;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setRotation(Float theta)
 {
@@ -248,24 +248,24 @@ inline void Matrix3D::setRotation(Float sinth, Float costh)
 	mtx[0][0] = costh;	mtx[0][1] = -sinth;
 	mtx[1][0] = sinth;	mtx[1][1] = costh;
 	mtx[2][2] = 1;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setScale(Float sx, Float sy)
 {
 	mtx[0][0] = sx;	mtx[1][1] = sy; mtx[2][2] = 1;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setScale(Float scale)
 {
 	mtx[0][0] = scale;	mtx[1][1] = scale; mtx[2][2] = 1;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setShear(const Vector2D& vec)
 {
 	setIdentity();
 	mtx[0][1] = vec.x;
 	mtx[1][0] = vec.y;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setReflection(const Vector2D& vec)
 {
@@ -273,7 +273,7 @@ inline void Matrix3D::setReflection(const Vector2D& vec)
 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
 	mtx[1][0] = 2 * vec.x * vec.y;	mtx[1][1] = vec.y * vec.y - vec.x * vec.x;
 	mtx[2][2] = 1;
-	//determinant();
+	//Determinant();
 }
 inline void Matrix3D::setPerspective(const Vector2D& vPnt)
 {

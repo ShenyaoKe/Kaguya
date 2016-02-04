@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera\Camera.h"
 
-class perspCamera : public baseCamera
+class perspCamera : public Camera
 {
 public:
 	perspCamera();
@@ -14,7 +14,7 @@ public:
 	//void setSample(int aaSample);
 
 	void setDoF(Float lr, Float fd);
-	Ray shootRay(Float imgX, Float imgY) const;
+	Ray generateRay(Float imgX, Float imgY) const;
 	Float generateRay(const cameraSampler &sample, Ray* ray) const;
 	void renderImg(int x, int y, ColorRGBA& pixColor);
 	void saveResult(const char* filename);

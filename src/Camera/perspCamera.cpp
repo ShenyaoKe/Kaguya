@@ -16,8 +16,9 @@ perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target,
 	nz = Normalize(target - eyePos);
 	nx = Normalize(Cross(nz, upVec));
 	ny = Cross(nx, nz);
-	Matrix4D projMat = setPerspective();
-	CameraToWorld = lookAt(eyePos, target, upVec);
+	Matrix4D projMat = Matrix4D::Perspective();
+	CameraToWorld.setMat(Matrix4D::LookAt(eyePos, target, upVec));
+	
 	CameraToScreen = Transform(projMat);
 }
 
@@ -33,7 +34,7 @@ perspCamera::~perspCamera()
 }
 
 
-Ray perspCamera::shootRay(Float imgX, Float imgY) const
+Ray perspCamera::generateRay(Float imgX, Float imgY) const
 {
 	Vector2D fPos = film.getFilmPos(imgX, imgY);//point on film
 	//Vector3D rayDir = nz * focLen + nx * fPos.x + ny * fPos.y;

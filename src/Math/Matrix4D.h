@@ -21,7 +21,7 @@ class Matrix4D
 public:
 	Matrix4D() : mtx{}
 	{
-		//determinant();
+		//Determinant();
 	}
 	Matrix4D(const Float mat[4][4])
 	{
@@ -53,28 +53,17 @@ public:
 		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;	mtx[1][3] = col1.w;
 		mtx[2][0] = col2.x;	mtx[2][1] = col2.y;	mtx[2][2] = col2.z;	mtx[2][3] = col2.w;
 		mtx[3][0] = col3.x;	mtx[3][1] = col3.y;	mtx[3][2] = col3.z;	mtx[3][3] = col3.w;
-		//determinant();
+		//Determinant();
 	}
 	Matrix4D(Float val)
 	{
 		memset(mtx, val, sizeof(mtx));
-		//determinant();
+		//Determinant();
 	}
 	~Matrix4D()
 	{
 	}
-
-	static Matrix4D identityMat()
-	{
-		Matrix4D ret(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0
-			);
-		return ret;
-	}
-
+	
 	// Operators
 	Float* operator [] (int i);
 	const Float* operator [] (int i) const;
@@ -91,33 +80,33 @@ public:
 
 	void zero();
 	void setIdentity();
-	void printMat();
-	Float determinant() const;
-	Float getMinor(int x, int y) const;
-	Float getCofactor(int x, int y) const;
-	Matrix4D transposeMat() const;
-	Matrix4D adjointMat() const;
-	Matrix4D inverseMat() const;
+	void printInfo();
+	Float Determinant() const;
+	Float Minor(int x, int y) const;
+	Float Cofactor(int x, int y) const;
+	Matrix4D Transpose() const;
+	Matrix4D Adjoint() const;
+	Matrix4D Inverse() const;
 
 	//Set transformation matrix
-	friend Matrix4D identityMat4();
-	friend Matrix4D setTranslation(Float tx, Float ty, Float tz);
-	friend Matrix4D setTranslation(const Vector3D& vec);
-	friend Matrix4D setRoationX(Float theta);
-	friend Matrix4D setRoationY(Float theta);
-	friend Matrix4D setRoationZ(Float theta);
-	friend Matrix4D setRotation(Float alpha, Float beta, Float gamma);// in degree
-	friend Matrix4D setRotation(const Vector3D &axis, Float theta,
+	static Matrix4D Identity();
+	static Matrix4D Translate(Float tx, Float ty, Float tz);
+	static Matrix4D Translate(const Vector3D& vec);
+	static Matrix4D RotateX(Float theta);
+	static Matrix4D RotateY(Float theta);
+	static Matrix4D RotateZ(Float theta);
+	static Matrix4D Rotate(Float alpha, Float beta, Float gamma);// in degree
+	static Matrix4D Rotate(const Vector3D &axis, Float theta,
 		bool isNormalized = false);
-	friend Matrix4D setScale(Float sx, Float sy, Float sz);
-	friend Matrix4D setScale(Float scale);
-	friend Matrix4D setShear(const Vector3D& vec);
-	friend Matrix4D setReflection(const Vector3D& vec);
-	friend Matrix4D setLookAt(const Point3D &pos = Point3D(0, 0, 0),
+	static Matrix4D Scale(Float sx, Float sy, Float sz);
+	static Matrix4D Scale(Float scale);
+	static Matrix4D Shear(const Vector3D& vec);
+	static Matrix4D Reflect(const Vector3D& vec);
+	static Matrix4D LookAt(const Point3D &pos = Point3D(0, 0, 0),
 		const Point3D &target = Point3D(0, 0, 1), const Vector3D &up = Point3D(0, 1, 0));
-	friend Matrix4D setPerspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
+	static Matrix4D Perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
 		Float nearPlane = 0.001, Float farPlane = 100);
-	friend Matrix4D setOrthographic(Float lf = -1, Float rt = 1,
+	static Matrix4D Orthography(Float lf = -1, Float rt = 1,
 		Float bt = -1, Float tp = 1, Float nr = -1, Float fr = 1);
 
 	/*template <typename vbo_t>
@@ -304,7 +293,7 @@ inline void Matrix4D::setIdentity()
 	};*/
 }
 
-inline void Matrix4D::printMat()
+inline void Matrix4D::printInfo()
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -315,7 +304,7 @@ inline void Matrix4D::printMat()
 		cout << endl;
 	}
 }
-inline Float Matrix4D::determinant() const
+inline Float Matrix4D::Determinant() const
 {
 	Float det = 0;
 	for (int i = 0; i < 4; i++)
@@ -325,7 +314,7 @@ inline Float Matrix4D::determinant() const
 	}
 	return det;
 }
-inline Float Matrix4D::getMinor(int x, int y) const
+inline Float Matrix4D::Minor(int x, int y) const
 {
 	Matrix3D tmpM;
 	for (int i = 1; i < 4; i++)
@@ -335,25 +324,22 @@ inline Float Matrix4D::getMinor(int x, int y) const
 			tmpM.mtx[i - 1][j - 1] = mtx[(x + i) % 4][(y + j) % 4];
 		}
 	}
-	//tmpM.determinant();
+	//tmpM.Determinant();
 	return tmpM.determinant();
 }
-inline Float Matrix4D::getCofactor(int x, int y) const
+inline Float Matrix4D::Cofactor(int x, int y) const
 {
 	if ((x + y) % 2 == 0)
 	{
-		return getMinor(x, y);
+		return Minor(x, y);
 	}
 	else
 	{
-		return -getMinor(x, y);
+		return -Minor(x, y);
 	}
 }
 
-
-
-
-inline Matrix4D identityMat4()
+inline Matrix4D Matrix4D::Identity()
 {
 	return Matrix4D(
 		1.0, 0.0, 0.0, 0.0,
@@ -363,7 +349,7 @@ inline Matrix4D identityMat4()
 		);
 }
 
-inline Matrix4D Matrix4D::transposeMat() const
+inline Matrix4D Matrix4D::Transpose() const
 {
 	return Matrix4D(mtx[0][0], mtx[1][0], mtx[2][0], mtx[3][0],
 		mtx[0][1], mtx[1][1], mtx[2][1], mtx[3][1],
@@ -379,7 +365,8 @@ inline Matrix4D Matrix4D::transposeMat() const
 	}
 	return buffer;
 }
-inline Matrix4D Matrix4D::adjointMat() const
+
+inline Matrix4D Matrix4D::Adjoint() const
 {
 	Matrix4D ret;
 
@@ -387,22 +374,23 @@ inline Matrix4D Matrix4D::adjointMat() const
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			ret.mtx[i][j] = getCofactor(j, i);
+			ret.mtx[i][j] = Cofactor(j, i);
 		}
 	}
 	//buffer.det = 1.0 / det;
 	return ret;
 }
-inline Matrix4D Matrix4D::inverseMat() const
+
+inline Matrix4D Matrix4D::Inverse() const
 {
 	Matrix4D ret, adjM;
-	Float det = this->determinant();
+	Float det = this->Determinant();
 	if (det == 0)
 	{
 		cout << "The matrix is non-inversable!" << endl;
 		return Matrix4D();
 	}
-	adjM = adjointMat();
+	adjM = Adjoint();
 
 	Float invDet = 1.0 / det;
 	for (int i = 0; i < 4; i++)
@@ -416,7 +404,7 @@ inline Matrix4D Matrix4D::inverseMat() const
 	return ret;
 }
 
-inline Matrix4D setLookAt(const Point3D& pos, const Point3D& target, const Vector3D& up)
+inline Matrix4D Matrix4D::LookAt(const Point3D& pos, const Point3D& target, const Vector3D& up)
 {
 	//Camera to World
 	Vector3D nz = target - pos;
@@ -449,7 +437,7 @@ inline Matrix4D setLookAt(const Point3D& pos, const Point3D& target, const Vecto
 #endif
 }
 
-inline Matrix4D setPerspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
+inline Matrix4D Matrix4D::Perspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
 {
 
 	Float radAngle = DegreeToRadian(verticalAngle * 0.5);
@@ -484,7 +472,7 @@ inline Matrix4D setPerspective(Float verticalAngle, Float aspectRatio, Float nea
 
 }
 
-inline Matrix4D setOrthographic(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)
+inline Matrix4D Matrix4D::Orthography(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)
 {
 	return Matrix4D(
 		2.0 / (lf - rt), 0.0, 0.0, 0.0,
@@ -513,11 +501,12 @@ void Matrix4D::exportVBO(vbo_t *vtx_array) const
 	}
 }
 
-inline Matrix4D setTranslation(const Vector3D& vec)
+inline Matrix4D Matrix4D::Translate(const Vector3D& vec)
 {
-	return setTranslation(vec.x, vec.y, vec.z);
+	return Translate(vec.x, vec.y, vec.z);
 }
-inline Matrix4D setTranslation(Float tx, Float ty, Float tz)
+
+inline Matrix4D Matrix4D::Translate(Float tx, Float ty, Float tz)
 {
 	return Matrix4D(
 		1.0, 0.0, 0.0, 0.0,
@@ -526,7 +515,8 @@ inline Matrix4D setTranslation(Float tx, Float ty, Float tz)
 		tx, ty, tz, 1.0
 		);
 }
-inline Matrix4D setRotationX(Float theta)
+
+inline Matrix4D Matrix4D::RotateX(Float theta)
 {
 	Matrix4D ret;
 
@@ -542,7 +532,7 @@ inline Matrix4D setRotationX(Float theta)
 	return ret;
 }
 
-inline Matrix4D setRotationY(Float theta)
+inline Matrix4D Matrix4D::RotateY(Float theta)
 {
 	Matrix4D ret;
 
@@ -558,7 +548,7 @@ inline Matrix4D setRotationY(Float theta)
 	return ret;
 }
 
-inline Matrix4D setRotationZ(Float theta)
+inline Matrix4D Matrix4D::RotateZ(Float theta)
 {
 	Matrix4D ret;
 
@@ -574,7 +564,7 @@ inline Matrix4D setRotationZ(Float theta)
 	return ret;
 }
 
-inline Matrix4D setRotation(Float alpha, Float beta, Float gamma)
+inline Matrix4D Matrix4D::Rotate(Float alpha, Float beta, Float gamma)
 {
 	Matrix4D ret;
 	alpha = DegreeToRadian(alpha);
@@ -597,7 +587,8 @@ inline Matrix4D setRotation(Float alpha, Float beta, Float gamma)
 
 	return ret;
 }
-inline Matrix4D setRotation(const Vector3D &axis, Float theta, bool isNormalized)
+
+inline Matrix4D Matrix4D::Rotate(const Vector3D &axis, Float theta, bool isNormalized)
 {
 	Vector3D u = isNormalized ? axis : Normalize(axis);
 	Float rad = DegreeToRadian(theta);
@@ -628,7 +619,8 @@ inline Matrix4D setRotation(const Vector3D &axis, Float theta, bool isNormalized
 	ret.mtx[3][3] = 1.0;
 	return ret;
 }
-inline Matrix4D setScale(Float sx, Float sy, Float sz)
+
+inline Matrix4D Matrix4D::Scale(Float sx, Float sy, Float sz)
 {
 	return Matrix4D(
 		sx, 0.0, 0.0, 0.0,
@@ -637,7 +629,8 @@ inline Matrix4D setScale(Float sx, Float sy, Float sz)
 		0.0, 0.0, 0.0, 1.0
 		);
 }
-inline Matrix4D setScale(Float scale)
+
+inline Matrix4D Matrix4D::Scale(Float scale)
 {
 	return Matrix4D(
 		scale, 0.0, 0.0, 0.0,
@@ -646,26 +639,28 @@ inline Matrix4D setScale(Float scale)
 		0.0, 0.0, 0.0, 1.0
 		);
 }
-// inline void Matrix4D::setShear(Vector3D& vec)
-// {
-// 	setIdentify();
-// 	mtx[0][1] = vec.x;
-// 	mtx[1][0] = vec.y;
-// 	determinant();
-// }
-// inline void Matrix4D::setReflection(Vector3D& vec)
-// {
-// 	// vec is a vector in the direction of the line
-// 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
-// 	mtx[1][0] = 2 * vec.x * vec.y;	mtx[1][1] = vec.y * vec.y - vec.x * vec.x;
-// 	mtx[2][2] = 1;
-// 	determinant();
-// }
-// inline void Matrix4D::setPerspective(Vector3D& vPnt)
-// {
-// 	setIdentify();
-// 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
-// }
+/*
+inline void Matrix4D::Shear(Vector3D& vec)
+{
+ 	setIdentify();
+ 	mtx[0][1] = vec.x;
+ 	mtx[1][0] = vec.y;
+ 	Determinant();
+}
+inline void Matrix4D::Reflect(Vector3D& vec)
+{
+ 	// vec is a vector in the direction of the line
+ 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
+ 	mtx[1][0] = 2 * vec.x * vec.y;	mtx[1][1] = vec.y * vec.y - vec.x * vec.x;
+ 	mtx[2][2] = 1;
+ 	Determinant();
+}
+inline void Matrix4D::Perspective(Vector3D& vPnt)
+{
+ 	setIdentify();
+ 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
+}
+*/
 template void Matrix4D::exportVBO<float>(float *) const;
 template void Matrix4D::exportVBO<double>(double *) const;
 #endif

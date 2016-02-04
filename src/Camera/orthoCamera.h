@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera\Camera.h"
 
-class orthoCamera : public baseCamera
+class orthoCamera : public Camera
 {
 public:
 	orthoCamera();
@@ -11,7 +11,7 @@ public:
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);
 
-	Ray shootRay(Float imgX, Float imgY) const;
+	Ray generateRay(Float imgX, Float imgY) const;
 
 	//void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
 	//void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
