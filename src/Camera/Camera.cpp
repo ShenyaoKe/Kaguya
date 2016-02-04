@@ -5,6 +5,7 @@ Camera::Camera(const Vector3D& eyePos, const Vector3D& targetPos,
 	: CameraToWorld(Matrix4D::LookAt(eyePos, target, upVec))
 	, CameraToScreen(Matrix4D::Perspective())
 	, target(targetPos)
+	, nearPlane(0.1), farPlane(100)
 {
 	/*pos = eyePos;
 	nz = Normalize(target - eyePos);
@@ -38,22 +39,16 @@ void Camera::setFilmType(FILM_TYPE filmType)
 void Camera::updateMatrices()
 {
 	// Raster to camera
-	// Raster to screen
+	updateRaster2Cam();
+
+	// Camera to screen
+	updateCam2Screen();
+	
+	// Update RasterToScreen
+	updateRaster2Screen();
+
 }
-/*
-void Camera::lookAt(const Vector3D& targPos)
-{
-	nz = Normalize(targPos - pos);
-	nx = nz.crossMul(ny);
-	ny = nx.crossMul(nz);
-}
-void Camera::lookAt(const Vector3D& camPos, const Vector3D& targPos, const Vector3D& upDir)
-{
-	pos = camPos;
-	nz = Normalize(targPos - camPos);
-	nx = Cross(nz, upDir);
-	ny = Cross(nx, nz);
-}*/
+
 void Camera::setBuffer(int x, int y, const bufferData tmpBuff)
 {
 	buffer.data[x][y] = tmpBuff;
@@ -68,11 +63,13 @@ Vector3D Camera::getTarget() const
 	return target;
 }
 
-void Camera::updateCamToWorld(const Matrix4D &cam2wMat)
+void Camera::setCamToWorld(const Matrix4D &cam2wMat)
 {
 	CameraToWorld = Transform(cam2wMat);
 }
-void Camera::updateProjection(const Matrix4D &perspMat)
+
+
+void Camera::setProjection(const Matrix4D &perspMat)
 {
 	CameraToScreen = Transform(perspMat);
 }
@@ -91,6 +88,18 @@ void Camera::exportVBO(float *view, float *proj, float *raster) const
 	{
 		RasterToScreen.m.exportVBO(raster);
 	}
+}
+
+void Camera::updateRaster2Cam()
+{
+	Matrix4D raster2camMat = film.rasterToFilm();
+	raster2camMat[3][2] = focLen;
+	RasterToCamera = Transform(raster2camMat);
+}
+
+void Camera::updateRaster2Screen()
+{
+	RasterToScreen.setMat(CameraToScreen.getMat() * RasterToCamera.getMat());
 }
 
 void Camera::zoom(Float x_val, Float y_val, Float z_val)
@@ -164,7 +173,7 @@ void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 	CameraToWorld.setMat(Matrix4D::LookAt(_pos.toVector3D(), target, _ny.toVector3D()));
 }
 
-void Camera::resizeViewport(Float aspr /*= 1.0*/)
+void Camera::resizeViewport(Float aspr)
 {
 	Matrix4D newProj= CameraToScreen.getMat();
 	newProj[0][0] = -newProj[1][1] / aspr;

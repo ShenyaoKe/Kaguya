@@ -80,6 +80,13 @@ public:
 
 	void zero();
 	void setIdentity();
+
+	void setValueAt(int x, int y, Float val)
+	{
+		// (X, Y) is (row, column) indices in Row Major
+		mtx[y][x] = val;
+	}
+
 	void printInfo();
 	Float Determinant() const;
 	Float Minor(int x, int y) const;
@@ -106,6 +113,10 @@ public:
 		const Point3D &target = Point3D(0, 0, 1), const Vector3D &up = Point3D(0, 1, 0));
 	static Matrix4D Perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
 		Float nearPlane = 0.001, Float farPlane = 100);
+
+	static Matrix4D PerspectiveFromFilm(Float filmVert = 1, Float filmHori = 1,
+		Float focal = 1, Float nearPlane = 0.001, Float farPlane = 100);
+
 	static Matrix4D Orthography(Float lf = -1, Float rt = 1,
 		Float bt = -1, Float tp = 1, Float nr = -1, Float fr = 1);
 
@@ -447,9 +458,6 @@ inline Matrix4D Matrix4D::Perspective(Float verticalAngle, Float aspectRatio, Fl
 		return Matrix4D();
 	}
 	sy = std::cos(radAngle) / sy;
-//	Float sx = -sy / aspectRatio;
-//	Float sz = (farPlane + nearPlane) / (farPlane - nearPlane);
-//	Float pz = 2.0 * farPlane * nearPlane / (nearPlane - farPlane);
 	
 	Float sx = sy / aspectRatio;
 	Float clip = nearPlane - farPlane;
@@ -469,9 +477,35 @@ inline Matrix4D Matrix4D::Perspective(Float verticalAngle, Float aspectRatio, Fl
 		0.0, 0.0, sz, w,
 		0.0, 0.0, pz, 0.0
 		);
-
 }
+inline Matrix4D Matrix4D::PerspectiveFromFilm(
+	Float filmVert, Float filmHori,	Float focal,
+	Float nearPlane, Float farPlane)
+{
+	if (focal == 0 || filmVert == 0 || filmHori == 0)
+	{
+		return Matrix4D::Identity();
+	}
+	Float sy = focal / filmVert * 2;
+	Float sx = focal / filmHori * 2;
+	Float clip = nearPlane - farPlane;
+#ifdef RIGHT_HAND_ORDER // OpenGL style
+	Float sz = (farPlane + nearPlane) / clip;
+	Float pz = 2.0 * farPlane * nearPlane / clip;
+	Float w = -1.0;
+#else // DirectX style
+	Float sz = -(farPlane + nearPlane) / clip;
+	Float pz = 2.0 * farPlane * nearPlane / clip;
+	Float w = 1.0;
+#endif
 
+	return Matrix4D(
+		sx, 0.0, 0.0, 0.0,
+		0.0, sy, 0.0, 0.0,
+		0.0, 0.0, sz, w,
+		0.0, 0.0, pz, 0.0
+		);
+}
 inline Matrix4D Matrix4D::Orthography(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)
 {
 	return Matrix4D(

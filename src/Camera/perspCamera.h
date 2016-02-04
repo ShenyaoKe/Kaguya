@@ -12,7 +12,7 @@ public:
 	//Vector3D getPos() { return pos; }
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);
-
+	void updateCam2Screen();
 	void setDoF(Float lr, Float fd);
 	Ray generateRay(Float imgX, Float imgY) const;
 	Float generateRay(const cameraSampler &sample, Ray* ray) const;

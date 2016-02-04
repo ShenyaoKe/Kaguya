@@ -33,6 +33,23 @@ perspCamera::~perspCamera()
 
 }
 
+void perspCamera::updateCam2Screen()
+{
+	Float horisize, vertsize;
+
+	if (viewportRatio - film.ApectureRatio() < 0)
+	{
+		horisize = film.HorizonalApect() * 0.5;
+		vertsize = horisize / viewportRatio;
+	}
+	else
+	{
+		vertsize = film.VerticalApect() / 0.5;
+		horisize = vertsize * viewportRatio;
+	}
+	CameraToScreen.setMat(Matrix4D::PerspectiveFromFilm(
+		vertsize, horisize, focLen, nearPlane, farPlane));
+}
 
 Ray perspCamera::generateRay(Float imgX, Float imgY) const
 {

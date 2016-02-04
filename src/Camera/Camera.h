@@ -43,8 +43,11 @@ public:
 	virtual bufferData getBufferData(int x, int y) const;
 	virtual Vector3D getTarget() const;
 
-	virtual void updateProjection(const Matrix4D &perspMat);
-	virtual void updateCamToWorld(const Matrix4D &cam2wMat);
+	virtual void setProjection(const Matrix4D &perspMat);
+	virtual void setCamToWorld(const Matrix4D &cam2wMat);
+	virtual void updateRaster2Cam();
+	virtual void updateCam2Screen() = 0;
+	virtual void updateRaster2Screen();
 
 	// Camera Roaming Operation
 	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
@@ -59,10 +62,15 @@ public:
 protected:
 	Point3D pos, target;
 	Vector3D nx, ny, nz;
-
+	
 	Film film;//contains image size, film size(horApec, verApec)
 	renderBuffer buffer;
+
+	int ViewX, ViewY;
+	Float viewportRatio = 1;//width / height
 	Float focLen = 0.035;//focal length
+
+	Float nearPlane, farPlane;
 	int sample = 1;
 private:
 };

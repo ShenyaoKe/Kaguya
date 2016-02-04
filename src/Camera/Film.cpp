@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 Film::Film(FILM_TYPE filmType,
 	int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
-	: ImageData(resX, resY)
+	//: ImageData(resX, resY)
 {
 	setFilmType(filmType);
 	setFitType(fitTyep);
@@ -150,14 +150,29 @@ Point3D Film::getFilmUV(Float imgX, Float imgY) const
 }
 Matrix4D Film::rasterToFilm() const
 {
-	Matrix4D ret;
+	//Matrix4D ret;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
-//		ret.mtx[3][2] = 
-//		return Point2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+	{
+		Float m00 = horiApect / static_cast<Float>(width);
+		return Matrix4D(
+			m00, 0, 0, 0,
+			0, m00, 0, 0,
+			0, 0, 1, 0,
+			-0.5 * horiApect, -0.5 * m00 * height, 0, 1
+			);
+	}
 	case FRG_VERTICAL_FIT:
-//		return Point2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+	{
+		Float m00 = vertApect / static_cast<Float>(height);
+		return Matrix4D(
+			m00, 0, 0, 0,
+			0, m00, 0, 0,
+			0, 0, 1, 0,
+			-0.5 * m00 * width, -0.5 * vertApect, 0, 1
+			);
+	}
 		/*
 		case FRG_FILL_FIT:
 		filmRatio = horiApect / vertApect;

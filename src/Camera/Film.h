@@ -39,8 +39,9 @@ public:
 	void setFilmType(FILM_TYPE filmType);
 	void setFitType(FIT_RESOLUTION_GATE fitType);
 
-	Float getHoriApect() const { return horiApect; }
-	Float getVertApect() const { return vertApect; }
+	Float HorizonalApect() const { return horiApect; }
+	Float VerticalApect() const { return vertApect; }
+	Float ApectureRatio() const{ return horiApect / vertApect; }
 	Point2D getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
 	Point2D getImgPos(Float filmX, Float filmY) const;
 	Point3D getFilmUV(Float imgX, Float imgY) const;
@@ -49,6 +50,7 @@ protected:
 	friend class Camera;
 private:
 	Float horiApect = 0.036, vertApect = 0.024;
+	// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 
 	FIT_RESOLUTION_GATE resFT = FRG_HORIZONTAL_FIT;
