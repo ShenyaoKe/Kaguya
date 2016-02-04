@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{077f9c0a-f397-4ceb-b959-5428eb369203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\geometry">
+      <UniqueIdentifier>{11aa7a8b-ff18-48af-963d-4c1a3f93d884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\image">
+      <UniqueIdentifier>{cb5ae74c-e520-481b-86c0-b00872f2d26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{38fd9526-3a46-4782-8617-597ecc2182b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\shading">
+      <UniqueIdentifier>{5aa73dc3-808b-4e34-97b5-9ddbd15471cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tracer">
+      <UniqueIdentifier>{94dfb36d-a8f9-43e2-becb-1e3dc219dd30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\light">
+      <UniqueIdentifier>{6ca324de-8fc0-4d99-86e7-dc13848271d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\camera">
+      <UniqueIdentifier>{9ff6eba5-dec9-4f3c-97c0-83ac241271cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\accel">
+      <UniqueIdentifier>{fa07ac9f-ca54-4941-9015-7d0ade8e9451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\accel">
+      <UniqueIdentifier>{6a26ff12-d5e8-4e1b-b749-8bb494a3f9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{8c262c83-2e3b-499f-b255-58aa488e07c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry">
+      <UniqueIdentifier>{ecd87dbb-9bbd-4f68-9ce2-87faab7ab649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\image">
+      <UniqueIdentifier>{7dd17137-c61a-4b22-8e23-68c11e36ad65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\light">
+      <UniqueIdentifier>{2231e18f-25d3-41a4-b858-906716c32383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shading">
+      <UniqueIdentifier>{94883acd-c658-4ac8-a507-e6e78413f223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tracer">
+      <UniqueIdentifier>{c1da9ddb-1484-4010-9793-8dfc61f190fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{596ed743-f1e9-4320-9213-716321cab9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dynamics">
+      <UniqueIdentifier>{d7cd9f88-084c-47d3-90b2-cf2da9582e6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dynamics">
+      <UniqueIdentifier>{7ba9d242-6c49-4e30-9c4d-962412c9ea26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\volume">
+      <UniqueIdentifier>{1546571e-9871-4d4d-9791-0230d2643797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\volume">
+      <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Shading\Noise.h">
+      <Filter>Header Files\shading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\TextureMapping.h">
+      <Filter>Header Files\shading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\Texture.h">
+      <Filter>Header Files\shading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\Shader.h">
+      <Filter>Header Files\shading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Mesh.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tracer\Ray.h">
+      <Filter>Header Files\tracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Shape.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\Light.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\Spectrum.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tracer\renderBuffer.h">
+      <Filter>Header Files\tracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Accel\BBox.h">
+      <Filter>Header Files\accel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\EnvironmentMap.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Accel\KdTreeAccel.h">
+      <Filter>Header Files\accel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Accel\Primitive.h">
+      <Filter>Header Files\accel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Tracer\Tracer.h">
+      <Filter>Header Files\tracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\Film.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\Camera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\CGVector.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\Matrix3D.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\Matrix4D.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\MonteCarlo.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Image\ColorData.h">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Image\ImageData.h">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Image\Filter.h">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Core\MemoryControl.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Curve.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\MathUtil.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Image\ImagePyramid.h">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Image\TextureSynthesis.h">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Math\Transform.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Core\Kaguya.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dynamics\Collision.h">
+      <Filter>Header Files\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Volume\RasterizedVolume.h">
+      <Filter>Header Files\volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\abstractCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\perspCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\orthoCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Core\Sampler.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Accel\BBox.cpp">
+      <Filter>Source Files\accel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
+      <Filter>Source Files\accel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Mesh.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Shape.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\EnvironmentMap.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\Light.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\Spectrum.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\Shader.cpp">
+      <Filter>Source Files\shading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\Texture.cpp">
+      <Filter>Source Files\shading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\TextureMapping.cpp">
+      <Filter>Source Files\shading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Tracer\Ray.cpp">
+      <Filter>Source Files\tracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Accel\Primitive.cpp">
+      <Filter>Source Files\accel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\Film.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Tracer\renderBuffer.cpp">
+      <Filter>Source Files\tracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Image\Filter.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Image\ImageData.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Math\MonteCarlo.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\Camera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Curve.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Image\ImagePyramid.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Image\TextureSynthesis.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Dynamics\Collision.cpp">
+      <Filter>Source Files\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Volume\RasterizedVolume.cpp">
+      <Filter>Source Files\volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\perspCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\orthoCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\abstractCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Math\Transform.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
