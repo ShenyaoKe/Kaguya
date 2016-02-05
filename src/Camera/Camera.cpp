@@ -1,22 +1,26 @@
 #include "Camera/Camera.h"
 
-Camera::Camera(const Vector3D& eyePos, const Vector3D& targetPos,
-	const Vector3D& upVec)
-	: CameraToWorld(Matrix4D::LookAt(eyePos, target, upVec))
-	, CameraToScreen(Matrix4D::Perspective())
-	, target(targetPos)
+Camera::Camera(const Vector3D& eye,
+	const Vector3D& targ, const Vector3D& up,
+	Float asp, Float lr, Float fd, const Film &fm)
+	: CameraToWorld(Matrix4D::LookAt(eye, target, up))
+	//, CameraToScreen(Matrix4D::Perspective())
+	, target(targ)
+	, lensRadius(lr), focalDistance(fd)
 	, nearPlane(0.1), farPlane(100)
+	, film(fm)
 {
+	//updateMatrices();
 	/*pos = eyePos;
 	nz = Normalize(target - eyePos);
 	nx = Normalize(Cross(nz, nz));
 	ny = Normalize(Cross(nx, nz));*/
 }
 
-
-Camera::Camera()
-	: CameraToWorld(Matrix4D::LookAt())
+void Camera::setFilm(const Film &f)
 {
+	film = f;
+	updateMatrices();
 }
 
 void Camera::setResolution(int resX, int resY)
@@ -39,13 +43,13 @@ void Camera::setFilmType(FILM_TYPE filmType)
 void Camera::updateMatrices()
 {
 	// Raster to camera
-	updateRaster2Cam();
+	updateRasterToCam();
 
 	// Camera to screen
-	updateCam2Screen();
+	updateCamToScreen();
 	
 	// Update RasterToScreen
-	updateRaster2Screen();
+	updateRasterToScreen();
 
 }
 
@@ -68,7 +72,6 @@ void Camera::setCamToWorld(const Matrix4D &cam2wMat)
 	CameraToWorld = Transform(cam2wMat);
 }
 
-
 void Camera::setProjection(const Matrix4D &perspMat)
 {
 	CameraToScreen = Transform(perspMat);
@@ -90,14 +93,14 @@ void Camera::exportVBO(float *view, float *proj, float *raster) const
 	}
 }
 
-void Camera::updateRaster2Cam()
+void Camera::updateRasterToCam()
 {
 	Matrix4D raster2camMat = film.rasterToFilm();
 	raster2camMat[3][2] = focLen;
 	RasterToCamera = Transform(raster2camMat);
 }
 
-void Camera::updateRaster2Screen()
+void Camera::updateRasterToScreen()
 {
 	RasterToScreen.setMat(CameraToScreen.getMat() * RasterToCamera.getMat());
 }

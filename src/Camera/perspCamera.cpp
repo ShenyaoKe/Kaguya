@@ -1,25 +1,15 @@
 #include "perspCamera.h"
 
-perspCamera::perspCamera()
-	:lensRadius(0), focalDistance(INFINITY)
-
+perspCamera::perspCamera(const Vector3D& eye,
+	const Vector3D& targ, const Vector3D& up,
+	Float asp, Float lr, Float fd, const Film &fm)
+	: Camera(eye, targ, up, asp, lr, fd, fm)
 {
-	/*nx = X_AXIS3D;
-	ny = Y_AXIS3D;
-	nz = Z_AXIS3D;*/
-}
-perspCamera::perspCamera(const Point3D& eyePos, const Vector3D& target,
-	const Vector3D& upVec, Float lr, Float fd)
-	: lensRadius(lr), focalDistance(fd)
-{
-	pos = eyePos;
-	nz = Normalize(target - eyePos);
-	nx = Normalize(Cross(nz, upVec));
-	ny = Cross(nx, nz);
-	Matrix4D projMat = Matrix4D::Perspective();
-	CameraToWorld.setMat(Matrix4D::LookAt(eyePos, target, upVec));
+	/*Matrix4D projMat = Matrix4D::Perspective();
+	CameraToWorld.setMat(Matrix4D::LookAt(eye, target, up));
 	
-	CameraToScreen = Transform(projMat);
+	CameraToScreen = Transform(projMat);*/
+	updateMatrices();
 }
 
 perspCamera::perspCamera(const Transform& cam2wo, const Transform& projection)
@@ -33,7 +23,7 @@ perspCamera::~perspCamera()
 
 }
 
-void perspCamera::updateCam2Screen()
+void perspCamera::updateCamToScreen()
 {
 	Float horisize, vertsize;
 
@@ -69,11 +59,11 @@ Ray perspCamera::generateRay(Float imgX, Float imgY) const
 		lensV *= lensRadius;//scale to focal radius
 
 		//compute point on plane of focus
-		Float ft = focalDistance / (ret.dir * nz);
+		/*Float ft = focalDistance / (ret.dir * nz);
 		Point3D focusP = ret(ft);
 		//update ray of lens
 		ret.pos += pos + nx * lensU + ny * lensV;
-		ret.dir = Normalize(focusP - ret.pos);
+		ret.dir = Normalize(focusP - ret.pos);*/
 
 	}
 
@@ -113,6 +103,13 @@ void perspCamera::saveResult(const char* filename)
 	film.writeFile(filename);
 }
 
+
+void perspCamera::resizeViewport(Float aspr /*= 1.0*/)
+{
+	viewportRatio = aspr;
+	updateCamToScreen();
+	updateRasterToScreen();
+}
 
 void perspCamera::setDoF(Float lr, Float fd)
 {

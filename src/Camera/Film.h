@@ -49,7 +49,7 @@ public:
 protected:
 	friend class Camera;
 private:
-	Float horiApect = 0.036, vertApect = 0.024;
+	Float horiApect = 36, vertApect = 24;//mm
 	// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 

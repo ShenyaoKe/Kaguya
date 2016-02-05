@@ -5,7 +5,7 @@ Film::Film(FILM_TYPE filmType,
 	int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
 	//: ImageData(resX, resY)
 {
-	setFilmType(filmType);
+	//setFilmType(filmType);
 	setFitType(fitTyep);
 }
 Film::~Film()
@@ -17,20 +17,20 @@ void Film::setFilmType(FILM_TYPE filmType)
 	switch (filmType)
 	{
 	case FT_SQUARE:
-		horiApect = 0.01;
-		vertApect = 0.01;
+		horiApect = 10;
+		vertApect = 10;
 		break;
 	case FT_16MM_THEATRICAL:
-		horiApect = 0.010262;
-		vertApect = 0.007493;
+		horiApect = 10.262;
+		vertApect = 7.493;
 		break;
 	case FT_35MM_ACADEMY:
-		horiApect = 0.021946;
-		vertApect = 0.016002;
+		horiApect = 21.946;
+		vertApect = 16.002;
 		break;
 	case FT_IMAX:
-		horiApect = 0.070409;
-		vertApect = 0.052629;
+		horiApect = 70.409;
+		vertApect = 52.629;
 		break;
 	default:
 		break;

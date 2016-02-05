@@ -24,7 +24,7 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;
 
 	Float newU = imgX / film.getWidth(), newV = imgY / film.getHeight();
-	Point3D rayPoint = pos;
+	/*Point3D rayPoint = pos;
 
 	if (posTex != nullptr)
 	{
@@ -38,7 +38,9 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	Ray ret(rayPoint, Normalize(rayDir));
 
 
-	return ret;
+
+	return ret;*/
+	return Ray();
 }
 
 void abstractCamera::setImage(Texture *posImg, Texture *dirImg)

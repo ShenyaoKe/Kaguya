@@ -25,10 +25,15 @@
 class Camera
 {
 public:
-	Camera();
-	Camera(const Vector3D& eyePos, const Vector3D& targetPos, const Vector3D& upVec);
+	//Camera();
+	Camera(const Vector3D& eye = Vector3D(1,1,1),
+		const Vector3D& targ = Vector3D(0,0,0),
+		const Vector3D& up = Vector3D(0,1,0),
+		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
+		const Film &fm = Film());
 	virtual~Camera(){};
 
+	virtual void setFilm(const Film &f);
 	virtual void setResolution(int resX, int resY);
 	virtual void setSample(int aaSample);
 	virtual void setFocLen(Float fl);
@@ -45,9 +50,9 @@ public:
 
 	virtual void setProjection(const Matrix4D &perspMat);
 	virtual void setCamToWorld(const Matrix4D &cam2wMat);
-	virtual void updateRaster2Cam();
-	virtual void updateCam2Screen() = 0;
-	virtual void updateRaster2Screen();
+	virtual void updateRasterToCam();
+	virtual void updateCamToScreen() = 0;
+	virtual void updateRasterToScreen();
 
 	// Camera Roaming Operation
 	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
@@ -60,15 +65,16 @@ public:
 	Transform CameraToScreen, RasterToCamera, RasterToScreen;
 
 protected:
-	Point3D pos, target;
-	Vector3D nx, ny, nz;
+	Point3D target;
+	//Vector3D nx, ny, nz;
 	
 	Film film;//contains image size, film size(horApec, verApec)
 	renderBuffer buffer;
 
 	int ViewX, ViewY;
 	Float viewportRatio = 1;//width / height
-	Float focLen = 0.035;//focal length
+	Float focLen = 35;//focal length
+	Float lensRadius, focalDistance;
 
 	Float nearPlane, farPlane;
 	int sample = 1;

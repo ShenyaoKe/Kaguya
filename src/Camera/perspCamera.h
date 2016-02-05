@@ -4,24 +4,26 @@
 class perspCamera : public Camera
 {
 public:
-	perspCamera();
-	perspCamera(const Point3D& eyePos, const Vector3D& target,
-		const Vector3D& upVec, Float lr = 0.0, Float fd = INFINITY);
+	perspCamera(const Vector3D& eye = Vector3D(1, 1, 1),
+		const Vector3D& targ = Vector3D(0, 0, 0),
+		const Vector3D& up = Vector3D(0, 1, 0),
+		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
+		const Film &fm = Film());
 	perspCamera(const Transform& cam2wo, const Transform& projection);
 	~perspCamera();
 	//Vector3D getPos() { return pos; }
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);
-	void updateCam2Screen();
+	void updateCamToScreen();
 	void setDoF(Float lr, Float fd);
 	Ray generateRay(Float imgX, Float imgY) const;
 	Float generateRay(const cameraSampler &sample, Ray* ray) const;
 	void renderImg(int x, int y, ColorRGBA& pixColor);
 	void saveResult(const char* filename);
+	void resizeViewport(Float aspr = 1.0);
 
 	//void setUpVec(Vector3D& upVec);
 protected:
 	Float fov;
-	Float lensRadius, focalDistance;
 private:
 };
