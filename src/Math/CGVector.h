@@ -28,7 +28,14 @@ public:
 	Vector2D(const Vector2D &vec) : x(vec.x), y(vec.y){}
 	Vector2D(Float posX, Float posY) :x(posX), y(posY){}
     //Vector2D zero(){ x = 0; y = 0; }
-	virtual void printInfo() const{ cout << "x:" << x << "\ty:" << y << endl; }
+	virtual void printInfo(const string &msg = "") const
+	{
+		if (!msg.empty())
+		{
+			cout << msg << endl;
+		}
+		cout << "x:" << x << "\ty:" << y << endl;
+	}
 	
 	Vector2D operator-() const{ return Vector2D(-x, -y); }
 	Vector2D operator+(const Vector2D& vec) const{ return Vector2D(x + vec.x, y + vec.y); }
@@ -89,7 +96,14 @@ public:
 
 	friend Vector3D operator*(Float n, const Vector3D& vec){ return vec * n; }
 	friend ostream& operator << (ostream& os, const Vector3D& vec);
-	void printInfo() const{ cout << "x:" << x << "\ty:" << y << "\tz:" << z << endl; }
+	void printInfo(const string &msg = "") const
+	{
+		if (!msg.empty())
+		{
+			cout << msg << endl;
+		}
+		cout << "x:" << x << "\ty:" << y << "\tz:" << z << endl;
+	}
 	void getData(Float* data) const;
 	Float getLength() const;
 	Float getLenSq() const;
@@ -132,7 +146,14 @@ public:
 	Float getLenSq() const;
 	Vector4D getNorm() const;
 	void normalize();
-	void printInfo() const { cout << "x:" << x << "\ty:" << y << "\tz:" << z << "\tw:" << w << endl; }
+	void printInfo(const string &msg = "") const
+	{
+		if (!msg.empty())
+		{
+			cout << msg << endl;
+		}
+		cout << "x:" << x << "\ty:" << y << "\tz:" << z << "\tw:" << w << endl;
+	}
 
 protected:
 private:

@@ -87,7 +87,7 @@ public:
 		mtx[y][x] = val;
 	}
 
-	void printInfo();
+	void printInfo(const string &text = "") const;
 	Float Determinant() const;
 	Float Minor(int x, int y) const;
 	Float Cofactor(int x, int y) const;
@@ -219,7 +219,7 @@ inline Matrix4D operator*(const Matrix4D& m1, const Matrix4D& m2)
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				ret.mtx[i][j] += m1.mtx[i][k] * m2.mtx[k][j];
+				ret.mtx[j][i] += m1.mtx[k][i] * m2.mtx[j][k];
 			}
 		}
 	}
@@ -304,8 +304,12 @@ inline void Matrix4D::setIdentity()
 	};*/
 }
 
-inline void Matrix4D::printInfo()
+inline void Matrix4D::printInfo(const string &msg) const
 {
+	if (!msg.empty())
+	{
+		cout << msg << endl;
+	}
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -418,31 +422,28 @@ inline Matrix4D Matrix4D::Inverse() const
 inline Matrix4D Matrix4D::LookAt(const Point3D& pos, const Point3D& target, const Vector3D& up)
 {
 	//Camera to World
-	Vector3D nz = target - pos;
+	Vector3D nz = pos - target;
 	// distance between target and camera position is too small
 	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
 	{
 		return Matrix4D();
 	}
-
+	nz.normalize();
+	Vector3D nx = Normalize(Cross(up, nz));//right dir
+	Vector3D ny = Cross(nz, nx);
 	nz.normalize();
 #ifdef RIGHT_HAND_ORDER // OpenGL style
-	Vector3D nx = Normalize(Cross(up, nz));
-	Vector3D ny = Cross(nz, nx);
-	return Matrix4D(
-		nx.x, nx.y, nx.z, 0.0,
-		ny.x, ny.y, ny.z, 0.0,
-		-nz.x, -nz.y, -nz.z, 0.0,
-		pos.x, pos.y, pos.z, 1.0
-	);
-#else // DirectX style
-	nz = -nz;
-	Vector3D nx = Normalize(Cross(nz, up));//left dir
-	Vector3D ny = Cross(nx, nz);
 	return Matrix4D(
 		nx.x, nx.y, nx.z, 0.0,
 		ny.x, ny.y, ny.z, 0.0,
 		nz.x, nz.y, nz.z, 0.0,
+		pos.x, pos.y, pos.z, 1.0
+	);
+#else // DirectX style
+	return Matrix4D(
+		nx.x, nx.y, nx.z, 0.0,
+		ny.x, ny.y, ny.z, 0.0,
+		-nz.x, -nz.y, -nz.z, 0.0,
 		pos.x, pos.y, pos.z, 1.0
 	);
 #endif
@@ -486,6 +487,7 @@ inline Matrix4D Matrix4D::PerspectiveFromFilm(
 	{
 		return Matrix4D::Identity();
 	}
+	//focal *= nearPlane;
 	Float sy = focal / filmVert * 2;
 	Float sx = focal / filmHori * 2;
 	Float clip = nearPlane - farPlane;

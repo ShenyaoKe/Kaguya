@@ -5,10 +5,6 @@ perspCamera::perspCamera(const Vector3D& eye,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: Camera(eye, targ, up, asp, lr, fd, fm)
 {
-	/*Matrix4D projMat = Matrix4D::Perspective();
-	CameraToWorld.setMat(Matrix4D::LookAt(eye, target, up));
-	
-	CameraToScreen = Transform(projMat);*/
 	updateMatrices();
 }
 
@@ -29,14 +25,15 @@ void perspCamera::updateCamToScreen()
 
 	if (viewportRatio - film.ApectureRatio() < 0)
 	{
-		horisize = film.HorizonalApect() * 0.5;
+		horisize = film.HorizonalApect();
 		vertsize = horisize / viewportRatio;
 	}
 	else
 	{
-		vertsize = film.VerticalApect() / 0.5;
+		vertsize = film.VerticalApect();
 		horisize = vertsize * viewportRatio;
 	}
+
 	CameraToScreen.setMat(Matrix4D::PerspectiveFromFilm(
 		vertsize, horisize, focLen, nearPlane, farPlane));
 }
@@ -104,7 +101,7 @@ void perspCamera::saveResult(const char* filename)
 }
 
 
-void perspCamera::resizeViewport(Float aspr /*= 1.0*/)
+void perspCamera::resizeViewport(Float aspr)
 {
 	viewportRatio = aspr;
 	updateCamToScreen();

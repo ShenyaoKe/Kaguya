@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera\Camera.h"
+#include "Camera/Camera.h"
 
 class perspCamera : public Camera
 {
@@ -24,6 +24,6 @@ public:
 
 	//void setUpVec(Vector3D& upVec);
 protected:
-	Float fov;
+	//Float fov;
 private:
 };

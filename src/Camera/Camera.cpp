@@ -10,11 +10,6 @@ Camera::Camera(const Vector3D& eye,
 	, nearPlane(0.1), farPlane(100)
 	, film(fm)
 {
-	//updateMatrices();
-	/*pos = eyePos;
-	nz = Normalize(target - eyePos);
-	nx = Normalize(Cross(nz, nz));
-	ny = Normalize(Cross(nx, nz));*/
 }
 
 void Camera::setFilm(const Film &f)
@@ -96,7 +91,11 @@ void Camera::exportVBO(float *view, float *proj, float *raster) const
 void Camera::updateRasterToCam()
 {
 	Matrix4D raster2camMat = film.rasterToFilm();
+#ifdef RIGHT_HAND_ORDER
+	raster2camMat[3][2] = -focLen;
+#else
 	raster2camMat[3][2] = focLen;
+#endif
 	RasterToCamera = Transform(raster2camMat);
 }
 

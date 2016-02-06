@@ -34,6 +34,7 @@ using std::vector;
 #include <unordered_map>
 
 #include <time.h>
+#include <string>
 
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 typedef double Float;
