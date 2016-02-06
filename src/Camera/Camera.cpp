@@ -112,7 +112,7 @@ void Camera::zoom(Float x_val, Float y_val, Float z_val)
 	// Pw: world space position, Pc: Camera space position
 	// Pw = c2w1 * Pc1 = c2w1 * T^-1 * Pc = c2w * Pc
 	// c2w1 = T * c2w
-	Matrix4D newLookAt = Matrix4D::Translate(x_val, y_val, z_val) * cam2w;
+	Matrix4D newLookAt = cam2w * Matrix4D::Translate(x_val, y_val, z_val);
 	//cout << "befor: " << target << endl;
 
 	Vector3D _nx(cam2w[0]), _ny(cam2w[1]);
