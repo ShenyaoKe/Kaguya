@@ -7,8 +7,6 @@
 
 #include <QOpenGLWidget>
 #include <QKeyEvent>
-#include <QTimer>
-#include <QTime>
 #include <QString>
 #include <QFileDialog>
 #include <QOpenGLVertexArrayObject>
@@ -47,10 +45,6 @@ public:
 	OGLViewer(QWidget *parent = nullptr);
 	~OGLViewer();
 
-	//void update();
-	public slots:
-	void resetCamera();
-	void initParas();
 protected:
 	void initializeGL() Q_DECL_OVERRIDE;
 	void paintGL() Q_DECL_OVERRIDE;
@@ -62,20 +56,14 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 private:
-	void bindBox();
+	//void bindBox();
 	void bindMesh();
 	void bindReslotionGate();
 	void saveFrameBuffer();
-public:
-	double process_fps;
 protected:
 	perspCamera *view_cam;
-	Matrix4D proj, view;
 private:
-	int fps;
-	int tcount;
 
-	QTime process_time;
 	int m_lastMousePos[2];
 	int m_selectMode;
 private: // OpenGL variables
@@ -98,6 +86,8 @@ private: // OpenGL variables
 
 	GLSLProgram* model_shader;
 	GLSLProgram* gate_shader;// OpenGL model_shader program
+
+	int* testdelete;
 
 	friend class MainWindow;
 };

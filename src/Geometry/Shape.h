@@ -63,7 +63,7 @@ public:
 
 public:
 	int index;
-	Transform *ObjectToWorld;
+	Transform ObjectToWorld;
 	Point3D c;//center
 	BBox ObjBound;
 	Shader* material = nullptr;

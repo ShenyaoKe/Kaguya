@@ -19,8 +19,12 @@ struct TriangleFaceIndex
 	int vtx[3];//vertex
 	int uv[3];//texture coordinate
 	int n[3];//normal
-	void printInfo() const
+	void printInfo(const string &msg = "") const
 	{
+		if (!msg.empty())
+		{
+			cout << msg << endl;
+		}
 		for (int i = 0; i < 3; i++)
 		{
 			cout << vtx[i] << "/" << uv[i] << "/" << n[i] << "\t";
@@ -39,7 +43,7 @@ protected:
 	//vector<Triangle> faces;
 public:
 	friend class Triangle;
-	Mesh();
+	//Mesh();
 	Mesh(const char* filename);
 	~Mesh();
 
@@ -47,7 +51,7 @@ public:
 
 	void refine(vector<Shape*> &refined);
 	bool loadOBJ(const char* filename);
-	void printInfo() const;
+	void printInfo(const string &msg = "") const;
 
 	bool getDifferentialGeometry(const Ray& inRay,
 		DifferentialGeometry *queryPoint,

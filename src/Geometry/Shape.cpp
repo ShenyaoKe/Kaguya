@@ -9,14 +9,14 @@
 /************************************************************************/
 int Shape::uid = 1;
 Shape::Shape()
-	: index(assignIndex())
+	//: index(assignIndex())
 {
 }
 Shape::~Shape()
 {
-	material = NULL;
-	UV_Mapping = NULL;
-	normalMap = NULL;
+	material = nullptr;
+	UV_Mapping = nullptr;
+	normalMap = nullptr;
 }
 void Shape::bounding()
 {

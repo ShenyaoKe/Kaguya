@@ -11,13 +11,13 @@
 #include "ui_About.h"
 
 
-class MainWindow : public QMainWindow, protected QOpenGLFunctions
+class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 	MainWindow(QWidget *parent = 0);
-	~MainWindow();
+	//~MainWindow();
 
 public slots:
 	void on_actionAbout_triggered();
@@ -25,8 +25,6 @@ public slots:
 protected:
 	void closeEvent(QCloseEvent *e);
 private:
-	bool m_update_pending;
-	bool m_animating;
 
 	OGLViewer *m_oglviewer;
 	QDialog *about;

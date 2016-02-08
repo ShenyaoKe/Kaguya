@@ -2,7 +2,6 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
-	, m_update_pending(false), m_animating(false)
 {
 	m_oglviewer = new OGLViewer;
 
@@ -13,16 +12,12 @@ MainWindow::MainWindow(QWidget *parent)
 	m_oglviewer->setFocusPolicy(Qt::StrongFocus);
 }
 
-MainWindow::~MainWindow()
-{
-	delete m_oglviewer;
-}
-
 void MainWindow::on_actionAbout_triggered()
 {
 	about = new QDialog(0,0);
 	Ui::about_dialog about_ui;
 	about_ui.setupUi(about);
+	about->setAttribute(Qt::WA_DeleteOnClose);
 	about->show();
 }
 

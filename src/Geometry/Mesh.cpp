@@ -4,36 +4,50 @@
 #include "Shading/Shader.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
+/*
 
 Mesh::Mesh()
 {
 	index = Shape::assignIndex();
-}
+}*/
 Mesh::Mesh(const char* filename)
 {
-	index = Shape::assignIndex();
+	//index = Shape::assignIndex();
+	cout << "start new\n";
 	loadOBJ(filename);
 	bounding();
-	index = Shape::assignIndex();
-	Shape::offsetUID(fids.size());
+	/*index = Shape::assignIndex();
+	Shape::offsetUID(fids.size());*/
+	cout << "end new\n";
 }
 Mesh::~Mesh()
 {
-	for (int i = 0; i < vertices.size(); ++i)
+#if _DEBUG
+	cout << "Deleted mesh has" << fids.size() << endl;
+#endif // _DEBUG
+	for (auto v : vertices)
 	{
-		delete vertices[i];
+		delete v;
 	}
 	vertices.clear();
-	for (int i = 0; i < uvs.size(); ++i)
+	for (auto uv : uvs)
 	{
-		delete uvs[i];
+		delete uv;
 	}
 	uvs.clear();
-	for (int i = 0; i < normals.size(); ++i)
+	for (auto n : normals)
 	{
-		delete normals[i];
+		delete n;
 	}
 	normals.clear();
+	for (auto fid : fids)
+	{
+		delete fid;
+	}
+	fids.clear();
+#if _DEBUG
+	cout << "Mesh deleted" << endl;
+#endif // _DEBUG
 }
 void Mesh::bounding()
 {
@@ -211,8 +225,12 @@ bool Mesh::loadOBJ(const char* filename)
 	cout << "OBJ File " << filename << " Loding Time:" << (Float)(end - start) / CLOCKS_PER_SEC << "s" << endl;//Timer
 	return true;
 }
-void Mesh::printInfo() const
+void Mesh::printInfo(const string &msg) const
 {
+	if (!msg.empty())
+	{
+		cout << msg << endl;
+	}
 	for (int i = 0; i < vertices.size(); i++)
 	{
 		cout << "Vertex:\t";
