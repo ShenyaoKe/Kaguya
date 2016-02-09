@@ -8,7 +8,6 @@
 #ifndef __FILM__
 #define __FILM__
 //#include "Core/rtdef.h"
-#include "Image/ImageData.h"
 #include "Math/Transform.h"
 
 typedef unsigned char RES_FIT_TYPE;
@@ -28,7 +27,7 @@ typedef enum
 	FRG_OVERSCAN_FIT = 3
 }FIT_RESOLUTION_GATE;
 
-class Film:public ImageData
+class Film//:public ImageData
 {
 public:
 	Film(FILM_TYPE filmType = FT_16MM_THEATRICAL,
@@ -38,19 +37,16 @@ public:
 
 	void setFilmType(FILM_TYPE filmType);
 	void setFitType(FIT_RESOLUTION_GATE fitType);
-
-	Float HorizonalApect() const { return horiApect; }
-	Float VerticalApect() const { return vertApect; }
+	
 	Float ApectureRatio() const{ return horiApect / vertApect; }
 	Point2D getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
 	Point2D getImgPos(Float filmX, Float filmY) const;
 	Point3D getFilmUV(Float imgX, Float imgY) const;
 	Matrix4D rasterToFilm() const;
-protected:
-	friend class Camera;
-private:
+
+public:
 	Float horiApect = 36, vertApect = 24;//mm
-	// width, height from image class
+	int width = 640, height = 480;// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 
 	FIT_RESOLUTION_GATE resFT = FRG_HORIZONTAL_FIT;

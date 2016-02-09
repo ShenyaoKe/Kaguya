@@ -9,15 +9,12 @@
 #include <QKeyEvent>
 #include <QString>
 #include <QFileDialog>
-#include <QOpenGLVertexArrayObject>
-//#include <QGLFunctions>
 
 #include "OpenGL_Utils/GLSLProgram.h"
 
 #include "Math/MathUtil.h"
 #include "Image/ImageData.h"
 #include "Geometry/Mesh.h"
-//#include "Math/Matrix4D.h"
 #include "Camera/perspCamera.h"
 
 static int model_mat_loc;// Uniform matrix location
@@ -27,9 +24,6 @@ static GLfloat view_mat[16];
 static int proj_mat_loc;// Porjection matrix location
 static GLfloat proj_mat[16];
 static GLfloat rast_mat[16];
-
-const double eps = 5e-4;
-
 
 // OpenGL Window in Qt
 class OGLViewer : public QOpenGLWidget
@@ -56,12 +50,13 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 private:
-	//void bindBox();
+	
+	void bindBox();
 	void bindMesh();
 	void bindReslotionGate();
 	void saveFrameBuffer();
 protected:
-	perspCamera *view_cam;
+	perspCamera* view_cam;
 private:
 
 	int m_lastMousePos[2];
@@ -86,8 +81,6 @@ private: // OpenGL variables
 
 	GLSLProgram* model_shader;
 	GLSLProgram* gate_shader;// OpenGL model_shader program
-
-	int* testdelete;
 
 	friend class MainWindow;
 };

@@ -20,7 +20,7 @@ void Camera::setFilm(const Film &f)
 
 void Camera::setResolution(int resX, int resY)
 {
-	film.resize(resX, resY);
+	//film.resize(resX, resY);
 	buffer = renderBuffer(resX, resY);
 }
 void Camera::setSample(int aaSample)

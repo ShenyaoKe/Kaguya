@@ -71,7 +71,6 @@ protected:
 	Film film;//contains image size, film size(horApec, verApec)
 	renderBuffer buffer;
 
-	int ViewX, ViewY;
 	Float viewportRatio = 1;//width / height
 	Float focLen = 35;//focal length
 	Float lensRadius, focalDistance;

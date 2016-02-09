@@ -83,4 +83,8 @@ class Camera;
 class perspCamera;
 class abstractCamera;
 
+
+const int default_resX = 640;
+const int default_resY = 480;
+
 #endif // __KAGUYA__

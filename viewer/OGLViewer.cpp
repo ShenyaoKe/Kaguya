@@ -6,7 +6,6 @@ OGLViewer::OGLViewer(QWidget *parent)
 	, view_cam(new perspCamera(
 		Point3D(10, 6, 10), Point3D(0.0, 0.0, 0.0), Point3D(0, 1, 0),
 		width() / static_cast<double>(height())))
-	//, box_mesh(nullptr), model_mesh(nullptr)
 {
 	//this->setAttribute(Qt::WA_DeleteOnClose);
 	// Set surface format for current widget
@@ -18,26 +17,10 @@ OGLViewer::OGLViewer(QWidget *parent)
 	//format.setProfile(QSurfaceFormat::CoreProfile);
 	this->setFormat(format);
 
-	// Link timer trigger
-	/*process_time.start();
-	QTimer *timer = new QTimer(this);
-	//timer->setSingleShot(false);
-	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-	timer->start(0);*/
-
 	// Read obj file
-	/*box_mesh = new Mesh("scene/obj/cube_large.obj");
-	delete box_mesh;
-	box_mesh = nullptr;
-	box_mesh = new Mesh("scene/obj/cube_large.obj");*/
-
-	//model_mesh = new Mesh("scene/obj/monkey.obj");
-	cout << "new int\n";
-	testdelete = new int[10];
-	delete testdelete;
-	testdelete = new int[5];
-	cout << "end new int\n";
-
+	box_mesh = new Mesh("scene/obj/cube_large.obj");
+	model_mesh = new Mesh("scene/obj/monkey.obj");
+	
 	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 
 	float respos[] = {
@@ -53,15 +36,13 @@ OGLViewer::OGLViewer(QWidget *parent)
 
 OGLViewer::~OGLViewer()
 {
-	cout << "heheheheheh\n";
-	/*delete box_mesh;
-	//box_mesh = nullptr;
+	delete box_mesh;
+	box_mesh = nullptr;
 	delete model_mesh;
-	//model_mesh = nullptr;*/
-	//delete model_shader;
-	//model_shader = nullptr;
-	/*delete view_cam;
-	delete gate_shader;*/
+	model_mesh = nullptr;
+	delete view_cam;
+	delete model_shader;
+	delete gate_shader;
 }
 /************************************************************************/
 /* OpenGL Rendering Modules                                             */
@@ -93,11 +74,11 @@ void OGLViewer::initializeGL()
 	gate_shader = new GLSLProgram("shaders/gate_vs.glsl", "shaders/gate_fs.glsl");
 
 	// Export vbo for shaders
-	//box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
-	//model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
+	box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
+	model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
 
-	//bindBox();
-	//bindMesh();
+	bindBox();
+	bindMesh();
 	bindReslotionGate();
 
 	// Get uniform variable location
@@ -108,7 +89,7 @@ void OGLViewer::initializeGL()
 	gate_shader->add_uniformv("transform");
 }
 
-/*
+
 void OGLViewer::bindBox()
 {
 	glDeleteBuffers(1, &box_vert_vbo);
@@ -135,7 +116,7 @@ void OGLViewer::bindBox()
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}*/
+}
 
 void OGLViewer::bindMesh()
 {
@@ -162,11 +143,6 @@ void OGLViewer::bindMesh()
 	glEnableVertexAttribArray(1);
 
 	// Bind UV values
-	/*glGenBuffers(1, &model_uv_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, model_uv_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * model_vbo_size, model_uvs, GL_STATIC_DRAW);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(2);*/
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -199,25 +175,13 @@ void OGLViewer::paintGL()
 	glClearColor(0.6, 0.6, 0.6, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*if (display_mode == 0)// Wireframe
-	{
-		glDisable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		glLineWidth(1.0);
-	}
-	else
-	{
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT); // cull back face
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-	// Bind Box VAOs
+	//Draw box
+	glDisable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	glBindVertexArray(box_vao);
-	// Use model_shader program
 	model_shader->use_program();
-	// Apply uniform matrix
-	//glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, model_mat);
 	vector<GLfloat> projmatvec(proj_mat, proj_mat + 16);
 	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_mat);
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &projmatvec[0]);
@@ -246,7 +210,7 @@ void OGLViewer::paintGL()
 	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 3);
 	
 	glBindVertexArray(0);
-	gate_shader->unuse();*/
+	gate_shader->unuse();
 }
 // Redraw function
 void OGLViewer::paintEvent(QPaintEvent *e)
@@ -259,46 +223,15 @@ void OGLViewer::resizeGL(int w, int h)
 {
 	// Widget resize operations
 	view_cam->resizeViewport(width() / static_cast<double>(height()));
-	//view_cam->setResolution(width(), height());
 	view_cam->exportVBO(nullptr, proj_mat, rast_mat);
 }
 /************************************************************************/
 /* Qt User Operation Functions                                          */
 /************************************************************************/
+
 void OGLViewer::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_W)
-	{
-		view_cam->zoom(0.0, 0.0, 0.10);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-
-	}
-	else if (e->key() == Qt::Key_S)
-	{
-		view_cam->zoom(0.0, 0.0, -0.10);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-	}
-	else if (e->key() == Qt::Key_Q)
-	{
-		view_cam->zoom(0.10, 0.0, 0.0);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-	}
-	else if (e->key() == Qt::Key_A)
-	{
-		view_cam->zoom(-0.10, 0.0, 0.0);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-	}
-	else if (e->key() == Qt::Key_E)
-	{
-		view_cam->zoom(0.0, 0.10, 0.0);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-	}
-	else if (e->key() == Qt::Key_D)
-	{
-		view_cam->zoom(0.0, -0.10, 0.0);
-		view_cam->exportVBO(view_mat, nullptr, nullptr);
-	}
-	else if (e->key() == Qt::Key_Home)
+	if (e->key() == Qt::Key_Home)
 	{
 		//initParas();
 	}
@@ -307,7 +240,6 @@ void OGLViewer::keyPressEvent(QKeyEvent *e)
 	{
 		this->saveFrameBuffer();
 	}
-	//////////////////////////////////////////////////////////////////////////
 	else
 	{
 		QOpenGLWidget::keyPressEvent(e);

@@ -28,8 +28,6 @@
 #include "FreeImage.h"
 //using namespace std;
 
-const int default_resX = 640;
-const int default_resY = 480;
 
 // 
 /************************************************************************/

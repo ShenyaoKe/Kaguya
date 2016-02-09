@@ -22,9 +22,6 @@ Mesh::Mesh(const char* filename)
 }
 Mesh::~Mesh()
 {
-#if _DEBUG
-	cout << "Deleted mesh has" << fids.size() << endl;
-#endif // _DEBUG
 	for (auto v : vertices)
 	{
 		delete v;
@@ -45,9 +42,6 @@ Mesh::~Mesh()
 		delete fid;
 	}
 	fids.clear();
-#if _DEBUG
-	cout << "Mesh deleted" << endl;
-#endif // _DEBUG
 }
 void Mesh::bounding()
 {

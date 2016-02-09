@@ -25,12 +25,12 @@ void perspCamera::updateCamToScreen()
 
 	if (viewportRatio - film.ApectureRatio() < 0)
 	{
-		horisize = film.HorizonalApect();
+		horisize = film.horiApect;
 		vertsize = horisize / viewportRatio;
 	}
 	else
 	{
-		vertsize = film.VerticalApect();
+		vertsize = film.vertApect;
 		horisize = vertsize * viewportRatio;
 	}
 
@@ -93,11 +93,11 @@ Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 }
 void perspCamera::renderImg(int x, int y, ColorRGBA& pixColor)
 {
-	film.setRGBA(x, y, pixColor);
+	//film.setRGBA(x, y, pixColor);
 }
 void perspCamera::saveResult(const char* filename)
 {
-	film.writeFile(filename);
+	//film.writeFile(filename);
 }
 
 

@@ -6,7 +6,6 @@
 #include <QMainWindow>
 //#include <QtGui/QWindow>
 #include <QDialog>
-#include <QtGui/QOpenGLFunctions>
 #include "ui_MainWindow.h"
 #include "ui_About.h"
 

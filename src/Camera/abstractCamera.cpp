@@ -23,7 +23,7 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	Vector2D fPos;// = film.getFilmPos(imgX, imgY);//point on film
 	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;
 
-	Float newU = imgX / film.getWidth(), newV = imgY / film.getHeight();
+	Float newU = imgX / film.height, newV = imgY / film.height;
 	/*Point3D rayPoint = pos;
 
 	if (posTex != nullptr)
