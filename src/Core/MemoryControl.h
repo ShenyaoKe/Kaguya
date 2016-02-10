@@ -58,16 +58,10 @@ void Aligned_2DArray(T** &twod_array, unsigned int wdt = 3, unsigned int hgt = 3
 	}
 }
 template <typename T>
-void delete_2DArray(T** &twod_array, unsigned int wdt = 3, unsigned int hgt = 3,
-	MatrixMajor matrix_major = COL_STORAGE)
+void delete_2DArray(T** &twod_array)
 {
 	delete [] twod_array[0];
-
-	unsigned int major = (matrix_major == COL_STORAGE) ? wdt : hgt;
-
-	for (int i = 0; i < major; i++)
-	{
-		twod_array[i] = nullptr;
-	}
+	delete [] twod_array;
+	twod_array = nullptr;	
 }
 #endif // __MEMORYCONTROL__
