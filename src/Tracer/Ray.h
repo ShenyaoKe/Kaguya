@@ -17,17 +17,10 @@
 class Ray
 {
 private:
-	
-	
-public:
-	Point3D pos;// origin point position
-	Vector3D dir;//Direction
-	mutable Float tmin = 0.0, tmax = INFINITY;
-	Float time;
-	int dp;//ray depth count
 
+public:
 	Ray();
-	Ray(const Point3D& p, const Vector3D& d,
+	Ray(const Point3D& pos, const Vector3D& dir,
 		double minT = 0.0, double maxT = INFINITY);
 	~Ray();
 
@@ -44,6 +37,12 @@ public:
 	void normalize();
 
 	void printInfo() const;
+public:
+	Point3D o;// Origin point position
+	Vector3D d;// Ray Direction
+	mutable Float tmin = 0.0, tmax = INFINITY;
+	Float time;
+	int dp;//ray depth count
 };
 
 #endif

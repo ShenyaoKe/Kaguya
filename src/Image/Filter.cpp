@@ -404,8 +404,8 @@ ImageData* filter::edgeDetect(const ImageData* src, Float **lumaImg, EdgeOperato
 		}
 	}
     
-	delete_2DArray(gX, 3, 3);
-	delete_2DArray(gY, 3, 3);
+	delete_2DArray(gX);
+	delete_2DArray(gY);
 
 	return ret;
 }
@@ -452,8 +452,8 @@ ImageData* filter::boxBlur(const ImageData* src, int radius)
 	endT = clock();
 	std::cout << "Box blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
 
-	delete_2DArray(tmpImgX, width, height);
-	delete_2DArray(tmpImgY, width, height);
+	delete_2DArray(tmpImgX);
+	delete_2DArray(tmpImgY);
 	
 	return ret;
 }
@@ -519,8 +519,8 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	std::cout << "Gaussian blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << endl;
     
 	delete [] kernel;
-	delete_2DArray(tmpImgX, width, height);
-	delete_2DArray(tmpImgY, width, height);
+	delete_2DArray(tmpImgX);
+	delete_2DArray(tmpImgY);
 	
 	return ret;
 }
@@ -606,8 +606,8 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	endT = clock();
 	std::cout << "Bilateral blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << endl;
 
-	delete_2DArray(sKernel, size, size);
-	delete_2DArray(gKernel, size, size);
+	delete_2DArray(sKernel);
+	delete_2DArray(gKernel);
 
 	return ret;
 }

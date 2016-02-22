@@ -50,45 +50,45 @@
     <ClCompile Include="GeneratedFiles\Release\moc_OGLViewer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\viewer\main.cpp">
+    <ClCompile Include="..\viewer\OGLViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\viewer\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\viewer\OGLViewer.cpp">
+    <ClCompile Include="..\viewer\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_icons.cpp">
+    <ClCompile Include="GeneratedFiles\qrc_Kaguya.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\forms\About.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\forms\MainWindow.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\viewer\MainWindow.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="..\viewer\OGLViewer.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\icons\icons.qrc">
+    <CustomBuild Include="..\resources\forms\About.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\resources\forms\MainWindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\resources\Kaguya.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\viewer\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_About.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\viewer\common.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,17 +104,12 @@
     <None Include="..\viewer\shaders\model_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\viewer\stylesheet.qss">
+    <None Include="..\resources\stylesheets\dark.qss">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\icons\Kaguya.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\icons\Kaguya.rc">
+    <ResourceCompile Include="..\resources\Kaguya.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

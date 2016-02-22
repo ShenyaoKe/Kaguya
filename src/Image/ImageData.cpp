@@ -22,7 +22,7 @@ ImageData::ImageData(int wd, int ht, Float* &pixMap)
 		pixels[0][i] = ColorRGBA(pixMap[i * 3], pixMap[i * 3 + 1], pixMap[i * 3 + 2]);
 	}
 }
-ImageData::ImageData(int wd, int ht, const unsigned char* &pixMap, int pixtype)
+ImageData::ImageData(int wd, int ht, unsigned char* pixMap, int pixtype)
 {
 	// Declare width and height
 	width = wd;
@@ -265,7 +265,7 @@ ImageData::ImageData(const ImageData& src)
 ImageData::~ImageData()
 {
 	// Free data
-	delete_2DArray(pixels, width, height);
+	delete_2DArray(pixels);
 }
 void ImageData::setRGBA(int x, int y, const ColorRGBA &color)
 {

@@ -15,6 +15,8 @@
 #include "Math/MathUtil.h"
 #include "Image/ImageData.h"
 #include "Geometry/Mesh.h"
+#include "Geometry/DifferentialGeometry.h"
+#include "Accel/KdTreeAccel.h"
 #include "Camera/perspCamera.h"
 
 static int model_mat_loc;// Uniform matrix location
@@ -55,8 +57,11 @@ private:
 	void bindMesh();
 	void bindReslotionGate();
 	void saveFrameBuffer();
+
+	void renderpixels();
 protected:
 	perspCamera* view_cam;
+	vector<uint8_t> pixmap;
 private:
 
 	int m_lastMousePos[2];
@@ -71,6 +76,8 @@ private: // OpenGL variables
 	GLuint box_vert_vbo, box_norm_vbo, box_vao;
 
 	Mesh *model_mesh;
+	vector<Shape*> objlist;
+	KdTreeAccel* tree;
 	vector<GLfloat> model_verts;// vertices vbo
 	vector<GLfloat> model_uvs;// Texture coordinates vbo
 	vector<GLfloat> model_norms;// Normal coordinates vbo

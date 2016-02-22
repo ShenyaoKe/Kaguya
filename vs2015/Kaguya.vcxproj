@@ -121,6 +121,7 @@
     <ClInclude Include="..\src\Light\Light.h" />
     <ClInclude Include="..\src\Light\Spectrum.h" />
     <ClInclude Include="..\src\Math\CGVector.h" />
+    <ClInclude Include="..\src\Math\Geometry.h" />
     <ClInclude Include="..\src\Math\MathUtil.h" />
     <ClInclude Include="..\src\Math\Matrix3D.h" />
     <ClInclude Include="..\src\Math\Matrix4D.h" />

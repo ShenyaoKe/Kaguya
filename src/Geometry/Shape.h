@@ -29,7 +29,7 @@ class Shape
 {
 	static int uid;
 public:
-	Shape();
+	Shape(const Point3D &pos = Point3D(0, 0, 0));
 	virtual ~Shape();
 	static int assignIndex() { return uid++; }
 	static void offsetUID(int offset) { uid += offset; }
@@ -76,8 +76,7 @@ public:
 class geoSphere :public Shape
 {
 public:
-	geoSphere();
-	geoSphere(const Vector3D& pos, const Float& radius);
+	geoSphere(const Vector3D& pos = Vector3D(0, 0, 0), const Float& radius = 1);
 	~geoSphere();
 
 	void bounding();

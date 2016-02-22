@@ -36,8 +36,8 @@ BBox Transform::operator()(const BBox &b) const
 
 void Transform::operator()(const Ray& ray, Ray* ret) const
 {
-	ret->dir = m(ray.dir, 0.0);
-	ret->pos = m(ray.pos, 1.0);
+	ret->d = m(ray.d, 0.0);
+	ret->o = m(ray.o, 1.0);
 	if (&ray != ret)
 	{
 		ret->tmin = ray.tmin;

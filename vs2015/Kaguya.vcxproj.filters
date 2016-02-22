@@ -195,6 +195,9 @@
     <ClInclude Include="..\src\Core\Sampler.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Math\Geometry.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp">

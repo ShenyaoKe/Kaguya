@@ -64,16 +64,17 @@ void RasterizedVolume::rasterize()
 	DifferentialGeometry queryPoint;
 	double tHit = INFINITY, rayEp;
 	//vector<Point3D> grid;
+	Ray rasterRay;
 	while (rayPos[xaxis] < bound.pMax[xaxis])
 	{
 		while (rayPos[yaxis] < bound.pMax[yaxis])
 		{
 			vector<double> hitLen;
-			Ray rasterRay(rayPos, rayDir);
+			rasterRay = Ray(rayPos, rayDir);
 			while (kdtree->hit(rasterRay, &queryPoint, &tHit, &rayEp))
 			{
 				hitLen.push_back(tHit);
-				rasterRay.pos[zaxis] += tHit + rayEp;
+				rasterRay.o[zaxis] += tHit + rayEp;
 				tHit = INFINITY;
 			};
 			if (hitLen.size() > 1)

@@ -6,7 +6,7 @@
 
 struct cameraSampler
 {
-	int imgX, imgY;
+	int32_t imgX, imgY;
 	Float lensU, lensV;
 	Float time;
 };

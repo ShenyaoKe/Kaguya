@@ -8,8 +8,8 @@
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
 int Shape::uid = 1;
-Shape::Shape()
-	//: index(assignIndex())
+Shape::Shape(const Point3D &pos)
+	: c(pos)
 {
 }
 Shape::~Shape()
@@ -128,15 +128,10 @@ Vector3D Shape::getCenter() const
 /************************************************************************/
 /* Sphere Function Definition                                           */
 /************************************************************************/
-geoSphere::geoSphere()
-{
-	r = 1;
-	bounding();
-}
+
 geoSphere::geoSphere(const Vector3D& pos, const Float& radius)
+	: Shape(pos), r(radius)
 {
-	c = pos;
-	r = radius;
 	bounding();
 }
 geoSphere::~geoSphere()

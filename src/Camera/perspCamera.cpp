@@ -69,9 +69,9 @@ Ray perspCamera::generateRay(Float imgX, Float imgY) const
 Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 {
 	Vector3D pCam = RasterToCamera(Vector3D(sample.imgX, sample.imgY, 0), 1.);
-	*ray = Ray(Vector3D(), Normalize(pCam));
+	*ray = Ray(Vector3D(0, 0, 0), Normalize(pCam));
 	// Depth of Field Operations;
-	if (lensRadius > 0)
+	if (lensRadius > 0.)
 	{
 		//sample point on lens
 		Float lensU, lensV;
@@ -82,11 +82,11 @@ Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 		lensV *= lensRadius;//scale to focal radius
 
 		//compute point on plane of focus
-		Float ft = focalDistance / ray->dir.z;
+		Float ft = focalDistance / ray->d.z;
 		Point3D focusP = (*ray)(ft);
 		//update ray of lens
-		ray->pos = Vector3D(lensU, lensV, 0);
-		ray->dir = Normalize(focusP - ray->pos);
+		ray->o = Vector3D(lensU, lensV, 0);
+		ray->d = Normalize(focusP - ray->o);
 	}
 	CameraToWorld(*ray, ray);
 	return 1.0;

@@ -6,6 +6,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	, view_cam(new perspCamera(
 		Point3D(10, 6, 10), Point3D(0.0, 0.0, 0.0), Point3D(0, 1, 0),
 		width() / static_cast<double>(height())))
+	, pixmap(default_resX * default_resY * 3, 255)
 {
 	//this->setAttribute(Qt::WA_DeleteOnClose);
 	// Set surface format for current widget
@@ -21,6 +22,9 @@ OGLViewer::OGLViewer(QWidget *parent)
 	box_mesh = new Mesh("scene/obj/cube_large.obj");
 	model_mesh = new Mesh("scene/obj/monkey.obj");
 	
+	model_mesh->refine(objlist);
+	tree = new KdTreeAccel(objlist);
+
 	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 
 	float respos[] = {
@@ -240,6 +244,11 @@ void OGLViewer::keyPressEvent(QKeyEvent *e)
 	{
 		this->saveFrameBuffer();
 	}
+	// Render
+	else if (e->key() == Qt::Key_R && e->modifiers() == Qt::ControlModifier)
+	{
+		this->renderpixels();
+	}
 	else
 	{
 		QOpenGLWidget::keyPressEvent(e);
@@ -311,4 +320,31 @@ void OGLViewer::saveFrameBuffer()
 	QString filename = QFileDialog::getSaveFileName(
 		this, "Save Screenshot file...", "default", tr("PNG(*.png)"));
 	this->grab().save(filename);
+}
+
+void OGLViewer::renderpixels()
+{
+	int index = 0;
+	Ray traceRay;
+	cameraSampler camsmp;
+	DifferentialGeometry queryPoint;//Add query point
+	for (int j = 0; j < default_resY; j++)
+	{
+		for (int i = 0; i < default_resX; i++)
+		{
+			camsmp.imgX = i;
+			camsmp.imgY = j;
+
+			view_cam->generateRay(camsmp, &traceRay);
+			double tHit(INFINITY), rayEp(0);
+
+			uint8_t isHit = static_cast<uint8_t>(tree->hit(traceRay, &queryPoint, &tHit, &rayEp));
+
+			pixmap[index++] = isHit * 255;
+			pixmap[index++] = isHit * 128;
+			pixmap[index++] = isHit * 64;
+		}
+	}
+	ImageData img(default_resX, default_resY, &pixmap[0]);
+	img.writeFile("res.png");
 }

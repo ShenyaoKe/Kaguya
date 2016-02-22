@@ -86,8 +86,8 @@ bool BBox::intersectP(const Ray& inRay, Float *hitt0, Float *hitt1) const
 	//Float t0 = 0, t1 = INFINITY;
 	for (int i = 0; i < 3; i++)
 	{
-		Float tNear = (pMin[i] - inRay.pos[i]) / inRay.dir[i];
-		Float tFar = (pMax[i] - inRay.pos[i]) / inRay.dir[i];
+		Float tNear = (pMin[i] - inRay.o[i]) / inRay.d[i];
+		Float tFar = (pMax[i] - inRay.o[i]) / inRay.d[i];
 		if (tNear > tFar)
 		{
 			swap(tNear, tFar);

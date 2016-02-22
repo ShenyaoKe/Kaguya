@@ -53,7 +53,7 @@ public:
 	//ImageData(ppmImage &ppmData);
 	ImageData(int wd = default_resX, int ht = default_resY);
 	ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data
-	ImageData(int wd, int ht, const unsigned char* &pixMap, int pixtype = RGB);//pixMap stores rgb data
+	explicit ImageData(int wd, int ht, unsigned char* pixMap, int pixtype = RGB);//pixMap stores rgb data
 	ImageData(const string &filename);
 	ImageData(const ImageData& src);
 	virtual~ImageData();

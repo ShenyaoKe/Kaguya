@@ -46,7 +46,7 @@ public:
 
 public:
 	Float horiApect = 36, vertApect = 24;//mm
-	int width = 640, height = 480;// width, height from image class
+	int width, height;// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 
 	FIT_RESOLUTION_GATE resFT = FRG_HORIZONTAL_FIT;

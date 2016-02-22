@@ -199,7 +199,7 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry *queryPoint, const 
 	}
 
 	//prepare to traversal kd-tree for ray
-	Vector3D invDir(1.0 / inRay.dir.x, 1.0 / inRay.dir.y, 1.0 / inRay.dir.z);
+	Vector3D invDir(1.0 / inRay.d.x, 1.0 / inRay.d.y, 1.0 / inRay.d.z);
 
 	//Traversal kd-tree node in order of ray
 	bool isHit = false;
@@ -240,12 +240,12 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry *queryPoint, const 
 			/*process interior node*/
 			//calculate parametric distance from ray to split plane
 			int axis = node->flags;
-			Float tsplit = (node->split - inRay.pos[axis]) * invDir[axis];
+			Float tsplit = (node->split - inRay.o[axis]) * invDir[axis];
 
 			//get children node for ray
 			const KdAccelNode *nearChild, *farChild;
-			bool belowFisrt = ((inRay.pos[axis] < node->split) ||
-				(inRay.pos[axis] == node->split && inRay.dir[axis] < 0));
+			bool belowFisrt = ((inRay.o[axis] < node->split) ||
+				(inRay.o[axis] == node->split && inRay.d[axis] < 0));
 			if (belowFisrt)
 			{
 				nearChild = node->belowNode;

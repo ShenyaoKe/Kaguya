@@ -39,8 +39,7 @@ public:
 	virtual void setFocLen(Float fl);
 	virtual void setFilmType(FILM_TYPE filmType);
 	virtual void updateMatrices();
-	//virtual void lookAt(const Vector3D& targPos);
-	//virtual void lookAt(const Vector3D& camPos, const Vector3D& targPos, const Vector3D& upDir);
+
 	virtual void setBuffer(int x, int y, const bufferData tmpBuff);
 	virtual Ray generateRay(Float imgX, Float imgY) const = 0;
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;

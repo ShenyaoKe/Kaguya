@@ -35,6 +35,7 @@ using std::vector;
 
 #include <time.h>
 #include <string>
+//#include <stdint.h>
 
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 typedef double Float;
