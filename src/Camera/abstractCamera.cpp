@@ -17,14 +17,14 @@ abstractCamera::~abstractCamera()
 	posTex = nullptr;
 	dirTex = nullptr;
 }
-
+/*
 Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 {
 	Vector2D fPos;// = film.getFilmPos(imgX, imgY);//point on film
 	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;
 
 	Float newU = imgX / film.height, newV = imgY / film.height;
-	/*Point3D rayPoint = pos;
+	Point3D rayPoint = pos;
 
 	if (posTex != nullptr)
 	{
@@ -37,12 +37,9 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 
 	Ray ret(rayPoint, Normalize(rayDir));
 
-
-
-	return ret;*/
-	return Ray();
+	return ret;
 }
-
+*/
 void abstractCamera::setImage(Texture *posImg, Texture *dirImg)
 {
 	posTex = posImg;

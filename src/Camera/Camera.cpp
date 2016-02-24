@@ -6,6 +6,7 @@ Camera::Camera(const Vector3D& eye,
 	: CameraToWorld(Matrix4D::LookAt(eye, target, up))
 	//, CameraToScreen(Matrix4D::Perspective())
 	, target(targ)
+	, viewportRatio(1), focLen(35)
 	, lensRadius(lr), focalDistance(fd)
 	, nearPlane(0.1), farPlane(100)
 	, film(fm)

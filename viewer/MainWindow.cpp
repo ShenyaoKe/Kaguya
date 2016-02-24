@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 	//setWindowTitle(tr("OpenGL Qt Template"));
 
 	m_oglviewer->setFocusPolicy(Qt::StrongFocus);
+
+	connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);
 }
 
 void MainWindow::on_actionAbout_triggered()

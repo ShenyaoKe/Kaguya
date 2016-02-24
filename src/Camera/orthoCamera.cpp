@@ -16,8 +16,3 @@ orthoCamera::~orthoCamera()
 {
 
 }
-
-Ray orthoCamera::generateRay(Float imgX, Float imgY) const
-{
-	return Ray();
-}

@@ -18,7 +18,7 @@
 #include "Light/Light.h"
 //#include <vector>
 using namespace std;
-typedef enum SPECULAR_TYPE
+enum SPECULAR_TYPE
 {
 	SOLID_SPEC = 0,
 	SOFT_SPEC = 1

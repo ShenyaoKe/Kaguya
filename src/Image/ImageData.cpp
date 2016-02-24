@@ -396,13 +396,13 @@ bool ImageData::writeFile(const string &filename) const
 
 int** ImageData::genHist() const
 {
-	int* histRGB[4];
+	/*int** histRGB = new int*[4];
 	int bitlen = 1 << bpp;
 	for (int i = 0; i < 4; i++)
 	{
 		histRGB[i] = new int[bitlen];
 	}
-	/*for (int j = 0; j < height; j++) {
+	for (int j = 0; j < height; j++) {
 		for (int i = 0; i < width; i++) {
 			histRGB[0][static_cast<int>(pixels[i][j]->r)]++;
 			histRGB[1][static_cast<int>(pixels[i][j]->r)]++;
@@ -410,7 +410,7 @@ int** ImageData::genHist() const
 			histRGB[3][static_cast<int>(pixels[i][j]->r)]++;
 		}
 	}*/
-	return histRGB;
+	return nullptr;
 }
 
 Float** ImageData::getLuma() const

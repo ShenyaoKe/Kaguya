@@ -41,7 +41,6 @@ public:
 	virtual void updateMatrices();
 
 	virtual void setBuffer(int x, int y, const bufferData tmpBuff);
-	virtual Ray generateRay(Float imgX, Float imgY) const = 0;
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
 
 	virtual bufferData getBufferData(int x, int y) const;
@@ -65,13 +64,12 @@ public:
 
 protected:
 	Point3D target;
-	//Vector3D nx, ny, nz;
 	
 	Film film;//contains image size, film size(horApec, verApec)
 	renderBuffer buffer;
 
-	Float viewportRatio = 1;//width / height
-	Float focLen = 35;//focal length
+	Float viewportRatio;//width / height
+	Float focLen;//focal length
 	Float lensRadius, focalDistance;
 
 	Float nearPlane, farPlane;

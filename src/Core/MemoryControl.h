@@ -16,12 +16,12 @@ enum MatrixMajor
 	ROW_STORAGE
 };
 template <typename T>
-void Aligned_2DArray(T** &twod_array, unsigned int wdt = 3, unsigned int hgt = 3,
+void Aligned_2DArray(T** &twod_array, size_t wdt = 3, size_t hgt = 3,
 	MatrixMajor matrix_major = COL_STORAGE)
 {
 	
 	// size of the matrix
-	unsigned int major, secondary;
+	size_t major, secondary;
 
 	// if column major storage
 	// Major direction length is width
@@ -52,7 +52,7 @@ void Aligned_2DArray(T** &twod_array, unsigned int wdt = 3, unsigned int hgt = 3
 	
 	twod_array = new T *[major];
 
-	for (int i = 0; i < major; ++i)
+	for (size_t i = 0; i < major; i++)
 	{
 		twod_array[i] = &oned_array[i * secondary];
 	}

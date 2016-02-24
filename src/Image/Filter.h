@@ -13,7 +13,7 @@
 namespace filter
 {
 
-	typedef enum EdgeOperator
+	enum EdgeOperator
 	{
 		SOBEL,
 		PREWITT,

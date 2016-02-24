@@ -12,7 +12,7 @@
 #include "Math/CGVector.h"
 #include "Light/Spectrum.h"
 
-typedef enum LIGHT_TYPE
+enum LIGHT_TYPE
 {
 	LT_NULL = 0,
 	LT_POINT_LIGHT,
@@ -20,7 +20,7 @@ typedef enum LIGHT_TYPE
 	LT_SPOT_LIGHT,
 	LT_AREA_LIGHT
 };
-typedef enum LIGHT_DECAY_TYPE
+enum LIGHT_DECAY_TYPE
 {
 	DECAY_CONSTANT = 0,
 	DECAY_QUADRATIC = 1,
@@ -155,7 +155,7 @@ private:
 /************************************************************************/
 /* Area Light                                                           */
 /************************************************************************/
-typedef enum AREA_LIGHT_SHAPE
+enum AREA_LIGHT_SHAPE
 {
 	QUAD = 0,
 	DISK = 1,

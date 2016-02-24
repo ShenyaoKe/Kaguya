@@ -3,15 +3,18 @@
 //////////////////////////////////////////////////////////////////////////
 Film::Film(FILM_TYPE filmType,
 	int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
+	: width(resX), height(resY)
+	, resFT(fitTyep)
 	//: ImageData(resX, resY)
 {
-	//setFilmType(filmType);
+	setFilmType(filmType);
 	setFitType(fitTyep);
 }
+
 Film::~Film()
 {
-
 }
+
 void Film::setFilmType(FILM_TYPE filmType)
 {
 	switch (filmType)
@@ -33,9 +36,12 @@ void Film::setFilmType(FILM_TYPE filmType)
 		vertApect = 52.629;
 		break;
 	default:
+		horiApect = 36;
+		vertApect = 24;
 		break;
 	}
 }
+
 void Film::setFitType(FIT_RESOLUTION_GATE fitType)
 {
 	Float filmRatio = horiApect / vertApect;
@@ -73,7 +79,7 @@ void Film::setFitType(FIT_RESOLUTION_GATE fitType)
 
 Point2D Film::getFilmPos(Float imgX, Float imgY) const
 {
-	Float filmRatio, imgRatio;
+	//Float filmRatio, imgRatio;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
@@ -109,6 +115,7 @@ Point2D Film::getFilmPos(Float imgX, Float imgY) const
 		return Point2D();
 	}
 }
+
 Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later
 {
 	Float tmpIx, tmpIy;
@@ -136,7 +143,7 @@ Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later
 
 Point3D Film::getFilmUV(Float imgX, Float imgY) const
 {
-	Float filmRatio, imgRatio;
+	//Float filmRatio, imgRatio;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:

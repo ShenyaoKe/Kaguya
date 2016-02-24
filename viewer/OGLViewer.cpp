@@ -183,7 +183,7 @@ void OGLViewer::paintGL()
 	//Draw box
 	glDisable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+	glLineWidth(1.0);
 	glBindVertexArray(box_vao);
 	model_shader->use_program();
 	vector<GLfloat> projmatvec(proj_mat, proj_mat + 16);
@@ -311,6 +311,14 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 	m_lastMousePos[0] = e->x();
 	m_lastMousePos[1] = e->y();
 }
+
+void OGLViewer::wheelEvent(QWheelEvent *e)
+{
+	view_cam->zoom(0.0, 0.0, -e->delta() * 0.01);
+	view_cam->exportVBO(view_mat, nullptr, nullptr);
+	update();
+}
+
 /************************************************************************/
 /* Application Functions                                                */
 /************************************************************************/
@@ -327,7 +335,7 @@ void OGLViewer::renderpixels()
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
-	DifferentialGeometry queryPoint;//Add query point
+	DifferentialGeometry queryPoint;
 	for (int j = 0; j < default_resY; j++)
 	{
 		for (int i = 0; i < default_resX; i++)

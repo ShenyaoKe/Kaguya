@@ -7,18 +7,19 @@
 #pragma once
 #ifndef __FILM__
 #define __FILM__
-//#include "Core/rtdef.h"
+
 #include "Math/Transform.h"
 
 typedef unsigned char RES_FIT_TYPE;
 
-typedef enum 
+enum FILM_TYPE
 {
-	FT_SQUARE = 0,
-	FT_16MM_THEATRICAL = 1,
-	FT_35MM_ACADEMY = 2,
-	FT_IMAX = 9
-}FILM_TYPE;
+	FT_DEFAULT,
+	FT_SQUARE,
+	FT_16MM_THEATRICAL,
+	FT_35MM_ACADEMY,
+	FT_IMAX
+};
 typedef enum
 {
 	FRG_HORIZONTAL_FIT = 0,
@@ -30,7 +31,7 @@ typedef enum
 class Film//:public ImageData
 {
 public:
-	Film(FILM_TYPE filmType = FT_16MM_THEATRICAL,
+	Film(FILM_TYPE filmType = FT_DEFAULT,
 		int resX = default_resX, int resY = default_resY,
 		FIT_RESOLUTION_GATE fitType = FRG_HORIZONTAL_FIT);
 	~Film();
@@ -45,7 +46,7 @@ public:
 	Matrix4D rasterToFilm() const;
 
 public:
-	Float horiApect = 36, vertApect = 24;//mm
+	Float horiApect, vertApect;//mm
 	int width, height;// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 

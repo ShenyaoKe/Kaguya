@@ -16,7 +16,6 @@ public:
 	//void setSample(int aaSample);
 	void updateCamToScreen();
 	void setDoF(Float lr, Float fd);
-	Ray generateRay(Float imgX, Float imgY) const;
 	Float generateRay(const cameraSampler &sample, Ray* ray) const;
 	void renderImg(int x, int y, ColorRGBA& pixColor);
 	void saveResult(const char* filename);

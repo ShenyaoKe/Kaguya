@@ -167,7 +167,6 @@ ImageData* filter::hueSwitch(const ImageData* src, Float oriHue, Float range, Fl
 	{
 		for (int j = 0; j < hgt; j++)
 		{
-			Float tmpH;
 			ColorRGBA curRGBA = src->getRGBA(i, j);
 			ColorHSV curHSV = curRGBA.conv2hsv();
 			if (inRange(curHSV.h, oriHue - range, oriHue + range))
