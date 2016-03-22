@@ -90,6 +90,7 @@ private: // OpenGL variables
 	GLSLProgram* gate_shader;// OpenGL model_shader program
 
 	friend class MainWindow;
+	friend class ImageViewer;
 };
 
 #endif // __OGLVIEWER__

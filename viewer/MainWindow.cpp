@@ -4,14 +4,17 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	m_oglviewer = new OGLViewer;
+	m_imgviewer = new ImageViewer;
 
 	ui.setupUi(this);
 	ui.ogl_layout->addWidget(m_oglviewer);
 	//setWindowTitle(tr("OpenGL Qt Template"));
-
+	
 	m_oglviewer->setFocusPolicy(Qt::StrongFocus);
 
-	connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);
+	/*connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);*/
+	connect(ui.render_button, &QPushButton::clicked, this, &MainWindow::connectimg);
+
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -21,6 +24,13 @@ void MainWindow::on_actionAbout_triggered()
 	about_ui.setupUi(about);
 	about->setAttribute(Qt::WA_DeleteOnClose);
 	about->show();
+}
+
+void MainWindow::connectimg()
+{
+	m_oglviewer->renderpixels();
+	m_imgviewer->setpixmap(m_oglviewer->pixmap);
+	m_imgviewer->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)

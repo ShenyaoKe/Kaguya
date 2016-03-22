@@ -62,6 +62,9 @@
     <ClCompile Include="GeneratedFiles\qrc_Kaguya.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\viewer\ImageViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\viewer\MainWindow.h">
@@ -79,6 +82,9 @@
     <CustomBuild Include="..\resources\Kaguya.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\resources\forms\ImageViewer.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\viewer\common.h">
@@ -90,22 +96,28 @@
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_ImageViewer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\viewer\ImageViewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\viewer\shaders\gate_fs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\viewer\shaders\gate_vs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\viewer\shaders\model_fs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\viewer\shaders\model_vs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\resources\stylesheets\dark.qss">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\resources\shaders\gate_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\gate_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\model_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\model_vs.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

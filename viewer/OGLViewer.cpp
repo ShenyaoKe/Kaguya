@@ -347,11 +347,11 @@ void OGLViewer::renderpixels()
 
 			uint8_t isHit = static_cast<uint8_t>(tree->hit(traceRay, &queryPoint, &tHit, &rayEp));
 
-			pixmap[index++] = isHit * 255;
-			pixmap[index++] = isHit * 128;
 			pixmap[index++] = isHit * 64;
+			pixmap[index++] = isHit * 128;
+			pixmap[index++] = isHit * 255;
 		}
 	}
-	ImageData img(default_resX, default_resY, &pixmap[0]);
-	img.writeFile("res.png");
+	/*ImageData img(default_resX, default_resY, &pixmap[0]);
+	img.writeFile("res.png");*/
 }
