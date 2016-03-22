@@ -74,8 +74,13 @@ void OGLViewer::initializeGL()
 	//////////////////////////////////////////////////////////////////////////
 
 	// Create model_shader files
-	model_shader = new GLSLProgram("shaders/model_vs.glsl", "shaders/model_fs.glsl");
-	gate_shader = new GLSLProgram("shaders/gate_vs.glsl", "shaders/gate_fs.glsl");
+#ifdef _DEBUG
+	model_shader = new GLSLProgram("resources/shaders/model_vs.glsl", "resources/shaders/model_fs.glsl");
+	gate_shader = new GLSLProgram("resources/shaders/gate_vs.glsl", "resources/shaders/gate_fs.glsl");
+#else
+	model_shader = new GLSLProgram(":shaders/model_vs.glsl", ":shaders/model_fs.glsl");
+	gate_shader = new GLSLProgram(":shaders/gate_vs.glsl", ":shaders/gate_fs.glsl");
+#endif
 
 	// Export vbo for shaders
 	box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
@@ -215,12 +220,6 @@ void OGLViewer::paintGL()
 	
 	glBindVertexArray(0);
 	gate_shader->unuse();
-}
-// Redraw function
-void OGLViewer::paintEvent(QPaintEvent *e)
-{
-	// Draw current frame
-	paintGL();
 }
 // Resize function
 void OGLViewer::resizeGL(int w, int h)

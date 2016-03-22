@@ -1,5 +1,9 @@
 <RCC>
-    <qresource>
-		<file>stylesheets/dark.qss</file>
+    <qresource prefix="/">
+        <file>stylesheets/dark.qss</file>
+        <file>shaders/gate_fs.glsl</file>
+        <file>shaders/gate_vs.glsl</file>
+        <file>shaders/model_fs.glsl</file>
+        <file>shaders/model_vs.glsl</file>
     </qresource>
 </RCC>
