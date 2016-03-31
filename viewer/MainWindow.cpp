@@ -8,6 +8,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui.setupUi(this);
 	ui.ogl_layout->addWidget(m_oglviewer);
+	QTabWidget* shelf = new QTabWidget();
+	shelf->addTab(new QWidget, "1");
+	shelf->addTab(new QWidget, "2");
+	ui.shelf->addWidget(shelf);
 	//setWindowTitle(tr("OpenGL Qt Template"));
 	
 	m_oglviewer->setFocusPolicy(Qt::StrongFocus);

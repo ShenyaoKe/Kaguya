@@ -30,9 +30,11 @@ class Shape
 	static int uid;
 public:
 	Shape(const Point3D &pos = Point3D(0, 0, 0));
-	virtual ~Shape();
+	virtual ~Shape() = 0;
+
 	static int assignIndex() { return uid++; }
 	static void offsetUID(int offset) { uid += offset; }
+
 	virtual void bounding();
 	virtual BBox getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
@@ -69,30 +71,6 @@ public:
 	Shader* material = nullptr;
 	TextureMapping* UV_Mapping = nullptr;
 	Texture* normalMap = nullptr;
-};
-/************************************************************************/
-/* Sphere Function Definition                                           */
-/************************************************************************/
-class geoSphere :public Shape
-{
-public:
-	geoSphere(const Vector3D& pos = Vector3D(0, 0, 0), const Float& radius = 1);
-	~geoSphere();
-
-	void bounding();
-	BBox getWorldBounding() const;
-
-	void setCenter(const Vector3D& pos);
-	void setRadius(Float radius);
-
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const;
-	Vector3D getNormal(const Vector3D& pos) const;
-	void getNormal(const DifferentialGeometry *queryPoint) const;
-	Float getRadius() const;
-	bool isInside(const Vector3D& pPos) const;
-
-public:
-	Float r;//radius
 };
 /************************************************************************/
 /* Plane Function Definition                                            */

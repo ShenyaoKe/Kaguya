@@ -160,3 +160,37 @@ QDockWidget::close-button, QDockWidget::float-button {
     border: 1px solid #646464;
     background: #444444;
 }
+/*-------------------------------------------------------------*/
+QTabWidget
+{
+	border: 1px transparent black;
+}
+QTabWidget::pane { /* The tab widget frame */
+}
+
+
+QTabWidget::tab-bar {
+   /* left: 5px; /* move to the right by 5px */
+}
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+
+QTabBar::tab {
+    background: #363636;
+    border: 1px transparent black;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 18ex;
+    padding: 3px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+	color: #EEEEEE;
+    background: #6D6D6D;
+}
+
+QTabBar::tab:!selected {
+   /* margin-top: 2px; /* make non-selected tabs look smaller */
+	background: #363636;
+}

@@ -112,6 +112,7 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Mesh.h" />
     <ClInclude Include="..\src\Geometry\Shape.h" />
+    <ClInclude Include="..\src\Geometry\Sphere.h" />
     <ClInclude Include="..\src\Image\ColorData.h" />
     <ClInclude Include="..\src\Image\Filter.h" />
     <ClInclude Include="..\src\Image\ImageData.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Geometry\Sphere.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />

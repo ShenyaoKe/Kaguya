@@ -7,8 +7,10 @@
 #include "OGLViewer.h"
 #include "ImageViewer.h"
 #include <QDialog>
+#include <QTabWidget>
 #include "ui_MainWindow.h"
 #include "ui_About.h"
+#include "ui_Shelf.h"
 
 class MainWindow : public QMainWindow
 {
@@ -30,6 +32,7 @@ private:
 	ImageViewer* m_imgviewer;
 	QDialog* about;
 	Ui::MainWindowClass ui;
+	//Ui::Shelf tool_shelf;
 	//Ui::about_dialog about;
 	//Ui::img_viewer imgViewer;
 };
