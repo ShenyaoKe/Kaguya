@@ -10,6 +10,7 @@
 #include "Math/CGVector.h"
 #include "Accel/BBox.h"
 #include "Geometry/Shape.h"
+#include "Geometry/Sphere.h"
 #include "Geometry/Mesh.h"
 #include "Geometry/DifferentialGeometry.h"
 
