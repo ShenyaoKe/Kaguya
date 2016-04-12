@@ -14,6 +14,7 @@
 //#include <stdio.h>
 #include <cstdio>
 #include <cstdint>
+#include <cmath>
 #include <assert.h>
 #include <iostream>
 #include <algorithm>
@@ -33,7 +34,7 @@ using std::vector;
 #include <unordered_set>
 #include <unordered_map>
 
-#include <time.h>
+#include <ctime>
 #include <string>
 //#include <stdint.h>
 
@@ -71,7 +72,6 @@ struct KdAccelNode;
 class KdTreeAccel;
 class Shape;
 class Ray;
-struct DifferentialGeometry;
 struct DifferentialGeometry;
 class Mesh;
 class Triangle;

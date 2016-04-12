@@ -6,9 +6,6 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
-
-#include <cmath>
-#include <algorithm>
 #include "Core/Kaguya.h"
 /************************************************************************/
 /* Definition                                                           */
@@ -22,8 +19,8 @@ static const Float INV_PI = 1.0 / M_PI;
 static const Float INV_TWOPI = INV_PI / 2.0;
 static const Float INV_FOURPI = INV_PI / 4.0;
 static const Float NUM_ZERO = 0;
-static const Float NUM_INFINITY = INFINITY;// std::numeric_limits<Float>::infinity();
-static const Float NUM_NAN = NAN;// std::numeric_limits<Float>::quiet_NaN();
+static const Float NUM_INFINITY = std::numeric_limits<Float>::infinity();
+static const Float NUM_NAN = std::numeric_limits<Float>::quiet_NaN();
 /************************************************************************/
 /* Functions                                                            */
 /************************************************************************/

@@ -246,14 +246,14 @@ void Mesh::printInfo(const string &msg) const
 		fids[i]->printInfo();
 	}
 }
-bool Mesh::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const
+bool Mesh::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	return false;
 }
-void Mesh::getNormal(const DifferentialGeometry *queryPoint) const
+void Mesh::getNormal(const DifferentialGeometry* queryPoint) const
 {
 }
-void Mesh::getUV(const DifferentialGeometry *queryPoint) const
+void Mesh::getUV(const DifferentialGeometry* queryPoint) const
 {
 }
 
@@ -578,7 +578,7 @@ void Triangle::setNormal(Vector3D* n0, Vector3D* n1, Vector3D* n2)
 	n.push_back(n1);
 	n.push_back(n2);
 }
-bool Triangle::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const
+bool Triangle::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Vector3D v1 = *p[1] - *p[0];
 	Vector3D v2 = *p[2] - *p[0];
@@ -623,15 +623,15 @@ bool Triangle::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *q
 	}
 	return false;
 }
-void Triangle::getNormal(const DifferentialGeometry *queryPoint) const
+void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
 {
 	if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
 	{
 		ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		tmpNormal.printInfo();
 		queryPoint->normal = Normalize(
-			- queryPoint->uDir * tmpNormal.r
-			- queryPoint->vDir * tmpNormal.g
+			- queryPoint->dpdu * tmpNormal.r
+			- queryPoint->dpdv * tmpNormal.g
 			+ queryPoint->normal * tmpNormal.b);
 	}
 	else
@@ -649,15 +649,15 @@ void Triangle::getNormal(const DifferentialGeometry *queryPoint) const
 		else
 		{
 			det = 1.0 / det;
-			queryPoint->uDir = Normalize((dv2 * dp1 - dv1 * dp2) * det);
-			queryPoint->vDir = Normalize((-du2 * dp1 + du1 * dp2) * det);
+			queryPoint->dpdu = Normalize((dv2 * dp1 - dv1 * dp2) * det);
+			queryPoint->dpdv = Normalize((-du2 * dp1 + du1 * dp2) * det);
 		}
 	}
 }
-void Triangle::getUV(const DifferentialGeometry *queryPoint) const
+void Triangle::getUV(const DifferentialGeometry* queryPoint) const
 {
 }
-ColorRGBA Triangle::getColor(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Triangle::getColor(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	ColorRGBA ret;
 	if (material != nullptr)
@@ -674,7 +674,7 @@ ColorRGBA Triangle::getColor(const DifferentialGeometry *queryPoint, const Light
 	return ret;
 }
 
-const Point3D& Triangle::closestPoint(const Point3D &point) const
+const Vector3D &Triangle::closestPoint(const Point3D &point) const
 {
 	Vector3D ab = *p[1] - *p[0];
 	Vector3D ac = *p[2] - *p[0];

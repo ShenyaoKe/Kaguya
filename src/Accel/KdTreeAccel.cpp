@@ -183,12 +183,12 @@ RETRY_SPLIT:
 	buildTree(node->aboveNode, aboveBound, primsAbove, depth - 1, edges);
 
 }
-bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry *queryPoint,
+bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint,
 	Float *tHit, Float *rayEpsilon) const
 {
 	return hit(inRay, queryPoint, root, tHit, rayEpsilon);
 }
-bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry *queryPoint, const KdAccelNode *node,
+bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
 	Float *tHit, Float *rayEpsilon) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
@@ -347,13 +347,13 @@ void KdTreeAccel::update()
 }
 
 bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
-	DifferentialGeometry *queryPoint, Float *tHit) const
+	DifferentialGeometry* queryPoint, Float *tHit) const
 {
 	return collide(inObj, worldbound, queryPoint, root, tHit);
 }
 
 bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
-	DifferentialGeometry *queryPoint,
+	DifferentialGeometry* queryPoint,
 	const KdAccelNode *node, Float *tHit) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
@@ -409,7 +409,7 @@ bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
 	return isCollide;
 }
 
-bool KdTreeAccel::inLeaf(const Point3D& pos) const
+bool KdTreeAccel::inLeaf(const Vector3D &pos) const
 {
 	/*if (!treeBound.isInside(pos))
 	{
@@ -418,7 +418,7 @@ bool KdTreeAccel::inLeaf(const Point3D& pos) const
 	return inLeaf(pos, root);
 }
 
-bool KdTreeAccel::inLeaf(const Point3D& pos, const KdAccelNode *node) const
+bool KdTreeAccel::inLeaf(const Vector3D &pos, const KdAccelNode *node) const
 {
 	bool isInLeaf = false;
 	if (node!=nullptr)

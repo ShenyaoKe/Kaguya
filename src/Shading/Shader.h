@@ -29,8 +29,8 @@ public:
 	Shader();
 	virtual ~Shader();
 
-	virtual void setDiffuse(const ColorRGB& diff);
-	virtual void setSpecular(const ColorRGB& spec);
+	virtual void setDiffuse(const ColorRGB &diff);
+	virtual void setSpecular(const ColorRGB &spec);
 	//virtual void assignDiffuse(ColorRGB* &diff){ &diffuse = diff; };
 	//virtual void assignAmbient(ColorRGB&amb){ ambient = amb; };
 	void setSolidSpecular(const Float& spth);
@@ -42,12 +42,12 @@ public:
 	virtual void attachSpecularTexture(Texture* &sTex);
 
 	virtual bool getOpacity() const;
-	virtual ColorRGBA getAmbient(const DifferentialGeometry *queryPoint) const;
-	virtual ColorRGBA getDiffuseAt(const DifferentialGeometry *queryPoint, const Light* light) const;
-	virtual ColorRGBA getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const;
+	virtual ColorRGBA getAmbient(const DifferentialGeometry* queryPoint) const;
+	virtual ColorRGBA getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const;
+	virtual ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
 	//virtual ColorRGB getColorAt(const Float& cosTheta) const{ return ColorRGB(); };
-	//virtual ColorRGBA getColor(const Vector3D& intersectPoint, const Vector3D& reflectDir, const Vector3D& normalVec, const Light* light) const;
-	virtual ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
+	//virtual ColorRGBA getColor(const Vector3D &intersectPoint, const Vector3D &reflectDir, const Vector3D &normalVec, const Light* light) const;
+	virtual ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
 
 protected:
 	ColorRGBA diffuse = COLOR_WHITE;
@@ -76,13 +76,13 @@ class Lambert :public Shader
 {
 public:
 	Lambert();
-	Lambert(const ColorRGB& diff, const ColorRGB& amb, const Float& dmin, const Float& dmax);
+	Lambert(const ColorRGB &diff, const ColorRGB &amb, const Float& dmin, const Float& dmax);
 	~Lambert();
 
-	//void setLambert(const ColorRGB& diff, const ColorRGB& amb, const Float& dmin, const Float& dmax);
+	//void setLambert(const ColorRGB &diff, const ColorRGB &amb, const Float& dmin, const Float& dmax);
 	//void setDiffuseRange(const Float& dmin, const Float& dmax);
-	ColorRGBA getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const;
-	ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
+	ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
+	ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
 protected:
 private:
 };
@@ -101,7 +101,7 @@ public:
 	void setSpecularRange(const Float& smin, const Float& smax);
 	void setCosinePower(const Float& power);
 	//ColorRGB getColor(const Float& cosTheta);
-	ColorRGBA getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const;
+	ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
 protected:
 
 private:
@@ -115,16 +115,16 @@ class Gooch :public Shader
 public:
 	Gooch()
 		: warmColor(1.0, 1.0, 0.0), coolColor(0.0, 0.0, 1.0), silhoutteColor(0.0, 0.0, 0.0) {}
-	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff);
-	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh);
-	Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh, const Float& dmin, const Float& dmax);
+	Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff);
+	Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff, const ColorRGB &silh);
+	Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff, const ColorRGB &silh, const Float& dmin, const Float& dmax);
 	~Gooch();
 
 	void setDiffuseRange(const Float& dmin, const Float& dmax);
-	ColorRGBA getDiffuseAt(const DifferentialGeometry *queryPoint, const Light* light) const;
+	ColorRGBA getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const;
 	ColorRGBA getDiffuseWithEdgeAt(const Float& cosTheta, const Light* light) const;
-	//ColorRGB getSpecularAt(const Float& cosTheta, const ColorRGB& diffColor, const Light* light) const;
-	ColorRGBA getColor(const DifferentialGeometry *queryPoint, const Light* light) const;
+	//ColorRGB getSpecularAt(const Float& cosTheta, const ColorRGB &diffColor, const Light* light) const;
+	ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
 protected:
 
 private:
@@ -141,22 +141,22 @@ class ShapedSpecShader :public Shader
 {
 public:
 ShapedSpecShader(){};
-ShapedSpecShader(const ColorRGB& diff, const ColorRGB& spec);
+ShapedSpecShader(const ColorRGB &diff, const ColorRGB &spec);
 ~ShapedSpecShader(){};
 
 
-ColorRGBA getSpecularAt(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir, const ColorRGBA& diffColor, const Light* light) const;
-ColorRGBA getColor(const Vector3D& intersectPoint, const Vector3D& reflectDir, const Vector3D& normalVec, const Light* light) const;
+ColorRGBA getSpecularAt(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const;
+ColorRGBA getColor(const Vector3D &intersectPoint, const Vector3D &reflectDir, const Vector3D &normalVec, const Light* light) const;
 protected:
 
 private:
 };
-ShapedSpecShader::ShapedSpecShader(const ColorRGB& diff, const ColorRGB& spec)
+ShapedSpecShader::ShapedSpecShader(const ColorRGB &diff, const ColorRGB &spec)
 {
 diffuse = diff;
 specular = spec;
 }
-ColorRGBA ShapedSpecShader::getSpecularAt(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir, const ColorRGBA& diffColor, const Light* light) const
+ColorRGBA ShapedSpecShader::getSpecularAt(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const
 {
 Float s = light->getSpecAmout(DifferentialGeometry, reflectDir);
 //s = (s - spec_min) / (spec_max - spec_min);
@@ -170,7 +170,7 @@ return ColorRGBA(specular * light->getColor(), s).returnClamp();
 //return ( diffColor * (1 - s)).returnClamp();
 
 }
-ColorRGBA ShapedSpecShader::getColor(const Vector3D& intersectPoint, const Vector3D& reflectDir, const Vector3D& normalVec, const Light* light) const
+ColorRGBA ShapedSpecShader::getColor(const Vector3D &intersectPoint, const Vector3D &reflectDir, const Vector3D &normalVec, const Light* light) const
 {
 Vector3D lightDir = light->getDirFromPoint(intersectPoint);
 

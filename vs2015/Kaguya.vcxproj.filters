@@ -123,9 +123,6 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Tracer\Tracer.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
@@ -200,6 +197,21 @@
     </ClInclude>
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Plane.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Ellipsoid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Hyperboloid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Paraboloid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Torus.h">
+      <Filter>Header Files\geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,8 +296,26 @@
     <ClCompile Include="..\src\Math\Transform.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Plane.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Geometry\Sphere.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Ellipsoid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Hyperboloid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Paraboloid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Torus.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

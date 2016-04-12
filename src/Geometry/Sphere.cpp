@@ -3,7 +3,7 @@
 #include "Shading/Texture.h"
 #include "Shading/TextureMapping.h"
 
-geoSphere::geoSphere(const Vector3D& pos, const Float& radius)
+geoSphere::geoSphere(const Vector3D &pos, const Float& radius)
 	: Shape(pos), r(radius)
 {
 	bounding();
@@ -26,7 +26,7 @@ BBox geoSphere::getWorldBounding() const
 	return ret;
 }
 
-void geoSphere::setCenter(const Vector3D& pos)
+void geoSphere::setCenter(const Vector3D &pos)
 {
 	c = pos;
 	bounding();
@@ -36,7 +36,7 @@ void geoSphere::setRadius(Float radius)
 	r = radius;
 	bounding();
 }
-bool geoSphere::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoSphere::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Float coeB = inRay.getDir() * (c - inRay.getPos());
 	Float coeC = (inRay.getPos() - c).getLenSq() - sqr(r);
@@ -66,23 +66,23 @@ bool geoSphere::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry *
 	}
 	return false;
 }
-Vector3D geoSphere::getNormal(const Vector3D& pos) const
+Vector3D geoSphere::getNormal(const Vector3D &pos) const
 {
 	return Normalize(pos - c);
 }
 
-void geoSphere::getNormal(const DifferentialGeometry *queryPoint) const
+void geoSphere::getNormal(const DifferentialGeometry* queryPoint) const
 {
 	queryPoint->normal = getNormal(queryPoint->pos);
 
-	if (normalMap != NULL && UV_Mapping != NULL)
+	if (normalMap != nullptr && UV_Mapping != nullptr)
 	{
 		UV_Mapping->getUVDir(queryPoint);
 		ColorRGBA tmpNormal = normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		//tmpNormal.printInfo();
 		queryPoint->normal = Normalize(
-			-queryPoint->uDir * tmpNormal.r
-			- queryPoint->vDir * tmpNormal.g
+			-queryPoint->dpdu * tmpNormal.r
+			- queryPoint->dpdv * tmpNormal.g
 			+ queryPoint->normal * tmpNormal.b);
 	}
 	else
@@ -91,13 +91,13 @@ void geoSphere::getNormal(const DifferentialGeometry *queryPoint) const
 		Float rsintheta = r * sqrt(1 - sqr(pp.y / r));
 		if (rsintheta == 0.0)
 		{
-			queryPoint->uDir = X_AXIS3D;
-			queryPoint->vDir = Z_AXIS3D;
+			queryPoint->dpdu = X_AXIS3D;
+			queryPoint->dpdv = Z_AXIS3D;
 		}
 		else
 		{
-			queryPoint->uDir = Normalize(Vector3D(-pp.z, 0, pp.x));// Vector3D(2 * PI * pp.z, 0, 2 * PI * pp.x).getNorm()
-			queryPoint->vDir = Normalize(-Vector3D(pp.x * pp.y / rsintheta, -rsintheta, pp.y * pp.z / rsintheta));
+			queryPoint->dpdu = Normalize(Vector3D(-pp.z, 0, pp.x));// Vector3D(2 * PI * pp.z, 0, 2 * PI * pp.x).getNorm()
+			queryPoint->dpdv = Normalize(-Vector3D(pp.x * pp.y / rsintheta, -rsintheta, pp.y * pp.z / rsintheta));
 		}
 	}
 }
@@ -107,7 +107,7 @@ Float geoSphere::getRadius() const
 	return r;
 }
 
-bool geoSphere::isInside(const Vector3D& pPos) const
+bool geoSphere::isInside(const Vector3D &pPos) const
 {
 	if ((pPos - c).getLenSq() <= sqr(r))
 	{

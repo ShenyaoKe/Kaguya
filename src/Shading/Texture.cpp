@@ -6,11 +6,11 @@ Texture::Texture()
 Texture::~Texture()
 {
 }
-ColorRGBA Texture::getColor(const Point3D& uv) const
+ColorRGBA Texture::getColor(const Vector3D &uv) const
 {
 	return ColorRGBA();
 }
-ColorRGBA Texture::getColor(const DifferentialGeometry *queryPoint) const
+ColorRGBA Texture::getColor(const DifferentialGeometry* queryPoint) const
 {
 	ColorRGBA ret = getColor(queryPoint->UV);
 	return ret;
@@ -31,9 +31,9 @@ FileTexture::FileTexture(ImageData& filename)
 }
 FileTexture::~FileTexture()
 {
-	img = NULL;
+	img = nullptr;
 }
-ColorRGBA FileTexture::getColor(const Point3D& uv) const
+ColorRGBA FileTexture::getColor(const Vector3D &uv) const
 {
 	return img->bilinearPixel(uv.x * img->getWidth(), uv.y * img->getHeight());
 }
@@ -48,11 +48,11 @@ PlannetTexture::PlannetTexture(const string& nightfile, const string& dayfile)
 PlannetTexture::~PlannetTexture()
 {
 	delete nightImg;
-	nightImg = NULL;
+	nightImg = nullptr;
 	delete dayImg;
-	dayImg = NULL;
+	dayImg = nullptr;
 }
-ColorRGBA PlannetTexture::getColor(const DifferentialGeometry *queryPoint) const
+ColorRGBA PlannetTexture::getColor(const DifferentialGeometry* queryPoint) const
 {
 	Float ramp = queryPoint->getDiffuseTheta();
 	ramp = (ramp + tolerance) / (2 * tolerance);
@@ -84,7 +84,7 @@ PerlinNoiseTexture::PerlinNoiseTexture(Float persistence, int octaves, int wd, i
 PerlinNoiseTexture::~PerlinNoiseTexture()
 {
 }
-ColorRGBA PerlinNoiseTexture::getColor(const Point3D& uv) const
+ColorRGBA PerlinNoiseTexture::getColor(const Vector3D &uv) const
 {
 	Float pValue = clampFromZeroToOne((noise.getValue(uv) - vmin) / (vmax - vmin));
 	return pValue * brightColor + (1 - pValue)*darkColor;
@@ -113,7 +113,7 @@ void PerlinNoiseTexture3D::setRange(const Float& max_value, const Float& min_val
 	vmin = min_value;
 	vmax = max_value;
 }
-ColorRGBA PerlinNoiseTexture3D::getColor(const Point3D& uv) const
+ColorRGBA PerlinNoiseTexture3D::getColor(const Vector3D &uv) const
 {
 	Float pValue = clampFromZeroToOne((noise.getValue(uv) - vmin) / (vmax - vmin));
 	//cout << noise.getValue(queryPoint->UV) << endl;
@@ -134,7 +134,7 @@ WoodTexture3D::WoodTexture3D(Float persistence, int octaves, int size, int thr)
 WoodTexture3D::~WoodTexture3D()
 {
 }
-ColorRGBA WoodTexture3D::getColor(const Point3D& uv) const
+ColorRGBA WoodTexture3D::getColor(const Vector3D &uv) const
 {
 	Float pValue = threshold * (noise.getValue(uv) - vmin) / (vmax - vmin);
 	pValue -= static_cast<int>(pValue);
@@ -160,9 +160,9 @@ SolidFileTexture::SolidFileTexture(ImageData& filename)
 SolidFileTexture::~SolidFileTexture()
 {
 	delete img;
-	img = NULL;
+	img = nullptr;
 }
-ColorRGBA SolidFileTexture::getColor(const Point3D& uv) const
+ColorRGBA SolidFileTexture::getColor(const Vector3D &uv) const
 {
 	return img->bilinearPixel(uv.x * img->getWidth(), uv.y * img->getHeight());
 }

@@ -167,7 +167,7 @@ public:
 	PerlinNoise2D(Float persistence, int octaves, int wd, int ht);
 	virtual ~PerlinNoise2D();
 	virtual void setData(Float persistence, int octaves, int wd, int ht);
-	virtual Float getValue(const Point3D& uv) const;
+	virtual Float getValue(const Vector3D &uv) const;
 private:
 
 };
@@ -192,7 +192,7 @@ inline void PerlinNoise2D::setData(Float persistence, int octaves, int wd, int h
 	width = wd;
 	height = ht;
 }
-inline Float PerlinNoise2D::getValue(const Point3D& uv) const
+inline Float PerlinNoise2D::getValue(const Vector3D &uv) const
 {
 	Float total = 0.0;
 
@@ -221,7 +221,7 @@ public:
 	PerlinNoise3D(Float persistence, int octaves, int wd, int ht, int dp);
 	virtual ~PerlinNoise3D();
 	virtual void setData(Float persistence, int octaves, int wd, int ht, int dp);
-	virtual Float getValue(const Point3D& uv) const;
+	virtual Float getValue(const Vector3D &uv) const;
 private:
 
 };
@@ -248,7 +248,7 @@ inline void PerlinNoise3D::setData(Float persistence, int octaves, int wd, int h
 	height = ht;
 	depth = dp;
 }
-inline Float PerlinNoise3D::getValue(const Point3D& uv) const
+inline Float PerlinNoise3D::getValue(const Vector3D &uv) const
 {
 	Float total = 0.0;
 

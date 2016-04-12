@@ -35,7 +35,7 @@ public:
 	Point3(T x, T y, T z) : x(x), y(y), z(z) {}
 	friend std::ostream &operator<<(ostream& os, const Point3<T> &v)
 	{
-		os << "[" << v.x << ", " << v.y << ", " << v.z << "]";
+		os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
 		return os;
 	}
 public:
@@ -45,4 +45,16 @@ public:
 typedef Point3<Float> Point3f;
 typedef Point3<int> Point3i;
 
+template <typename T>
+class Normal3
+{
+public:
+	Normal3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
+	explicit Normal3(const Vector3 &vec) : x(vec.x), y(vec.y), z(vec.z) {}
+	~Normal3() {}
+
+public:
+	T x, y, z;
+};
+typedef Normal3<Float> Normal3f;
 #endif // KAGUYA_GEOMETRY_H

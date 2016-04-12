@@ -7,11 +7,11 @@ Shader::Shader()
 Shader::~Shader()
 {
 }
-void Shader::setDiffuse(const ColorRGB& diff)
+void Shader::setDiffuse(const ColorRGB &diff)
 {
 	diffuse = diff;
 }
-void Shader::setSpecular(const ColorRGB& spec)
+void Shader::setSpecular(const ColorRGB &spec)
 {
 	specular = spec;
 }
@@ -44,9 +44,9 @@ bool Shader::getOpacity() const
 {
 	return opacity;
 }
-ColorRGBA Shader::getAmbient(const DifferentialGeometry *queryPoint) const
+ColorRGBA Shader::getAmbient(const DifferentialGeometry* queryPoint) const
 {
-	if (ambiTex == NULL)
+	if (ambiTex == nullptr)
 	{
 		return ambient;
 	}
@@ -55,7 +55,7 @@ ColorRGBA Shader::getAmbient(const DifferentialGeometry *queryPoint) const
 		return ambiTex->getColor(queryPoint);
 	}
 }
-ColorRGBA Shader::getDiffuseAt(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Shader::getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	ColorRGBA ret;
 	Float cosTheta = queryPoint->getDiffuseTheta();
@@ -63,7 +63,7 @@ ColorRGBA Shader::getDiffuseAt(const DifferentialGeometry *queryPoint, const Lig
 	c = (c - diff_min) / (diff_max - diff_min);
 	//return (diffuse * light->getColor() * light->getIntensity(dist) * c + ambient * (1 - c)).returnClamp();
 
-	if (diffTex == NULL)
+	if (diffTex == nullptr)
 	{
 		Spectrum sptr = light->getSpectrum(queryPoint);
 		//(diffuse*sptr).printInfo();
@@ -83,7 +83,7 @@ ColorRGBA Shader::getDiffuseAt(const DifferentialGeometry *queryPoint, const Lig
 	}
 	// .returnClamp();
 }
-ColorRGBA Shader::getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Shader::getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	ColorRGBA ret;
 	Float cosTheta = queryPoint->getSpecularTheta();
@@ -98,7 +98,7 @@ ColorRGBA Shader::getSpecularAt(const DifferentialGeometry *queryPoint, const Li
 		s = s > specThreshold ? 1 : 0;
 	}
 	//return (specular * light->getColor() * light->getIntensity(dist) * s + diffColor * (1 - s)).returnClamp();
-	if (specTex == NULL)
+	if (specTex == nullptr)
 	{
 		//return ColorRGBA(specular * light->getColor() * light->getIntensity(queryPoint), s).returnClamp();
 		ret = ColorRGBA(specular * light->getSpectrum(queryPoint));// .returnClamp();
@@ -113,7 +113,7 @@ ColorRGBA Shader::getSpecularAt(const DifferentialGeometry *queryPoint, const Li
 	return ret;
 	//return ( diffColor * (1 - s)).returnClamp();
 }
-ColorRGBA Shader::getColor(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Shader::getColor(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	if (queryPoint->pos.z > 10)
 	{
@@ -135,7 +135,7 @@ ColorRGBA Shader::getColor(const DifferentialGeometry *queryPoint, const Light* 
 Lambert::Lambert()
 {
 }
-Lambert::Lambert(const ColorRGB& diff, const ColorRGB& amb, const Float& dmin, const Float& dmax)
+Lambert::Lambert(const ColorRGB &diff, const ColorRGB &amb, const Float& dmin, const Float& dmax)
 {
 	diffuse = diff;
 	ambient = amb;
@@ -145,11 +145,11 @@ Lambert::Lambert(const ColorRGB& diff, const ColorRGB& amb, const Float& dmin, c
 Lambert::~Lambert()
 {
 }
-ColorRGBA Lambert::getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Lambert::getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	return ColorRGBA(0, 0, 0, 0);
 }
-ColorRGBA Lambert::getColor(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Lambert::getColor(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	light->getDirection(queryPoint);
 	//Float dist = light->getDistanceFromPoint(intersectPoint);
@@ -196,7 +196,7 @@ void Phong::setCosinePower(const Float& power)
 {
 	cospower = power;
 }
-ColorRGBA Phong::getSpecularAt(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Phong::getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	Float cosTheta = queryPoint->getSpecularTheta();
 	// 	if (cosTheta > 0)
@@ -206,7 +206,7 @@ ColorRGBA Phong::getSpecularAt(const DifferentialGeometry *queryPoint, const Lig
 	s = (s - spec_min) / (spec_max - spec_min);
 	s = pow(s, cospower);
 
-	if (specTex == NULL)
+	if (specTex == nullptr)
 	{
 		//return ColorRGBA(specular * light->getColor() * light->getIntensity(queryPoint), s).returnClamp();
 		return ColorRGBA(specular * light->getSpectrum(queryPoint), s);// .returnClamp();
@@ -227,23 +227,22 @@ Gooch::Gooch()
 Gooch::~Gooch()
 {
 }
-Gooch::Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff)
+Gooch::Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff)
 {
 	warmColor = wmC;
 	coolColor = clC;
 	diffuse = diff;
 }
-Gooch::Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh, const Float& dmin, const Float& dmax)
+Gooch::Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff, const ColorRGB &silh, const Float& dmin, const Float& dmax)
+	: warmColor(wmC), coolColor(clC), silhoutteColor(silh)
 {
-	warmColor = wmC;
-	coolColor = clC;
 	diffuse = diff;
-	silhoutteColor = silh;
 	diff_min = dmin;
 	diff_max = dmax;
 }
 
-Gooch::Gooch(const ColorRGB& wmC, const ColorRGB& clC, const ColorRGB& diff, const ColorRGB& silh)
+Gooch::Gooch(const ColorRGB &wmC, const ColorRGB &clC, const ColorRGB &diff, const ColorRGB &silh)
+	: warmColor(wmC), coolColor(clC), silhoutteColor(silh)
 {
 	warmColor = wmC;
 	coolColor = clC;
@@ -255,7 +254,7 @@ void Gooch::setDiffuseRange(const Float& dmin, const Float& dmax)
 	diff_min = dmin;
 	diff_max = dmax;
 }
-ColorRGBA Gooch::getDiffuseAt(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Gooch::getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	Float cosTheta = queryPoint->getDiffuseTheta();
 	ColorRGBA wmC = warmColor + diffuse * diff_max;
@@ -264,7 +263,7 @@ ColorRGBA Gooch::getDiffuseAt(const DifferentialGeometry *queryPoint, const Ligh
 	Float c = (cosTheta + 1) / 2;
 	return (wmC * c + clC * (1 - c)).returnClamp();
 }
-ColorRGBA Gooch::getColor(const DifferentialGeometry *queryPoint, const Light* light) const
+ColorRGBA Gooch::getColor(const DifferentialGeometry* queryPoint, const Light* light) const
 {
 	light->getDirection(queryPoint);
 	//Float dist = light->getDistance(queryPoint);

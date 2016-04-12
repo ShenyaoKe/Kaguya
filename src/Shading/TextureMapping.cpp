@@ -10,18 +10,18 @@ TextureMapping::TextureMapping()
 TextureMapping::~TextureMapping()
 {
 }
-TextureMapping::TextureMapping(const Point3D& center)
+TextureMapping::TextureMapping(const Vector3D &center)
 {
 	c = center;
 	nx = Vector3D(1, 0, 0);
 	ny = Vector3D(0, 1, 0);
 	nz = Vector3D(0, 0, 1);
 }
-TextureMapping::TextureMapping(const Point3D& center, const Vector3D& view, const Vector3D& upVec) : c(center)
+TextureMapping::TextureMapping(const Vector3D &center, const Vector3D &view, const Vector3D &upVec) : c(center)
 {
 	setDir(view, upVec);
 }
-TextureMapping::TextureMapping(const Point3D& center, const Vector3D& xDir, const Vector3D& yDir, const Vector3D& zDir)
+TextureMapping::TextureMapping(const Vector3D &center, const Vector3D &xDir, const Vector3D &yDir, const Vector3D &zDir)
 {
 	c = center;
 	nx = Normalize(xDir);
@@ -33,25 +33,25 @@ void TextureMapping::printInfo() const
 	c.printInfo(); nx.printInfo();
 	ny.printInfo(); nz.printInfo();
 }
-void TextureMapping::setPos(const Point3D& pos)
+void TextureMapping::setPos(const Vector3D &pos)
 {
 	c = pos;
 }
-void TextureMapping::setDir(const Vector3D& view, const Vector3D& upVec)
+void TextureMapping::setDir(const Vector3D &view, const Vector3D &upVec)
 {
 	nz = Normalize(view);
 	nx = Normalize(nz.crossMul(upVec));
 	ny = Normalize(nx.crossMul(nz));
 }
-Point3D TextureMapping::posToUV(const Point3D& pos) const
+Point3D TextureMapping::posToUV(const Vector3D &pos) const
 {
 	return Point3D();
 }
-void TextureMapping::mapToUV(const DifferentialGeometry *queryPoint) const
+void TextureMapping::mapToUV(const DifferentialGeometry* queryPoint) const
 {
 	queryPoint->UV = posToUV(queryPoint->pos);
 }
-void TextureMapping::getUVDir(const DifferentialGeometry *queryPoint) const
+void TextureMapping::getUVDir(const DifferentialGeometry* queryPoint) const
 {
 }
 /************************************************************************/
@@ -60,19 +60,19 @@ void TextureMapping::getUVDir(const DifferentialGeometry *queryPoint) const
 SphericalMapping2D::SphericalMapping2D() :TextureMapping()
 {
 }
-SphericalMapping2D::SphericalMapping2D(const Point3D& center) : TextureMapping(center)
+SphericalMapping2D::SphericalMapping2D(const Vector3D &center) : TextureMapping(center)
 {
 }
-SphericalMapping2D::SphericalMapping2D(const Point3D& center, const Vector3D& view, const Vector3D& upVec) : TextureMapping(center, view, upVec)
+SphericalMapping2D::SphericalMapping2D(const Vector3D &center, const Vector3D &view, const Vector3D &upVec) : TextureMapping(center, view, upVec)
 {
 }
-SphericalMapping2D::SphericalMapping2D(const Point3D& center, const Vector3D& xDir, const Vector3D& yDir, const Vector3D& zDir) : TextureMapping(center, xDir, yDir, zDir)
+SphericalMapping2D::SphericalMapping2D(const Vector3D &center, const Vector3D &xDir, const Vector3D &yDir, const Vector3D &zDir) : TextureMapping(center, xDir, yDir, zDir)
 {
 }
 SphericalMapping2D::~SphericalMapping2D()
 {
 }
-Point3D SphericalMapping2D::posToUV(const Point3D& pos) const
+Point3D SphericalMapping2D::posToUV(const Vector3D &pos) const
 {
 	Vector3D np = Normalize(pos - c);
 	Float x = nx * np;
@@ -94,7 +94,7 @@ Point3D SphericalMapping2D::posToUV(const Point3D& pos) const
 	return ret;
 	//queryPoint->UV.printInfo();
 }
-void SphericalMapping2D::getUVDir(const DifferentialGeometry *queryPoint) const
+void SphericalMapping2D::getUVDir(const DifferentialGeometry* queryPoint) const
 {
 	Float threshold = 0.005;
 	Vector3D uPos, vPos;
@@ -108,8 +108,8 @@ void SphericalMapping2D::getUVDir(const DifferentialGeometry *queryPoint) const
 	vPos.z = cos(M_PI * queryPoint->UV.y + threshold);
 	vPos = c + vPos.x * nx + vPos.y * ny + vPos.z * nz - queryPoint->pos;
 
-	queryPoint->uDir = Normalize(uPos - uPos * queryPoint->normal * uPos);
-	queryPoint->vDir = Normalize(vPos - vPos * queryPoint->normal * vPos);
+	queryPoint->dpdu = Normalize(uPos - uPos * queryPoint->normal * uPos);
+	queryPoint->dpdv = Normalize(vPos - vPos * queryPoint->normal * vPos);
 }
 /************************************************************************/
 /* Planar Mapping                                                       */
@@ -121,17 +121,17 @@ PlanarMapping2D::PlanarMapping2D(const Float& us, const Float& vs) : TextureMapp
 {
 	setSize(us, vs);
 }
-PlanarMapping2D::PlanarMapping2D(const Point3D& center) : TextureMapping(center)
+PlanarMapping2D::PlanarMapping2D(const Vector3D &center) : TextureMapping(center)
 {
 }
-PlanarMapping2D::PlanarMapping2D(const Point3D& center, const Float& us, const Float& vs) : TextureMapping(center)
+PlanarMapping2D::PlanarMapping2D(const Vector3D &center, const Float& us, const Float& vs) : TextureMapping(center)
 {
 	setSize(us, vs);
 }
-PlanarMapping2D::PlanarMapping2D(const Point3D& center, const Vector3D& view, const Vector3D& upVec) : TextureMapping(center, view, upVec)
+PlanarMapping2D::PlanarMapping2D(const Vector3D &center, const Vector3D &view, const Vector3D &upVec) : TextureMapping(center, view, upVec)
 {
 }
-PlanarMapping2D::PlanarMapping2D(const Point3D& center, const Vector3D& xDir, const Vector3D& yDir, const Vector3D& zDir) : TextureMapping(center, xDir, yDir, zDir)
+PlanarMapping2D::PlanarMapping2D(const Vector3D &center, const Vector3D &xDir, const Vector3D &yDir, const Vector3D &zDir) : TextureMapping(center, xDir, yDir, zDir)
 {
 }
 PlanarMapping2D::~PlanarMapping2D()
@@ -142,7 +142,7 @@ void PlanarMapping2D::setSize(const Float& us, const Float& vs)
 	uSize = us;
 	vSize = vs;
 }
-void PlanarMapping2D::mapToUV(const DifferentialGeometry *queryPoint) const
+void PlanarMapping2D::mapToUV(const DifferentialGeometry* queryPoint) const
 {
 	//cout << uSize << endl;
 	Vector3D np = queryPoint->pos - c;
@@ -162,17 +162,17 @@ PlanarMapping3D::PlanarMapping3D(const Float& us, const Float& vs, const Float& 
 {
 	setSize(us, vs, d);
 }
-PlanarMapping3D::PlanarMapping3D(const Point3D& center) : TextureMapping(center)
+PlanarMapping3D::PlanarMapping3D(const Vector3D &center) : TextureMapping(center)
 {
 }
-PlanarMapping3D::PlanarMapping3D(const Point3D& center, const Float& us, const Float& vs, const Float& d) : TextureMapping(center)
+PlanarMapping3D::PlanarMapping3D(const Vector3D &center, const Float& us, const Float& vs, const Float& d) : TextureMapping(center)
 {
 	setSize(us, vs, d);
 }
-PlanarMapping3D::PlanarMapping3D(const Point3D& center, const Vector3D& view, const Vector3D& upVec) : TextureMapping(center, view, upVec)
+PlanarMapping3D::PlanarMapping3D(const Vector3D &center, const Vector3D &view, const Vector3D &upVec) : TextureMapping(center, view, upVec)
 {
 }
-PlanarMapping3D::PlanarMapping3D(const Point3D& center, const Vector3D& xDir, const Vector3D& yDir, const Vector3D& zDir) : TextureMapping(center, xDir, yDir, zDir)
+PlanarMapping3D::PlanarMapping3D(const Vector3D &center, const Vector3D &xDir, const Vector3D &yDir, const Vector3D &zDir) : TextureMapping(center, xDir, yDir, zDir)
 {
 }
 PlanarMapping3D::~PlanarMapping3D()
@@ -184,7 +184,7 @@ void PlanarMapping3D::setSize(const Float& us, const Float& vs, const Float& d)
 	vSize = vs;
 	dist = d;
 }
-void PlanarMapping3D::mapToUV(const DifferentialGeometry *queryPoint) const
+void PlanarMapping3D::mapToUV(const DifferentialGeometry* queryPoint) const
 {
 	//cout << uSize << endl;
 	Vector3D np = queryPoint->pos - c;

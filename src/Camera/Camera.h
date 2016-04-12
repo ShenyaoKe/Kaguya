@@ -26,9 +26,9 @@ class Camera
 {
 public:
 	//Camera();
-	Camera(const Vector3D& eye = Vector3D(1,1,1),
-		const Vector3D& targ = Vector3D(0,0,0),
-		const Vector3D& up = Vector3D(0,1,0),
+	Camera(const Vector3D &eye = Vector3D(1,1,1),
+		const Vector3D &targ = Vector3D(0,0,0),
+		const Vector3D &up = Vector3D(0,1,0),
 		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
 		const Film &fm = Film());
 	virtual~Camera(){};

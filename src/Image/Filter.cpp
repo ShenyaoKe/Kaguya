@@ -229,7 +229,7 @@ ImageData* filter::equalize(const ImageData* src)
 	}
 	for (int i = 0; i < 3; i++) {
 		delete [] offsets[i];
-		offsets[i] = NULL;
+		offsets[i] = nullptr;
 	}*/
 	return ret;
 }
@@ -726,7 +726,7 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
     
 	for (int i = 0; i < size; i++) {
 		delete [] kernel[i];
-		kernel[i] = NULL;
+		kernel[i] = nullptr;
 	}
 }
 ImageData* filter::dilation(const ImageData* src, int radius)
@@ -774,7 +774,7 @@ ImageData* filter::dilation(const ImageData* src, int radius)
 	}
 	for (int i = 0; i < size; i++) {
 		delete [] kernel[i];
-		kernel[i] = NULL;
+		kernel[i] = nullptr;
 	}
 }
 ImageData* filter::erosion(const ImageData* src, int radius)
@@ -822,7 +822,7 @@ ImageData* filter::erosion(const ImageData* src, int radius)
 	}
 	for (int i = 0; i < size; i++) {
 		delete[] kernel[i];
-		kernel[i] = NULL;
+		kernel[i] = nullptr;
 	}
 }
 ImageData* filter::mosaic(const ImageData* src, int size)
@@ -1018,7 +1018,7 @@ ImageData* filter::circlepix(const ImageData* src, int radius, Float para)
 	}
 	for (int i = 0; i < 3; i++) {
 		delete [] kernel[i];
-		kernel[i] = NULL;
+		kernel[i] = nullptr;
 	}
 }
 ImageData* filter::translate(const ImageData* src, Vector2D& tVec, int& winWid, int& winHgt)

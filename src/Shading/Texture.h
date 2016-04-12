@@ -15,8 +15,8 @@ public:
 	Texture();
 	virtual ~Texture();
 
-	virtual ColorRGBA getColor(const Point3D& uv) const;
-	virtual ColorRGBA getColor(const DifferentialGeometry *queryPoint) const;
+	virtual ColorRGBA getColor(const Vector3D &uv) const;
+	virtual ColorRGBA getColor(const DifferentialGeometry* queryPoint) const;
 };
 
 /************************************************************************/
@@ -24,7 +24,7 @@ public:
 /************************************************************************/
 class FileTexture :public Texture
 {
-	ImageData* img = NULL;
+	ImageData* img = nullptr;
 public:
 	FileTexture();
 	FileTexture(const string& filename);
@@ -32,7 +32,7 @@ public:
 	~FileTexture();
 
 	void assignImage(ImageData* &image);
-	ColorRGBA getColor(const Point3D& uv) const;
+	ColorRGBA getColor(const Vector3D &uv) const;
 protected:
 
 private:
@@ -42,15 +42,15 @@ private:
 /************************************************************************/
 class PlannetTexture :public Texture
 {
-	ImageData* nightImg = NULL;
-	ImageData* dayImg = NULL;
+	ImageData* nightImg = nullptr;
+	ImageData* dayImg = nullptr;
 	Float tolerance = 0.1;
 public:
 	PlannetTexture();
 	PlannetTexture(const string& nightfile, const string& dayfile);
 	~PlannetTexture();
 
-	ColorRGBA getColor(const DifferentialGeometry *queryPoint) const;
+	ColorRGBA getColor(const DifferentialGeometry* queryPoint) const;
 protected:
 
 private:
@@ -69,7 +69,7 @@ public:
 	PerlinNoiseTexture();
 	PerlinNoiseTexture(Float persistence, int octaves, int wd, int ht);
 	~PerlinNoiseTexture();
-	ColorRGBA getColor(const Point3D& uv) const;
+	ColorRGBA getColor(const Vector3D &uv) const;
 protected:
 
 private:
@@ -92,7 +92,7 @@ public:
 
 	virtual void setColor(const ColorRGBA& bc, const ColorRGBA& dc);
 	virtual void setRange(const Float& max_value, const Float& min_value);
-	ColorRGBA getColor(const Point3D& uv) const;
+	ColorRGBA getColor(const Vector3D &uv) const;
 protected:
 
 private:
@@ -109,7 +109,7 @@ public:
 	WoodTexture3D(Float persistence, int octaves, int size, int thr);
 	~WoodTexture3D();
 
-	ColorRGBA getColor(const Point3D& uv) const;
+	ColorRGBA getColor(const Vector3D &uv) const;
 protected:
 
 private:
@@ -119,7 +119,7 @@ private:
 /************************************************************************/
 class SolidFileTexture :public Texture
 {
-	ImageData* img = NULL;
+	ImageData* img = nullptr;
 public:
 	SolidFileTexture();
 	SolidFileTexture(const string& filename);
@@ -127,7 +127,7 @@ public:
 	~SolidFileTexture();
 
 	void assignImage(ImageData* &image);
-	ColorRGBA getColor(const Point3D& uv) const;
+	ColorRGBA getColor(const Vector3D &uv) const;
 protected:
 
 private:

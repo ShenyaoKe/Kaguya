@@ -34,8 +34,8 @@ public:
 	{
 	}
 	void init();
-	void setDifferentialGeometry(const Vector3D& vec);
-	void setNormalVector(const Vector3D& vec);
+	void setDifferentialGeometry(const Vector3D &vec);
+	void setNormalVector(const Vector3D &vec);
 	void setBeauty(const ColorRGBA& rgb);
 	void setAmbient(const ColorRGBA& rgb);
 	void setDiffuse(const ColorRGBA& rgb);
@@ -58,7 +58,7 @@ class renderBuffer
 public:
 	int width = 0;
 	int height = 0;
-	bufferData** data = NULL;
+	bufferData** data = nullptr;
 
 	renderBuffer()
 	{
@@ -68,8 +68,8 @@ public:
 	{
 	}
 
-	void setDifferentialGeometry(int x, int y, const Vector3D& vec);
-	void setNormalVector(int x, int y, const Vector3D& vec);
+	void setDifferentialGeometry(int x, int y, const Vector3D &vec);
+	void setNormalVector(int x, int y, const Vector3D &vec);
 	void setObjectID(int x, int y, int id);
 	void setDepth(int x, int y, Float d);
 

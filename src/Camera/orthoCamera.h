@@ -17,7 +17,7 @@ public:
 	//void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
 	//void resizeViewport(Float aspr = 1.0);
 
-	//void setUpVec(Vector3D& upVec);
+	//void setUpVec(Vector3D &upVec);
 protected:
 	Float nearPlane = -1.0, farPlane = 1.0;
 private:

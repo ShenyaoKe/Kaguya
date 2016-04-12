@@ -43,8 +43,8 @@ bool Collision::collideP(const geoSphere &sph0, const geoSphere &sph1)
 	Float sqDist = (sph0.getCenter() - sph1.getCenter()).getLenSq();
 	return sqDist <= sqr(sph0.getRadius() + sph1.getRadius());
 }
-bool Collision::collide(const Point3D& prePos, const Point3D& curPos,
-	const KdTreeAccel *tree, DifferentialGeometry *queryPoint,
+bool Collision::collide(const Vector3D &prePos, const Vector3D &curPos,
+	const KdTreeAccel *tree, DifferentialGeometry* queryPoint,
 	Float *tHit, Float* hitEpsilon)
 {
 	Ray ray = Ray(prePos, curPos - prePos);

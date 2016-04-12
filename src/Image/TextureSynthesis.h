@@ -4,7 +4,7 @@
 
 #include "Image/ImageData.h"
 
-const Vector3D& ColorToVector(const ColorRGBA &clr)
+const Vector3D &ColorToVector(const ColorRGBA &clr)
 {
 	Vector3D ret(clr.r, clr.g, clr.b);
 	return ret;

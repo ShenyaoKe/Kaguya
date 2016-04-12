@@ -20,13 +20,13 @@ private:
 
 public:
 	Ray();
-	Ray(const Point3D& pos, const Vector3D& dir,
+	Ray(const Vector3D &pos, const Vector3D &dir,
 		double minT = 0.0, double maxT = INFINITY);
 	~Ray();
 
 	Point3D operator()(const Float& t) const;
-	void setPos(Point3D& vp);
-	void setDir(Vector3D& vd);
+	void setPos(Vector3D &vp);
+	void setDir(Vector3D &vd);
 	void setT(const Float& t1, const Float& t2) const;
 	Point3D getPos() const;
 	Vector3D getDir() const;

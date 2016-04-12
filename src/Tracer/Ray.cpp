@@ -11,7 +11,7 @@ Ray::~Ray()
 {
 }
 
-Ray::Ray(const Point3D& pos, const Vector3D& dir,
+Ray::Ray(const Vector3D &pos, const Vector3D &dir,
 	double minT, double maxT)
 	: o(pos)
 	, time(0), dp(0)
@@ -24,12 +24,12 @@ Point3D Ray::operator()(const Float& t) const
 {
 	return o + t * d;
 }
-void Ray::setPos(Point3D& vp)
+void Ray::setPos(Vector3D &vp)
 {
 	o = vp;
 }
 
-void Ray::setDir(Vector3D& vd)
+void Ray::setDir(Vector3D &vd)
 {
 	d = vd;
 }
