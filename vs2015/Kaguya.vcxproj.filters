@@ -64,12 +64,6 @@
     <Filter Include="Source Files\math">
       <UniqueIdentifier>{596ed743-f1e9-4320-9213-716321cab9b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dynamics">
-      <UniqueIdentifier>{d7cd9f88-084c-47d3-90b2-cf2da9582e6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\dynamics">
-      <UniqueIdentifier>{7ba9d242-6c49-4e30-9c4d-962412c9ea26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\volume">
       <UniqueIdentifier>{1546571e-9871-4d4d-9791-0230d2643797}</UniqueIdentifier>
     </Filter>
@@ -174,9 +168,6 @@
     <ClInclude Include="..\src\Core\Kaguya.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Dynamics\Collision.h">
-      <Filter>Header Files\dynamics</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Volume\RasterizedVolume.h">
       <Filter>Header Files\volume</Filter>
     </ClInclude>
@@ -277,9 +268,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Image\TextureSynthesis.cpp">
       <Filter>Source Files\image</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Dynamics\Collision.cpp">
-      <Filter>Source Files\dynamics</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp">
       <Filter>Source Files\volume</Filter>

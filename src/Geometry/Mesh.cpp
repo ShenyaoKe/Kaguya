@@ -55,7 +55,7 @@ void Mesh::refine(vector<Shape*> &refined)
 	for (int i = 0; i < fids.size(); i++)
 	{
 		Triangle* face = new Triangle(this, i);
-		face->index = index + i;
+		//face->shapeId = shapeId + i;
 		refined.push_back(face);
 	}
 }
@@ -246,7 +246,7 @@ void Mesh::printInfo(const string &msg) const
 		fids[i]->printInfo();
 	}
 }
-bool Mesh::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool Mesh::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	return false;
 }
@@ -396,9 +396,9 @@ void Mesh::exportVBO(int &size,
 		}
 		if (has_uid)
 		{
-			*uids++ = this->index + i;
-			*uids++ = this->index + i;
-			*uids++ = this->index + i;
+			*uids++ = this->shapeId + i;
+			*uids++ = this->shapeId + i;
+			*uids++ = this->shapeId + i;
 		}
 	}
 		
@@ -493,7 +493,7 @@ void Mesh::exportIndexedVBO(
 /************************************************************************/
 Triangle::Triangle()
 {
-	index = Shape::assignIndex();
+	//shapeId = Shape::assignIndex();
 	mesh = nullptr;
 	p.reserve(3);
 	uv.reserve(3);
@@ -502,7 +502,7 @@ Triangle::Triangle()
 
 Triangle::Triangle(Mesh *inMesh, int fn)
 {
-	this->index = inMesh->index + fn;
+	//this->shapeId = inMesh->shapeId + fn;
 	this->attachMesh(inMesh);
 	p.reserve(3);
 	uv.reserve(3);
@@ -578,7 +578,7 @@ void Triangle::setNormal(Vector3D* n0, Vector3D* n1, Vector3D* n2)
 	n.push_back(n1);
 	n.push_back(n2);
 }
-bool Triangle::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool Triangle::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Vector3D v1 = *p[1] - *p[0];
 	Vector3D v2 = *p[2] - *p[0];
@@ -653,89 +653,6 @@ void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
 			queryPoint->dpdv = Normalize((-du2 * dp1 + du1 * dp2) * det);
 		}
 	}
-}
-void Triangle::getUV(const DifferentialGeometry* queryPoint) const
-{
-}
-ColorRGBA Triangle::getColor(const DifferentialGeometry* queryPoint, const Light* light) const
-{
-	ColorRGBA ret;
-	if (material != nullptr)
-	{
-		ret = material->getColor(queryPoint, light);
-	}
-	else
-	{
-		if (mesh->material != nullptr)
-		{
-			ret = mesh->material->getColor(queryPoint, light);
-		}
-	}
-	return ret;
-}
-
-const Vector3D &Triangle::closestPoint(const Point3D &point) const
-{
-	Vector3D ab = *p[1] - *p[0];
-	Vector3D ac = *p[2] - *p[0];
-	Vector3D ap = point - *p[0];
-
-	// Check if in vertex region outside A
-	Float d1 = ab * ap;
-	Float d2 = ac * ap;
-	if (d1 <= 0.0 && d2 <= 0.0)
-	{
-		return *p[0];
-	}
-
-	// Check if in vertex region outside B
-	Vector3D bp = point - *p[1];
-	Float d3 = ab * bp;
-	Float d4 = ac * bp;
-	if (d3 >= 0.0 && d4 <= d3)
-	{
-		return *p[1];
-	}
-	// Check if in edge region of AB, return projection on AB
-	Float vc = d1 * d4 - d3 * d2;
-	if (vc <= 0.0 && d1 >= 0.0 && d3 <= 0.0)
-	{
-		Float v = d1 / (d1 - d3); 
-		return *p[0] + v * ab;
-	}
-	
-
-	// Check if in vertex region outside C
-	Vector3D cp = point - *p[2];
-	Float d5 = ab * cp;
-	Float d6 = ac * cp;
-	if (d6 >= 0.0 && d5 <= d6)
-	{
-		return *p[2];
-	}
-
-	// Check if in edge region of AC, return projection on AC
-	Float vb = d5 * d2 - d1 * d6;
-	if (vb <= 0.0 && d2 >= 0.0 && d6 <= 0.0)
-	{
-		Float w = d2 / (d2 - d6);
-		return *p[0] + w * ac;
-	}
-	// Check if in edge region of BC, return projection on BC
-	Float va = d3 * d6 - d5 * d4;
-	Vector3D bc = *p[2] - *p[1];
-	if (va <= 0.0 && (d4 - d3) >= 0.0 && (d5 - d6) <= 0.0)
-	{
-		Float w = (d4 - d3) / (d4 - d3 + d5 - d6);
-		return *p[0] + w * bc;
-	}
-
-
-	
-	Float denom = 1.0 / (va + vb + vc);
-	Float v = vb * denom;
-	Float w = vc * denom;
-	return *p[0] + v * ab + w * ac;	
 }
 
 /*

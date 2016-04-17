@@ -16,7 +16,7 @@ public:
 	void setOrigin(const Vector3D &pos);
 	void setNorm(const Vector3D &norm);
 
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
 	Vector3D getNormal(const Vector3D &pos) const;
 	void getNormal(const DifferentialGeometry* queryPoint) const;
 

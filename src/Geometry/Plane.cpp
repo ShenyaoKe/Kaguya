@@ -31,7 +31,7 @@ void geoPlane::setNorm(const Vector3D &norm)
 {
 	n = norm;
 }
-bool geoPlane::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Float t = this->n * inRay.getDir();
 	if (t >= 0)

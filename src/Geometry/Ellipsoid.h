@@ -14,7 +14,7 @@ public:
 
 	void setCenter(const Vector3D &pos);
 	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
 	Vector3D getNormal(const Vector3D &pos) const;
 
 	bool isInside(const Vector3D &pPos) const;

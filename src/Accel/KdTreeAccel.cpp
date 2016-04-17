@@ -220,7 +220,7 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const 
 
 				if (primitives[idx]->intersectP(inRay))
 				{
-					if (primitives[idx]->getDifferentialGeometry(inRay, tmpQuery, &hitDist, &rayEp))
+					if (primitives[idx]->intersect(inRay, tmpQuery, &hitDist, &rayEp))
 					{
 						if (hitDist < *tHit && inRange(hitDist, tmin, tmax))
 						{
@@ -344,69 +344,6 @@ void KdTreeAccel::update()
 		delete[] edges[i];
 //		edges[i] = nullptr;
 	}
-}
-
-bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
-	DifferentialGeometry* queryPoint, Float *tHit) const
-{
-	return collide(inObj, worldbound, queryPoint, root, tHit);
-}
-
-bool KdTreeAccel::collide(const Shape* inObj, const BBox &worldbound,
-	DifferentialGeometry* queryPoint,
-	const KdAccelNode *node, Float *tHit) const
-{
-	//Compute initial parametric range of ray inside kd-tree extent
-	//Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
-	if (!Collision::collideP(worldbound, node->bbox))
-	{
-		return false;
-	}
-	//return true;
-	//Traversal kd-tree node in order of ray
-	bool isCollide = false;
-	if (node != nullptr)
-	{
-		if (node->isLeaf())
-		{
-			// collision determination
-			// 
-			for (int i = 0; i < node->primIndex.size(); i++)
-			{
-				if (Collision::collideP(worldbound, primitives[node->primIndex[i]]->ObjBound))
-				{
-					return true;
-				}
-			}
-		}
-		else//if hit interior node
-		{
-			/*process interior node*/
-			//calculate parametric distance from ray to split plane
-			//int axis = node->flags;
-			//Float tsplit = (node->split - inRay.pos[axis]) * invDir[axis];
-
-			//get children node for ray
-			const KdAccelNode *nearChild, *farChild;
-			nearChild = node->belowNode;
-			farChild = node->aboveNode;
-
-			if (Collision::collideP(worldbound, nearChild->bbox))
-			{
-				isCollide = this->collide(inObj, worldbound,
-					queryPoint, nearChild, tHit);
-			}
-			if (!isCollide)
-			{ 
-				if (Collision::collideP(worldbound, farChild->bbox))
-				{
-					isCollide = this->collide(inObj, worldbound,
-						queryPoint, nearChild, tHit);
-				}
-			}
-		}
-	}
-	return isCollide;
 }
 
 bool KdTreeAccel::inLeaf(const Vector3D &pos) const

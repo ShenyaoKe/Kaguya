@@ -107,7 +107,6 @@
     <ClInclude Include="..\src\Camera\perspCamera.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
-    <ClInclude Include="..\src\Dynamics\Collision.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
@@ -161,7 +160,6 @@
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
-    <ClCompile Include="..\src\Dynamics\Collision.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />

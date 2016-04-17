@@ -29,7 +29,7 @@ void geoTorus::setSecRadius(Float secRadius)
 {
 	sr = secRadius;
 }
-bool geoTorus::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoTorus::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	//Float coeA = inRay.getDir() * inRay.getDir();//len == 1
 	Float coeB = inRay.getDir() * (inRay.getPos() - c);

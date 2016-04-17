@@ -15,7 +15,7 @@ public:
 	void setCenter(const Vector3D &pos);
 	void setRadius(Float radius);
 	void setSecRadius(Float secRadius);//set section radius
-	bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
 	bool isInside(const Vector3D &pPos) const;
 
 public:

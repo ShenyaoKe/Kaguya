@@ -221,9 +221,6 @@ ColorRGBA Phong::getSpecularAt(const DifferentialGeometry* queryPoint, const Lig
 /* Gooch Shader                                                         */
 /************************************************************************/
 /*
-Gooch::Gooch()
-{
-}*/
 Gooch::~Gooch()
 {
 }
@@ -280,3 +277,4 @@ ColorRGBA Gooch::getColor(const DifferentialGeometry* queryPoint, const Light* l
 	return compAdd(retSpec, retDiff);
 	//return getSpecularAt(reflectDir * lightDir, getDiffuseAt(lightDir * normalVec, light), light);
 }
+*/

@@ -39,7 +39,7 @@ void geoParaboloid::setParaboloidType(PARABOLOID_TYPE newType)
 {
 	pbType = newType;
 }
-bool geoParaboloid::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoParaboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Vector3D rp = inRay.getPos(), rd = inRay.getDir();// Ray postion and ray direction.	
 	Float coeA = (rd.x / sa) * (rd.x / sa) + pbType * (rd.z / sc) * (rd.z / sc);

@@ -21,53 +21,45 @@
 
 const Float reCE = 5e-8;//ray epsilon coefficiency
 const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon coefficiency
-//////////////////////////////////////////////////////////////////////////
-//Shader defaultShader(ColorRGBA(1.0, 1.0, 1.0), ColorRGBA(), 0, 1);
 /************************************************************************/
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
 class Shape
 {
-	static int uid;
 public:
 	Shape(const Point3D &pos = Point3D(0, 0, 0));
 	virtual ~Shape() = 0;
 
-	static int assignIndex() { return uid++; }
-	static void offsetUID(int offset) { uid += offset; }
-
-	virtual void bounding();
+	virtual void bounding() = 0;
 	virtual BBox getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
 	virtual bool intersectP(const Ray& inRay) const;
-	virtual bool getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	/*virtual bool intersect(const Ray &ray, DifferentialGeometry *dg,
+		Float *tHit, Float *rayEpsilon) const = 0;*/
+	virtual bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const = 0;
 
-	virtual Vector3D getNormal(const Vector3D &pos) const;
-	virtual void getNormal(const DifferentialGeometry* queryPoint) const;
+	virtual Float area() const;
+	virtual Float Pdf() const;
+	// Shading
+	virtual void getShadingGeometry(const Transform &obj2world,
+		const DifferentialGeometry &dg,
+		DifferentialGeometry *dgShading) const;
+
 	virtual bool isInside(const Vector3D &pPos) const;
 	virtual void assignShader(Shader* shader);
-	virtual void assignTextureMapping(TextureMapping* &mapping);// { UV_Mapping = mapping; }
+	virtual void assignTextureMapping(TextureMapping* &mapping);
 	virtual void assignNormalMap(Texture* nMap);
 
-	virtual int getIndex() const;
-	//virtual int assignIndex(int);
 	virtual void printInfo() const;
-	virtual void getUV(const DifferentialGeometry* queryPoint) const;
-	virtual Vector3D getCenter() const;
-
-	// Shading
-	virtual ColorRGBA getAmbient(const DifferentialGeometry* queryPoint) const;
-	virtual ColorRGBA getDiffuse(const DifferentialGeometry* queryPoint, const Light* light) const;
-	virtual ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
 
 	virtual bool getOpacity() const;
-public:
-	virtual const Vector3D &closestPoint(const Point3D &p) const;
 
 public:
-	int index;
+	const uint32_t shapeId;
+	static uint32_t nextshapeId;
+
+	Point3D c;
 	Transform ObjectToWorld;
-	Point3D c;//center
 	BBox ObjBound;
 	Shader* material = nullptr;
 	TextureMapping* UV_Mapping = nullptr;

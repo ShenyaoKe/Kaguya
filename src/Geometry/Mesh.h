@@ -53,7 +53,7 @@ public:
 	bool loadOBJ(const char* filename);
 	void printInfo(const string &msg = "") const;
 
-	bool getDifferentialGeometry(const Ray& inRay,
+	bool intersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
 	void getNormal(const DifferentialGeometry* queryPoint) const;
@@ -77,13 +77,10 @@ public:
 		vector<float>* norm_array = nullptr,
 		vector<unsigned int>* idx_array = nullptr) const;
 };
-class Triangle :public Shape
+class Triangle : public Shape
 {
 public:
 	Triangle();
-	/*Triangle(Mesh* &inMesh, Vector3D &p0, Vector3D &p1, Vector3D &p2,
-		Point2D& uv0, Point2D& uv1, Point2D& uv2,
-		Vector3D &n0, Vector3D &n1, Vector3D &n2);*/
 	Triangle(Mesh *inMesh, int n);
 	~Triangle();
 
@@ -93,26 +90,20 @@ public:
 	void setUV(Point2D* uv0, Point2D* uv1, Point2D* uv2);
 	void setNormal(Vector3D* n0, Vector3D* v1, Vector3D* v2);
 
-	bool getDifferentialGeometry(const Ray& inRay,
+	bool intersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
 	void getNormal(const DifferentialGeometry* queryPoint) const;
-	void getUV(const DifferentialGeometry* queryPoint) const;
-	ColorRGBA getColor(const DifferentialGeometry* queryPoint,
-		const Light* light) const;
 	
 	/*friend void exportVertices(Triangle* triface, Float* buffer);
 	friend void exportTexCoords(Triangle* triface, Float* buffer);
 	friend void exportNormals(Triangle* triface, Float* buffer);*/
-public:
-	const Vector3D &closestPoint(const Point3D &point) const;
 protected:
 	const Mesh* mesh;
 	vector<Point3D*> p;
 	vector<Point2D*> uv;
 	vector<Point3D*> n;
-private:
-	friend class Collision;
+	friend class Mesh;
 };
 
 template void Mesh::exportVBO(int &size, int** vtx_array, int** uv_array, int** norm_array, int** idx_array) const;

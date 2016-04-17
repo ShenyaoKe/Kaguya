@@ -75,11 +75,6 @@ public:
 	bool inLeaf(const Vector3D &pos) const;
 	bool inLeaf(const Vector3D &pos, const KdAccelNode *node) const;
 
-	bool collide(const Shape* inObj, const BBox &worldbound,
-		DifferentialGeometry* queryPoint = nullptr, Float *tHit = nullptr) const;
-	bool collide(const Shape* inObj, const BBox &worldbound,
-		DifferentialGeometry* queryPoint,
-		const KdAccelNode *node, Float *tHit) const;
 	//update tree?
 	void update();
 
@@ -88,7 +83,6 @@ public:
 
 private:
 	friend class RasterizedVolume;
-	friend class Collision;
 private:
 	//int isectCost, traversalCost, 
 	int maxDepth, maxPrims;

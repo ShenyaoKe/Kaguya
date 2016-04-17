@@ -39,7 +39,7 @@ void geoHyperboloid::setHyperboloidType(HYPERBOLOID_TYPE newType)
 {
 	hbType = newType;
 }
-bool geoHyperboloid::getDifferentialGeometry(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoHyperboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Vector3D rp = inRay.getPos(), rd = inRay.getDir();// Ray postion and ray direction.	
 	Float coeA = (rd.x / sa) * (rd.x / sa) - (rd.y / sb) * (rd.y / sb) + (rd.z / sc) * (rd.z / sc);
