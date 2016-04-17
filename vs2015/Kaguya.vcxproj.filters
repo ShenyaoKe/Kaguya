@@ -76,6 +76,9 @@
     <Filter Include="Source Files\volume">
       <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rd Party">
+      <UniqueIdentifier>{60dfb947-4107-438d-be03-9cef1abb1684}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\FreeImage.h">
+      <Filter>3rd Party</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
