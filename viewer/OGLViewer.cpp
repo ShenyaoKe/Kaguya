@@ -19,7 +19,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	this->setFormat(format);
 
 	// Read obj file
-	box_mesh = new Mesh("scene/obj/cube_large.obj");
+	//box_mesh = new Mesh("scene/obj/cube_large.obj");
 	model_mesh = new Mesh("scene/obj/monkey.obj");
 	
 	model_mesh->refine(objlist);
@@ -86,7 +86,7 @@ void OGLViewer::initializeGL()
 	box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
 	model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
 
-	bindBox();
+	//bindBox();
 	bindMesh();
 	bindReslotionGate();
 
@@ -186,7 +186,7 @@ void OGLViewer::paintGL()
 
 
 	//Draw box
-	glDisable(GL_CULL_FACE);
+	/*glDisable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glLineWidth(1.0);
 	glBindVertexArray(box_vao);
@@ -194,7 +194,7 @@ void OGLViewer::paintGL()
 	vector<GLfloat> projmatvec(proj_mat, proj_mat + 16);
 	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_mat);
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &projmatvec[0]);
-	glDrawArrays(GL_TRIANGLES, 0, box_verts.size() / 3);
+	glDrawArrays(GL_TRIANGLES, 0, box_verts.size() / 3);*/
 
 	//////////////////////////////////////////////////////////////////////////
 	// Model
@@ -334,7 +334,7 @@ void OGLViewer::renderpixels()
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
-	DifferentialGeometry queryPoint;
+	DifferentialGeometry* queryPoint = new DifferentialGeometry;
 	for (int j = 0; j < default_resY; j++)
 	{
 		for (int i = 0; i < default_resX; i++)
@@ -345,7 +345,7 @@ void OGLViewer::renderpixels()
 			view_cam->generateRay(camsmp, &traceRay);
 			double tHit(INFINITY), rayEp(0);
 
-			uint8_t isHit = static_cast<uint8_t>(tree->hit(traceRay, &queryPoint, &tHit, &rayEp));
+			uint8_t isHit = static_cast<uint8_t>(tree->hit(traceRay, queryPoint, &tHit, &rayEp));
 
 			pixmap[index++] = isHit * 64;
 			pixmap[index++] = isHit * 128;

@@ -67,7 +67,7 @@ public:
 	// Operators
 	Float* operator [] (int i);
 	const Float* operator [] (int i) const;
-	Vector3D operator ()(const Vector3D& v, Float w = 1.0) const;
+	Vector3D operator ()(const Vector3D &v, Float w = 1.0) const;
 	const Matrix4D &operator = (const Matrix4D &mat);
 	friend Matrix4D operator + (const Matrix4D &m1, const Matrix4D &m2);
 	friend Matrix4D operator - (const Matrix4D &m1, const Matrix4D &m2);
@@ -75,7 +75,7 @@ public:
 	friend Vector4D operator * (const Matrix4D &m, const Vector4D& p);
 	friend bool operator == (const Matrix4D &m1, const Matrix4D &m2);
 	friend bool operator != (const Matrix4D &m1, const Matrix4D &m2);
-	//Vector3D operator * (Vector3D& p) const;
+	//Vector3D operator * (Vector3D &p) const;
 	//Matrix4D operator / (const Matrix4D &) const;
 
 	void zero();
@@ -98,7 +98,7 @@ public:
 	//Set transformation matrix
 	static Matrix4D Identity();
 	static Matrix4D Translate(Float tx, Float ty, Float tz);
-	static Matrix4D Translate(const Vector3D& vec);
+	static Matrix4D Translate(const Vector3D &vec);
 	static Matrix4D RotateX(Float theta);
 	static Matrix4D RotateY(Float theta);
 	static Matrix4D RotateZ(Float theta);
@@ -107,8 +107,8 @@ public:
 		bool isNormalized = false);
 	static Matrix4D Scale(Float sx, Float sy, Float sz);
 	static Matrix4D Scale(Float scale);
-	static Matrix4D Shear(const Vector3D& vec);
-	static Matrix4D Reflect(const Vector3D& vec);
+	static Matrix4D Shear(const Vector3D &vec);
+	static Matrix4D Reflect(const Vector3D &vec);
 	static Matrix4D LookAt(const Point3D &pos = Point3D(0, 0, 0),
 		const Point3D &target = Point3D(0, 0, 1), const Vector3D &up = Point3D(0, 1, 0));
 	static Matrix4D Perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
@@ -138,7 +138,7 @@ inline const Float* Matrix4D::operator[](int i) const
 {
 	return mtx[i];
 }
-inline Vector3D Matrix4D::operator ()(const Vector3D& v, Float w) const
+inline Vector3D Matrix4D::operator ()(const Vector3D &v, Float w) const
 {
 	Float x = v.x, y = v.y, z = v.z;
 	Float xp = mtx[0][0] * x + mtx[1][0] * y + mtx[2][0] * z;
@@ -419,7 +419,7 @@ inline Matrix4D Matrix4D::Inverse() const
 	return ret;
 }
 
-inline Matrix4D Matrix4D::LookAt(const Point3D& pos, const Point3D& target, const Vector3D& up)
+inline Matrix4D Matrix4D::LookAt(const Vector3D &pos, const Vector3D &target, const Vector3D &up)
 {
 	//Camera to World
 	Vector3D nz = pos - target;
@@ -537,7 +537,7 @@ void Matrix4D::exportVBO(vbo_t *vtx_array) const
 	}
 }
 
-inline Matrix4D Matrix4D::Translate(const Vector3D& vec)
+inline Matrix4D Matrix4D::Translate(const Vector3D &vec)
 {
 	return Translate(vec.x, vec.y, vec.z);
 }
@@ -676,14 +676,14 @@ inline Matrix4D Matrix4D::Scale(Float scale)
 		);
 }
 /*
-inline void Matrix4D::Shear(Vector3D& vec)
+inline void Matrix4D::Shear(Vector3D &vec)
 {
  	setIdentify();
  	mtx[0][1] = vec.x;
  	mtx[1][0] = vec.y;
  	Determinant();
 }
-inline void Matrix4D::Reflect(Vector3D& vec)
+inline void Matrix4D::Reflect(Vector3D &vec)
 {
  	// vec is a vector in the direction of the line
  	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
@@ -691,7 +691,7 @@ inline void Matrix4D::Reflect(Vector3D& vec)
  	mtx[2][2] = 1;
  	Determinant();
 }
-inline void Matrix4D::Perspective(Vector3D& vPnt)
+inline void Matrix4D::Perspective(Vector3D &vPnt)
 {
  	setIdentify();
  	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;

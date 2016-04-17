@@ -52,14 +52,14 @@ public:
 	virtual LIGHT_TYPE getLightType() const;
 	virtual ColorRGBA getColor() const;
 	virtual Float getIntensity(const Float& dist) const;
-	virtual Float getIntensity(const DifferentialGeometry *queryPoint) const;
-	virtual Spectrum getSpectrum(const DifferentialGeometry *queryPoint) const;
-	virtual void getDirection(const DifferentialGeometry *queryPoint) const;
-	virtual Float getDistance(const DifferentialGeometry *queryPoint) const;
+	virtual Float getIntensity(const DifferentialGeometry* queryPoint) const;
+	virtual Spectrum getSpectrum(const DifferentialGeometry* queryPoint) const;
+	virtual void getDirection(const DifferentialGeometry* queryPoint) const;
+	virtual Float getDistance(const DifferentialGeometry* queryPoint) const;
 	virtual void printInfo() const;
 
 	//
-	virtual Float getSpecAmout(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir) const;
+	virtual Float getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const;
 };
 /************************************************************************/
 /* Directional Light                                                    */
@@ -69,17 +69,17 @@ class directionalLight :public Light
 	Vector3D dir = Vector3D(0, 0, -1);
 public:
 	directionalLight();
-	directionalLight(const Vector3D& vec);
-	directionalLight(const Vector3D& vec, const Spectrum& spt);
+	directionalLight(const Vector3D &vec);
+	directionalLight(const Vector3D &vec, const Spectrum& spt);
 	~directionalLight();
 
 	void printInfo() const;
-	// 	Vector3D getDirFromPoint(const Vector3D& pointPos) const;
-	// 	Float getDistanceFromPoint(const Vector3D& pointPos) const;
+	// 	Vector3D getDirFromPoint(const Vector3D &pointPos) const;
+	// 	Float getDistanceFromPoint(const Vector3D &pointPos) const;
 	Float getIntensity(const Float& dist) const;
-	Float getIntensity(const DifferentialGeometry *queryPoint) const;
-	void getDirection(const DifferentialGeometry *queryPoint) const;
-	Float getDistance(const DifferentialGeometry *queryPoint) const;
+	Float getIntensity(const DifferentialGeometry* queryPoint) const;
+	void getDirection(const DifferentialGeometry* queryPoint) const;
+	Float getDistance(const DifferentialGeometry* queryPoint) const;
 protected:
 
 private:
@@ -92,8 +92,8 @@ class pointLight :public Light
 	//Vector3D pos;
 public:
 	pointLight();
-	pointLight(const Vector3D& vec, const Float& its);
-	pointLight(const Vector3D& vec, const Spectrum& spt);
+	pointLight(const Vector3D &vec, const Float& its);
+	pointLight(const Vector3D &vec, const Spectrum& spt);
 	~pointLight();
 
 	void printInfo() const;
@@ -117,9 +117,9 @@ protected:
 	Float dropoff = 0;
 public:
 	spotLight();
-	spotLight(const Vector3D& pPos, const Vector3D& pDir);
-	spotLight(const Vector3D& pPos, const Vector3D& pDir, const Float& ca, const Float& pa, const Float& dpo);
-	spotLight(const Vector3D& pPos, const Vector3D& pDir, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
+	spotLight(const Vector3D &pPos, const Vector3D &pDir);
+	spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo);
+	spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
 	~spotLight();
 
 	void printInfo() const;
@@ -127,7 +127,7 @@ public:
 	void updateCosAngle();
 	void setDropOff(const Float& dpo);
 
-	Float getIntensity(const DifferentialGeometry *queryPoint) const;
+	Float getIntensity(const DifferentialGeometry* queryPoint) const;
 	Vector3D getLightPos() const;
 };
 /************************************************************************/
@@ -135,18 +135,18 @@ public:
 /************************************************************************/
 class ImageSpotLight :public spotLight
 {
-	Texture* tex = NULL;
+	Texture* tex = nullptr;
 	Vector3D nx, ny;
 	Float sx = 1, sy = 1;
 public:
 	ImageSpotLight();
-	ImageSpotLight(const Vector3D& pPos, const Vector3D& pDir, const Vector3D& upVec, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
+	ImageSpotLight(const Vector3D &pPos, const Vector3D &pDir, const Vector3D &upVec, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
 	~ImageSpotLight();
 
 	void assignImage(Texture* &newTex);
 	void setSize(const Float& xSize, const Float& ySize);
-	Spectrum getSpectrum(const DifferentialGeometry *queryPoint) const;
-	Float getIntensity(const DifferentialGeometry *queryPoint) const;
+	Spectrum getSpectrum(const DifferentialGeometry* queryPoint) const;
+	Float getIntensity(const DifferentialGeometry* queryPoint) const;
 
 protected:
 
@@ -169,14 +169,14 @@ class areaLight :public Light
 	AREA_LIGHT_SHAPE shapeType = QUAD;
 public:
 	areaLight();
-	areaLight(const Vector3D& pVec, const Float& shpSize);
-	areaLight(const Vector3D& pVec, const Float& shpSize, const Spectrum& spt);
-	areaLight(const Vector3D& pVec, const Vector3D& dir, const Vector3D& up, const Float& shpSize, const Spectrum& spt);
+	areaLight(const Vector3D &pVec, const Float& shpSize);
+	areaLight(const Vector3D &pVec, const Float& shpSize, const Spectrum& spt);
+	areaLight(const Vector3D &pVec, const Vector3D &dir, const Vector3D &up, const Float& shpSize, const Spectrum& spt);
 	~areaLight();
 
-	Float getIntensity(const DifferentialGeometry *queryPoint) const;
-	void getDirection(const DifferentialGeometry *queryPoint) const;
-	Float getDistance(const DifferentialGeometry *queryPoint) const;
+	Float getIntensity(const DifferentialGeometry* queryPoint) const;
+	void getDirection(const DifferentialGeometry* queryPoint) const;
+	Float getDistance(const DifferentialGeometry* queryPoint) const;
 protected:
 
 private:
@@ -199,17 +199,17 @@ Float shapeSize = 10;
 SPEC_SHAPE shapeType = SPEC_SHAPE_SPHERE;
 public:
 shapedLight(){};
-shapedLight(const Vector3D& pVec, const Vector3D& dir, const Vector3D& up, const Float& shpSize, const Spectrum& spt);
+shapedLight(const Vector3D &pVec, const Vector3D &dir, const Vector3D &up, const Float& shpSize, const Spectrum& spt);
 ~shapedLight(){};
 
 void setShape(SPEC_SHAPE shpType);
-Float getSpecAmout(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir) const;
-Vector3D getDirFromPoint(const Vector3D& pointPos) const;
+Float getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const;
+Vector3D getDirFromPoint(const Vector3D &pointPos) const;
 protected:
 
 private:
 };
-shapedLight::shapedLight(const Vector3D& pVec, const Vector3D& dir, const Vector3D& up, const Float& shpSize, const Spectrum& spt)
+shapedLight::shapedLight(const Vector3D &pVec, const Vector3D &dir, const Vector3D &up, const Float& shpSize, const Spectrum& spt)
 {
 pos = pVec;
 nz = dir.getNorm();
@@ -225,7 +225,7 @@ void shapedLight::setShape(SPEC_SHAPE shpType)
 {
 shapeType = shpType;
 }
-Float shapedLight::getSpecAmout(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir) const
+Float shapedLight::getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const
 {
 Float x = (DifferentialGeometry - pos)*nx - reflectDir * nx * (nz * (DifferentialGeometry - pos)) / (nz * reflectDir);
 Float y = (DifferentialGeometry - pos)*ny - reflectDir * ny * (nz * (DifferentialGeometry - pos)) / (nz * reflectDir);
@@ -265,7 +265,7 @@ return 0;
 else
 return 0;
 }
-Vector3D shapedLight::getDirFromPoint(const Vector3D& pointPos) const
+Vector3D shapedLight::getDirFromPoint(const Vector3D &pointPos) const
 {
 return (this->pos - pointPos).getNorm();
 }*/

@@ -57,7 +57,7 @@ struct KdAccelNode//Node class
 	~KdAccelNode();
 	//KdAccelNode* build(vector<Shape*> &tris, int depth) const;
 // 	bool hit(KdAccelNode* node, const Ray& inRay,
-// 		Float& t, Float& tmin, DifferentialGeometry *queryPoint) const;
+// 		Float& t, Float& tmin, DifferentialGeometry* queryPoint) const;
 
 	void printInfo() const;
 };
@@ -68,18 +68,13 @@ public:
 		Float eb = 0.5);
 	~KdTreeAccel();
 	bool hitP(const Ray &inRay) const;
-	bool hit(const Ray &inRay, DifferentialGeometry *queryPoint,
+	bool hit(const Ray &inRay, DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
-	bool hit(const Ray &inRay, DifferentialGeometry *queryPoint, const KdAccelNode *node,
+	bool hit(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
 		Float *tHit, Float *rayEpsilon) const;
-	bool inLeaf(const Point3D& pos) const;
-	bool inLeaf(const Point3D& pos, const KdAccelNode *node) const;
+	bool inLeaf(const Vector3D &pos) const;
+	bool inLeaf(const Vector3D &pos, const KdAccelNode *node) const;
 
-	bool collide(const Shape* inObj, const BBox &worldbound,
-		DifferentialGeometry *queryPoint = nullptr, Float *tHit = nullptr) const;
-	bool collide(const Shape* inObj, const BBox &worldbound,
-		DifferentialGeometry *queryPoint,
-		const KdAccelNode *node, Float *tHit) const;
 	//update tree?
 	void update();
 
@@ -88,7 +83,6 @@ public:
 
 private:
 	friend class RasterizedVolume;
-	friend class Collision;
 private:
 	//int isectCost, traversalCost, 
 	int maxDepth, maxPrims;

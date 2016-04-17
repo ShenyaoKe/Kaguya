@@ -4,9 +4,9 @@
 class perspCamera : public Camera
 {
 public:
-	perspCamera(const Vector3D& eye = Vector3D(1, 1, 1),
-		const Vector3D& targ = Vector3D(0, 0, 0),
-		const Vector3D& up = Vector3D(0, 1, 0),
+	perspCamera(const Vector3D &eye = Vector3D(1, 1, 1),
+		const Vector3D &targ = Vector3D(0, 0, 0),
+		const Vector3D &up = Vector3D(0, 1, 0),
 		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
 		const Film &fm = Film());
 	perspCamera(const Transform& cam2wo, const Transform& projection);
@@ -21,7 +21,7 @@ public:
 	void saveResult(const char* filename);
 	void resizeViewport(Float aspr = 1.0);
 
-	//void setUpVec(Vector3D& upVec);
+	//void setUpVec(Vector3D &upVec);
 protected:
 	//Float fov;
 private:

@@ -31,7 +31,7 @@ ColorRGBA Light::getColor() const
 {
 	return lightSpectrum.color;
 }
-Float Light::getSpecAmout(const Vector3D& DifferentialGeometry, const Vector3D& reflectDir) const
+Float Light::getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const
 {
 	return lightSpectrum.intensity;
 }
@@ -50,20 +50,20 @@ Float Light::getIntensity(const Float& dist) const
 		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
 	}
 }
-Float Light::getIntensity(const DifferentialGeometry *queryPoint) const
+Float Light::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	return getIntensity(queryPoint->lightDist);
 }
-Spectrum Light::getSpectrum(const DifferentialGeometry *queryPoint) const
+Spectrum Light::getSpectrum(const DifferentialGeometry* queryPoint) const
 {
 	Spectrum ret = Spectrum(getIntensity(queryPoint), lightSpectrum.color);
 	return ret;
 }
-void Light::getDirection(const DifferentialGeometry *queryPoint) const
+void Light::getDirection(const DifferentialGeometry* queryPoint) const
 {
 	queryPoint->lightDir = Normalize(pos - queryPoint->pos);
 }
-Float Light::getDistance(const DifferentialGeometry *queryPoint) const
+Float Light::getDistance(const DifferentialGeometry* queryPoint) const
 {
 	return (pos - queryPoint->pos).getLength();
 }
@@ -80,11 +80,11 @@ directionalLight::directionalLight()
 {
 	type = LT_DIRECTIONAL_LIGHT;
 }
-directionalLight::directionalLight(const Vector3D& vec)
+directionalLight::directionalLight(const Vector3D &vec)
 {
 	dir = Normalize(vec); type = LT_DIRECTIONAL_LIGHT;
 }
-directionalLight::directionalLight(const Vector3D& vec, const Spectrum& spt)
+directionalLight::directionalLight(const Vector3D &vec, const Spectrum& spt)
 {
 	dir = Normalize(vec); lightSpectrum = spt; type = LT_DIRECTIONAL_LIGHT;
 }
@@ -110,15 +110,15 @@ Float directionalLight::getIntensity(const Float& dist) const
 		return lightSpectrum.intensity * pow(2, exposure);
 	}
 }
-Float directionalLight::getIntensity(const DifferentialGeometry *queryPoint) const
+Float directionalLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	return getIntensity(INFINITY);
 }
-void directionalLight::getDirection(const DifferentialGeometry *queryPoint) const
+void directionalLight::getDirection(const DifferentialGeometry* queryPoint) const
 {
 	queryPoint->lightDir = -dir;
 }
-Float directionalLight::getDistance(const DifferentialGeometry *queryPoint) const
+Float directionalLight::getDistance(const DifferentialGeometry* queryPoint) const
 {
 	return INFINITY;
 }
@@ -129,11 +129,11 @@ pointLight::pointLight()
 {
 	type = LT_POINT_LIGHT;
 }
-pointLight::pointLight(const Vector3D& vec, const Float& its)
+pointLight::pointLight(const Vector3D &vec, const Float& its)
 {
 	pos = vec; lightSpectrum.intensity = its; type = LT_POINT_LIGHT;
 }
-pointLight::pointLight(const Vector3D& vec, const Spectrum& spt)
+pointLight::pointLight(const Vector3D &vec, const Spectrum& spt)
 {
 	pos = vec; lightSpectrum = spt; type = LT_POINT_LIGHT;
 }
@@ -152,7 +152,7 @@ spotLight::spotLight()
 {
 	type = LT_SPOT_LIGHT;
 }
-spotLight::spotLight(const Vector3D& pPos, const Vector3D& pDir)
+spotLight::spotLight(const Vector3D &pPos, const Vector3D &pDir)
 {
 	pos = pPos;
 	dir = pDir;
@@ -161,7 +161,7 @@ spotLight::spotLight(const Vector3D& pPos, const Vector3D& pDir)
 spotLight::~spotLight()
 {
 }
-spotLight::spotLight(const Vector3D& pPos, const Vector3D& pDir, const Float& ca, const Float& pa, const Float& dpo)
+spotLight::spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo)
 {
 	pos = pPos;
 	dir = Normalize(pDir);
@@ -169,7 +169,7 @@ spotLight::spotLight(const Vector3D& pPos, const Vector3D& pDir, const Float& ca
 	dropoff = dpo;
 	type = LT_SPOT_LIGHT;
 }
-spotLight::spotLight(const Vector3D& pPos, const Vector3D& pDir, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt)
+spotLight::spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt)
 {
 	pos = pPos;
 	dir = Normalize(pDir);
@@ -197,7 +197,7 @@ void spotLight::setDropOff(const Float& dpo)
 {
 	dropoff = dpo;
 }
-Float spotLight::getIntensity(const DifferentialGeometry *queryPoint) const
+Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
 	Float tmpIts = -queryPoint->lightDir * dir;
@@ -230,7 +230,7 @@ ImageSpotLight::ImageSpotLight()
 {
 	type = LT_SPOT_LIGHT;
 }
-ImageSpotLight::ImageSpotLight(const Vector3D& pPos, const Vector3D& pDir, const Vector3D& upVec, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt) : spotLight(pPos, pDir, ca, pa, dpo, spt)
+ImageSpotLight::ImageSpotLight(const Vector3D &pPos, const Vector3D &pDir, const Vector3D &upVec, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt) : spotLight(pPos, pDir, ca, pa, dpo, spt)
 {
 	nx = Normalize(dir.crossMul(upVec));
 	ny = Normalize(nx.crossMul(dir));
@@ -238,7 +238,7 @@ ImageSpotLight::ImageSpotLight(const Vector3D& pPos, const Vector3D& pDir, const
 ImageSpotLight::~ImageSpotLight()
 {
 	delete tex;
-	tex = NULL;
+	tex = nullptr;
 }
 void ImageSpotLight::assignImage(Texture* &newTex)
 {
@@ -249,7 +249,7 @@ void ImageSpotLight::setSize(const Float& xSize, const Float& ySize)
 	sx = xSize;
 	sy = ySize;
 }
-Float ImageSpotLight::getIntensity(const DifferentialGeometry *queryPoint) const
+Float ImageSpotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
 	Float tmpIts = -queryPoint->lightDir * dir;
@@ -265,7 +265,7 @@ Float ImageSpotLight::getIntensity(const DifferentialGeometry *queryPoint) const
 	{
 		tmpIts = tmpIts >= cosCA ? 1 : 0;
 	}
-	if (tex != NULL)
+	if (tex != nullptr)
 	{
 		Vector3D imgPos = queryPoint->lightDir / maskstr - dir;
 
@@ -279,7 +279,7 @@ Float ImageSpotLight::getIntensity(const DifferentialGeometry *queryPoint) const
 	return tmpIts;
 }
 
-Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry *queryPoint) const
+Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
 	Float maskstr = -queryPoint->lightDir * dir;
@@ -296,7 +296,7 @@ Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry *queryPoint) con
 	{
 		tmpIts = tmpIts >= cosCA ? 1 : 0;
 	}
-	if (tex != NULL)
+	if (tex != nullptr)
 	{
 		Vector3D imgPos = queryPoint->lightDir / maskstr - dir;
 
@@ -321,7 +321,7 @@ areaLight::areaLight()
 	nz = Vector3D(0, 0, 1);
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Vector3D& pVec, const Float& shpSize)
+areaLight::areaLight(const Vector3D &pVec, const Float& shpSize)
 {
 	nx = Vector3D(1, 0, 0);
 	ny = Vector3D(0, 1, 0);
@@ -330,7 +330,7 @@ areaLight::areaLight(const Vector3D& pVec, const Float& shpSize)
 	size = shpSize;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Vector3D& pVec, const Float& shpSize, const Spectrum& spt)
+areaLight::areaLight(const Vector3D &pVec, const Float& shpSize, const Spectrum& spt)
 {
 	nx = Vector3D(1, 0, 0);
 	ny = Vector3D(0, 1, 0);
@@ -340,7 +340,7 @@ areaLight::areaLight(const Vector3D& pVec, const Float& shpSize, const Spectrum&
 	lightSpectrum = spt;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Vector3D& pVec, const Vector3D& dir, const Vector3D& up, const Float& shpSize, const Spectrum& spt)
+areaLight::areaLight(const Vector3D &pVec, const Vector3D &dir, const Vector3D &up, const Float& shpSize, const Spectrum& spt)
 {
 	nz = Normalize(dir);
 	nx = Normalize(nz.crossMul(up));
@@ -353,7 +353,7 @@ areaLight::areaLight(const Vector3D& pVec, const Vector3D& dir, const Vector3D& 
 areaLight::~areaLight()
 {
 }
-Float areaLight::getIntensity(const DifferentialGeometry *queryPoint) const
+Float areaLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	if (queryPoint->lightDir * nz > 0)//If on the other side
 	{
@@ -375,7 +375,7 @@ Float areaLight::getIntensity(const DifferentialGeometry *queryPoint) const
 		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
 	}
 }
-void areaLight::getDirection(const DifferentialGeometry *queryPoint) const
+void areaLight::getDirection(const DifferentialGeometry* queryPoint) const
 {
 	Float x = ((queryPoint->shiftX + unitRandom(20)) / queryPoint->sample - 0.5) * size;
 	Float y = ((queryPoint->shiftY + unitRandom(20)) / queryPoint->sample - 0.5) * size;
@@ -383,7 +383,7 @@ void areaLight::getDirection(const DifferentialGeometry *queryPoint) const
 	queryPoint->lightDir = Normalize(pos + x * nx + y * ny - queryPoint->pos);
 }
 
-Float areaLight::getDistance(const DifferentialGeometry *queryPoint) const
+Float areaLight::getDistance(const DifferentialGeometry* queryPoint) const
 {
 	Float x = ((queryPoint->shiftX + unitRandom(20)) / queryPoint->sample - 0.5) * size;
 	Float y = ((queryPoint->shiftY + unitRandom(20)) / queryPoint->sample - 0.5) * size;

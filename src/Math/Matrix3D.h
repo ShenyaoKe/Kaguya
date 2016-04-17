@@ -41,7 +41,7 @@ public:
 		mtx[1][0] = t10; mtx[1][1] = t11; mtx[1][2] = t12;
 		mtx[2][0] = t20; mtx[2][1] = t21; mtx[2][2] = t22;
 	}
-	Matrix3D(Vector3D& col0, Vector3D& col1, Vector3D& col2)
+	Matrix3D(Vector3D &col0, Vector3D &col1, Vector3D &col2)
 	{
 		mtx[0][0] = col0.x;	mtx[0][1] = col0.y;	mtx[0][2] = col0.z;
 		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;
@@ -62,7 +62,7 @@ public:
 	Matrix3D operator + (const Matrix3D &mat) const;
 	Matrix3D operator - (const Matrix3D &mat) const;
 	Matrix3D operator * (const Matrix3D &mat) const;
-	Vector3D operator * (Vector3D& p) const;
+	Vector3D operator * (Vector3D &p) const;
 	Matrix3D operator = (const Matrix3D &mat) const;
 	Matrix3D operator == (const Matrix3D &mat) const;
 	Matrix3D operator != (const Matrix3D &mat) const;
@@ -139,7 +139,7 @@ inline Matrix3D Matrix3D::operator * (const Matrix3D &mat) const
 	//buffer.Determinant();
 	return buffer;
 }
-inline Vector3D Matrix3D::operator * (Vector3D& p) const
+inline Vector3D Matrix3D::operator * (Vector3D &p) const
 {
 	return Vector3D(p.x * mtx[0][0] + p.y * mtx[0][1] + p.z * mtx[0][2],
 		p.x * mtx[1][0] + p.y * mtx[1][1] + p.z * mtx[1][2],

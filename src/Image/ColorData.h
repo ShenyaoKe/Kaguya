@@ -73,19 +73,19 @@ public:
     
 	virtual ~ColorRGB(){};
     //ColorRGB(Float hue, Float saturation, Float value);
-	ColorRGB operator+(const ColorRGB& color2) const { return ColorRGB(r + color2.r, g + color2.g, b + color2.b); }
-	ColorRGB operator-(const ColorRGB& color2) const { return ColorRGB(r - color2.r, g - color2.g, b - color2.b); }
-	ColorRGB operator*(const ColorRGB& color2) const { return ColorRGB(r * color2.r, g * color2.g, b * color2.b); }
-	ColorRGB operator/(const ColorRGB& color2) const { return ColorRGB(r / color2.r, g / color2.g, b / color2.b); }
+	ColorRGB operator+(const ColorRGB &color2) const { return ColorRGB(r + color2.r, g + color2.g, b + color2.b); }
+	ColorRGB operator-(const ColorRGB &color2) const { return ColorRGB(r - color2.r, g - color2.g, b - color2.b); }
+	ColorRGB operator*(const ColorRGB &color2) const { return ColorRGB(r * color2.r, g * color2.g, b * color2.b); }
+	ColorRGB operator/(const ColorRGB &color2) const { return ColorRGB(r / color2.r, g / color2.g, b / color2.b); }
 	ColorRGB operator*(Float n) const { return ColorRGB(r * n, g * n, b * n); }
 	ColorRGB operator/(Float n) const { return ColorRGB(r / n, g / n, b / n); }
 	
-	ColorRGB& operator+=(const ColorRGB& color2) { *this = *this + color2; return *this; }
-	ColorRGB& operator-=(const ColorRGB& color2) { *this = *this - color2; return *this; }
-	ColorRGB& operator*=(Float n) { *this = *this * n; return *this; }
-	ColorRGB& operator/=(Float n) { *this = *this / n; return *this; }
+	ColorRGB &operator+=(const ColorRGB &color2) { *this = *this + color2; return *this; }
+	ColorRGB &operator-=(const ColorRGB &color2) { *this = *this - color2; return *this; }
+	ColorRGB &operator*=(Float n) { *this = *this * n; return *this; }
+	ColorRGB &operator/=(Float n) { *this = *this / n; return *this; }
 
-	friend ColorRGB operator*(Float n, const ColorRGB& color){ return color * n; }
+	friend ColorRGB operator*(Float n, const ColorRGB &color){ return color * n; }
 	friend ostream& operator<<(ostream &os, const ColorRGB &color);
 
 	virtual void setRGB(Float red, Float green, Float blue){ r = red; g = green; b = blue; };
@@ -130,7 +130,7 @@ public:
 	ColorRGBA& operator-=(const ColorRGBA& color2) { *this = *this - color2; return *this; }
 	ColorRGBA& operator*=(Float n) { *this = *this * n; return *this; }
 	ColorRGBA& operator/=(Float n) { *this = *this / n; return *this; }
-	ColorRGBA& operator=(const ColorRGB& color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
+	ColorRGBA& operator=(const ColorRGB &color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
 	friend ColorRGBA operator*(Float n, const ColorRGBA& color1){ return color1 * n; }
 	friend ostream& operator<<(ostream &os, const ColorRGBA &color);
 

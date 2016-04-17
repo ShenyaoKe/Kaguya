@@ -85,9 +85,6 @@
     <CustomBuild Include="..\resources\forms\ImageViewer.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\resources\forms\Shelf.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\viewer\common.h">
@@ -104,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="..\viewer\ImageViewer.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_Shelf.h">
-      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

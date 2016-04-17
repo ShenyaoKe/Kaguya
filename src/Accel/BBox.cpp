@@ -5,10 +5,10 @@ BBox::BBox() : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -I
 }
 
 
-BBox::BBox(const Point3D& p) :pMin(p), pMax(p)
+BBox::BBox(const Vector3D &p) :pMin(p), pMax(p)
 {
 }
-BBox::BBox(const Point3D& p1, const Point3D& p2)
+BBox::BBox(const Vector3D &p1, const Vector3D &p2)
 {
 	pMin = Point3D(min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z));
 	pMax = Point3D(max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z));
@@ -58,7 +58,7 @@ const Vector3D BBox::getDiagnal() const
 	return pMax - pMin;
 }
 
-bool BBox::isInside(const Point3D& pos) const
+bool BBox::isInside(const Vector3D &pos) const
 {
 	if (pos.x < pMin.x || pos.x > pMax.x)
 	{
@@ -159,7 +159,7 @@ bool overlaps(const BBox &box0, const BBox& box1)
 	return true;
 }
 
-void BBox::Union(const Point3D& p)
+void BBox::Union(const Vector3D &p)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -175,7 +175,7 @@ void BBox::Union(const BBox& box)
 		this->pMax[i] = max(this->pMax[i], box.pMax[i]);
 	}
 }
-BBox Union(const BBox& box, const Point3D& p)
+BBox Union(const BBox& box, const Vector3D &p)
 {
 	BBox ret = box;
 	for (int i = 0; i < 3; i++)

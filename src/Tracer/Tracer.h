@@ -35,7 +35,7 @@ struct render_setting
 	Float focalDist = 5.0;
 };
 /*
-ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, DifferentialGeometry *queryPoint, Float &tHit, Float &rayEp)
+ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, DifferentialGeometry* queryPoint, Float &tHit, Float &rayEp)
 {
 	ColorRGBA retColor;
 	do
@@ -76,7 +76,7 @@ ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, Differenti
 	retColor = envm->getColor(inRay.dir);
 	return retColor;
 }
-ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, DifferentialGeometry *queryPoint, Float &tHit, Float &rayEp)
+ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, DifferentialGeometry* queryPoint, Float &tHit, Float &rayEp)
 {
 	ColorRGBA retColor;
 	do

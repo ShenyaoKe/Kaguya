@@ -10,7 +10,6 @@
 #include <QTabWidget>
 #include "ui_MainWindow.h"
 #include "ui_About.h"
-#include "ui_Shelf.h"
 
 class MainWindow : public QMainWindow
 {

@@ -13,7 +13,7 @@ EnvironmentMap::EnvironmentMap(const string& filename)
 EnvironmentMap::~EnvironmentMap()
 {
 }
-ColorRGBA EnvironmentMap::getColor(const Vector3D& dir) const
+ColorRGBA EnvironmentMap::getColor(const Vector3D &dir) const
 {
 	Point3D uv = mapping.posToUV(dir);
 	//uv.printInfo();

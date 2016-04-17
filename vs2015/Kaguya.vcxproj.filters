@@ -64,12 +64,6 @@
     <Filter Include="Source Files\math">
       <UniqueIdentifier>{596ed743-f1e9-4320-9213-716321cab9b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dynamics">
-      <UniqueIdentifier>{d7cd9f88-084c-47d3-90b2-cf2da9582e6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\dynamics">
-      <UniqueIdentifier>{7ba9d242-6c49-4e30-9c4d-962412c9ea26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\volume">
       <UniqueIdentifier>{1546571e-9871-4d4d-9791-0230d2643797}</UniqueIdentifier>
     </Filter>
@@ -126,9 +120,6 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Tracer\Tracer.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
@@ -180,9 +171,6 @@
     <ClInclude Include="..\src\Core\Kaguya.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Dynamics\Collision.h">
-      <Filter>Header Files\dynamics</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Volume\RasterizedVolume.h">
       <Filter>Header Files\volume</Filter>
     </ClInclude>
@@ -204,8 +192,25 @@
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\include\FreeImage.h">
       <Filter>3rd Party</Filter>
+=======
+    <ClInclude Include="..\src\Geometry\Plane.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Ellipsoid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Hyperboloid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Paraboloid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Torus.h">
+      <Filter>Header Files\geometry</Filter>
+>>>>>>> dc7a744f43259dba95f7e3ffb342c08f6de9c152
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +277,6 @@
     <ClCompile Include="..\src\Image\TextureSynthesis.cpp">
       <Filter>Source Files\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Dynamics\Collision.cpp">
-      <Filter>Source Files\dynamics</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp">
       <Filter>Source Files\volume</Filter>
     </ClCompile>
@@ -290,8 +292,26 @@
     <ClCompile Include="..\src\Math\Transform.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Plane.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Geometry\Sphere.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Ellipsoid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Hyperboloid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Paraboloid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Torus.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

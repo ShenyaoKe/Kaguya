@@ -1,7 +1,7 @@
 #include "Camera/Camera.h"
 
-Camera::Camera(const Vector3D& eye,
-	const Vector3D& targ, const Vector3D& up,
+Camera::Camera(const Vector3D &eye,
+	const Vector3D &targ, const Vector3D &up,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: CameraToWorld(Matrix4D::LookAt(eye, target, up))
 	//, CameraToScreen(Matrix4D::Perspective())

@@ -79,23 +79,23 @@ public:
 	//Vector3D zero();
 
 	Vector3D operator-() const;
-	Vector3D operator+(const Vector3D& vec) const;
-	Vector3D operator-(const Vector3D& vec) const;
-	Float operator*(const Vector3D& vec) const;
+	Vector3D operator+(const Vector3D &vec) const;
+	Vector3D operator-(const Vector3D &vec) const;
+	Float operator*(const Vector3D &vec) const;
 	Vector3D operator*(Float n) const;
 	Vector3D operator/(Float n) const; 
-	Vector3D& operator = (const Vector2D& vec);
-	Vector3D& operator += (const Vector3D& vec);
-	Vector3D& operator -= (const Vector3D& vec);
-	Vector3D& operator *= (Float n);
-	Vector3D& operator /= (Float n);
+	Vector3D &operator = (const Vector2D& vec);
+	Vector3D &operator += (const Vector3D &vec);
+	Vector3D &operator -= (const Vector3D &vec);
+	Vector3D &operator *= (Float n);
+	Vector3D &operator /= (Float n);
 	Float operator[](int i) const;
 	Float& operator[](int i);
-	Float dotMul(const Vector3D& vec) const;
-	Vector3D crossMul(const Vector3D& vec) const;
+	Float dotMul(const Vector3D &vec) const;
+	Vector3D crossMul(const Vector3D &vec) const;
 
-	friend Vector3D operator*(Float n, const Vector3D& vec){ return vec * n; }
-	friend ostream& operator << (ostream& os, const Vector3D& vec);
+	friend Vector3D operator*(Float n, const Vector3D &vec){ return vec * n; }
+	friend ostream& operator << (ostream& os, const Vector3D &vec);
 	void printInfo(const string &msg = "") const
 	{
 		if (!msg.empty())
@@ -109,7 +109,7 @@ public:
 	Float getLenSq() const;
 	void normalize();
 	friend Vector3D Normalize(const Vector3D &vec);
-	friend Vector3D Cross(const Vector3D& vec0, const Vector3D &vec1);
+	friend Vector3D Cross(const Vector3D &vec0, const Vector3D &vec1);
 };
 class Vector4D//:public Vector3D
 {
@@ -120,7 +120,7 @@ public:
 	~Vector4D(){}
 	Vector4D(const Vector4D &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w){}
 	Vector4D(Float posX, Float posY, Float posZ, Float posW) :x(posX), y(posY), z(posZ), w(posW){}
-	Vector4D(const Vector3D& vec, Float posW) :x(vec.x), y(vec.y), z(vec.z), w(posW){}
+	Vector4D(const Vector3D &vec, Float posW) :x(vec.x), y(vec.y), z(vec.z), w(posW){}
 	Vector4D(Float pos[4]) : x(pos[0]), y(pos[1]), z(pos[2]), w(pos[3]) {}
 
 	Vector4D operator-() const;
@@ -130,7 +130,7 @@ public:
 	Vector4D operator*(Float n) const;
 	Vector4D operator/(Float n) const;
 
-	Vector4D& operator = (const Vector3D& vec);
+	Vector4D& operator = (const Vector3D &vec);
 	Vector4D& operator += (const Vector4D& vec);
 	Vector4D& operator -= (const Vector4D& vec);
 	Vector4D& operator *= (Float n);
@@ -173,8 +173,8 @@ public:
 	Versor operator/ (Float n);
 	Versor operator* (Float n);
 
-	void quat_from_degree(const Vector3D& vec, Float deg);
-	void quat_from_radian(const Vector3D& vec, Float rad);
+	void quat_from_degree(const Vector3D &vec, Float deg);
+	void quat_from_radian(const Vector3D &vec, Float rad);
 protected:
 	
 private:
@@ -280,17 +280,17 @@ inline Vector3D Vector3D::operator-() const
 	Vector3D ret = Vector3D(-x, -y, -z);
 	return ret;
 }
-inline Vector3D Vector3D::operator+(const Vector3D& vec) const
+inline Vector3D Vector3D::operator+(const Vector3D &vec) const
 {
 	Vector3D ret = Vector3D(x + vec.x, y + vec.y, z + vec.z);
 	return ret;
 }
-inline Vector3D Vector3D::operator-(const Vector3D& vec) const
+inline Vector3D Vector3D::operator-(const Vector3D &vec) const
 {
 	Vector3D ret = Vector3D(x - vec.x, y - vec.y, z - vec.z);
 	return ret;
 }
-inline Float Vector3D::operator*(const Vector3D& vec) const
+inline Float Vector3D::operator*(const Vector3D &vec) const
 {
 	return x * vec.x + y * vec.y + z * vec.z;
 }
@@ -305,27 +305,27 @@ inline Vector3D Vector3D::operator/(Float n) const
 	Vector3D ret = Vector3D(x * n, y * n, z * n);
 	return ret;
 }
-inline Vector3D& Vector3D::operator=(const Vector2D& vec)
+inline Vector3D &Vector3D::operator=(const Vector2D& vec)
 {
 	*this = Vector3D(vec, 0);
 	return *this;
 }
-inline Vector3D& Vector3D::operator += (const Vector3D& vec)
+inline Vector3D &Vector3D::operator += (const Vector3D &vec)
 {
 	*this = *this + vec;
 	return *this;
 }
-inline Vector3D& Vector3D::operator -= (const Vector3D& vec)
+inline Vector3D &Vector3D::operator -= (const Vector3D &vec)
 {
 	*this = *this - vec;
 	return *this;
 }
-inline Vector3D& Vector3D::operator *= (Float n)
+inline Vector3D &Vector3D::operator *= (Float n)
 {
 	*this = *this * n;
 	return *this;
 }
-inline Vector3D& Vector3D::operator /= (Float n)
+inline Vector3D &Vector3D::operator /= (Float n)
 {
 	*this = *this / n;
 	return *this;
@@ -340,11 +340,11 @@ inline Float& Vector3D::operator[](int i)
 	assert(i >= 0 && i <= 2);
 	return (&x)[i];
 }
-inline Float Vector3D::dotMul(const Vector3D& vec) const
+inline Float Vector3D::dotMul(const Vector3D &vec) const
 {
 	return (x * vec.x + y * vec.y + z * vec.z);
 }
-inline Vector3D Vector3D::crossMul(const Vector3D& vec) const
+inline Vector3D Vector3D::crossMul(const Vector3D &vec) const
 {
 	Vector3D vNorm;
 	vNorm.x = y * vec.z - z * vec.y;
@@ -383,7 +383,7 @@ inline Vector3D Normalize(const Vector3D &vec)
 	return vec * rvsLen;
 }
 
-inline Vector3D Cross(const Vector3D& vec0, const Vector3D &vec1)
+inline Vector3D Cross(const Vector3D &vec0, const Vector3D &vec1)
 {
 	return Vector3D(
 		vec0.y * vec1.z - vec0.z * vec1.y,
@@ -419,7 +419,7 @@ inline Vector4D Vector4D::operator/(Float n) const
 	return Vector4D(x / n, y / n, z / n, w / n);
 }
 
-inline Vector4D& Vector4D::operator=(const Vector3D& vec)
+inline Vector4D& Vector4D::operator=(const Vector3D &vec)
 {
 	*this = Vector4D(vec, 0.0);
 	return *this;
@@ -455,7 +455,7 @@ inline Float& Vector4D::operator[](int i)
 	assert(i >= 0 && i <= 3);
 	return (&x)[i];
 }
-inline ostream& operator << (ostream& os, const Vector3D& vec)
+inline ostream& operator << (ostream& os, const Vector3D &vec)
 {
 	os << vec.x << ", " << vec.y << ", " << vec.z;
 	return os;

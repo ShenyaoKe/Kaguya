@@ -1,7 +1,7 @@
 #include "perspCamera.h"
 
-perspCamera::perspCamera(const Vector3D& eye,
-	const Vector3D& targ, const Vector3D& up,
+perspCamera::perspCamera(const Vector3D &eye,
+	const Vector3D &targ, const Vector3D &up,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: Camera(eye, targ, up, asp, lr, fd, fm)
 {

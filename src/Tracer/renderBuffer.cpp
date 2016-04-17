@@ -10,11 +10,11 @@ void bufferData::init()
 	objectID = -1;
 	depth = 0;
 }
-void bufferData::setDifferentialGeometry(const Vector3D& vec)
+void bufferData::setDifferentialGeometry(const Vector3D &vec)
 {
 	DifferentialGeometry = vec;
 }
-void bufferData::setNormalVector(const Vector3D& vec)
+void bufferData::setNormalVector(const Vector3D &vec)
 {
 	normalVec = vec;
 }
@@ -92,7 +92,7 @@ renderBuffer::renderBuffer(int w, int h)
 		data[i] = new bufferData[height];
 	}
 }
-void renderBuffer::setDifferentialGeometry(int x, int y, const Vector3D& vec)
+void renderBuffer::setDifferentialGeometry(int x, int y, const Vector3D &vec)
 {
 	if (x < 0 || x >= width || y < 0 || y > height)
 	{
@@ -104,7 +104,7 @@ void renderBuffer::setDifferentialGeometry(int x, int y, const Vector3D& vec)
 	}
 
 }
-void renderBuffer::setNormalVector(int x, int y, const Vector3D& vec)
+void renderBuffer::setNormalVector(int x, int y, const Vector3D &vec)
 {
 	if (x < 0 || x >= width || y < 0 || y > height)
 	{
