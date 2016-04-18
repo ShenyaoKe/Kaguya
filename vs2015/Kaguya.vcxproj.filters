@@ -114,9 +114,6 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Tracer\Tracer.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
@@ -298,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Shading\Texture3D.cpp">
       <Filter>Source Files\shading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -150,6 +150,7 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
     <ClCompile Include="..\src\Geometry\Hyperboloid.cpp" />
     <ClCompile Include="..\src\Geometry\Paraboloid.cpp" />
@@ -159,7 +160,6 @@
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Shading\Texture3D.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />
     <ClCompile Include="..\src\Image\Filter.cpp" />

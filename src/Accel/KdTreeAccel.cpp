@@ -198,7 +198,7 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const 
 	}
 
 	//prepare to traversal kd-tree for ray
-	Vector3D invDir(1.0 / inRay.d.x, 1.0 / inRay.d.y, 1.0 / inRay.d.z);
+	Vector3f invDir(1.0 / inRay.d.x, 1.0 / inRay.d.y, 1.0 / inRay.d.z);
 
 	//Traversal kd-tree node in order of ray
 	bool isHit = false;
@@ -211,7 +211,7 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const 
 		}
 		if (node->isLeaf())
 		{
-			DifferentialGeometry* tmpQuery = new DifferentialGeometry;
+			DifferentialGeometry* tmpQuery = new DifferentialGeometry();
 			Float hitDist;
 			for (int i = 0; i < node->primIndex.size(); ++i)
 			{

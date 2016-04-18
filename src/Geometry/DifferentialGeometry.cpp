@@ -2,8 +2,8 @@
 #include "Geometry/DifferentialGeometry.h"
 
 DifferentialGeometry::DifferentialGeometry()
-	:object(nullptr), sIndexX(0), sIndexY(0)
-	, lightDist(INFINITY), sample(1), sampleOffset(0)
+	: object(nullptr), sIndexX(0), sIndexY(0)
+	, sample(1), sampleOffset(0)
 {
 }
 DifferentialGeometry::DifferentialGeometry(const Shape* obj,
