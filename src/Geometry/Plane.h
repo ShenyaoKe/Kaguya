@@ -14,8 +14,7 @@ public:
 	void bounding();
 
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	void getNormal(const DifferentialGeometry* queryPoint) const;
-
+	
 	//bool isInside(const Point3f &pPos) const;
 
 public:

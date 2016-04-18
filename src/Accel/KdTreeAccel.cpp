@@ -1,5 +1,4 @@
 #include "Accel/KdTreeAccel.h"
-#include "Dynamics/Collision.h"
 
 static int leafCount(0);
 char axisChar[4] = { 'X', 'Y', 'Z', 'L' };

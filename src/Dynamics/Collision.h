@@ -25,16 +25,16 @@ public:
 	static bool collideP(const geoSphere &sphere, const Triangle &triangle);
 	static bool collideP(const geoSphere &sph0, const geoSphere &sph1);
 
-	static bool collide(const Point3D &prePos, const Point3D &curPos,
+	static bool collide(const Point3f &prePos, const Point3f &curPos,
 		const KdTreeAccel* tree, DifferentialGeometry* queryPoint,
 		Float* tHit, Float* hitEpsilon);
 
 	static bool collide(const BBox &targetBound,
 		const Matrix4D &treeMat, const KdTreeAccel* tree,
-		BBox* &collisionBound, vector<Point3D*> &primpts);
+		BBox* &collisionBound, vector<Point3f*> &primpts);
 	static bool collide(const BBox &targetBound, const Matrix4D &treeMat,
 		const KdAccelNode* treeNode, const KdTreeAccel* tree,
-		BBox* &collisionBound, vector<Point3D*> &primpts);
+		BBox* &collisionBound, vector<Point3f*> &primpts);
 protected:
 private:
 };

@@ -14,7 +14,7 @@ geoParaboloid::geoParaboloid()
 	sc = 1;
 	pbType = ELLIPTIC_PARABOLOID;
 }
-geoParaboloid::geoParaboloid(const Vector3D &pos, const Float& semiA, const Float& semiB, const Float& semiC, PARABOLOID_TYPE newType)
+geoParaboloid::geoParaboloid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC, PARABOLOID_TYPE newType)
 {
 	c = pos;
 	sa = semiA;
@@ -25,7 +25,7 @@ geoParaboloid::geoParaboloid(const Vector3D &pos, const Float& semiA, const Floa
 geoParaboloid::~geoParaboloid()
 {
 }
-void geoParaboloid::setCenter(const Vector3D &pos)
+void geoParaboloid::setCenter(const Point3f &pos)
 {
 	c = pos;
 }
@@ -80,7 +80,7 @@ bool geoParaboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint
 		}
 	}
 }
-Vector3D geoParaboloid::getNormal(const Vector3D &pos) const
+Vector3D geoParaboloid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, -1/sb, 2* type *(z - c.z) / sb^2
 	return Normalize(Vector3D(

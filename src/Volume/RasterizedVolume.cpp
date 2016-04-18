@@ -12,9 +12,9 @@ RasterizedVolume::~RasterizedVolume()
 {
 }
 
-Point3D RasterizedVolume::center() const
+Point3f RasterizedVolume::center() const
 {
-	Point3D centroid;
+	Point3f centroid;
 	for (auto grid : grids)
 	{
 		centroid += grid;
@@ -23,7 +23,7 @@ Point3D RasterizedVolume::center() const
 	return centroid;
 }
 
-vector<Point3D> RasterizedVolume::getGrids() const
+vector<Point3f> RasterizedVolume::getGrids() const
 {
 	return grids;
 }
@@ -46,24 +46,24 @@ void RasterizedVolume::exportVBO(vector<float>* vtx_array) const
 void RasterizedVolume::rasterize()
 {
 	const BBox &bound = kdtree->treeBound;
-	Vector3D diag = bound.getDiagnal();
+	Vector3f diag = bound.getDiagnal();
 	int zaxis = bound.maxExtent();
 	int xaxis = (zaxis + 1) % 3;
 	int yaxis = (zaxis + 2) % 3;
 
-	Point3D rayPos = bound.pMin;
+	Point3f rayPos = bound.pMin;
 	double initZ = rayPos[zaxis] - division;
 	double initY = rayPos[yaxis] + 0.01;
 	rayPos[zaxis] = initZ;
 	rayPos[yaxis] = initY;
 	rayPos[xaxis] += division * 0.01;
-	Point3D rayDir;
+	Vector3f rayDir;
 	rayDir[zaxis] = 1.0;
 	
 
 	DifferentialGeometry queryPoint;
 	double tHit = INFINITY, rayEp;
-	//vector<Point3D> grid;
+	//vector<Point3f> grid;
 	Ray rasterRay;
 	while (rayPos[xaxis] < bound.pMax[xaxis])
 	{
@@ -79,7 +79,7 @@ void RasterizedVolume::rasterize()
 			};
 			if (hitLen.size() > 1)
 			{
-				Point3D curPos = rayPos;
+				Point3f curPos = rayPos;
 				//curPos[zaxis] += hitLen[0];
 				for (int i = 0; i < hitLen.size() - 1; i += 2)
 				{

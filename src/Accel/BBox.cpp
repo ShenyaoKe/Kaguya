@@ -22,7 +22,7 @@ BBox::BBox(const vector<Point3f*> &pts) : pMin(INFINITY, INFINITY, INFINITY), pM
 	}
 }
 
-BBox::BBox(const BBox &bound, const Matrix4D &mat)
+BBox::BBox(const BBox &bound, const Matrix4x4 &mat)
 {
 	for (int i = 0; i < 3; i++)
 	{

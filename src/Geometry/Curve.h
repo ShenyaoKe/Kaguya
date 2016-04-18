@@ -3,7 +3,7 @@
 
 
 #pragma once
-#include "Math/CGVector.h"
+#include "Math/Geometry.h"
 class Curve
 {
 public:
@@ -44,9 +44,9 @@ private:
 };
 
 template class HermitSpline < Float > ;
-template class HermitSpline < Point2D > ;
-template class HermitSpline < Point3D > ;
+template class HermitSpline < Point2f > ;
+template class HermitSpline < Point3f > ;
 template class CatmullRomSpline < Float > ;
-template class CatmullRomSpline < Point2D > ;
-template class CatmullRomSpline < Point3D > ;
+template class CatmullRomSpline < Point2f > ;
+template class CatmullRomSpline < Point3f > ;
 #endif // __CURVE__

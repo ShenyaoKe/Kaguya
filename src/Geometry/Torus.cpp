@@ -7,33 +7,18 @@
 /************************************************************************/
 /* Torus Fuction Definition                                             */
 /************************************************************************/
-geoTorus::geoTorus(const Vector3D &pos, const Float& radius, const Float& secRadius)
+geoTorus::geoTorus(const Point3f &pos, const Float& radius, const Float& secRadius)
 {
 	c = pos;
 	r = radius;
 	sr = secRadius;
 }
-geoTorus::~geoTorus()
-{
 
-}
-void geoTorus::setCenter(const Vector3D &pos)
-{
-	c = pos;
-}
-void geoTorus::setRadius(Float radius)
-{
-	r = radius;
-}
-void geoTorus::setSecRadius(Float secRadius)
-{
-	sr = secRadius;
-}
 bool geoTorus::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	//Float coeA = inRay.getDir() * inRay.getDir();//len == 1
-	Float coeB = inRay.getDir() * (inRay.getPos() - c);
-	Float coeC = (inRay.getPos() - c).getLenSq() - r * r;
+	//Float coeA = inRay.d * inRay.d;//len == 1
+	Float coeB = Dot(inRay.d, (inRay.o - c));
+	Float coeC = (inRay.o - c).lengthSquared() - r * r;
 	//Float delta = coeB * coeB - 4 * coeA * coeB;
 	Float delta = coeB * coeB - coeC;
 	if (delta < 0)
@@ -63,9 +48,9 @@ bool geoTorus::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 		return true;
 	}
 }
-bool geoTorus::isInside(const Vector3D &pPos) const
+bool geoTorus::isInside(const Point3f &pPos) const
 {
-	Float tmp = (pPos - c).getLenSq() - (r * r + sr * sr);
+	Float tmp = (pPos - c).lengthSquared() - (r * r + sr * sr);
 	if (tmp * tmp - 4 * r * r * (sr * sr - (pPos.y - c.y) * (pPos.y - c.y)) <= 0)
 	{
 		return true;

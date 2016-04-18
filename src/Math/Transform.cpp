@@ -24,13 +24,13 @@ BBox Transform::operator()(const BBox &b) const
 {
 	const Transform &M = *this;
 	BBox ret(M(b.pMin));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMin.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMin.z)));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMin.z)));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMin.y, b.pMax.z)));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMax.z)));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMin.z)));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMax.z)));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMax.z)));
 	return ret;
 }
 
@@ -47,28 +47,38 @@ void Transform::operator()(const Ray& ray, Ray* ret) const
 	}
 }
 
+Point3f Transform::operator()(const Point3f &pos) const
+{
+	return m(pos);
+}
+
+Vector3f Transform::operator()(const Vector3f & vec) const
+{
+	return m(vec);
+}
+
 Vector4D Transform::xformNormal(const Vector3D &vec) const
 {
 	return Vector4D();
 }
 
-Matrix4D Transform::getMat() const
+Matrix4x4 Transform::getMat() const
 {
 	return m;
 }
 
-Matrix4D Transform::getInvMat() const
+Matrix4x4 Transform::getInvMat() const
 {
 	return mInv;
 }
 
-void Transform::setMat(const Matrix4D &mat)
+void Transform::setMat(const Matrix4x4 &mat)
 {
 	m = mat;
 	mInv = m.Inverse();
 }
 
-void Transform::setInvMat(const Matrix4D &matInv)
+void Transform::setInvMat(const Matrix4x4 &matInv)
 {
 	mInv = matInv;
 	m = mInv.Inverse();
@@ -86,9 +96,9 @@ Transform xformTRS(
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz)
 {
-	Matrix4D T = Matrix4D::Translate(tx, ty, tz);
-	Matrix4D R = Matrix4D::Rotate(rx, ry, rz);
-	Matrix4D S = Matrix4D::Scale(sx, sy, sz);
+	Matrix4x4 T = Matrix4x4::Translate(tx, ty, tz);
+	Matrix4x4 R = Matrix4x4::Rotate(rx, ry, rz);
+	Matrix4x4 S = Matrix4x4::Scale(sx, sy, sz);
 	return Transform(T * R * S);
 }
 
@@ -125,12 +135,12 @@ Transform Rotate(const Vector3D &axis, Float theta)
 	return Transform(mat);
 }
 
-Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
-	const Point3D &target = Point3D(0, 0, 1),
-	const Vector3D &up = Point3D(0, 1, 0))
+Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
+	const Point3f &target = Point3f(0, 0, 1),
+	const Vector3f &up = Vector3f(0, 1, 0))
 {
 	//Camera to World
-	Vector3D nz = target - pos;//pos - target;
+	Vector3f nz = target - pos;//pos - target;
 	// distance between target and camera position is too small
 	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
 	{
@@ -138,11 +148,11 @@ Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
 	}
 	
 	nz.normalize();
-	//Vector3D nx = Normalize(Cross(up, nz));//left dir
-	//Vector3D ny = Cross(nz, nx);
+	//Vector3f nx = Normalize(Cross(up, nz));//left dir
+	//Vector3f ny = Cross(nz, nx);
 #ifdef RIGHT_HAND_ORDER // OpenGL style
-	Vector3D nx = Normalize(Cross(up, nz));
-	Vector3D ny = Cross(nz, nx);
+	Vector3f nx = Normalize(Cross(up, nz));
+	Vector3f ny = Cross(nz, nx);
 	Float mat[4][4] = {
 		nx.x, nx.y, nx.z, 0.0,
 		ny.x, ny.y, ny.z, 0.0,
@@ -151,8 +161,8 @@ Transform lookAt(const Point3D &pos = Point3D(0, 0, 0),
 	};
 #else // DirectX style
 	nz = -nz;
-	Vector3D nx = Normalize(Cross(nz, up));//left dir
-	Vector3D ny = Cross(nx, nz);
+	Vector3f nx = Normalize(Cross(nz, up));//left dir
+	Vector3f ny = Cross(nx, nz);
 	Float mat[4][4] = {
 		nx.x, nx.y, nx.z, 0.0,
 		ny.x, ny.y, ny.z, 0.0,

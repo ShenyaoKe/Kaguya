@@ -8,6 +8,7 @@
 
 //#include "Core/rtdef.h"
 #include "Geometry/Shape.h"
+#include "Math/Geometry.h"
 #include <fstream>
 #include <sstream>
 #include <cstring>
@@ -36,9 +37,9 @@ struct TriangleFaceIndex
 class Mesh :public Shape
 {
 protected:
-	vector<Point3D*> vertices;
-	vector<Point2D*> uvs;
-	vector<Vector3D*> normals;
+	vector<Point3f*> vertices;
+	vector<Point2f*> uvs;
+	vector<Normal3f*> normals;
 	vector<TriangleFaceIndex*> fids;
 	//vector<Triangle> faces;
 public:
@@ -86,9 +87,9 @@ public:
 
 	void bounding();
 	void attachMesh(const Mesh* inMesh);
-	void setPoint(Point3D* p0, Point3D* p1, Point3D* p2);
-	void setUV(Point2D* uv0, Point2D* uv1, Point2D* uv2);
-	void setNormal(Vector3D* n0, Vector3D* v1, Vector3D* v2);
+	void setPoint(Point3f* p0, Point3f* p1, Point3f* p2);
+	void setUV(Point2f* uv0, Point2f* uv1, Point2f* uv2);
+	void setNormal(Normal3f* n0, Normal3f* v1, Normal3f* v2);
 
 	bool intersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
@@ -100,9 +101,9 @@ public:
 	friend void exportNormals(Triangle* triface, Float* buffer);*/
 protected:
 	const Mesh* mesh;
-	vector<Point3D*> p;
-	vector<Point2D*> uv;
-	vector<Point3D*> n;
+	vector<Point3f*> p;
+	vector<Point2f*> uv;
+	vector<Normal3f*> n;
 	friend class Mesh;
 };
 

@@ -22,7 +22,7 @@
 #include "Math/CGVector.h"
 #include "Image/ColorData.h"
 //#include "ppmImage.h"
-#include "Math/Matrix3D.h"
+#include "Math/Matrix3x3.h"
 
 //read image files
 #include "FreeImage.h"

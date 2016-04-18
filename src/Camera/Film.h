@@ -42,8 +42,8 @@ public:
 	Float ApectureRatio() const{ return horiApect / vertApect; }
 	Point2D getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
 	Point2D getImgPos(Float filmX, Float filmY) const;
-	Point3D getFilmUV(Float imgX, Float imgY) const;
-	Matrix4D rasterToFilm() const;
+	Point3f getFilmUV(Float imgX, Float imgY) const;
+	Matrix4x4 rasterToFilm() const;
 
 public:
 	Float horiApect, vertApect;//mm

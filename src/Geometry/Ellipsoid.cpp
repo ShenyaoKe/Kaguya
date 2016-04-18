@@ -20,10 +20,6 @@ geoEllipsoid::geoEllipsoid(const Point3f &pos, const Float& semiA, const Float& 
 	sb = semiB;
 	sc = semiC;
 }
-geoEllipsoid::~geoEllipsoid()
-{
-
-}
 void geoEllipsoid::setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC)
 {
 	sa = semiA;

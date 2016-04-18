@@ -4,7 +4,7 @@
 
 //#include "Core/rtdef.h"
 #include "Math/CGVector.h"
-#include "Math/Matrix4D.h"
+#include "Math/Matrix4x4.h"
 #include "Tracer/Ray.h"
 
 //Bounding box
@@ -17,7 +17,7 @@ public:
 	BBox(const Point3f &p);
 	BBox(const Point3f &p1, const Point3f &p2);
 	BBox(const vector<Point3f*> &pts);
-	BBox(const BBox &bound, const Matrix4D &mat);
+	BBox(const BBox &bound, const Matrix4x4 &mat);
 	~BBox();
 
 	void printInfo() const;

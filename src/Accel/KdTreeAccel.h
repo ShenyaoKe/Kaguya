@@ -7,7 +7,6 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 #include "Core/Kaguya.h"
-#include "Dynamics/Collision.h"
 #include "Geometry/Shape.h"
 #include "Geometry/DifferentialGeometry.h"
 

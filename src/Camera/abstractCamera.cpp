@@ -24,11 +24,11 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	Vector3D rayDir;// = nz * focLen + nx * fPos.x + ny * fPos.y;
 
 	Float newU = imgX / film.height, newV = imgY / film.height;
-	Point3D rayPoint = pos;
+	Point3f rayPoint = pos;
 
 	if (posTex != nullptr)
 	{
-		ColorRGBA shiftPos = tpos * (posTex->getColor(Point3D(newU, newV, 0)) - ColorRGBA(0.5, 0.5, 0.5, 1));
+		ColorRGBA shiftPos = tpos * (posTex->getColor(Point3f(newU, newV, 0)) - ColorRGBA(0.5, 0.5, 0.5, 1));
 		fPos = film.getFilmPos(shiftPos.r * film.getWidth() + imgX, shiftPos.g * film.getHeight() + imgY);
 		rayDir = nx * fPos.x + ny * fPos.y + nz * focLen * (1 + shiftPos.b);
 		rayPoint = pos + shiftPos.r * nx + shiftPos.g * ny + shiftPos.b * nz;

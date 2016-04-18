@@ -27,37 +27,14 @@ void Light::setRadius(const Float& rd)
 {
 	radius = rd;
 }
-ColorRGBA Light::getColor() const
-{
-	return lightSpectrum.color;
-}
-Float Light::getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const
-{
-	return lightSpectrum.intensity;
-}
 LIGHT_TYPE Light::getLightType() const
 {
 	return type;
 }
-Float Light::getIntensity(const Float& dist) const
-{
-	if (exposure == 0 && decayType == DECAY_CONSTANT)
-	{
-		return lightSpectrum.intensity;
-	}
-	else
-	{
-		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
-	}
-}
-Float Light::getIntensity(const DifferentialGeometry * queryPoint) const
-{
-	return Float();
-}
 Spectrum Light::getSpectrum(const DifferentialGeometry* queryPoint) const
 {
-	Spectrum ret = Spectrum(getIntensity(queryPoint), lightSpectrum.color);
-	return ret;
+	//Spectrum ret;// = Spectrum(getIntensity(queryPoint), lightSpectrum.color);
+	return Spectrum();
 }
 Float Light::getDistance(const DifferentialGeometry* queryPoint) const
 {
@@ -93,21 +70,6 @@ void directionalLight::printInfo() const
 	cout << "Directional Light Direction:\t" << dir << endl;
 	lightSpectrum.printInfo();
 	//color.printInfo();
-}
-Float directionalLight::getIntensity(const Float& dist) const
-{
-	if (exposure == 0 && decayType == DECAY_CONSTANT)
-	{
-		return lightSpectrum.intensity;
-	}
-	else
-	{
-		return lightSpectrum.intensity * pow(2, exposure);
-	}
-}
-Float directionalLight::getIntensity(const DifferentialGeometry* queryPoint) const
-{
-	return getIntensity(INFINITY);
 }
 Float directionalLight::getDistance(const DifferentialGeometry* queryPoint) const
 {
@@ -190,7 +152,7 @@ void spotLight::setDropOff(const Float& dpo)
 Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float tmpIts = -queryPoint->lightDir * dir;
+	Float tmpIts;// = -queryPoint->lightDir * dir;
 
 	if (penumbraAngle != 0)
 	{
@@ -239,7 +201,7 @@ void ImageSpotLight::setSize(const Float& xSize, const Float& ySize)
 Float ImageSpotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float tmpIts = -queryPoint->lightDir * dir;
+	Float tmpIts;// = -queryPoint->lightDir * dir;
 	Float maskstr = tmpIts;
 
 	if (penumbraAngle != 0)
@@ -254,9 +216,9 @@ Float ImageSpotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 	}
 	if (tex != nullptr)
 	{
-		Vector3D imgPos = queryPoint->lightDir / maskstr - dir;
+		Vector3D imgPos;// = queryPoint->lightDir / maskstr - dir;
 
-		tmpIts *= tex->getColor(Vector3D(0.5 - imgPos * nx / sx / 2, 0.5 - imgPos * ny / sy / 2, 0)).a;
+		tmpIts;// *= tex->getColor(Vector3D(0.5 - imgPos * nx / sx / 2, 0.5 - imgPos * ny / sy / 2, 0)).a;
 	}
 	if (exposure != 0 || decayType != DECAY_CONSTANT)
 	{
@@ -269,8 +231,8 @@ Float ImageSpotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float maskstr = -queryPoint->lightDir * dir;
-	Float tmpIts = maskstr;
+	Float maskstr;// = -queryPoint->lightDir * dir;
+	Float tmpIts;// = maskstr;
 	ColorRGBA tmpC = lightSpectrum.color;
 
 	if (penumbraAngle != 0)
@@ -285,9 +247,9 @@ Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry* queryPoint) con
 	}
 	if (tex != nullptr)
 	{
-		Vector3D imgPos = queryPoint->lightDir / maskstr - dir;
+		Vector3f imgPos;// = queryPoint->lightDir / maskstr - dir;
 
-		tmpC = tex->getColor(Vector3D(0.5 - imgPos * nx / sx / 2, 0.5 - imgPos * ny / sy / 2, 0));
+		tmpC;// = tex->getColor(Vector3f(0.5 - Dot(imgPos, nx) / sx / 2, 0.5 - Dot(imgPos, ny) / sy / 2, 0));
 
 		tmpIts *= tmpC.a;
 	}
@@ -342,10 +304,10 @@ areaLight::~areaLight()
 }
 Float areaLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
-	if (queryPoint->lightDir * nz > 0)//If on the other side
+	/*if (queryPoint->lightDir * nz > 0)//If on the other side
 	{
 		return 0;
-	}
+	}*/
 	//
 	if (exposure == 0 && decayType == DECAY_CONSTANT)
 	{
@@ -366,8 +328,7 @@ void areaLight::getDirection(const DifferentialGeometry* queryPoint) const
 {
 	Float x = ((queryPoint->shiftX + unitRandom(20)) / queryPoint->sample - 0.5) * size;
 	Float y = ((queryPoint->shiftY + unitRandom(20)) / queryPoint->sample - 0.5) * size;
-	//(pos + (sample % sampleSize) * size / sampleSize * nx + (sample / sampleSize) * size * ny - pointPos).printInfo();
-	queryPoint->lightDir = Normalize(pos + nx * x + ny * y - queryPoint->pos);
+	//queryPoint->lightDir = Normalize(pos + nx * x + ny * y - queryPoint->pos);
 }
 
 Float areaLight::getDistance(const DifferentialGeometry* queryPoint) const

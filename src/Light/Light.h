@@ -51,15 +51,9 @@ public:
 	virtual void setRadius(const Float& rd);
 
 	virtual LIGHT_TYPE getLightType() const;
-	virtual ColorRGBA getColor() const;
-	virtual Float getIntensity(const Float& dist) const;
-	virtual Float getIntensity(const DifferentialGeometry* queryPoint) const;
 	virtual Spectrum getSpectrum(const DifferentialGeometry* queryPoint) const;
 	virtual Float getDistance(const DifferentialGeometry* queryPoint) const;
 	virtual void printInfo() const;
-
-	//
-	virtual Float getSpecAmout(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir) const;
 };
 /************************************************************************/
 /* Directional Light                                                    */
@@ -74,10 +68,6 @@ public:
 	~directionalLight();
 
 	void printInfo() const;
-	// 	Vector3D getDirFromPoint(const Vector3D &pointPos) const;
-	// 	Float getDistanceFromPoint(const Vector3D &pointPos) const;
-	Float getIntensity(const Float& dist) const;
-	Float getIntensity(const DifferentialGeometry* queryPoint) const;
 	Float getDistance(const DifferentialGeometry* queryPoint) const;
 protected:
 

@@ -34,7 +34,7 @@ void perspCamera::updateCamToScreen()
 		horisize = vertsize * viewportRatio;
 	}
 
-	CameraToScreen.setMat(Matrix4D::PerspectiveFromFilm(
+	CameraToScreen.setMat(Matrix4x4::PerspectiveFromFilm(
 		vertsize, horisize, focLen, nearPlane, farPlane));
 }
 

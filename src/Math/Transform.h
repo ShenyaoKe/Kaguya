@@ -12,7 +12,7 @@
 
 #include "Core/Kaguya.h"
 //#include "Math/CGVector.h"
-#include "Math/Matrix4D.h"
+#include "Math/Matrix4x4.h"
 #include "Accel/BBox.h"
 
 class Transform
@@ -26,17 +26,17 @@ public:
 	}
 	Transform(const Float mat[4][4])
 	{
-		m = Matrix4D(
+		m = Matrix4x4(
 			mat[0][0], mat[0][1], mat[0][2], mat[0][3],
 			mat[1][0], mat[1][1], mat[1][2], mat[1][3],
 			mat[2][0], mat[2][1], mat[2][2], mat[2][3],
 			mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
 		mInv = m.Inverse();
 	}
-	Transform(const Matrix4D &mat)
+	Transform(const Matrix4x4 &mat)
 		: m(mat), mInv(mat.Inverse())
 	{}
-	Transform(const Matrix4D &mat, const Matrix4D &matInv)
+	Transform(const Matrix4x4 &mat, const Matrix4x4 &matInv)
 		: m(mat), mInv(matInv)
 	{}
 	~Transform() {}
@@ -52,10 +52,10 @@ public:
 	//Transform operator * (const Matrix4D &mat);
 	Vector4D xformNormal(const Vector3D &vec) const;
 
-	Matrix4D getMat() const;
-	Matrix4D getInvMat() const;
-	void setMat(const Matrix4D &mat);
-	void setInvMat(const Matrix4D &mat);
+	Matrix4x4 getMat() const;
+	Matrix4x4 getInvMat() const;
+	void setMat(const Matrix4x4 &mat);
+	void setInvMat(const Matrix4x4 &mat);
 
 	friend Transform inverse(const Transform &t)
 	{
@@ -67,7 +67,7 @@ public:
 			t.mInv.Transpose());
 	}
 private:
-	Matrix4D m, mInv;
+	Matrix4x4 m, mInv;
 	friend class Quaternion;
 	friend class Camera;
 };

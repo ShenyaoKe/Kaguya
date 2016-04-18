@@ -3,7 +3,7 @@
 Camera::Camera(const Point3f &eye,
 	const Point3f &targ, const Vector3f &up,
 	Float asp, Float lr, Float fd, const Film &fm)
-	: CameraToWorld(Matrix4D::LookAt(eye, target, up))
+	: CameraToWorld(Matrix4x4::LookAt(eye, target, up))
 	//, CameraToScreen(Matrix4D::Perspective())
 	, target(targ)
 	, viewportRatio(1), focLen(35)
@@ -63,12 +63,12 @@ Point3f Camera::getTarget() const
 	return target;
 }
 
-void Camera::setCamToWorld(const Matrix4D &cam2wMat)
+void Camera::setCamToWorld(const Matrix4x4 &cam2wMat)
 {
 	CameraToWorld = Transform(cam2wMat);
 }
 
-void Camera::setProjection(const Matrix4D &perspMat)
+void Camera::setProjection(const Matrix4x4 &perspMat)
 {
 	CameraToScreen = Transform(perspMat);
 }
@@ -91,7 +91,7 @@ void Camera::exportVBO(float *view, float *proj, float *raster) const
 
 void Camera::updateRasterToCam()
 {
-	Matrix4D raster2camMat = film.rasterToFilm();
+	Matrix4x4 raster2camMat = film.rasterToFilm();
 #ifdef RIGHT_HAND_ORDER
 	raster2camMat[3][2] = -focLen;
 #else
@@ -108,12 +108,12 @@ void Camera::updateRasterToScreen()
 void Camera::zoom(Float x_val, Float y_val, Float z_val)
 {
 	//Matrix4D w2cam = CameraToWorld.getInvMat();
-	Matrix4D cam2w = CameraToWorld.getMat();
+	Matrix4x4 cam2w = CameraToWorld.getMat();
 	
 	// Pw: world space position, Pc: Camera space position
 	// Pw = c2w1 * Pc1 = c2w1 * T^-1 * Pc = c2w * Pc
 	// c2w1 = T * c2w
-	Matrix4D newLookAt = cam2w * Matrix4D::Translate(x_val, y_val, z_val);
+	Matrix4x4 newLookAt = cam2w * Matrix4x4::Translate(x_val, y_val, z_val);
 	//cout << "befor: " << target << endl;
 
 	Vector3f _nx(cam2w[0]), _ny(cam2w[1]);
@@ -125,7 +125,7 @@ void Camera::zoom(Float x_val, Float y_val, Float z_val)
 void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 {
 	//pitch, yaw, roll
-	Matrix4D lookAtMat = CameraToWorld.getMat();
+	Matrix4x4 lookAtMat = CameraToWorld.getMat();
 
 	Point3f _pos(lookAtMat[3]);
 	Vector3f vt = _pos - target;
@@ -141,7 +141,7 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 		upCoef *= -1;
 	}
 	Vector3f newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
-	CameraToWorld.setMat(Matrix4D::LookAt(target + newVt * vt_len, target, Vector3f(0, upCoef, 0)));
+	CameraToWorld.setMat(Matrix4x4::LookAt(target + newVt * vt_len, target, Vector3f(0, upCoef, 0)));
 }
 
 void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
@@ -178,7 +178,7 @@ void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 
 void Camera::resizeViewport(Float aspr)
 {
-	Matrix4D newProj= CameraToScreen.getMat();
+	Matrix4x4 newProj= CameraToScreen.getMat();
 	newProj[0][0] = -newProj[1][1] / aspr;
 	CameraToScreen.setMat(newProj);
 }

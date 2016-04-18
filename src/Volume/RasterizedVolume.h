@@ -16,8 +16,8 @@ public:
 	RasterizedVolume(const Mesh* src, const KdTreeAccel* tree, double div);
 	~RasterizedVolume();
 
-	Point3D center() const;
-	vector<Point3D> getGrids() const;
+	Point3f center() const;
+	vector<Point3f> getGrids() const;
 	void exportVBO(vector<float>* vtx_array = nullptr) const;
 
 private:
@@ -25,7 +25,7 @@ private:
 private:
 	const KdTreeAccel* kdtree;
 	const Mesh* mesh;
-	vector<Point3D> grids;
+	vector<Point3f> grids;
 	double division;
 };
 

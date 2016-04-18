@@ -46,10 +46,6 @@ bool Shape::isInside(const Point3f &pPos) const
 {
 	return false;
 }
-void Shape::assignShader(Shader* shader)
-{
-	material = shader;
-}
 void Shape::assignTextureMapping(TextureMapping* &mapping)
 {
 	UV_Mapping = mapping;
@@ -62,9 +58,4 @@ void Shape::assignNormalMap(Texture* nMap)
 void Shape::printInfo() const
 {
 
-}
-
-bool Shape::getOpacity() const
-{
-	return material->getOpacity();
 }

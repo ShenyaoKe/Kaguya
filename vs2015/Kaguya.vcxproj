@@ -107,7 +107,6 @@
     <ClInclude Include="..\src\Camera\perspCamera.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
-    <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
@@ -128,13 +127,13 @@
     <ClInclude Include="..\src\Math\CGVector.h" />
     <ClInclude Include="..\src\Math\Geometry.h" />
     <ClInclude Include="..\src\Math\MathUtil.h" />
-    <ClInclude Include="..\src\Math\Matrix3D.h" />
-    <ClInclude Include="..\src\Math\Matrix4D.h" />
+    <ClInclude Include="..\src\Math\Matrix3x3.h" />
+    <ClInclude Include="..\src\Math\Matrix4x4.h" />
     <ClInclude Include="..\src\Math\MonteCarlo.h" />
     <ClInclude Include="..\src\Math\Transform.h" />
     <ClInclude Include="..\src\Shading\Noise.h" />
-    <ClInclude Include="..\src\Shading\Shader.h" />
     <ClInclude Include="..\src\Shading\Texture.h" />
+    <ClInclude Include="..\src\Shading\Texture3D.h" />
     <ClInclude Include="..\src\Shading\TextureMapping.h" />
     <ClInclude Include="..\src\Tracer\Ray.h" />
     <ClInclude Include="..\src\Tracer\renderBuffer.h" />
@@ -158,9 +157,9 @@
     <ClCompile Include="..\src\Geometry\Sphere.cpp" />
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
+    <ClCompile Include="..\src\Shading\Texture3D.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
-    <ClCompile Include="..\src\Geometry\Curve.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />
     <ClCompile Include="..\src\Image\Filter.cpp" />
@@ -171,7 +170,6 @@
     <ClCompile Include="..\src\Light\Light.cpp" />
     <ClCompile Include="..\src\Light\Spectrum.cpp" />
     <ClCompile Include="..\src\Math\MonteCarlo.cpp" />
-    <ClCompile Include="..\src\Shading\Shader.cpp" />
     <ClCompile Include="..\src\Shading\Texture.cpp" />
     <ClCompile Include="..\src\Shading\TextureMapping.cpp" />
     <ClCompile Include="..\src\Tracer\Ray.cpp" />

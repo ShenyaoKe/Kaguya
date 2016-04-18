@@ -14,7 +14,7 @@ geoHyperboloid::geoHyperboloid()
 	sc = 1;
 	hbType = ONE_SHEET;
 }
-geoHyperboloid::geoHyperboloid(const Vector3D &pos, const Float& semiA, const Float& semiB, const Float& semiC, HYPERBOLOID_TYPE newType)
+geoHyperboloid::geoHyperboloid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC, HYPERBOLOID_TYPE newType)
 {
 	c = pos;
 	sa = semiA;
@@ -25,7 +25,7 @@ geoHyperboloid::geoHyperboloid(const Vector3D &pos, const Float& semiA, const Fl
 geoHyperboloid::~geoHyperboloid()
 {
 }
-void geoHyperboloid::setCenter(const Vector3D &pos)
+void geoHyperboloid::setCenter(const Point3f &pos)
 {
 	c = pos;
 }
@@ -72,7 +72,7 @@ bool geoHyperboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoin
 		}
 	}
 }
-Vector3D geoHyperboloid::getNormal(const Vector3D &pos) const
+Vector3D geoHyperboloid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, -1/sb, 2* type *(z - c.z) / sb^2
 	return Normalize(Vector3D(

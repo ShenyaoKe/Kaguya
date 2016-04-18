@@ -108,19 +108,19 @@ bool Mesh::loadOBJ(const char* filename)
 		}
 		if (strcmp(lineHeader, "v") == 0)
 		{
-			Point3D* vtx = new Point3D;
+			Point3f* vtx = new Point3f;
 			fscanf_s(file, " %lf %lf %lf\n", &vtx->x, &vtx->y, &vtx->z);
 			vertices.push_back(vtx);
 		}
 		else if (strcmp(lineHeader, "vt") == 0)
 		{
-			Vector2D* uv = new Vector2D;
+			Point2f* uv = new Point2f;
 			fscanf_s(file, " %lf %lf %lf\n", &uv->x, &uv->y);
 			uvs.push_back(uv);
 		}
 		else if (strcmp(lineHeader, "vn") == 0)
 		{
-			Vector3D* normal = new Vector3D;
+			Normal3f* normal = new Normal3f;
 			fscanf_s(file, " %lf %lf %lf\n", &normal->x, &normal->y, &normal->z);
 			normals.push_back(normal);
 		}
@@ -175,13 +175,13 @@ bool Mesh::loadOBJ(const char* filename)
 		if (lineHeader == "v")
 		{
 			file >> value[0] >> value[1] >> value[2];
-			/ *Point3D* vtx = new Point3D(value[0], value[1], value[2]);
+			/ *Point3f* vtx = new Point3f(value[0], value[1], value[2]);
 			vertices.push_back(vtx);* /
 		}
 		else if (lineHeader == "vt")
 		{
 			file >> value[0] >> value[1];
-			/ *Vector2D* uv = new Vector2D(value[0], value[1]);
+			/ *Point2f* uv = new Point2f(value[0], value[1]);
 			uvs.push_back(uv);* /
 		}
 		else if (lineHeader == "vn")
@@ -227,18 +227,15 @@ void Mesh::printInfo(const string &msg) const
 	}
 	for (int i = 0; i < vertices.size(); i++)
 	{
-		cout << "Vertex:\t";
-		vertices[i]->printInfo();
+		cout << "Vertex:\t" << *vertices[i] << endl;
 	}
 	for (int i = 0; i < uvs.size(); i++)
 	{
-		cout << "UV:\t";
-		uvs[i]->printInfo();
+		cout << "UV:\t" << *uvs[i] << endl;
 	}
 	for (int i = 0; i < normals.size(); i++)
 	{
-		cout << "Normal:\t";
-		normals[i]->printInfo();
+		cout << "Normal:\t" << *normals[i] << endl;
 	}
 	for (int i = 0; i < fids.size(); i++)
 	{
@@ -524,9 +521,9 @@ Triangle::Triangle(Mesh *inMesh, int fn)
 	}
 	else
 	{
-		Vector2D* v00 = new Vector2D(0.0, 0.0);
-		Vector2D* v10 = new Vector2D(1.0, 0.0);
-		Vector2D* v01 = new Vector2D(0.0, 1.0);
+		Point2f* v00 = new Point2f(0.0, 0.0);
+		Point2f* v10 = new Point2f(1.0, 0.0);
+		Point2f* v01 = new Point2f(0.0, 1.0);
 
 		this->setUV(v00, v10, v01);
 	}
@@ -540,7 +537,7 @@ Triangle::Triangle(Mesh *inMesh, int fn)
 	}
 	else
 	{
-		Vector3D* n = new Vector3D(Normalize(Cross(*p[2] - *p[1], *p[0] - *p[1])));
+		Normal3f* n = new Normal3f(Normalize(Cross(*p[2] - *p[1], *p[0] - *p[1])));
 		this->setNormal(n, n, n);
 	}
 	this->bounding();
@@ -560,35 +557,35 @@ void Triangle::attachMesh(const Mesh* inMesh)
 {
 	mesh = inMesh;
 }
-void Triangle::setPoint(Point3D* p0, Point3D* p1, Point3D* p2)
+void Triangle::setPoint(Point3f* p0, Point3f* p1, Point3f* p2)
 {
 	p.push_back(p0);
 	p.push_back(p1);
 	p.push_back(p2);
 }
-void Triangle::setUV(Point2D* uv0, Point2D* uv1, Point2D* uv2)
+void Triangle::setUV(Point2f* uv0, Point2f* uv1, Point2f* uv2)
 {
 	uv.push_back(uv0);
 	uv.push_back(uv1);
 	uv.push_back(uv2);
 }
-void Triangle::setNormal(Vector3D* n0, Vector3D* n1, Vector3D* n2)
+void Triangle::setNormal(Normal3f* n0, Normal3f* v1, Normal3f* v2)
 {
 	n.push_back(n0);
-	n.push_back(n1);
-	n.push_back(n2);
+	n.push_back(v1);
+	n.push_back(v2);
 }
 bool Triangle::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	Vector3D v1 = *p[1] - *p[0];
-	Vector3D v2 = *p[2] - *p[0];
-	Vector3D A = v1.crossMul(v2);
-	Vector3D normal = Normalize(A);
+	Vector3f v1 = *p[1] - *p[0];
+	Vector3f v2 = *p[2] - *p[0];
+	Vector3f A = Cross(v1, v2);
+	Vector3f normal = Normalize(A);
 
 	Float rayT;//ray triangle DifferentialGeometry length
-	Float cosTheta = normal * inRay.getDir();
+	Float cosTheta = Dot(normal, inRay.d);
 	
-	rayT = normal * (*p[0] - inRay.getPos()) / cosTheta;
+	rayT = Dot(normal, (*p[0] - inRay.o)) / cosTheta;
 	if (rayT <= 0)
 	{
 		return false;
@@ -598,9 +595,9 @@ bool Triangle::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	*rayEpsilon = reCE * *tHit;
 	
 	//inRay.tmin = rayT;
-	Point3D ph = inRay(rayT);
-	Vector3D A2 = (*p[0] - ph).crossMul(*p[1] - ph);
-	Vector3D A1 = (*p[2] - ph).crossMul(*p[0] - ph);
+	Point3f ph = inRay(rayT);
+	Vector3f A2 = Cross(*p[0] - ph, *p[1] - ph);
+	Vector3f A1 = Cross(*p[2] - ph, *p[0] - ph);
 
 	int maxIndex = 0;
 	for (int i = 1; i < 3; i++)
@@ -629,10 +626,10 @@ void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
 	{
 		ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		tmpNormal.printInfo();
-		queryPoint->normal = Normalize(
+		/*queryPoint->normal = Normalize(
 			- queryPoint->dpdu * tmpNormal.r
 			- queryPoint->dpdv * tmpNormal.g
-			+ queryPoint->normal * tmpNormal.b);
+			+ queryPoint->normal * tmpNormal.b);*/
 	}
 	else
 	{
@@ -640,7 +637,7 @@ void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
 		Float du2 = uv[1]->x - uv[2]->x;
 		Float dv1 = uv[0]->y - uv[2]->y;
 		Float dv2 = uv[1]->y - uv[2]->y;
-		Vector3D dp1 = *p[0] - *p[2], dp2 = *p[1] - *p[2];
+		Vector3f dp1 = *p[0] - *p[2], dp2 = *p[1] - *p[2];
 		Float det = du1 * dv2 - dv1 * du2;//Determinant
 		if (det == 0)
 		{
@@ -649,8 +646,8 @@ void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
 		else
 		{
 			det = 1.0 / det;
-			queryPoint->dpdu = Normalize((dv2 * dp1 - dv1 * dp2) * det);
-			queryPoint->dpdv = Normalize((-du2 * dp1 + du1 * dp2) * det);
+			queryPoint->dpdu = Normalize((dp1 * dv2 - dp2 * dv1) * det);
+			queryPoint->dpdv = Normalize((dp1 * -du2 + dp2 * du1) * det);
 		}
 	}
 }

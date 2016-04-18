@@ -6,13 +6,13 @@ Texture::Texture()
 Texture::~Texture()
 {
 }
-ColorRGBA Texture::getColor(const Vector3D &uv) const
+ColorRGBA Texture::getColor(const Point2f &uv) const
 {
 	return ColorRGBA();
 }
 ColorRGBA Texture::getColor(const DifferentialGeometry* queryPoint) const
 {
-	ColorRGBA ret = getColor(queryPoint->UV);
+	ColorRGBA ret;// = getColor(queryPoint->UV);
 	return ret;
 }
 /************************************************************************/
@@ -33,7 +33,7 @@ FileTexture::~FileTexture()
 {
 	img = nullptr;
 }
-ColorRGBA FileTexture::getColor(const Vector3D &uv) const
+ColorRGBA FileTexture::getColor(const Point2f &uv) const
 {
 	return img->bilinearPixel(uv.x * img->getWidth(), uv.y * img->getHeight());
 }
@@ -54,7 +54,7 @@ PlannetTexture::~PlannetTexture()
 }
 ColorRGBA PlannetTexture::getColor(const DifferentialGeometry* queryPoint) const
 {
-	Float ramp = queryPoint->getDiffuseTheta();
+	Float ramp;// = queryPoint->getDiffuseTheta();
 	ramp = (ramp + tolerance) / (2 * tolerance);
 	clampFromZeroToOne(ramp);
 	if (ramp == 0)
@@ -84,85 +84,8 @@ PerlinNoiseTexture::PerlinNoiseTexture(Float persistence, int octaves, int wd, i
 PerlinNoiseTexture::~PerlinNoiseTexture()
 {
 }
-ColorRGBA PerlinNoiseTexture::getColor(const Vector3D &uv) const
+ColorRGBA PerlinNoiseTexture::getColor(const Point2f &uv) const
 {
 	Float pValue = clampFromZeroToOne((noise.getValue(uv) - vmin) / (vmax - vmin));
 	return pValue * brightColor + (1 - pValue)*darkColor;
-}
-/************************************************************************/
-/* PerlinNoise 3D                                                       */
-/************************************************************************/
-PerlinNoiseTexture3D::PerlinNoiseTexture3D()
-{
-}
-PerlinNoiseTexture3D::PerlinNoiseTexture3D(Float persistence, int octaves,
-	int wd, int ht, int dp)
-{
-	noise.setData(persistence, octaves, wd, ht, dp);
-}
-PerlinNoiseTexture3D::~PerlinNoiseTexture3D()
-{
-}
-void PerlinNoiseTexture3D::setColor(const ColorRGBA& bc, const ColorRGBA& dc)
-{
-	brightColor = bc;
-	darkColor = dc;
-}
-void PerlinNoiseTexture3D::setRange(const Float& max_value, const Float& min_value)
-{
-	vmin = min_value;
-	vmax = max_value;
-}
-ColorRGBA PerlinNoiseTexture3D::getColor(const Vector3D &uv) const
-{
-	Float pValue = clampFromZeroToOne((noise.getValue(uv) - vmin) / (vmax - vmin));
-	//cout << noise.getValue(queryPoint->UV) << endl;
-	return pValue * brightColor + (1 - pValue)*darkColor;
-}
-/************************************************************************/
-/* Wood Texture from Perlin Noise 3D                                    */
-/************************************************************************/
-WoodTexture3D::WoodTexture3D()
-{
-}
-WoodTexture3D::WoodTexture3D(Float persistence, int octaves, int size, int thr)
-	:PerlinNoiseTexture3D(persistence, octaves, size, size, size), threshold(thr)
-{
-	detailNoise.setData(persistence*0.5, octaves, size * 40, size * 40, size * 40);
-	setColor(COLOR_SADDLE_BROWN, COLOR_BLACK);
-}
-WoodTexture3D::~WoodTexture3D()
-{
-}
-ColorRGBA WoodTexture3D::getColor(const Vector3D &uv) const
-{
-	Float pValue = threshold * (noise.getValue(uv) - vmin) / (vmax - vmin);
-	pValue -= static_cast<int>(pValue);
-	pValue += detailNoise.getValue(uv) * 0.5;
-	clampFromZeroToOne(pValue);
-	//cout << noise.getValue(queryPoint->UV) << endl;
-	return pValue * brightColor + (1 - pValue)*darkColor;
-}
-/************************************************************************/
-/* Solid File Texture                                                   */
-/************************************************************************/
-SolidFileTexture::SolidFileTexture()
-{
-}
-SolidFileTexture::SolidFileTexture(const string& filename)
-{
-	img = new ImageData(filename);
-}
-SolidFileTexture::SolidFileTexture(ImageData& filename)
-{
-	img = &filename;
-}
-SolidFileTexture::~SolidFileTexture()
-{
-	delete img;
-	img = nullptr;
-}
-ColorRGBA SolidFileTexture::getColor(const Vector3D &uv) const
-{
-	return img->bilinearPixel(uv.x * img->getWidth(), uv.y * img->getHeight());
 }

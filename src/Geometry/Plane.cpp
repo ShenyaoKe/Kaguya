@@ -47,28 +47,6 @@ bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	}
 }
 
-void geoPlane::getNormal(const DifferentialGeometry* queryPoint) const
-{
-	queryPoint->normal = getNormal(queryPoint->pos);
-
-	if (normalMap != nullptr && UV_Mapping != nullptr)
-	{
-		UV_Mapping->getUVDir(queryPoint);
-		ColorRGBA tmpNormal = normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
-		//tmpNormal.printInfo();
-		queryPoint->normal = Normalize(
-			-queryPoint->dpdu * tmpNormal.r
-			- queryPoint->dpdv * tmpNormal.g
-			+ queryPoint->normal * tmpNormal.b);
-	}
-	else
-	{
-		queryPoint->dpdu = X_AXIS3D;// Vector3D(2 * PI * pp.z, 0, 2 * PI * pp.x).getNorm()
-		queryPoint->dpdv = Z_AXIS3D;
-
-	}
-}
-
 /*
 bool geoPlane::isInside(const Point3f &pPos) const
 {

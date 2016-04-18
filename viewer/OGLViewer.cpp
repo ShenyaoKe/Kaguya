@@ -4,7 +4,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
 	, m_selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
-		Point3D(10, 6, 10), Point3D(0.0, 0.0, 0.0), Point3D(0, 1, 0),
+		Point3f(10, 6, 10), Point3f(0.0, 0.0, 0.0), Vector3f(0, 1, 0),
 		width() / static_cast<double>(height())))
 	, pixmap(default_resX * default_resY * 3, 255)
 {

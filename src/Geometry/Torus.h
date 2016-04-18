@@ -9,16 +9,12 @@ class geoTorus :public Shape
 {
 public:
 	geoTorus() {};
-	geoTorus(const Vector3D &pos, const Float& radius, const Float& secRadius);
-	~geoTorus();
+	geoTorus(const Point3f &pos, const Float& radius, const Float& secRadius);
 
-	void setCenter(const Vector3D &pos);
-	void setRadius(Float radius);
-	void setSecRadius(Float secRadius);//set section radius
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	bool isInside(const Vector3D &pPos) const;
+	bool isInside(const Point3f &pPos) const;
 
 public:
-	Vector3D c;//center
+	Point3f c;//center
 	Float r = 1, sr = 0.5;// radius and section radius
 };

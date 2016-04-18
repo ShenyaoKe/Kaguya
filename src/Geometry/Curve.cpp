@@ -13,8 +13,8 @@ Curve::~Curve()
 template<typename T>
 void HermitSpline<T>::calculateT()
 {
-	*t[3] = 2 * *p[0] - 2 * *p[1] + *v[0] + *v[1];
-	*t[2] = -3 * *p[0] + 3 * *p[1] - 2 * *v[0] - *v[1];
+	*t[3] = *p[0] * 2 - *p[1] * 2 + *v[0] + *v[1];
+	*t[2] = *p[0] * (-3) + *p[1] * 3 - *v[0] * 2 - *v[1];
 	*t[1] = *v[0];
 	*t[0] = *p[0];
 }
@@ -86,7 +86,7 @@ T& HermitSpline<T>::getPos(Float Val) const
 	Float t_value = Val;
 	for (int i = 1; i < 4; i++)
 	{
-		ret += t_value * *t[i];
+		ret += *t[i] * t_value;
 		t_value *= Val;
 	}
 	return ret;
@@ -165,7 +165,7 @@ T& CatmullRomSpline<T>::getPos(Float Val) const
 	Float t_value = Val;
 	for (int i = 1; i < 4; i++)
 	{
-		ret += t_value * *t[i];
+		ret += *t[i] * t_value;
 		t_value *= Val;
 	}
 	return ret;

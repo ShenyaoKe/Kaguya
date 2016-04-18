@@ -39,7 +39,9 @@ public:
 		Float *tHit, Float *rayEpsilon) const = 0;*/
 	virtual bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const = 0;
 
+	// Surface Area
 	virtual Float area() const;
+	// Probability Density Function
 	virtual Float Pdf() const;
 	// Shading
 	virtual void getShadingGeometry(const Transform &obj2world,
@@ -47,13 +49,10 @@ public:
 		DifferentialGeometry *dgShading) const;
 
 	virtual bool isInside(const Point3f &pPos) const;
-	virtual void assignShader(Shader* shader);
 	virtual void assignTextureMapping(TextureMapping* &mapping);
 	virtual void assignNormalMap(Texture* nMap);
 
 	virtual void printInfo() const;
-
-	virtual bool getOpacity() const;
 
 public:
 	const uint32_t shapeId;
@@ -63,7 +62,7 @@ public:
 	Point3f c;
 	Transform ObjectToWorld;
 	BBox ObjBound;
-	Shader* material = nullptr;
+
 	TextureMapping* UV_Mapping = nullptr;
 	Texture* normalMap = nullptr;
 };

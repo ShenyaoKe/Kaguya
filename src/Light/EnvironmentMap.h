@@ -16,7 +16,7 @@ public:
 	EnvironmentMap(const string& filename);
 	~EnvironmentMap();
 
-	ColorRGBA getColor(const Vector3D &dir) const;
+	ColorRGBA getColor(const Vector3f &dir) const;
 };
 
 

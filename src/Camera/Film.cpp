@@ -141,21 +141,21 @@ Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later
 	}
 }
 
-Point3D Film::getFilmUV(Float imgX, Float imgY) const
+Point3f Film::getFilmUV(Float imgX, Float imgY) const
 {
 	//Float filmRatio, imgRatio;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
 		//return Vector2D(imgX / width * horiApect, imgY / height + 0.5 * (vertApect - horiApect * height / width));
-		return Point3D(imgX / width, imgY / width, 0);
+		return Point3f(imgX / width, imgY / width, 0);
 	case FRG_VERTICAL_FIT:
-		return Point3D(imgX / height, imgY / height, 0);
+		return Point3f(imgX / height, imgY / height, 0);
 	default:
 		break;
 	}
 }
-Matrix4D Film::rasterToFilm() const
+Matrix4x4 Film::rasterToFilm() const
 {
 	//Matrix4D ret;
 	switch (resFT)
@@ -163,7 +163,7 @@ Matrix4D Film::rasterToFilm() const
 	case FRG_HORIZONTAL_FIT:
 	{
 		Float m00 = horiApect / static_cast<Float>(width);
-		return Matrix4D(
+		return Matrix4x4(
 			m00, 0, 0, 0,
 			0, m00, 0, 0,
 			0, 0, 1, 0,
@@ -173,7 +173,7 @@ Matrix4D Film::rasterToFilm() const
 	case FRG_VERTICAL_FIT:
 	{
 		Float m00 = vertApect / static_cast<Float>(height);
-		return Matrix4D(
+		return Matrix4x4(
 			m00, 0, 0, 0,
 			0, m00, 0, 0,
 			0, 0, 1, 0,
@@ -207,5 +207,5 @@ Matrix4D Film::rasterToFilm() const
 	default:
 		break;
 	}
-	return Matrix4D();
+	return Matrix4x4();
 }

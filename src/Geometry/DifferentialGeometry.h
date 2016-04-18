@@ -30,7 +30,7 @@ struct DifferentialGeometry
 	int sIndexX, sIndexY, sample;
 	int shiftX, shiftY, sampleOffset;
 
-	mutable Point3f UV;
+	mutable Point2f UV;
 	mutable Vector3f dpdu, dpdv;//Partial derivation of the surface position, marked as dpdu, dpdv
 	Vector3f dndu, dndv;//Partial derivation of the surface normal
 

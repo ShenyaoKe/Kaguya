@@ -15,7 +15,7 @@
 
 #include "Core/Kaguya.h"
 //#include "Math/CGVector.h"
-#include "Math/Matrix4D.h"
+#include "Math/Matrix4x4.h"
 #include "Math/Transform.h"
 #include "Core/Sampler.h"
 #include "Tracer/Ray.h"
@@ -46,8 +46,8 @@ public:
 	virtual bufferData getBufferData(int x, int y) const;
 	virtual Point3f getTarget() const;
 
-	virtual void setProjection(const Matrix4D &perspMat);
-	virtual void setCamToWorld(const Matrix4D &cam2wMat);
+	virtual void setProjection(const Matrix4x4 &perspMat);
+	virtual void setCamToWorld(const Matrix4x4 &cam2wMat);
 	virtual void updateRasterToCam();
 	virtual void updateCamToScreen() = 0;
 	virtual void updateRasterToScreen();

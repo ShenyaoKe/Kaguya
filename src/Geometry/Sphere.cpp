@@ -28,7 +28,7 @@ BBox geoSphere::getWorldBounding() const
 bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
 	Float coeB = Dot(inRay.d, (c - inRay.o));
-	Float coeC = (inRay.getPos() - c).getLenSq() - sqr(r);
+	Float coeC = (inRay.o - c).lengthSquared() - sqr(r);
 	Float delta = sqr(coeB) - coeC;
 	if (delta > 0)//delta > 0
 	{
@@ -57,7 +57,7 @@ bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Fl
 }
 bool geoSphere::isInside(const Point3f &pPos) const
 {
-	if ((pPos - c).lengthSqared() <= sqr(r))
+	if ((pPos - c).lengthSquared() <= sqr(r))
 	{
 		return true;
 	}
