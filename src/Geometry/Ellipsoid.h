@@ -9,17 +9,15 @@ class geoEllipsoid :public Shape
 {
 public:
 	geoEllipsoid();
-	geoEllipsoid(const Vector3D &pos, const Float& semiA, const Float& semiB, const Float& semiC);
-	~geoEllipsoid();
+	geoEllipsoid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC);
 
-	void setCenter(const Vector3D &pos);
 	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	Vector3D getNormal(const Vector3D &pos) const;
+	Vector3D getNormal(const Point3f &pos) const;
 
-	bool isInside(const Vector3D &pPos) const;
+	bool isInside(const Point3f &pPos) const;
 
 public:
-	Vector3D c;//center
+	Point3f c;//center
 	Float sa, sb, sc;//semi-principal axes of length a, b, c
 };

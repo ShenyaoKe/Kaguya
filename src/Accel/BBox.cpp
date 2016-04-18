@@ -5,16 +5,16 @@ BBox::BBox() : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -I
 }
 
 
-BBox::BBox(const Vector3D &p) :pMin(p), pMax(p)
+BBox::BBox(const Point3f &p) :pMin(p), pMax(p)
 {
 }
-BBox::BBox(const Vector3D &p1, const Vector3D &p2)
+BBox::BBox(const Point3f &p1, const Point3f &p2)
 {
-	pMin = Point3D(min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z));
-	pMax = Point3D(max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z));
+	pMin = Point3f(min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z));
+	pMax = Point3f(max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z));
 }
 
-BBox::BBox(const vector<Point3D*> &pts) : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -INFINITY)
+BBox::BBox(const vector<Point3f*> &pts) : pMin(INFINITY, INFINITY, INFINITY), pMax(-INFINITY, -INFINITY, -INFINITY)
 {
 	for (int i = 0; i < pts.size(); i++)
 	{
@@ -48,17 +48,17 @@ BBox::BBox(const BBox &bound, const Matrix4D &mat)
 BBox::~BBox()
 {
 }
-const Point3D BBox::getMidPoint() const
+const Point3f BBox::getMidPoint() const
 {
 	return (pMax + pMin) / 2.0;
 }
 
-const Vector3D BBox::getDiagnal() const
+const Vector3f BBox::getDiagnal() const
 {
 	return pMax - pMin;
 }
 
-bool BBox::isInside(const Vector3D &pos) const
+bool BBox::isInside(const Point3f &pos) const
 {
 	if (pos.x < pMin.x || pos.x > pMax.x)
 	{
@@ -77,8 +77,8 @@ bool BBox::isInside(const Vector3D &pos) const
 
 void BBox::expand(Float delta)
 {
-	pMin -= Point3D(delta, delta, delta);
-	pMax += Point3D(delta, delta, delta);
+	pMin -= Vector3f(delta, delta, delta);
+	pMax += Vector3f(delta, delta, delta);
 }
 bool BBox::intersectP(const Ray& inRay, Float *hitt0, Float *hitt1) const
 {
@@ -110,7 +110,7 @@ bool BBox::intersectP(const Ray& inRay, Float *hitt0, Float *hitt1) const
 	return true;
 }
 
-Float BBox::sqDist(const Point3D &p) const
+Float BBox::sqDist(const Point3f &p) const
 {
 	Float sqD = 0;
 
@@ -159,7 +159,7 @@ bool overlaps(const BBox &box0, const BBox& box1)
 	return true;
 }
 
-void BBox::Union(const Vector3D &p)
+void BBox::Union(const Point3f &p)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -216,7 +216,7 @@ bool touch(const BBox &box0, const BBox& box1)
 
 int BBox::maxExtent() const
 {
-	Vector3D diag = pMax - pMin;
+	Vector3f diag = pMax - pMin;
 	if (diag.x > diag.y && diag.x > diag.z)
 	{
 		return 0;
@@ -232,13 +232,13 @@ int BBox::maxExtent() const
 }
 Float BBox::surfaceArea() const
 {
-	Vector3D d = pMax - pMin;
+	Vector3f d = pMax - pMin;
 	return 2.0 * (d[0] * d[1] + d[0] * d[2] + d[1] * d[2]);
 }
 
 void BBox::printInfo() const
 {
-	cout << "min point:"; pMin.printInfo();
-	cout << "max point:"; pMax.printInfo();
-	cout << "size:"; (pMax - pMin).printInfo();
+	cout << "min point:" << pMin << endl;
+	cout << "max point:" << pMax << endl;
+	cout << "size:" << (pMax - pMin) << endl;
 }

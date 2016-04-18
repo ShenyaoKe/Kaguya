@@ -13,7 +13,7 @@ geoEllipsoid::geoEllipsoid()
 	sb = 1;
 	sc = 1;
 }
-geoEllipsoid::geoEllipsoid(const Vector3D &pos, const Float& semiA, const Float& semiB, const Float& semiC)
+geoEllipsoid::geoEllipsoid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC)
 {
 	c = pos;
 	sa = semiA;
@@ -24,10 +24,6 @@ geoEllipsoid::~geoEllipsoid()
 {
 
 }
-void geoEllipsoid::setCenter(const Vector3D &pos)
-{
-	c = pos;
-}
 void geoEllipsoid::setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC)
 {
 	sa = semiA;
@@ -36,7 +32,8 @@ void geoEllipsoid::setSemiAxes(const Float& semiA, const Float& semiB, const Flo
 }
 bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	Vector3D rp = inRay.getPos(), rd = inRay.getDir();// Ray postion and ray direction.
+	Point3f rp = inRay.o;
+	Vector3f rd = inRay.d;// Ray postion and ray direction.
 	Float coeA = (rd.x / sa) * (rd.x / sa) + (rd.y / sb) * (rd.y / sb) + (rd.z / sc) * (rd.z / sc);
 	Float coeB = (c.x - rp.x) * rd.x / (sa * sa) + (c.y - rp.y) * rd.y / (sb * sb) + (c.z - rp.z) * rd.z / (sc * sc);
 	Float coeC = (rp.x - c.x) * (rp.x - c.x) / (sa * sa) + (rp.y - c.y) * (rp.y - c.y) / (sb * sb) + (rp.z - c.z) * (rp.z - c.z) / (sc * sc) - 1;
@@ -63,7 +60,7 @@ bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint,
 	}
 	return 0;
 }
-Vector3D geoEllipsoid::getNormal(const Vector3D &pos) const
+Vector3D geoEllipsoid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, 2(y - c.y) / sb^2, 2(z - c.z) / sc^2
 	return Normalize(Vector3D(
@@ -71,7 +68,7 @@ Vector3D geoEllipsoid::getNormal(const Vector3D &pos) const
 		2 * (pos.y - c.y) / (sb * sb),
 		2 * (pos.z - c.z) / (sc * sc)));
 }
-bool geoEllipsoid::isInside(const Vector3D &pPos) const
+bool geoEllipsoid::isInside(const Point3f &pPos) const
 {
 	return 0;
 }

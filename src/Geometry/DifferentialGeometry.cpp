@@ -7,39 +7,22 @@ DifferentialGeometry::DifferentialGeometry()
 {
 }
 DifferentialGeometry::DifferentialGeometry(const Shape* obj,
-	const Vector3D &pVec, const Vector3D &nVec,
-	const Vector3D &rVec, const int& sX, const int& sY)
+	const Point3f &pVec, const Normal3f &nVec,
+	const Vector3f &rVec, const int& sX, const int& sY)
 	: object(obj), pos(pVec), normal(nVec), reflectDir(rVec)
 	, sIndexX(sX), sIndexY(sY)
-	, lightDist(INFINITY), sample(1), sampleOffset(0)
+	//, lightDist(INFINITY), sample(1), sampleOffset(0)
 {
 }
 
-
-void DifferentialGeometry::setObject(const Shape* obj)
-{
-	object = obj;
-}
-void DifferentialGeometry::setPos(const Vector3D &pVec)
-{
-	pos = pVec;
-}
-void DifferentialGeometry::setNormal(const Vector3D &nVec)
+void DifferentialGeometry::calculateDir(const Vector3f &inDir, const Normal3f &nVec)
 {
 	normal = nVec;
+	reflectDir = inDir - Vector3f(normal * Dot(inDir, normal) * 2);
 }
-void DifferentialGeometry::setReflectDir(const Vector3D &rVec)
+void DifferentialGeometry::calculateDir(const Vector3f &inDir)
 {
-	reflectDir = rVec;
-}
-void DifferentialGeometry::calculateDir(const Vector3D &inDir, const Vector3D &nVec)
-{
-	normal = nVec;
-	reflectDir = inDir - normal * (inDir * normal) * 2;
-}
-void DifferentialGeometry::calculateDir(const Vector3D &inDir)
-{
-	reflectDir = inDir - normal * (inDir * normal) * 2;
+	reflectDir = inDir - Vector3f(normal * Dot(inDir, normal) * 2);
 }
 void DifferentialGeometry::setSample(const int& aaS, const int& aaOffset)
 {
@@ -53,12 +36,4 @@ void DifferentialGeometry::setSampleIndex(const int& x, const int& y)
 	int newIndex = (y * sample + x + sampleOffset) % (sample * sample);
 	shiftX = newIndex % sample;
 	shiftY = newIndex / sample;
-}
-Float DifferentialGeometry::getDiffuseTheta() const
-{
-	return lightDir * normal;
-}
-Float DifferentialGeometry::getSpecularTheta() const
-{
-	return lightDir * reflectDir;
 }

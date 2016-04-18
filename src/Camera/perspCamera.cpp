@@ -1,7 +1,7 @@
 #include "perspCamera.h"
 
-perspCamera::perspCamera(const Vector3D &eye,
-	const Vector3D &targ, const Vector3D &up,
+perspCamera::perspCamera(const Point3f &eye,
+	const Point3f &targ, const Vector3f &up,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: Camera(eye, targ, up, asp, lr, fd, fm)
 {
@@ -40,8 +40,8 @@ void perspCamera::updateCamToScreen()
 
 Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 {
-	Vector3D pCam = RasterToCamera(Vector3D(sample.imgX, sample.imgY, 0), 1.);
-	*ray = Ray(Vector3D(0, 0, 0), Normalize(pCam));
+	Vector3f pCam = RasterToCamera(Vector3f(sample.imgX, sample.imgY, 0));
+	*ray = Ray(Point3f(), Normalize(pCam));
 	// Depth of Field Operations;
 	if (lensRadius > 0.)
 	{
@@ -55,9 +55,9 @@ Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 
 		//compute point on plane of focus
 		Float ft = focalDistance / ray->d.z;
-		Point3D focusP = (*ray)(ft);
+		Point3f focusP = (*ray)(ft);
 		//update ray of lens
-		ray->o = Vector3D(lensU, lensV, 0);
+		ray->o = Point3f(lensU, lensV, 0);
 		ray->d = Normalize(focusP - ray->o);
 	}
 	CameraToWorld(*ray, ray);

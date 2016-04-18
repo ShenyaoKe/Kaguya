@@ -9,7 +9,8 @@
 #define __Light__
 
 //#include "Core/rtdef.h"
-#include "Math/CGVector.h"
+//#include "Math/CGVector.h"
+#include "Math/Geometry.h"
 #include "Light/Spectrum.h"
 
 enum LIGHT_TYPE
@@ -37,7 +38,7 @@ protected:
 	Float exposure = 0;
 	//ColorRGB color = ColorRGB(1.0, 1.0, 1.0);
 	LIGHT_DECAY_TYPE decayType = DECAY_CONSTANT;
-	Point3D pos;
+	Point3f pos;
 	Float radius = 0;
 public:
 
@@ -54,7 +55,6 @@ public:
 	virtual Float getIntensity(const Float& dist) const;
 	virtual Float getIntensity(const DifferentialGeometry* queryPoint) const;
 	virtual Spectrum getSpectrum(const DifferentialGeometry* queryPoint) const;
-	virtual void getDirection(const DifferentialGeometry* queryPoint) const;
 	virtual Float getDistance(const DifferentialGeometry* queryPoint) const;
 	virtual void printInfo() const;
 
@@ -66,11 +66,11 @@ public:
 /************************************************************************/
 class directionalLight :public Light
 {
-	Vector3D dir = Vector3D(0, 0, -1);
+	Vector3f dir = Vector3f(0, 0, -1);
 public:
 	directionalLight();
-	directionalLight(const Vector3D &vec);
-	directionalLight(const Vector3D &vec, const Spectrum& spt);
+	directionalLight(const Vector3f &vec);
+	directionalLight(const Vector3f &vec, const Spectrum& spt);
 	~directionalLight();
 
 	void printInfo() const;
@@ -78,7 +78,6 @@ public:
 	// 	Float getDistanceFromPoint(const Vector3D &pointPos) const;
 	Float getIntensity(const Float& dist) const;
 	Float getIntensity(const DifferentialGeometry* queryPoint) const;
-	void getDirection(const DifferentialGeometry* queryPoint) const;
 	Float getDistance(const DifferentialGeometry* queryPoint) const;
 protected:
 
@@ -92,8 +91,8 @@ class pointLight :public Light
 	//Vector3D pos;
 public:
 	pointLight();
-	pointLight(const Vector3D &vec, const Float& its);
-	pointLight(const Vector3D &vec, const Spectrum& spt);
+	pointLight(const Point3f &p, const Float& its);
+	pointLight(const Point3f &p, const Spectrum& spt);
 	~pointLight();
 
 	void printInfo() const;
@@ -109,7 +108,7 @@ class spotLight :public Light
 {
 protected:
 	//Vector3D pos;
-	Vector3D dir;
+	Vector3f dir;
 	Float coneAngle = 40;
 	Float penumbraAngle = 0;
 	Float cosCA = cos(DegreeToRadian(cosCA));
@@ -117,9 +116,9 @@ protected:
 	Float dropoff = 0;
 public:
 	spotLight();
-	spotLight(const Vector3D &pPos, const Vector3D &pDir);
-	spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo);
-	spotLight(const Vector3D &pPos, const Vector3D &pDir, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
+	spotLight(const Point3f &p, const Vector3f &d);
+	spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo);
+	spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
 	~spotLight();
 
 	void printInfo() const;
@@ -128,7 +127,6 @@ public:
 	void setDropOff(const Float& dpo);
 
 	Float getIntensity(const DifferentialGeometry* queryPoint) const;
-	Vector3D getLightPos() const;
 };
 /************************************************************************/
 /* Spot Light                                                           */
@@ -136,11 +134,11 @@ public:
 class ImageSpotLight :public spotLight
 {
 	Texture* tex = nullptr;
-	Vector3D nx, ny;
+	Vector3f nx, ny;
 	Float sx = 1, sy = 1;
 public:
 	ImageSpotLight();
-	ImageSpotLight(const Vector3D &pPos, const Vector3D &pDir, const Vector3D &upVec, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
+	ImageSpotLight(const Point3f &p, const Vector3f &d, const Vector3f &up, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
 	~ImageSpotLight();
 
 	void assignImage(Texture* &newTex);
@@ -163,15 +161,15 @@ enum AREA_LIGHT_SHAPE
 };
 class areaLight :public Light
 {
-	Vector3D nx, ny, nz;
+	Vector3f nx, ny, nz;
 	//Vector3D pos;
 	Float size = 1;//radius
 	AREA_LIGHT_SHAPE shapeType = QUAD;
 public:
 	areaLight();
-	areaLight(const Vector3D &pVec, const Float& shpSize);
-	areaLight(const Vector3D &pVec, const Float& shpSize, const Spectrum& spt);
-	areaLight(const Vector3D &pVec, const Vector3D &dir, const Vector3D &up, const Float& shpSize, const Spectrum& spt);
+	areaLight(const Point3f &p, const Float& shpSize);
+	areaLight(const Point3f &p, const Float& shpSize, const Spectrum& spt);
+	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, const Float& shpSize, const Spectrum& spt);
 	~areaLight();
 
 	Float getIntensity(const DifferentialGeometry* queryPoint) const;

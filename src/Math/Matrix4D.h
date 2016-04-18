@@ -13,12 +13,12 @@
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 #include "Core/Kaguya.h"
+#include "Math/Geometry.h"
 #include "Math/CGVector.h"
 #include "Math/Matrix3D.h"
 
-class Matrix4D
+struct Matrix4D
 {
-public:
 	Matrix4D() : mtx{}
 	{
 		//Determinant();
@@ -73,6 +73,8 @@ public:
 	friend Matrix4D operator - (const Matrix4D &m1, const Matrix4D &m2);
 	friend Matrix4D operator * (const Matrix4D &m1, const Matrix4D &m2);
 	friend Vector4D operator * (const Matrix4D &m, const Vector4D& p);
+	Vector3f operator * (const Vector3f &v);
+	Point3f operator * (const Point3f &p);
 	friend bool operator == (const Matrix4D &m1, const Matrix4D &m2);
 	friend bool operator != (const Matrix4D &m1, const Matrix4D &m2);
 	//Vector3D operator * (Vector3D &p) const;
@@ -99,6 +101,7 @@ public:
 	static Matrix4D Identity();
 	static Matrix4D Translate(Float tx, Float ty, Float tz);
 	static Matrix4D Translate(const Vector3D &vec);
+	static Matrix4D Translate(const Vector3f &vec);
 	static Matrix4D RotateX(Float theta);
 	static Matrix4D RotateY(Float theta);
 	static Matrix4D RotateZ(Float theta);
@@ -109,8 +112,8 @@ public:
 	static Matrix4D Scale(Float scale);
 	static Matrix4D Shear(const Vector3D &vec);
 	static Matrix4D Reflect(const Vector3D &vec);
-	static Matrix4D LookAt(const Point3D &pos = Point3D(0, 0, 0),
-		const Point3D &target = Point3D(0, 0, 1), const Vector3D &up = Point3D(0, 1, 0));
+	static Matrix4D LookAt(const Point3f &pos = Point3f(),
+		const Point3f &target = Point3f(0, 0, 1), const Vector3f &up = Vector3f(0, 1, 0));
 	static Matrix4D Perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
 		Float nearPlane = 0.001, Float farPlane = 100);
 
@@ -125,7 +128,6 @@ public:
 	template <typename vbo_t>
 	void exportVBO(vbo_t *vtx_array) const;
 
-public:		
 	// Column Major
 	Float mtx[4][4];
 	//Float det = 0;
@@ -236,6 +238,33 @@ inline Vector4D operator*(const Matrix4D& m, const Vector4D& p)
 		);
 }
 
+Vector3f Matrix4D::operator*(const Vector3f &v)
+{
+	return Vector3f(
+		v.x * mtx[0][0] + v.y * mtx[1][0] + v.z * mtx[2][0],
+		v.x * mtx[0][1] + v.y * mtx[1][1] + v.z * mtx[2][1],
+		v.x * mtx[0][2] + v.y * mtx[1][2] + v.z * mtx[2][2]
+		);
+}
+
+Point3f Matrix4D::operator*(const Point3f &p)
+{
+	Float x = p.x, y = p.y, z = p.z;
+	Float xp = x * mtx[0][0] + y * mtx[1][0] + z * mtx[2][0] + mtx[3][0];
+	Float yp = x * mtx[0][1] + y * mtx[1][1] + z * mtx[2][1] + mtx[3][1];
+	Float zp = x * mtx[0][2] + y * mtx[1][2] + z * mtx[2][2] + mtx[3][2];
+	Float wp = x * mtx[0][3] + y * mtx[1][3] + z * mtx[2][3] + mtx[3][3];
+	Assert(wp != 0);
+	if (wp == 1) {
+		return Point3f(xp, yp, zp);
+	} else {
+		wp = 1. / wp;
+		return Point3f(xp * wp, yp * wp, zp * wp);
+	}
+}
+
+
+
 inline bool operator==(const Matrix4D& m1, const Matrix4D& m2)
 {
 	return m1.mtx[0][0] == m2.mtx[0][0]
@@ -339,7 +368,6 @@ inline Float Matrix4D::Minor(int x, int y) const
 			tmpM.mtx[i - 1][j - 1] = mtx[(x + i) % 4][(y + j) % 4];
 		}
 	}
-	//tmpM.Determinant();
 	return tmpM.determinant();
 }
 inline Float Matrix4D::Cofactor(int x, int y) const
@@ -419,18 +447,18 @@ inline Matrix4D Matrix4D::Inverse() const
 	return ret;
 }
 
-inline Matrix4D Matrix4D::LookAt(const Vector3D &pos, const Vector3D &target, const Vector3D &up)
+Matrix4D Matrix4D::LookAt(const Point3f &pos, const Point3f &target, const Vector3f &up)
 {
 	//Camera to World
-	Vector3D nz = pos - target;
+	Vector3f nz = pos - target;
 	// distance between target and camera position is too small
 	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
 	{
 		return Matrix4D();
 	}
 	nz.normalize();
-	Vector3D nx = Normalize(Cross(up, nz));//right dir
-	Vector3D ny = Cross(nz, nx);
+	Vector3f nx = Normalize(Cross(up, nz));//right dir
+	Vector3f ny = Cross(nz, nx);
 	nz.normalize();
 #ifdef RIGHT_HAND_ORDER // OpenGL style
 	return Matrix4D(

@@ -9,31 +9,21 @@
 /* Plane Function Definition                                            */
 /************************************************************************/
 geoPlane::geoPlane()
+	: n(0., 1., 0.)
 {
-	n = Y_AXIS3D;
+	//n = Y_AXIS3D;
 	bounding();
 }
-geoPlane::geoPlane(const Vector3D &pos, const Vector3D &norm)
+geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm)
 {
 	c = pos;
 	n = norm;
 	bounding();
 }
 
-geoPlane::~geoPlane()
-{
-}
-void geoPlane::setOrigin(const Vector3D &pos)
-{
-	c = pos;
-}
-void geoPlane::setNorm(const Vector3D &norm)
-{
-	n = norm;
-}
 bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	Float t = this->n * inRay.getDir();
+	Float t = Dot(this->n, inRay.d);
 	if (t >= 0)
 	{
 		//cout << "Ray parallels to the plane or in the plane." << endl;
@@ -41,7 +31,7 @@ bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	}
 	else
 	{
-		t = n * (this->c - inRay.getPos()) / t;
+		t = Dot(n, (this->c - inRay.o)) / t;
 		if (t > 0 && t > inRay.tmin && t < inRay.tmax)
 		{
 
@@ -55,10 +45,6 @@ bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 			return false;
 		}
 	}
-}
-Vector3D geoPlane::getNormal(const Vector3D &pos) const
-{
-	return this->n;
 }
 
 void geoPlane::getNormal(const DifferentialGeometry* queryPoint) const
@@ -83,7 +69,8 @@ void geoPlane::getNormal(const DifferentialGeometry* queryPoint) const
 	}
 }
 
-bool geoPlane::isInside(const Vector3D &pPos) const
+/*
+bool geoPlane::isInside(const Point3f &pPos) const
 {
 	if ((pPos - c) * n == 0)
 	{
@@ -93,9 +80,9 @@ bool geoPlane::isInside(const Vector3D &pPos) const
 	{
 		return false;
 	}
-}
+}*/
 
 void geoPlane::bounding()
 {
-	ObjBound = BBox(Point3D(-INFINITY, -INFINITY, -INFINITY), Point3D(INFINITY, INFINITY, INFINITY));
+	ObjBound = BBox(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
 }

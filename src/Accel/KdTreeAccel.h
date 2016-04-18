@@ -72,8 +72,8 @@ public:
 		Float *tHit, Float *rayEpsilon) const;
 	bool hit(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
 		Float *tHit, Float *rayEpsilon) const;
-	bool inLeaf(const Vector3D &pos) const;
-	bool inLeaf(const Vector3D &pos, const KdAccelNode *node) const;
+	bool inLeaf(const Point3f &pos) const;
+	bool inLeaf(const Point3f &pos, const KdAccelNode *node) const;
 
 	//update tree?
 	void update();

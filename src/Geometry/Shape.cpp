@@ -8,7 +8,7 @@
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
 uint32_t Shape::nextshapeId = 1;
-Shape::Shape(const Point3D &pos)
+Shape::Shape(const Point3f &pos)
 	: shapeId(nextshapeId++)
 {
 }
@@ -42,7 +42,7 @@ void Shape::getShadingGeometry(const Transform &obj2world, const DifferentialGeo
 
 }
 
-bool Shape::isInside(const Vector3D &pPos) const
+bool Shape::isInside(const Point3f &pPos) const
 {
 	return false;
 }

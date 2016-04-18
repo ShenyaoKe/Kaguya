@@ -66,7 +66,7 @@ void KdTreeAccel::buildTree(KdAccelNode *node, const BBox &bound, vector<int> &p
 	Float oldCost = np;
 	Float totalSA = bound.surfaceArea();
 	Float invTotalSA = 1.0 / totalSA;
-	Vector3D bbDiag = bound.pMax - bound.pMin;
+	Vector3f bbDiag = bound.pMax - bound.pMin;
 
 	//choose max extension axis of bounding box
 	int axis = bound.maxExtent();//axis is the longest edge of bounding box
@@ -346,7 +346,7 @@ void KdTreeAccel::update()
 	}
 }
 
-bool KdTreeAccel::inLeaf(const Vector3D &pos) const
+bool KdTreeAccel::inLeaf(const Point3f &pos) const
 {
 	/*if (!treeBound.isInside(pos))
 	{
@@ -355,7 +355,7 @@ bool KdTreeAccel::inLeaf(const Vector3D &pos) const
 	return inLeaf(pos, root);
 }
 
-bool KdTreeAccel::inLeaf(const Vector3D &pos, const KdAccelNode *node) const
+bool KdTreeAccel::inLeaf(const Point3f &pos, const KdAccelNode *node) const
 {
 	bool isInLeaf = false;
 	if (node!=nullptr)
@@ -403,9 +403,8 @@ void KdAccelNode::printInfo() const
  		cout << "Leaf primitives: ";
 		if (primIndex.size() == 0)
 		{
-			cout << "no primitive in this leaf" << endl;
-			cout << "pmin" << endl;
-			(bbox.pMax - bbox.pMin).printInfo();
+			cout << "no primitive in this leaf\n"\
+				"Pmin:\t" << (bbox.pMax - bbox.pMin) << endl;
 		}
 		for (int i = 0; i < primIndex.size(); ++i)
 		{

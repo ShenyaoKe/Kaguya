@@ -41,7 +41,8 @@ void geoHyperboloid::setHyperboloidType(HYPERBOLOID_TYPE newType)
 }
 bool geoHyperboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	Vector3D rp = inRay.getPos(), rd = inRay.getDir();// Ray postion and ray direction.	
+	Point3f rp = inRay.o;
+	Vector3f rd = inRay.d;// Ray postion and ray direction.	
 	Float coeA = (rd.x / sa) * (rd.x / sa) - (rd.y / sb) * (rd.y / sb) + (rd.z / sc) * (rd.z / sc);
 	Float coeB = (c.x - rp.x) * rd.x / (sa * sa) - (c.y - rp.y) * rd.y / (sb * sb) + (c.z - rp.z) * rd.z / (sc * sc);
 	Float coeC = (rp.x - c.x) * (rp.x - c.x) / (sa * sa) - (rp.y - c.y) * (rp.y - c.y) / (sb * sb) + (rp.z - c.z) * (rp.z - c.z) / (sc * sc) - hbType;

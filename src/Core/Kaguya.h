@@ -64,6 +64,17 @@ class ColorRGBA;
 class ColorHSV;
 class ColorHSVA;
 
+template <typename T>
+class Vector2;
+template <typename T>
+class Vector3;
+template <typename T>
+class Point2;
+template <typename T>
+class Point3;
+template <typename T>
+class Normal3;
+
 class Spectrum;
 class Light;
 
@@ -84,6 +95,17 @@ class Camera;
 class perspCamera;
 class abstractCamera;
 
+#if !defined(NDEBUG) && !defined(DEBUG)
+#	define _DEBUG
+#endif
+
+#ifdef NDEBUG
+#define Assert(expr) ((void)0)
+#else
+#define Assert(expr)                                                     \
+    ((expr) ? (void)0 : assert("Assertion \"%s\" failed in %s, line %d", \
+                               #expr, __FILE__, __LINE__))
+#endif  // NDEBUG
 
 const int default_resX = 640;
 const int default_resY = 480;

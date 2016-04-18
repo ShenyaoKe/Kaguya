@@ -14,6 +14,7 @@
 
 //#include "Core/rtdef.h"
 #include "Math/CGVector.h"
+#include "Math/Geometry.h"
 #include "Image/ColorData.h"
 #include "Math/Transform.h"
 #include "Accel/BBox.h"
@@ -27,7 +28,7 @@ const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon 
 class Shape
 {
 public:
-	Shape(const Point3D &pos = Point3D(0, 0, 0));
+	Shape(const Point3f &pos = Point3f());
 	virtual ~Shape() = 0;
 
 	virtual void bounding() = 0;
@@ -45,7 +46,7 @@ public:
 		const DifferentialGeometry &dg,
 		DifferentialGeometry *dgShading) const;
 
-	virtual bool isInside(const Vector3D &pPos) const;
+	virtual bool isInside(const Point3f &pPos) const;
 	virtual void assignShader(Shader* shader);
 	virtual void assignTextureMapping(TextureMapping* &mapping);
 	virtual void assignNormalMap(Texture* nMap);
@@ -58,7 +59,8 @@ public:
 	const uint32_t shapeId;
 	static uint32_t nextshapeId;
 
-	Point3D c;
+	//Vector3f center;
+	Point3f c;
 	Transform ObjectToWorld;
 	BBox ObjBound;
 	Shader* material = nullptr;

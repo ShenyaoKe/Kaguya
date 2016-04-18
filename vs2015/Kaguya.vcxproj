@@ -14,7 +14,6 @@
     <ProjectGuid>{E26467AF-7A85-484E-A54D-0488CA2D9F07}</ProjectGuid>
     <RootNamespace>cgClasses</RootNamespace>
     <ProjectName>Kaguya</ProjectName>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -72,9 +71,6 @@
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
     </PostBuildEvent>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -101,7 +97,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\FreeImage.h" />
     <ClInclude Include="..\src\Accel\BBox.h" />
     <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
     <ClInclude Include="..\src\Accel\Primitive.h" />
@@ -156,7 +151,6 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
-    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
     <ClCompile Include="..\src\Geometry\Hyperboloid.cpp" />
     <ClCompile Include="..\src\Geometry\Paraboloid.cpp" />
@@ -165,6 +159,7 @@
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />

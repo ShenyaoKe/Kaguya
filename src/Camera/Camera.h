@@ -26,9 +26,9 @@ class Camera
 {
 public:
 	//Camera();
-	Camera(const Vector3D &eye = Vector3D(1,1,1),
-		const Vector3D &targ = Vector3D(0,0,0),
-		const Vector3D &up = Vector3D(0,1,0),
+	Camera(const Point3f &eye = Point3f(1,1,1),
+		const Point3f &targ = Point3f(0,0,0),
+		const Vector3f &up = Vector3f(0,1,0),
 		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
 		const Film &fm = Film());
 	virtual~Camera(){};
@@ -44,7 +44,7 @@ public:
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
 
 	virtual bufferData getBufferData(int x, int y) const;
-	virtual Vector3D getTarget() const;
+	virtual Point3f getTarget() const;
 
 	virtual void setProjection(const Matrix4D &perspMat);
 	virtual void setCamToWorld(const Matrix4D &cam2wMat);
@@ -63,7 +63,7 @@ public:
 	Transform CameraToScreen, RasterToCamera, RasterToScreen;
 
 protected:
-	Point3D target;
+	Point3f target;
 	
 	Film film;//contains image size, film size(horApec, verApec)
 	renderBuffer buffer;

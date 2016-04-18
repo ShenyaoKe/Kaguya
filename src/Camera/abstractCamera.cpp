@@ -7,9 +7,9 @@ abstractCamera::abstractCamera()
 {
 }
 
-abstractCamera::abstractCamera(const Vector3D &eyePos, const Vector3D &viewDir, const Vector3D &upVec,
+abstractCamera::abstractCamera(const Point3f &eyePos, const Vector3f &viewDir, const Vector3f &upVec,
 	Texture *posImg, Texture *dirImg, Float tp, Float td, Float lr, Float fd)
-	: perspCamera(eyePos, viewDir, upVec, lr, fd), tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
+	: perspCamera(eyePos, eyePos + viewDir, upVec, lr, fd), tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
 {
 }
 abstractCamera::~abstractCamera()

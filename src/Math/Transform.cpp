@@ -23,21 +23,21 @@ Vector3D Transform::operator()(const Vector3D &vec, Float w) const
 BBox Transform::operator()(const BBox &b) const
 {
 	const Transform &M = *this;
-	BBox ret(M(b.pMin, 1.0));
-	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMin.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMax.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMin.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMin.x, b.pMax.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMax.y, b.pMin.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMin.y, b.pMax.z), 1.0));
-	ret = Union(ret, M(Vector3D(b.pMax.x, b.pMax.y, b.pMax.z), 1.0));
+	BBox ret(M(b.pMin));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMin.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMin.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMax.z), 1.0));
+	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMax.z), 1.0));
 	return ret;
 }
 
 void Transform::operator()(const Ray& ray, Ray* ret) const
 {
-	ret->d = m(ray.d, 0.0);
-	ret->o = m(ray.o, 1.0);
+	ret->d = m(ray.d);
+	ret->o = m(ray.o);
 	if (&ray != ret)
 	{
 		ret->tmin = ray.tmin;

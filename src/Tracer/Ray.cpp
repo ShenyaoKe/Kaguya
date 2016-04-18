@@ -7,11 +7,7 @@ Ray::Ray() : time(0), dp(0)
 	d.z = 0;
 }
 
-Ray::~Ray()
-{
-}
-
-Ray::Ray(const Vector3D &pos, const Vector3D &dir,
+Ray::Ray(const Point3f &pos, const Vector3f &dir,
 	double minT, double maxT)
 	: o(pos)
 	, time(0), dp(0)
@@ -20,32 +16,14 @@ Ray::Ray(const Vector3D &pos, const Vector3D &dir,
 	//pos = p;
 	d = Normalize(dir);
 }
-Point3D Ray::operator()(const Float& t) const
+Point3f Ray::operator()(const Float& t) const
 {
-	return o + t * d;
-}
-void Ray::setPos(Vector3D &vp)
-{
-	o = vp;
-}
-
-void Ray::setDir(Vector3D &vd)
-{
-	d = vd;
+	return o + d * t;
 }
 void Ray::setT(const Float& t1, const Float& t2) const
 {
 	tmin = t1;
 	tmax = t2;
-}
-Point3D Ray::getPos() const
-{
-	return o;
-}
-
-Vector3D Ray::getDir() const
-{
-	return d;
 }
 Float Ray::getDifferenceT() const
 {
@@ -59,16 +37,9 @@ Float Ray::getDifferenceT() const
 // {
 // 	return (dir * t).getLength();
 // }
-void Ray::normalize()
-{
-	d.normalize();
-	//return dir;
-}
 
 void Ray::printInfo() const
 {
-	cout << "Origin point position: ";
-	o.printInfo();
-	cout << "Ray direction: ";
-	d.printInfo();
+	cout << "Origin point position: " << o << endl;
+	cout << "Ray direction: " << d << endl;
 }

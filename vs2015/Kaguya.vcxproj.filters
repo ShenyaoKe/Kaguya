@@ -70,9 +70,6 @@
     <Filter Include="Source Files\volume">
       <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd Party">
-      <UniqueIdentifier>{60dfb947-4107-438d-be03-9cef1abb1684}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -119,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
       <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\DifferentialGeometry.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Tracer\Tracer.h">
       <Filter>Header Files\tracer</Filter>
@@ -192,13 +192,6 @@
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\include\FreeImage.h">
-      <Filter>3rd Party</Filter>
-=======
-    <ClInclude Include="..\src\Geometry\Plane.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Geometry\Ellipsoid.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
@@ -208,9 +201,11 @@
     <ClInclude Include="..\src\Geometry\Paraboloid.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Geometry\Plane.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Geometry\Torus.h">
       <Filter>Header Files\geometry</Filter>
->>>>>>> dc7a744f43259dba95f7e3ffb342c08f6de9c152
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -292,14 +287,8 @@
     <ClCompile Include="..\src\Math\Transform.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Plane.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Geometry\Sphere.cpp">
-      <Filter>Source Files\geometry</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp">
       <Filter>Source Files\geometry</Filter>
@@ -308,6 +297,9 @@
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Paraboloid.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Plane.cpp">
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Torus.cpp">

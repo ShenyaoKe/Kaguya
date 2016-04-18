@@ -3,7 +3,7 @@
 #include "Shading/Texture.h"
 #include "Shading/TextureMapping.h"
 
-geoSphere::geoSphere(const Vector3D &pos, const Float& radius)
+geoSphere::geoSphere(const Point3f &pos, const Float& radius)
 	: Shape(pos), r(radius)
 {
 	bounding();
@@ -27,7 +27,7 @@ BBox geoSphere::getWorldBounding() const
 }
 bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
 {
-	Float coeB = inRay.getDir() * (c - inRay.getPos());
+	Float coeB = Dot(inRay.d, (c - inRay.o));
 	Float coeC = (inRay.getPos() - c).getLenSq() - sqr(r);
 	Float delta = sqr(coeB) - coeC;
 	if (delta > 0)//delta > 0
@@ -55,9 +55,9 @@ bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Fl
 	}
 	return false;
 }
-bool geoSphere::isInside(const Vector3D &pPos) const
+bool geoSphere::isInside(const Point3f &pPos) const
 {
-	if ((pPos - c).getLenSq() <= sqr(r))
+	if ((pPos - c).lengthSqared() <= sqr(r))
 	{
 		return true;
 	}
