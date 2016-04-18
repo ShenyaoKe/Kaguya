@@ -164,7 +164,7 @@ inline Vector3D Matrix4x4::operator ()(const Vector3D &v, Float w) const
 	return Vector3D(xp, yp, zp);
 }
 
-Point3f Matrix4x4::operator()(const Point3f &v) const
+inline Point3f Matrix4x4::operator()(const Point3f &v) const
 {
 	Float x = v.x, y = v.y, z = v.z;
 	Float xp = mtx[0][0] * x + mtx[1][0] * y + mtx[2][0] * z + mtx[3][0];
@@ -269,7 +269,7 @@ inline Vector4D operator*(const Matrix4x4& m, const Vector4D& p)
 		);
 }
 
-Vector3f Matrix4x4::operator*(const Vector3f &v)
+inline Vector3f Matrix4x4::operator*(const Vector3f &v)
 {
 	return Vector3f(
 		v.x * mtx[0][0] + v.y * mtx[1][0] + v.z * mtx[2][0],
@@ -278,7 +278,7 @@ Vector3f Matrix4x4::operator*(const Vector3f &v)
 		);
 }
 
-Point3f Matrix4x4::operator*(const Point3f &p)
+inline Point3f Matrix4x4::operator*(const Point3f &p)
 {
 	Float x = p.x, y = p.y, z = p.z;
 	Float xp = x * mtx[0][0] + y * mtx[1][0] + z * mtx[2][0] + mtx[3][0];
@@ -481,7 +481,7 @@ inline Matrix4x4 Matrix4x4::Inverse() const
 	return ret;
 }
 
-Matrix4x4 Matrix4x4::LookAt(const Point3f &pos, const Point3f &target, const Vector3f &up)
+inline Matrix4x4 Matrix4x4::LookAt(const Point3f &pos, const Point3f &target, const Vector3f &up)
 {
 	//Camera to World
 	Vector3f nz = pos - target;
@@ -614,7 +614,7 @@ inline Matrix4x4 Matrix4x4::Translate(Float tx, Float ty, Float tz)
 		);
 }
 
-Matrix4x4 Matrix4x4::Translate(const Vector3f &vec)
+inline Matrix4x4 Matrix4x4::Translate(const Vector3f &vec)
 {
 	return Translate(vec.x, vec.y, vec.z);
 }

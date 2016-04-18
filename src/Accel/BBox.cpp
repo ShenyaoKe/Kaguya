@@ -175,7 +175,7 @@ void BBox::Union(const BBox& box)
 		this->pMax[i] = max(this->pMax[i], box.pMax[i]);
 	}
 }
-BBox Union(const BBox& box, const Vector3D &p)
+BBox Union(const BBox& box, const Point3f &p)
 {
 	BBox ret = box;
 	for (int i = 0; i < 3; i++)

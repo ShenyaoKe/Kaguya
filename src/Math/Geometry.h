@@ -57,7 +57,7 @@ class Vector2
 		return *this;
 	}
 	Vector2<T> operator-() const {
-		return Vector2(-x, -y, -z);
+		return Vector2<T>(-x, -y, -z);
 	}
 	bool operator==(const Vector2<T> &v) const {
 		return x == v.x && y == v.y;
@@ -65,10 +65,13 @@ class Vector2
 	bool operator!=(const Vector2<T> &v) const {
 		return x != v.x || y != v.y;
 	}
-
 	template <typename U>
 	Vector2<T> operator*(U s) const {
-		return Vector2(x * s, y * s);
+		return Vector2<T>(x * s, y * s);
+	}
+	template <typename U>
+	friend Vector2<T> operator*(U s, const Vector2<T> &v) {
+		return v * s;
 	}
 	template <typename U>
 	Vector2<T> &operator*=(U s) {
@@ -157,10 +160,13 @@ public:
 	bool operator!=(const Vector3<T> &v) const {
 		return x != v.x || y != v.y || z != v.z;
 	}
-
 	template <typename U>
 		Vector3<T> operator*(U s) const {
 		return Vector3<T>(x * s, y * s, z * s);
+	}
+	template <typename U>
+	friend Vector3<T> operator*(U s, const Vector3<T> &v) {
+		return v * s;
 	}
 	template <typename U>
 	Vector3<T> &operator*=(U s) {
@@ -267,6 +273,10 @@ public:
 		return Point2<T>(x * s, y * s);
 	}
 	template <typename U>
+	friend Point2<T> operator*(U s, const Point2<T> &p) {
+		return p * s;
+	}
+	template <typename U>
 	Point2<T> operator*=(U s) const {
 		Assert(!isNaN(s));
 		x *= s; y *= s;
@@ -365,6 +375,10 @@ public:
 		return Point3<T>(x * s, y * s, z * s);
 	}
 	template <typename U>
+	friend Point3<T> operator*(U s, const Point3<T> &p) {
+		return p * s;
+	}
+	template <typename U>
 	Point3<T> operator*=(U s) const {
 		Assert(!isNaN(s));
 		x *= s; y *= s; z *= s;
@@ -453,6 +467,10 @@ public:
 	template <typename U>
 	Normal3<T> operator*(U s) const {
 		return Normal3<T>(x * s, y * s, z * s);
+	}
+	template <typename U>
+	friend Normal3<T> operator*(U s, const Normal3<T> &n) {
+		return n * s;
 	}
 	template <typename U>
 	Normal3<T> &operator*=(U s) {

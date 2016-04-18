@@ -620,16 +620,16 @@ bool Triangle::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	}
 	return false;
 }
-void Triangle::getNormal(const DifferentialGeometry* queryPoint) const
+void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 {
 	if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
 	{
 		ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		tmpNormal.printInfo();
-		/*queryPoint->normal = Normalize(
-			- queryPoint->dpdu * tmpNormal.r
-			- queryPoint->dpdv * tmpNormal.g
-			+ queryPoint->normal * tmpNormal.b);*/
+		queryPoint->normal = Normalize(
+			- Normal3f(queryPoint->dpdu) * tmpNormal.r
+			- Normal3f(queryPoint->dpdv) * tmpNormal.g
+			+ queryPoint->normal * tmpNormal.b);
 	}
 	else
 	{

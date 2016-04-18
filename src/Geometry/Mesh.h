@@ -94,7 +94,7 @@ public:
 	bool intersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
-	void getNormal(const DifferentialGeometry* queryPoint) const;
+	void getNormal(DifferentialGeometry* queryPoint) const;
 	
 	/*friend void exportVertices(Triangle* triface, Float* buffer);
 	friend void exportTexCoords(Triangle* triface, Float* buffer);
