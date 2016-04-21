@@ -59,16 +59,16 @@ ColorRGBA PlannetTexture::getColor(const DifferentialGeometry* queryPoint) const
 	clampFromZeroToOne(ramp);
 	if (ramp == 0)
 	{
-		return nightImg->bilinearPixel(queryPoint->UV.x * nightImg->getWidth(), queryPoint->UV.y * nightImg->getHeight());
+		return nightImg->bilinearPixel(queryPoint->uv.x * nightImg->getWidth(), queryPoint->uv.y * nightImg->getHeight());
 	}
 	else if (ramp == 1)
 	{
-		return dayImg->bilinearPixel(queryPoint->UV.x * dayImg->getWidth(), queryPoint->UV.y * dayImg->getHeight());
+		return dayImg->bilinearPixel(queryPoint->uv.x * dayImg->getWidth(), queryPoint->uv.y * dayImg->getHeight());
 	}
 	else
 	{
-		return dayImg->bilinearPixel(queryPoint->UV.x * dayImg->getWidth(), queryPoint->UV.y * dayImg->getHeight()) * ramp
-			+ nightImg->bilinearPixel(queryPoint->UV.x * nightImg->getWidth(), queryPoint->UV.y * nightImg->getHeight()) * (1 - ramp);
+		return dayImg->bilinearPixel(queryPoint->uv.x * dayImg->getWidth(), queryPoint->uv.y * dayImg->getHeight()) * ramp
+			+ nightImg->bilinearPixel(queryPoint->uv.x * nightImg->getWidth(), queryPoint->uv.y * nightImg->getHeight()) * (1 - ramp);
 	}
 }
 /************************************************************************/

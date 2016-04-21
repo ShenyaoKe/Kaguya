@@ -24,8 +24,6 @@ struct DifferentialGeometry
 
  	void calculateDir(const Vector3f &inDir, const Normal3f &nVec);
  	void calculateDir(const Vector3f &inDir);
- 	void setSample(const int& aaS, const int& aaOffset);
- 	void setSampleIndex(const int& x, const int& y);
 
 
 	const Shape* object;
@@ -33,12 +31,15 @@ struct DifferentialGeometry
 	Point3f pos;
 	Normal3f normal;
 	Vector3f reflectDir;
-	//Sample related viriables
-	int sIndexX, sIndexY, sample;
-	int shiftX, shiftY, sampleOffset;
 
-	Point2f UV;
-	Vector3f dpdu, dpdv;//Partial derivation of the surface position, marked as dpdu, dpdv
+	Point2f uv;
+	Vector3f dpdu, dpdv;//Partial derivation of the surface position
 	Vector3f dndu, dndv;//Partial derivation of the surface normal
+	struct // Shading
+	{
+		Normal3f n;
+		Vector3f dpdu, dpdv;
+		Vector3f dndu, dndv;
+	}shading;
 };
 #endif // __DifferentialGeometry__

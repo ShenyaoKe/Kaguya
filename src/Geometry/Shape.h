@@ -37,7 +37,8 @@ public:
 	virtual bool intersectP(const Ray& inRay) const;
 	/*virtual bool intersect(const Ray &ray, DifferentialGeometry *dg,
 		Float *tHit, Float *rayEpsilon) const = 0;*/
-	virtual bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const = 0;
+	virtual bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint,
+		Float *tHit, Float *rayEpsilon) const = 0;
 
 	// Surface Area
 	virtual Float area() const;
@@ -45,8 +46,7 @@ public:
 	virtual Float Pdf() const;
 	// Shading
 	virtual void getShadingGeometry(const Transform &obj2world,
-		const DifferentialGeometry &dg,
-		DifferentialGeometry *dgShading) const;
+		DifferentialGeometry* dg) const;
 
 	virtual bool isInside(const Point3f &pPos) const;
 	virtual void assignTextureMapping(TextureMapping* &mapping);
