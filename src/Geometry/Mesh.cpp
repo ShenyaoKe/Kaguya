@@ -614,7 +614,7 @@ bool Triangle::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 		}
 		if (uv[0] != nullptr)
 		{
-			queryPoint->UV = *uv[0] * (1 - s - t) + *uv[1] * s + *uv[2] * t;
+			queryPoint->uv = *uv[0] * (1 - s - t) + *uv[1] * s + *uv[2] * t;
 		}
 		return true;
 	}

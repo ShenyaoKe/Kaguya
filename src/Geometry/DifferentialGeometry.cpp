@@ -24,16 +24,3 @@ void DifferentialGeometry::calculateDir(const Vector3f &inDir)
 {
 	reflectDir = inDir - Vector3f(normal * Dot(inDir, normal) * 2);
 }
-void DifferentialGeometry::setSample(const int& aaS, const int& aaOffset)
-{
-	sample = aaS;
-	sampleOffset = aaOffset;
-}
-void DifferentialGeometry::setSampleIndex(const int& x, const int& y)
-{
-	sIndexX = x;
-	sIndexY = y;
-	int newIndex = (y * sample + x + sampleOffset) % (sample * sample);
-	shiftX = newIndex % sample;
-	shiftY = newIndex / sample;
-}

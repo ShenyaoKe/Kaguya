@@ -37,7 +37,7 @@ Float Shape::Pdf() const
 	return 1;
 }
 
-void Shape::getShadingGeometry(const Transform &obj2world, const DifferentialGeometry &dg, DifferentialGeometry *dgShading) const
+void Shape::getShadingGeometry(const Transform &obj2world, DifferentialGeometry* dg) const
 {
 
 }
