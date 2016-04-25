@@ -1,4 +1,5 @@
 #include "OGLViewer.h"
+#include "Geometry/Sphere.h"
 
 OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
@@ -34,7 +35,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 		0, 480, 0
 	};
 	resgate.insert(resgate.end(), respos, respos + 12);
-
+	renderpixels();
 	//resetCamera();
 }
 
@@ -83,7 +84,7 @@ void OGLViewer::initializeGL()
 #endif
 
 	// Export vbo for shaders
-	box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
+	//box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
 	model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
 
 	//bindBox();
@@ -345,13 +346,11 @@ void OGLViewer::renderpixels()
 			view_cam->generateRay(camsmp, &traceRay);
 			double tHit(INFINITY), rayEp(0);
 
-			uint8_t isHit = static_cast<uint8_t>(tree->hit(traceRay, queryPoint, &tHit, &rayEp));
+			uint8_t isHit = static_cast<uint8_t>(tree->intersect(traceRay, queryPoint, &tHit, &rayEp));
 
 			pixmap[index++] = isHit * 64;
 			pixmap[index++] = isHit * 128;
 			pixmap[index++] = isHit * 255;
 		}
-	}
-	/*ImageData img(default_resX, default_resY, &pixmap[0]);
-	img.writeFile("res.png");*/
+	}]
 }

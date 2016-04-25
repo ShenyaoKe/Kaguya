@@ -66,10 +66,10 @@ public:
 	KdTreeAccel(const vector<Shape*> &prims, int md = -1, int mp = 3,
 		Float eb = 0.5);
 	~KdTreeAccel();
-	bool hitP(const Ray &inRay) const;
-	bool hit(const Ray &inRay, DifferentialGeometry* queryPoint,
+	bool intersectP(const Ray &inRay) const;
+	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
-	bool hit(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
+	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
 		Float *tHit, Float *rayEpsilon) const;
 	bool inLeaf(const Point3f &pos) const;
 	bool inLeaf(const Point3f &pos, const KdAccelNode *node) const;

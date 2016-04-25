@@ -40,8 +40,8 @@ void perspCamera::updateCamToScreen()
 
 Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 {
-	Vector3f pCam = RasterToCamera(Vector3f(sample.imgX, sample.imgY, 0));
-	*ray = Ray(Point3f(), Normalize(pCam));
+	Point3f pCam = RasterToCamera(Point3f(sample.imgX, sample.imgY, 0));
+	*ray = Ray(Point3f(), Normalize(Vector3f(pCam)));
 	// Depth of Field Operations;
 	if (lensRadius > 0.)
 	{

@@ -38,40 +38,6 @@ ColorRGBA FileTexture::getColor(const Point2f &uv) const
 	return img->bilinearPixel(uv.x * img->getWidth(), uv.y * img->getHeight());
 }
 /************************************************************************/
-/* Planet Texture                                                       */
-/************************************************************************/
-PlannetTexture::PlannetTexture(const string& nightfile, const string& dayfile)
-{
-	nightImg = new ImageData(nightfile);
-	dayImg = new ImageData(dayfile);
-}
-PlannetTexture::~PlannetTexture()
-{
-	delete nightImg;
-	nightImg = nullptr;
-	delete dayImg;
-	dayImg = nullptr;
-}
-ColorRGBA PlannetTexture::getColor(const DifferentialGeometry* queryPoint) const
-{
-	Float ramp;// = queryPoint->getDiffuseTheta();
-	ramp = (ramp + tolerance) / (2 * tolerance);
-	clampFromZeroToOne(ramp);
-	if (ramp == 0)
-	{
-		return nightImg->bilinearPixel(queryPoint->uv.x * nightImg->getWidth(), queryPoint->uv.y * nightImg->getHeight());
-	}
-	else if (ramp == 1)
-	{
-		return dayImg->bilinearPixel(queryPoint->uv.x * dayImg->getWidth(), queryPoint->uv.y * dayImg->getHeight());
-	}
-	else
-	{
-		return dayImg->bilinearPixel(queryPoint->uv.x * dayImg->getWidth(), queryPoint->uv.y * dayImg->getHeight()) * ramp
-			+ nightImg->bilinearPixel(queryPoint->uv.x * nightImg->getWidth(), queryPoint->uv.y * nightImg->getHeight()) * (1 - ramp);
-	}
-}
-/************************************************************************/
 /* Perlin Noise                                                         */
 /************************************************************************/
 PerlinNoiseTexture::PerlinNoiseTexture()

@@ -99,13 +99,13 @@
   <ItemGroup>
     <ClInclude Include="..\src\Accel\BBox.h" />
     <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
-    <ClInclude Include="..\src\Accel\Primitive.h" />
     <ClInclude Include="..\src\Camera\abstractCamera.h" />
     <ClInclude Include="..\src\Camera\Camera.h" />
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Camera\orthoCamera.h" />
     <ClInclude Include="..\src\Camera\perspCamera.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
+    <ClInclude Include="..\src\Core\Primitive.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
@@ -131,6 +131,8 @@
     <ClInclude Include="..\src\Math\Matrix4x4.h" />
     <ClInclude Include="..\src\Math\MonteCarlo.h" />
     <ClInclude Include="..\src\Math\Transform.h" />
+    <ClInclude Include="..\src\Shading\BxDF.h" />
+    <ClInclude Include="..\src\Shading\Material.h" />
     <ClInclude Include="..\src\Shading\Noise.h" />
     <ClInclude Include="..\src\Shading\Texture.h" />
     <ClInclude Include="..\src\Shading\Texture3D.h" />
@@ -144,12 +146,12 @@
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp" />
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp" />
-    <ClCompile Include="..\src\Accel\Primitive.cpp" />
     <ClCompile Include="..\src\Camera\abstractCamera.cpp" />
     <ClCompile Include="..\src\Camera\Camera.cpp" />
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Core\Primitive.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
     <ClCompile Include="..\src\Geometry\Hyperboloid.cpp" />
@@ -158,6 +160,8 @@
     <ClCompile Include="..\src\Geometry\Sphere.cpp" />
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
+    <ClCompile Include="..\src\Shading\BxDF.cpp" />
+    <ClCompile Include="..\src\Shading\Material.cpp" />
     <ClCompile Include="..\src\Shading\Texture3D.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />

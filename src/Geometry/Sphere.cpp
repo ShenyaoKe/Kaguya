@@ -55,9 +55,9 @@ bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Fl
 	}
 	return false;
 }
-bool geoSphere::isInside(const Point3f &pPos) const
+bool geoSphere::isInside(const Point3f &p) const
 {
-	if ((pPos - c).lengthSquared() <= sqr(r))
+	if ((p - c).lengthSquared() <= sqr(r))
 	{
 		return true;
 	}

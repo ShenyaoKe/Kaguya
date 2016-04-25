@@ -152,7 +152,7 @@ void spotLight::setDropOff(const Float& dpo)
 Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float tmpIts;// = -queryPoint->lightDir * dir;
+	Float tmpIts = Dot(queryPoint->pos - pos,  dir);
 
 	if (penumbraAngle != 0)
 	{
@@ -172,93 +172,6 @@ Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 	{
 		return tmpIts * pow(2, exposure) / (dist * dist);
 	}
-}
-
-ImageSpotLight::ImageSpotLight()
-{
-	type = LT_SPOT_LIGHT;
-}
-ImageSpotLight::ImageSpotLight(const Point3f &p, const Vector3f &d, const Vector3f &up, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt)
-	: spotLight(p, d, ca, pa, dpo, spt)
-{
-	nx = Normalize(Cross(dir, up));
-	ny = Normalize(Cross(nx, dir));
-}
-ImageSpotLight::~ImageSpotLight()
-{
-	delete tex;
-	tex = nullptr;
-}
-void ImageSpotLight::assignImage(Texture* &newTex)
-{
-	tex = newTex;
-}
-void ImageSpotLight::setSize(const Float& xSize, const Float& ySize)
-{
-	sx = xSize;
-	sy = ySize;
-}
-Float ImageSpotLight::getIntensity(const DifferentialGeometry* queryPoint) const
-{
-	Float dist = getDistance(queryPoint);
-	Float tmpIts;// = -queryPoint->lightDir * dir;
-	Float maskstr = tmpIts;
-
-	if (penumbraAngle != 0)
-	{
-		tmpIts = tmpIts > cosCA ? cosCA : (tmpIts < cosPA ? cosPA : tmpIts);
-		tmpIts = (tmpIts - cosPA) / (cosCA - cosPA);
-		tmpIts = 0.5 - 0.5 * cos(tmpIts * M_PI);
-	}
-	else
-	{
-		tmpIts = tmpIts >= cosCA ? 1 : 0;
-	}
-	if (tex != nullptr)
-	{
-		Vector3D imgPos;// = queryPoint->lightDir / maskstr - dir;
-
-		tmpIts;// *= tex->getColor(Vector3D(0.5 - imgPos * nx / sx / 2, 0.5 - imgPos * ny / sy / 2, 0)).a;
-	}
-	if (exposure != 0 || decayType != DECAY_CONSTANT)
-	{
-		tmpIts *= pow(2, exposure) / (dist * dist);
-	}
-
-	return tmpIts;
-}
-
-Spectrum ImageSpotLight::getSpectrum(const DifferentialGeometry* queryPoint) const
-{
-	Float dist = getDistance(queryPoint);
-	Float maskstr;// = -queryPoint->lightDir * dir;
-	Float tmpIts;// = maskstr;
-	ColorRGBA tmpC = lightSpectrum.color;
-
-	if (penumbraAngle != 0)
-	{
-		tmpIts = tmpIts > cosCA ? cosCA : (tmpIts < cosPA ? cosPA : tmpIts);
-		tmpIts = (tmpIts - cosPA) / (cosCA - cosPA);
-		tmpIts = 0.5 - 0.5 * cos(tmpIts * M_PI);
-	}
-	else
-	{
-		tmpIts = tmpIts >= cosCA ? 1 : 0;
-	}
-	if (tex != nullptr)
-	{
-		Vector3f imgPos;// = queryPoint->lightDir / maskstr - dir;
-
-		tmpC;// = tex->getColor(Vector3f(0.5 - Dot(imgPos, nx) / sx / 2, 0.5 - Dot(imgPos, ny) / sy / 2, 0));
-
-		tmpIts *= tmpC.a;
-	}
-	if (exposure != 0 || decayType != DECAY_CONSTANT)
-	{
-		tmpIts *= pow(2, exposure) / (dist * dist);
-	}
-
-	return Spectrum(lightSpectrum.intensity * tmpIts, tmpC);
 }
 /************************************************************************/
 /* Area Light                                                           */
@@ -323,18 +236,4 @@ Float areaLight::getIntensity(const DifferentialGeometry* queryPoint) const
 		Float dist = getDistance(queryPoint);
 		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
 	}
-}
-void areaLight::getDirection(const DifferentialGeometry* queryPoint) const
-{
-	Float x = ((queryPoint->shiftX + unitRandom(20)) / queryPoint->sample - 0.5) * size;
-	Float y = ((queryPoint->shiftY + unitRandom(20)) / queryPoint->sample - 0.5) * size;
-	//queryPoint->lightDir = Normalize(pos + nx * x + ny * y - queryPoint->pos);
-}
-
-Float areaLight::getDistance(const DifferentialGeometry* queryPoint) const
-{
-	Float x = ((queryPoint->shiftX + unitRandom(20)) / queryPoint->sample - 0.5) * size;
-	Float y = ((queryPoint->shiftY + unitRandom(20)) / queryPoint->sample - 0.5) * size;
-
-	return (pos + nx * x + ny * y - queryPoint->pos).length();
 }

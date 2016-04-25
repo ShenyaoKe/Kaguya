@@ -38,24 +38,6 @@ protected:
 private:
 };
 /************************************************************************/
-/* Planet Texture                                                       */
-/************************************************************************/
-class PlannetTexture :public Texture
-{
-	ImageData* nightImg = nullptr;
-	ImageData* dayImg = nullptr;
-	Float tolerance = 0.1;
-public:
-	PlannetTexture();
-	PlannetTexture(const string& nightfile, const string& dayfile);
-	~PlannetTexture();
-
-	ColorRGBA getColor(const DifferentialGeometry* queryPoint) const;
-protected:
-
-private:
-};
-/************************************************************************/
 /* Perlin Noise                                                         */
 /************************************************************************/
 class PerlinNoiseTexture :public Texture
