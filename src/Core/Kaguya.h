@@ -38,6 +38,8 @@ using std::vector;
 #include <string>
 //#include <stdint.h>
 
+#include <memory>
+
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 typedef double Float;
 #else

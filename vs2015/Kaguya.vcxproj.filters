@@ -70,6 +70,9 @@
     <Filter Include="Source Files\volume">
       <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{02694521-e195-4b0c-a565-16081d5eab40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -106,9 +109,6 @@
       <Filter>Header Files\light</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Accel\KdTreeAccel.h">
-      <Filter>Header Files\accel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Accel\Primitive.h">
       <Filter>Header Files\accel</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
@@ -201,6 +201,15 @@
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\Primitive.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\BxDF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\BBox.cpp">
@@ -232,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Tracer\Ray.cpp">
       <Filter>Source Files\tracer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Accel\Primitive.cpp">
-      <Filter>Source Files\accel</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Camera\Film.cpp">
       <Filter>Source Files\camera</Filter>
@@ -298,6 +304,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
       <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\Primitive.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\BxDF.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

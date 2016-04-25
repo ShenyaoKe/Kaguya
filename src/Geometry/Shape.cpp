@@ -8,6 +8,7 @@
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
 uint32_t Shape::nextshapeId = 1;
+
 Shape::Shape(const Point3f &pos)
 	: shapeId(nextshapeId++)
 {

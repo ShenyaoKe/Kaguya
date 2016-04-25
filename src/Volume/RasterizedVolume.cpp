@@ -71,7 +71,7 @@ void RasterizedVolume::rasterize()
 		{
 			vector<double> hitLen;
 			rasterRay = Ray(rayPos, rayDir);
-			while (kdtree->hit(rasterRay, &queryPoint, &tHit, &rayEp))
+			while (kdtree->intersect(rasterRay, &queryPoint, &tHit, &rayEp))
 			{
 				hitLen.push_back(tHit);
 				rasterRay.o[zaxis] += tHit + rayEp;

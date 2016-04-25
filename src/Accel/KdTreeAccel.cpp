@@ -182,12 +182,12 @@ RETRY_SPLIT:
 	buildTree(node->aboveNode, aboveBound, primsAbove, depth - 1, edges);
 
 }
-bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint,
+bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint,
 	Float *tHit, Float *rayEpsilon) const
 {
-	return hit(inRay, queryPoint, root, tHit, rayEpsilon);
+	return intersect(inRay, queryPoint, root, tHit, rayEpsilon);
 }
-bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
+bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
 	Float *tHit, Float *rayEpsilon) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
@@ -257,18 +257,18 @@ bool KdTreeAccel::hit(const Ray &inRay, DifferentialGeometry* queryPoint, const 
 			}
 			if (tsplit > tmax || tsplit <= 0)
 			{
-				isHit = hit(inRay, queryPoint, nearChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, queryPoint, nearChild, tHit, rayEpsilon);
 			}
 			else if (tsplit < tmin)
 			{
-				isHit = hit(inRay, queryPoint, farChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, queryPoint, farChild, tHit, rayEpsilon);
 			}
 			else
 			{
-				isHit = hit(inRay, queryPoint, nearChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, queryPoint, nearChild, tHit, rayEpsilon);
 				if (!isHit)
 				{
-					isHit = hit(inRay, queryPoint, farChild, tHit, rayEpsilon);
+					isHit = intersect(inRay, queryPoint, farChild, tHit, rayEpsilon);
 				}
 			}
 // 			nearChild = nullptr;
@@ -308,7 +308,7 @@ void KdTreeAccel::printNode(KdAccelNode* node) const
 	}
 }
 
-bool KdTreeAccel::hitP(const Ray &inRay) const
+bool KdTreeAccel::intersectP(const Ray &inRay) const
 {
 	return treeBound.intersectP(inRay);
 }
