@@ -9,7 +9,7 @@ ImageData* synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/,
 	int neighSize = 2 * (sqr(nr) + nr);
 
 	// Create vector map for sample image
-	Vector3D** smpVec;
+	Vector3f** smpVec;
 	Aligned_2DArray(smpVec, srcW, srcH);
 	for (int v = 0; v < srcH; v++)
 	{
@@ -31,7 +31,7 @@ ImageData* synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/,
 		for (int i = nr; i < srcH - nr; i++)
 		{
 			// Store neighbor pixels
-			Vector3D* neighPixs = new Vector3D[neighSize];
+			Vector3f* neighPixs = new Vector3f[neighSize];
 			for (int n = -nr; n <= 0; n++)
 			{
 				for (int m = -nr; m <= nr; m++)
@@ -51,7 +51,7 @@ ImageData* synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/,
 			}
 			// Find most similar pixel in sample image
 			Float vecSum, minSum;
-			Vector3D tmpVec, minVec;
+			Vector3f tmpVec, minVec;
 			minSum = 442;//442 is sqrt(225*255*3)
 			for (int v = 0; v < srcH; v++)
 			{
@@ -74,7 +74,7 @@ ImageData* synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/,
 								int vIndex = v + n < 0 ? 0 : (v + n >= srcH ? srcH : v + n);
 								tmpVec = neighPixs[(nr * 2 + 1)*n + m + neighSize] - smpVec[vIndex][uIndex];
 								//cout << tmpVec.getLength() << endl;
-								vecSum += tmpVec.getLength() / neighSize;
+								vecSum += tmpVec.length() / neighSize;
 								//vecSum += (neighPixs[(nr * 2 + 1)*n + m + neighSize] ).getLength() / neighSize;
 								//cout << "\t" << (nr * 2 + 1)*n + m + neighSize << endl;
 								//cout << "\t" << m << "\t" << n << endl;

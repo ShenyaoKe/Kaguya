@@ -11,7 +11,6 @@
 #endif
 
 #include "Core/Kaguya.h"
-//#include "Math/CGVector.h"
 #include "Math/Matrix4x4.h"
 #include "Accel/BBox.h"
 
@@ -46,7 +45,6 @@ public:
 	void operator () (const Ray &ray, Ray* ret) const;
 
 	//Transform operator * (const Matrix4D &mat);
-	Vector4D xformNormal(const Vector3D &vec) const;
 
 	Matrix4x4 getMat() const;
 	Matrix4x4 getInvMat() const;

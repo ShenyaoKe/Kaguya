@@ -40,8 +40,8 @@ public:
 	void setFitType(FIT_RESOLUTION_GATE fitType);
 	
 	Float ApectureRatio() const{ return horiApect / vertApect; }
-	Point2D getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
-	Point2D getImgPos(Float filmX, Float filmY) const;
+	Point2f getFilmPos(Float imgX, Float imgY) const;// from -1 * len to +1 * len
+	Point2f getImgPos(Float filmX, Float filmY) const;
 	Point3f getFilmUV(Float imgX, Float imgY) const;
 	Matrix4x4 rasterToFilm() const;
 

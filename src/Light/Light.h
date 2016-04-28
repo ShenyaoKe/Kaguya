@@ -8,8 +8,6 @@
 #ifndef __Light__
 #define __Light__
 
-//#include "Core/rtdef.h"
-//#include "Math/CGVector.h"
 #include "Math/Geometry.h"
 #include "Light/Spectrum.h"
 
@@ -78,7 +76,7 @@ private:
 /************************************************************************/
 class pointLight :public Light
 {
-	//Vector3D pos;
+	//Point3f pos;
 public:
 	pointLight();
 	pointLight(const Point3f &p, const Float& its);
@@ -97,7 +95,7 @@ private:
 class spotLight :public Light
 {
 protected:
-	//Vector3D pos;
+	//Point3f pos;
 	Vector3f dir;
 	Float coneAngle = 40;
 	Float penumbraAngle = 0;
@@ -130,7 +128,7 @@ enum AREA_LIGHT_SHAPE
 class areaLight :public Light
 {
 	Vector3f nx, ny, nz;
-	//Vector3D pos;
+	//Point3f pos;
 	Float size = 1;//radius
 	AREA_LIGHT_SHAPE shapeType = QUAD;
 public:

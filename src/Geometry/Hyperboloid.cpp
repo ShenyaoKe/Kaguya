@@ -72,15 +72,16 @@ bool geoHyperboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoin
 		}
 	}
 }
-Vector3D geoHyperboloid::getNormal(const Point3f &pos) const
+/*
+Normal3f geoHyperboloid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, -1/sb, 2* type *(z - c.z) / sb^2
-	return Normalize(Vector3D(
+	return Normalize(Normal3f(
 		2 * (pos.x - c.x) / sqr(sa),
 		-2 * (pos.y - c.y) / sqr(sb),
 		2 * (pos.z - c.z) / sqr(sc)));
-}
-bool geoHyperboloid::isInside(const Vector3D &pPos) const
+}*/
+bool geoHyperboloid::isInside(const Point3f &pPos) const
 {
 	return 0;
 }

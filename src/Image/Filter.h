@@ -8,8 +8,9 @@
 #ifndef __FILTER__
 #define __FILTER__
 
+#include "Math/Geometry.h"
 #include "Image/ImageData.h"
-#include "Math/CGVector.h"
+
 namespace filter
 {
 
@@ -48,15 +49,17 @@ namespace filter
 	ImageData* circlepix(const ImageData* src, int radius, Float para);
 
 	// Transform
+	/*
 	ImageData* translate(const ImageData* src, const Vector2D& translation, int& winWid, int& winHgt);
 	ImageData* rotate(const ImageData* src, Float theta, int& winWid, int& winHgt);
 	ImageData* scale(const ImageData* src, const Vector2D& sVec, int& winWid, int& winHgt);
 	ImageData* shear(const ImageData* src, const Vector2D& shVec, int& winWid, int& winHgt);
 	ImageData* reflect(const ImageData* src, const Vector2D& rflVec, int& winWid, int& winHgt);
-	ImageData* perspective(const ImageData* src, const Vector2D& vPnt1, int& winWid, int& winHgt);
+	ImageData* perspective(const ImageData* src, const Vector2f& vPnt1, int& winWid, int& winHgt);
 	ImageData* bilnear(const ImageData* src, const Vector2D* pos, int& winWid, int& winHgt);// 4Corner points
 	ImageData* inflateScale(const ImageData* src, Float radius, int& winWid, int& winHgt);
 	ImageData* textureSynth(const ImageData* sample, int radius);
+	*/
 }
 
 #endif // __FILTER__

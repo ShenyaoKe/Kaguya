@@ -19,6 +19,7 @@ Ray Transform::operator()(const Ray &ray) const
 	Ray ret(m(ray.o), m(ray.d), ray.tmin, ray.tmax);
 	ret.time = ray.time;
 	ret.dp = ray.dp;
+	return ret;
 }
 
 void Transform::operator()(const Ray& ray, Ray* ret) const
@@ -42,11 +43,6 @@ Point3f Transform::operator()(const Point3f &pos) const
 Vector3f Transform::operator()(const Vector3f & vec) const
 {
 	return m(vec);
-}
-
-Vector4D Transform::xformNormal(const Vector3D &vec) const
-{
-	return Vector4D();
 }
 
 Matrix4x4 Transform::getMat() const
@@ -89,9 +85,9 @@ Transform xformTRS(
 	return Transform(T * R * S);
 }
 
-Transform Rotate(const Vector3D &axis, Float theta)
+Transform Rotate(const Vector3f &axis, Float theta)
 {
-	Vector3D u = Normalize(axis);
+	Vector3f u = Normalize(axis);
 	Float rad = DegreeToRadian(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);

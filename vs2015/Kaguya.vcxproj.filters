@@ -96,9 +96,6 @@
     <ClInclude Include="..\src\Light\Spectrum.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tracer\renderBuffer.h">
-      <Filter>Header Files\tracer</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Accel\BBox.h">
       <Filter>Header Files\accel</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Camera\Camera.h">
       <Filter>Header Files\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Math\CGVector.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math\MonteCarlo.h">
       <Filter>Header Files\math</Filter>
@@ -241,9 +235,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Camera\Film.cpp">
       <Filter>Source Files\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tracer\renderBuffer.cpp">
-      <Filter>Source Files\tracer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Image\Filter.cpp">
       <Filter>Source Files\image</Filter>

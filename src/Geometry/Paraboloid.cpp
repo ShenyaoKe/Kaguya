@@ -80,6 +80,7 @@ bool geoParaboloid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint
 		}
 	}
 }
+/*
 Vector3D geoParaboloid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, -1/sb, 2* type *(z - c.z) / sb^2
@@ -87,8 +88,8 @@ Vector3D geoParaboloid::getNormal(const Point3f &pos) const
 		2 * (pos.x - c.x) / (sa * sa),
 		-1 / sb,
 		pbType * 2 * (pos.z - c.z) / (sc * sc)));
-}
-bool geoParaboloid::isInside(const Vector3D &pPos) const
+}*/
+bool geoParaboloid::isInside(const Point3f &pPos) const
 {
 	return 0;
 }

@@ -23,9 +23,9 @@ public:
 	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
 	void setHyperboloidType(HYPERBOLOID_TYPE newType);
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	Vector3D getNormal(const Point3f &pos) const;
+	//Normal3f getNormal(const Point3f &pos) const;
 
-	bool isInside(const Vector3D &pPos) const;
+	bool isInside(const Point3f &pPos) const;
 
 public:
 	Point3f c;//center

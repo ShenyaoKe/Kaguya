@@ -77,16 +77,16 @@ void Film::setFitType(FIT_RESOLUTION_GATE fitType)
 	}
 }
 
-Point2D Film::getFilmPos(Float imgX, Float imgY) const
+Point2f Film::getFilmPos(Float imgX, Float imgY) const
 {
 	//Float filmRatio, imgRatio;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
 		//return Vector2D(imgX / width * horiApect, imgY / height + 0.5 * (vertApect - horiApect * height / width));
-		return Point2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+		return Point2f((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
 	case FRG_VERTICAL_FIT:
-		return Point2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+		return Point2f(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
 	/*
 	case FRG_FILL_FIT:
 		filmRatio = horiApect / vertApect;
@@ -112,11 +112,11 @@ Point2D Film::getFilmPos(Float imgX, Float imgY) const
 		}
 	*/
 	default:
-		return Point2D();
+		return Point2f();
 	}
 }
 
-Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later
+Point2f Film::getImgPos(Float filmX, Float filmY) const//need to change later
 {
 	Float tmpIx, tmpIy;
 	switch (resFT)
@@ -133,11 +133,11 @@ Point2D Film::getImgPos(Float filmX, Float filmY) const//need to change later
 	if (tmpIx < 0 || tmpIx >= width || tmpIy < 0 || tmpIy >= height)
 	{
 		cout << "Pixel out of image boundary" << endl;
-		return Point2D(0, 0);
+		return Point2f(0, 0);
 	}
 	else
 	{
-		return Point2D(tmpIx, tmpIy);
+		return Point2f(tmpIx, tmpIy);
 	}
 }
 
