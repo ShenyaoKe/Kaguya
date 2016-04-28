@@ -141,69 +141,68 @@ Point2f Film::getImgPos(Float filmX, Float filmY) const//need to change later
 	}
 }
 
-Point3f Film::getFilmUV(Float imgX, Float imgY) const
+Point2f Film::getFilmUV(Float imgX, Float imgY) const
 {
 	//Float filmRatio, imgRatio;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
 		//return Vector2D(imgX / width * horiApect, imgY / height + 0.5 * (vertApect - horiApect * height / width));
-		return Point3f(imgX / width, imgY / width, 0);
+		return Point2f(imgX / width, imgY / width);
 	case FRG_VERTICAL_FIT:
-		return Point3f(imgX / height, imgY / height, 0);
+		return Point2f(imgX / height, imgY / height);
 	default:
 		break;
 	}
 }
 Matrix4x4 Film::rasterToFilm() const
 {
-	//Matrix4D ret;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
 	{
 		Float m00 = horiApect / static_cast<Float>(width);
 		return Matrix4x4(
-			m00, 0, 0, 0,
-			0, m00, 0, 0,
-			0, 0, 1, 0,
-			-0.5 * horiApect, -0.5 * m00 * height, 0, 1
+			m00, 0., 0., 0.,
+			0, m00, 0., 0.,
+			0, 0., 1., 0.,
+			-0.5 * horiApect, -0.5 * m00 * height, 0., 1.
 			);
 	}
 	case FRG_VERTICAL_FIT:
 	{
 		Float m00 = vertApect / static_cast<Float>(height);
 		return Matrix4x4(
-			m00, 0, 0, 0,
-			0, m00, 0, 0,
-			0, 0, 1, 0,
-			-0.5 * m00 * width, -0.5 * vertApect, 0, 1
+			m00, 0., 0., 0.,
+			0, m00, 0., 0.,
+			0, 0., 1., 0.,
+			-0.5 * m00 * width, -0.5 * vertApect, 0., 1.
 			);
 	}
-		/*
-		case FRG_FILL_FIT:
-		filmRatio = horiApect / vertApect;
-		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
-		if (imgRatio >= filmRatio)
-		{
-		return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
-		}
-		else
-		{
-		return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
-		}
-		case FRG_OVERSCAN_FIT:
-		filmRatio = horiApect / vertApect;
-		imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
-		if (imgRatio < filmRatio)
-		{
-		return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
-		}
-		else
-		{
-		return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
-		}
-		*/
+	/*
+	case FRG_FILL_FIT:
+	filmRatio = horiApect / vertApect;
+	imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+	if (imgRatio >= filmRatio)
+	{
+	return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+	}
+	else
+	{
+	return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+	}
+	case FRG_OVERSCAN_FIT:
+	filmRatio = horiApect / vertApect;
+	imgRatio = static_cast<Float>(width) / static_cast<Float>(height);
+	if (imgRatio < filmRatio)
+	{
+	return Vector2D((imgX / width - 0.5) * horiApect, (imgY - 0.5 * height) * horiApect / width);
+	}
+	else
+	{
+	return Vector2D(imgX / width + 0.5 * (horiApect - vertApect * width / height), imgY / height * vertApect);
+	}
+	*/
 	default:
 		break;
 	}

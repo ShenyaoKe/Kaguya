@@ -5,7 +5,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
-		Point3f(10, 6, 10), Point3f(0.0, 0.0, 0.0), Vector3f(0, 1, 0),
+		Point3f(10., 6., 10.), Point3f(0.0, 0.0, 0.0), Vector3f(0., 1., 0.),
 		width() / static_cast<double>(height())))
 	, pixmap(default_resX * default_resY * 3, 255)
 {
@@ -18,6 +18,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	format.setVersion(4, 5);
 	//format.setProfile(QSurfaceFormat::CoreProfile);
 	this->setFormat(format);
+
 
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
@@ -34,6 +35,33 @@ OGLViewer::OGLViewer(QWidget *parent)
 		640, 480, 0,
 		0, 480, 0
 	};
+	/*cout << "View camera\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< view_mat[i * 4] << ", "
+			<< view_mat[i * 4 + 1] << ", "
+			<< view_mat[i * 4 + 2] << ", "
+			<< view_mat[i * 4 + 3] << ", " << endl;
+	}
+	cout << "Proj camera\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< proj_mat[i * 4] << ", "
+			<< proj_mat[i * 4 + 1] << ", "
+			<< proj_mat[i * 4 + 2] << ", "
+			<< proj_mat[i * 4 + 3] << ", " << endl;
+	}
+	cout << "Raster camera\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< rast_mat[i * 4] << ", "
+			<< rast_mat[i * 4 + 1] << ", "
+			<< rast_mat[i * 4 + 2] << ", "
+			<< rast_mat[i * 4 + 3] << ", " << endl;
+	}*/
 	resgate.insert(resgate.end(), respos, respos + 12);
 	//renderpixels();
 	//resetCamera();
@@ -227,7 +255,7 @@ void OGLViewer::resizeGL(int w, int h)
 {
 	// Widget resize operations
 	view_cam->resizeViewport(width() / static_cast<double>(height()));
-	view_cam->exportVBO(nullptr, proj_mat, rast_mat);
+	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 }
 /************************************************************************/
 /* Qt User Operation Functions                                          */

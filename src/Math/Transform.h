@@ -44,7 +44,7 @@ public:
 	Ray operator () (const Ray &ray) const;
 	void operator () (const Ray &ray, Ray* ret) const;
 
-	//Transform operator * (const Matrix4D &mat);
+	//Transform operator * (const Matrix4x4 &mat);
 
 	Matrix4x4 getMat() const;
 	Matrix4x4 getInvMat() const;

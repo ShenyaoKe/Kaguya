@@ -4,7 +4,6 @@ Camera::Camera(const Point3f &eye,
 	const Point3f &targ, const Vector3f &up,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: CameraToWorld(Matrix4x4::LookAt(eye, target, up))
-	//, CameraToScreen(Matrix4D::Perspective())
 	, target(targ)
 	, viewportRatio(1), focLen(35)
 	, lensRadius(lr), focalDistance(fd)
@@ -98,17 +97,27 @@ void Camera::updateRasterToCam()
 #else
 	raster2camMat[3][2] = focLen;
 #endif
+	/*cout << "Raster to Film\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< raster2camMat[i][0] << ", "
+			<< raster2camMat[i][1] << ", "
+			<< raster2camMat[i][2] << ", "
+			<< raster2camMat[i][3] << "\n";
+	}*/
 	RasterToCamera = Transform(raster2camMat);
 }
 
 void Camera::updateRasterToScreen()
 {
+	Matrix4x4 r2s = CameraToScreen.getMat() * RasterToCamera.getMat();
+	r2s.printInfo("Raster to Screen");
 	RasterToScreen.setMat(CameraToScreen.getMat() * RasterToCamera.getMat());
 }
 
 void Camera::zoom(Float x_val, Float y_val, Float z_val)
 {
-	//Matrix4D w2cam = CameraToWorld.getInvMat();
 	Matrix4x4 cam2w = CameraToWorld.getMat();
 	
 	// Pw: world space position, Pc: Camera space position
@@ -148,7 +157,7 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 {
 
-	/*Matrix4D lookAtMat = CameraToWorld.getMat();
+	/*Matrix4x4 lookAtMat = CameraToWorld.getMat();
 	Vector4D _nx(lookAtMat[0]), _ny(lookAtMat[1]), _nz(lookAtMat[2]);
 	Vector4D _pos(lookAtMat[3]);
 	Vector4D vt(_pos - Vector4D(target, 1));
@@ -156,13 +165,13 @@ void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 
 	printf("Original VT: %lf\n", vt.getLength());
 	// Rotate pitch
-	Matrix4D pitchMat = Matrix4D::Rotate(_nx.toVector3D(), pitchAngle);//RotateX(pitchAngle);
+	Matrix4x4 pitchMat = Matrix4x4::Rotate(_nx.toVector3D(), pitchAngle);//RotateX(pitchAngle);
 	_ny = pitchMat * _ny;
 	_nz = pitchMat * _nz;
 	vt = pitchMat * vt;
 
 	printf("\tafter pitch: %lf\n", vt.getLength());
-	Matrix4D yawMat = Matrix4D::Rotate(_ny.toVector3D(), yawAngle);//RotateY(yawAngle);
+	Matrix4x4 yawMat = Matrix4x4::Rotate(_ny.toVector3D(), yawAngle);//RotateY(yawAngle);
 	_nx = yawMat * _nx;
 	_nz = yawMat * _nz;
 	vt = yawMat * vt;
@@ -174,7 +183,7 @@ void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 	vt.normalize();
 	_pos = Vector4D(target, 1.0) + vt * vt_len;
 
-	CameraToWorld.setMat(Matrix4D::LookAt(_pos.toVector3D(), target, _ny.toVector3D()));*/
+	CameraToWorld.setMat(Matrix4x4::LookAt(_pos.toVector3D(), target, _ny.toVector3D()));*/
 }
 
 void Camera::resizeViewport(Float aspr)

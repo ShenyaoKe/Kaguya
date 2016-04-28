@@ -1,12 +1,12 @@
 //
-//  Matrix4D.h
+//  Matrix4x4.h
 //
 //  Created by Shenyao Ke on 1/21/15.
 //  Copyright (c) 2015 AKIKA. All rights reserved.
 //
 #pragma once
-#ifndef __Matrix4D__
-#define __Matrix4D__
+#ifndef __Matrix4x4__
+#define __Matrix4x4__
 
 #ifndef KAGUYA_DOUBLE_AS_FLOAT
 #define KAGUYA_DOUBLE_AS_FLOAT
@@ -25,6 +25,8 @@ struct Matrix4x4
 				0, 0, 0, 1 }
 	{
 	}
+	Matrix4x4(Float val) : mtx{ val }
+	{}
 	Matrix4x4(const Float mat[4][4])
 	{
 		memcpy(mtx, mat, sizeof(mtx));
@@ -47,24 +49,7 @@ struct Matrix4x4
 		mtx[2][0] = t20; mtx[2][1] = t21; mtx[2][2] = t22; mtx[2][3] = t23;
 		mtx[3][0] = t30; mtx[3][1] = t31; mtx[3][2] = t32; mtx[3][3] = t33;
 	}
-
-	/*Matrix4x4(Vector4D& col0, Vector4D& col1, Vector4D& col2, Vector4D& col3)
-	{
-		// Column Major
-		mtx[0][0] = col0.x;	mtx[0][1] = col0.y;	mtx[0][2] = col0.z;	mtx[0][3] = col0.w;
-		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;	mtx[1][3] = col1.w;
-		mtx[2][0] = col2.x;	mtx[2][1] = col2.y;	mtx[2][2] = col2.z;	mtx[2][3] = col2.w;
-		mtx[3][0] = col3.x;	mtx[3][1] = col3.y;	mtx[3][2] = col3.z;	mtx[3][3] = col3.w;
-		//Determinant();
-	}*/
-	Matrix4x4(Float val)
-	{
-		memset(mtx, val, sizeof(mtx));
-		//Determinant();
-	}
-	~Matrix4x4()
-	{
-	}
+	~Matrix4x4() {}
 	
 	// Operators
 	Float* operator [] (int i);
@@ -82,7 +67,7 @@ struct Matrix4x4
 	friend bool operator == (const Matrix4x4 &m1, const Matrix4x4 &m2);
 	friend bool operator != (const Matrix4x4 &m1, const Matrix4x4 &m2);
 	//Vector3D operator * (Vector3D &p) const;
-	//Matrix4D operator / (const Matrix4D &) const;
+	//Matrix4x4 operator / (const Matrix4x4 &) const;
 
 	void zero();
 	void setIdentity();
@@ -126,10 +111,7 @@ struct Matrix4x4
 	static Matrix4x4 Orthography(Float lf = -1, Float rt = 1,
 		Float bt = -1, Float tp = 1, Float nr = -1, Float fr = 1);
 
-	/*template <typename vbo_t>
-	friend void exportVBO(const Matrix4D &mat, vbo_t *vtx_array);*/
-	template <typename vbo_t>
-	void exportVBO(vbo_t *vtx_array) const;
+	void exportVBO(float* vtx_array) const;
 
 	// Column Major
 	Float mtx[4][4];
@@ -246,7 +228,7 @@ inline Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2)
 
 inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2)
 {
-	Matrix4x4 ret;
+	Matrix4x4 ret(0.);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -431,19 +413,11 @@ inline Matrix4x4 Matrix4x4::Identity()
 
 inline Matrix4x4 Matrix4x4::Transpose() const
 {
-	return Matrix4x4(mtx[0][0], mtx[1][0], mtx[2][0], mtx[3][0],
+	return Matrix4x4(
+		mtx[0][0], mtx[1][0], mtx[2][0], mtx[3][0],
 		mtx[0][1], mtx[1][1], mtx[2][1], mtx[3][1],
 		mtx[0][2], mtx[1][2], mtx[2][2], mtx[3][2],
 		mtx[0][3], mtx[1][3], mtx[2][3], mtx[3][3]);
-	Matrix4x4 buffer;
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			buffer.mtx[i][j] = mtx[j][i];
-		}
-	}
-	return buffer;
 }
 
 inline Matrix4x4 Matrix4x4::Adjoint() const
@@ -464,11 +438,11 @@ inline Matrix4x4 Matrix4x4::Adjoint() const
 inline Matrix4x4 Matrix4x4::Inverse() const
 {
 	Matrix4x4 ret, adjM;
-	Float det = this->Determinant();
+	Float det = Determinant();
 	if (det == 0)
 	{
 		cout << "The matrix is non-inversable!" << endl;
-		return Matrix4x4();
+		return Matrix4x4(0.);
 	}
 	adjM = Adjoint();
 
@@ -521,7 +495,7 @@ inline Matrix4x4 Matrix4x4::Perspective(Float verticalAngle, Float aspectRatio, 
 	Float sy = std::sin(DegreeToRadian(verticalAngle * 0.5));
 	if (sy == 0)
 	{
-		return Matrix4x4();
+		return Matrix4x4(0.);
 	}
 	sy = std::cos(radAngle) / sy;
 	
@@ -550,7 +524,7 @@ inline Matrix4x4 Matrix4x4::PerspectiveFromFilm(
 {
 	if (focal == 0 || filmVert == 0 || filmHori == 0)
 	{
-		return Matrix4x4::Identity();
+		return Matrix4x4(0.);
 	}
 	//focal *= nearPlane;
 	Float sy = focal / filmVert * 2;
@@ -583,21 +557,17 @@ inline Matrix4x4 Matrix4x4::Orthography(Float lf, Float rt, Float bt, Float tp, 
 		);
 }
 
-/*
-template <typename vbo_t>
-void exportVBO(const Matrix4D &mat, vbo_t *vtx_array)*/
-template <typename vbo_t>
-void Matrix4x4::exportVBO(vbo_t *vtx_array) const
+inline void Matrix4x4::exportVBO(float *vtx_array) const
 {
-	if (sizeof(Float) == sizeof(vbo_t))
+	if (sizeof(Float) == sizeof(float))
 	{
 		memcpy(vtx_array, this->mtx[0], sizeof(this->mtx));
 	}
 	else
 	{
-		for (int i = 0; i < 16; i++)
+		for (size_t i = 0; i < 16; i++)
 		{
-			vtx_array[i] = static_cast<vbo_t>(this->mtx[0][i]);
+			vtx_array[i] = static_cast<float>(this->mtx[0][i]);
 		}
 	}
 }
@@ -741,14 +711,14 @@ inline Matrix4x4 Matrix4x4::Scale(Float scale)
 		);
 }
 /*
-inline void Matrix4D::Shear(Vector3D &vec)
+inline void Matrix4x4::Shear(Vector3D &vec)
 {
  	setIdentify();
  	mtx[0][1] = vec.x;
  	mtx[1][0] = vec.y;
  	Determinant();
 }
-inline void Matrix4D::Reflect(Vector3D &vec)
+inline void Matrix4x4::Reflect(Vector3D &vec)
 {
  	// vec is a vector in the direction of the line
  	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
@@ -756,12 +726,10 @@ inline void Matrix4D::Reflect(Vector3D &vec)
  	mtx[2][2] = 1;
  	Determinant();
 }
-inline void Matrix4D::Perspective(Vector3D &vPnt)
+inline void Matrix4x4::Perspective(Vector3D &vPnt)
 {
  	setIdentify();
  	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
 }
 */
-template void Matrix4x4::exportVBO<float>(float *) const;
-template void Matrix4x4::exportVBO<double>(double *) const;
 #endif

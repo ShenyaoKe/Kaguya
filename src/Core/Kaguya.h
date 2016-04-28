@@ -69,7 +69,7 @@ typedef float Float;
 #pragma warning (disable : 4267) // size_t -> unsigned int conversion
 #endif
 
-#if !defined(NDEBUG) && !defined(DEBUG)
+#if !defined(NDEBUG) && !defined(_DEBUG)
 #	define _DEBUG
 #endif
 

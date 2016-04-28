@@ -22,10 +22,13 @@ public:
 	Float mtx[3][3];
 	//Float det = 0;
 
-	Matrix3x3() : mtx{}
-	{
-		//Determinant();
-	}
+	Matrix3x3()
+		: mtx{	1, 0, 0,
+				0, 1, 0,
+				0, 0, 1 }
+	{}
+	Matrix3x3(Float val) : mtx{ val }
+	{}
 	Matrix3x3(const Float mat[3][3])
 	{
 		memcpy(mtx, mat, sizeof(mtx));
@@ -47,11 +50,6 @@ public:
 		mtx[0][0] = col0.x;	mtx[0][1] = col0.y;	mtx[0][2] = col0.z;
 		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;
 		mtx[2][0] = col2.x;	mtx[2][1] = col2.y;	mtx[2][2] = col2.z;
-		//Determinant();
-	}
-	Matrix3x3(Float val)// : mtx{ { val } }
-	{
-		memset(mtx, val, sizeof(mtx));
 		//Determinant();
 	}
 	~Matrix3x3()
@@ -125,7 +123,7 @@ inline Matrix3x3 Matrix3x3::operator - (const Matrix3x3 &mat) const
 }
 inline Matrix3x3 Matrix3x3::operator * (const Matrix3x3 &mat) const
 {
-	Matrix3x3 buffer;
+	Matrix3x3 buffer(0.);
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -174,20 +172,11 @@ inline Float Matrix3x3::determinant() const
 }
 inline Matrix3x3 Matrix3x3::transposeMat() const
 {
-	return Matrix3x3(mtx[0][0], mtx[1][0], mtx[2][0],
+	return Matrix3x3(
+		mtx[0][0], mtx[1][0], mtx[2][0],
 		mtx[0][1], mtx[1][1], mtx[2][1],
 		mtx[0][2], mtx[1][2], mtx[2][2]);
-/*
-	Matrix3D buffer;
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			buffer.mtx[i][j] = mtx[j][i];
-		}
-	}
-	return buffer;
-*/
+
 }
 inline Matrix3x3 Matrix3x3::adjointMat() const
 {
@@ -204,7 +193,7 @@ inline Matrix3x3 Matrix3x3::adjointMat() const
 									- trpM.mtx[(i + 1) % 3][(j + 2) % 3] * trpM.mtx[(i + 2) % 3][(j + 1) % 3]);
 		}
 	}
-	//buffer.det = 1.0 / det;
+
 	return buffer;
 }
 inline Matrix3x3 Matrix3x3::inverseMat() const
@@ -225,7 +214,7 @@ inline Matrix3x3 Matrix3x3::inverseMat() const
 			buffer.mtx[i][j] = adjM.mtx[i][j] / det;
 		}
 	}
-	//buffer.Determinant();
+
 	return buffer;
 }
 inline void Matrix3x3::setTranslation(const Point2f &vec)
@@ -233,7 +222,6 @@ inline void Matrix3x3::setTranslation(const Point2f &vec)
 	setIdentity();
 	mtx[0][2] = vec.x;
 	mtx[1][2] = vec.y;
-	//Determinant();
 }
 inline void Matrix3x3::setRotation(Float theta)
 {
@@ -249,24 +237,20 @@ inline void Matrix3x3::setRotation(Float sinth, Float costh)
 	mtx[0][0] = costh;	mtx[0][1] = -sinth;
 	mtx[1][0] = sinth;	mtx[1][1] = costh;
 	mtx[2][2] = 1;
-	//Determinant();
 }
 inline void Matrix3x3::setScale(Float sx, Float sy)
 {
 	mtx[0][0] = sx;	mtx[1][1] = sy; mtx[2][2] = 1;
-	//Determinant();
 }
 inline void Matrix3x3::setScale(Float scale)
 {
 	mtx[0][0] = scale;	mtx[1][1] = scale; mtx[2][2] = 1;
-	//Determinant();
 }
 inline void Matrix3x3::setShear(const Point2f& vec)
 {
 	setIdentity();
 	mtx[0][1] = vec.x;
 	mtx[1][0] = vec.y;
-	//Determinant();
 }
 inline void Matrix3x3::setReflection(const Point2f& vec)
 {
@@ -274,7 +258,6 @@ inline void Matrix3x3::setReflection(const Point2f& vec)
 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
 	mtx[1][0] = 2 * vec.x * vec.y;	mtx[1][1] = vec.y * vec.y - vec.x * vec.x;
 	mtx[2][2] = 1;
-	//Determinant();
 }
 inline void Matrix3x3::setPerspective(const Point2f& vPnt)
 {
