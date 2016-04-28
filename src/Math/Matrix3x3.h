@@ -11,7 +11,8 @@
 #ifndef KAGUYA_DOUBLE_AS_FLOAT
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
-#include "Math/CGVector.h"
+#include "Math/MathUtil.h"
+#include "Math/Geometry.h"
 #include "Core/MemoryControl.h"
 
 class Matrix3x3
@@ -41,7 +42,7 @@ public:
 		mtx[1][0] = t10; mtx[1][1] = t11; mtx[1][2] = t12;
 		mtx[2][0] = t20; mtx[2][1] = t21; mtx[2][2] = t22;
 	}
-	Matrix3x3(Vector3D &col0, Vector3D &col1, Vector3D &col2)
+	Matrix3x3(Point3f &col0, Point3f &col1, Point3f &col2)
 	{
 		mtx[0][0] = col0.x;	mtx[0][1] = col0.y;	mtx[0][2] = col0.z;
 		mtx[1][0] = col1.x;	mtx[1][1] = col1.y;	mtx[1][2] = col1.z;
@@ -62,7 +63,7 @@ public:
 	Matrix3x3 operator + (const Matrix3x3 &mat) const;
 	Matrix3x3 operator - (const Matrix3x3 &mat) const;
 	Matrix3x3 operator * (const Matrix3x3 &mat) const;
-	Vector3D operator * (Vector3D &p) const;
+	Point3f operator * (Point3f &p) const;
 	Matrix3x3 operator = (const Matrix3x3 &mat) const;
 	Matrix3x3 operator == (const Matrix3x3 &mat) const;
 	Matrix3x3 operator != (const Matrix3x3 &mat) const;
@@ -77,14 +78,14 @@ public:
 	Matrix3x3 inverseMat() const;
 
 	//Set transformation matrix
-	void setTranslation(const Vector2D& vec);
+	void setTranslation(const Point2f& vec);
 	void setRotation(Float theta);
 	void setRotation(Float sinth, Float costh);
 	void setScale(Float sx, Float sy);
 	void setScale(Float scale);
-	void setShear(const Vector2D& vec);
-	void setReflection(const Vector2D& vec);
-	void setPerspective(const Vector2D& vPnt);
+	void setShear(const Point2f& vec);
+	void setReflection(const Point2f& vec);
+	void setPerspective(const Point2f& vPnt);
 };
 inline Float* Matrix3x3::operator[](int i)
 {
@@ -139,9 +140,9 @@ inline Matrix3x3 Matrix3x3::operator * (const Matrix3x3 &mat) const
 	//buffer.Determinant();
 	return buffer;
 }
-inline Vector3D Matrix3x3::operator * (Vector3D &p) const
+inline Point3f Matrix3x3::operator * (Point3f &p) const
 {
-	return Vector3D(p.x * mtx[0][0] + p.y * mtx[0][1] + p.z * mtx[0][2],
+	return Point3f(p.x * mtx[0][0] + p.y * mtx[0][1] + p.z * mtx[0][2],
 		p.x * mtx[1][0] + p.y * mtx[1][1] + p.z * mtx[1][2],
 		p.x * mtx[2][0] + p.y * mtx[2][1] + p.z * mtx[2][2]);
 }
@@ -227,7 +228,7 @@ inline Matrix3x3 Matrix3x3::inverseMat() const
 	//buffer.Determinant();
 	return buffer;
 }
-inline void Matrix3x3::setTranslation(const Vector2D& vec)
+inline void Matrix3x3::setTranslation(const Point2f &vec)
 {
 	setIdentity();
 	mtx[0][2] = vec.x;
@@ -260,14 +261,14 @@ inline void Matrix3x3::setScale(Float scale)
 	mtx[0][0] = scale;	mtx[1][1] = scale; mtx[2][2] = 1;
 	//Determinant();
 }
-inline void Matrix3x3::setShear(const Vector2D& vec)
+inline void Matrix3x3::setShear(const Point2f& vec)
 {
 	setIdentity();
 	mtx[0][1] = vec.x;
 	mtx[1][0] = vec.y;
 	//Determinant();
 }
-inline void Matrix3x3::setReflection(const Vector2D& vec)
+inline void Matrix3x3::setReflection(const Point2f& vec)
 {
 	// vec is a vector in the direction of the line
 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
@@ -275,7 +276,7 @@ inline void Matrix3x3::setReflection(const Vector2D& vec)
 	mtx[2][2] = 1;
 	//Determinant();
 }
-inline void Matrix3x3::setPerspective(const Vector2D& vPnt)
+inline void Matrix3x3::setPerspective(const Point2f& vPnt)
 {
 	setIdentity();
 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;

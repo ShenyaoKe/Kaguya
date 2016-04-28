@@ -13,8 +13,7 @@ public:
 
 	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	Vector3D getNormal(const Point3f &pos) const;
-
+	
 	bool isInside(const Point3f &pPos) const;
 
 public:

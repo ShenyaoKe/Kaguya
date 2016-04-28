@@ -56,6 +56,7 @@ bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint,
 	}
 	return 0;
 }
+/*
 Vector3D geoEllipsoid::getNormal(const Point3f &pos) const
 {
 	// 2(x-c.x) / sa^2, 2(y - c.y) / sb^2, 2(z - c.z) / sc^2
@@ -63,7 +64,7 @@ Vector3D geoEllipsoid::getNormal(const Point3f &pos) const
 		2 * (pos.x - c.x) / (sa * sa),
 		2 * (pos.y - c.y) / (sb * sb),
 		2 * (pos.z - c.z) / (sc * sc)));
-}
+}*/
 bool geoEllipsoid::isInside(const Point3f &pPos) const
 {
 	return 0;

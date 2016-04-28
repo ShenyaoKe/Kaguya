@@ -19,7 +19,7 @@
 //#include <math.h>
 
 #include "Core/MemoryControl.h"
-#include "Math/CGVector.h"
+#include "Math/Geometry.h"
 #include "Image/ColorData.h"
 //#include "ppmImage.h"
 #include "Math/Matrix3x3.h"

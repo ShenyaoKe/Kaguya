@@ -12,7 +12,6 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
-#include "Math/CGVector.h"
 #include "Math/Geometry.h"
 
 class Ray

@@ -2,8 +2,6 @@
 #ifndef __BBox__
 #define __BBox__
 
-//#include "Core/rtdef.h"
-#include "Math/CGVector.h"
 #include "Math/Matrix4x4.h"
 #include "Tracer/Ray.h"
 

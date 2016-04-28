@@ -22,9 +22,9 @@ public:
 	void setParaboloidType(PARABOLOID_TYPE newType);
 
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
-	Vector3D getNormal(const Point3f &pos) const;
+	//Vector3D getNormal(const Point3f &pos) const;
 
-	bool isInside(const Vector3D &pPos) const;
+	bool isInside(const Point3f &pPos) const;
 
 public:
 	Point3f c;//center

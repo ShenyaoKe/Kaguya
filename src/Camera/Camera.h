@@ -14,13 +14,12 @@
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 #include "Core/Kaguya.h"
-//#include "Math/CGVector.h"
 #include "Math/Matrix4x4.h"
 #include "Math/Transform.h"
 #include "Core/Sampler.h"
 #include "Tracer/Ray.h"
 #include "Camera/Film.h"
-#include "Tracer/renderBuffer.h"
+//#include "Tracer/renderBuffer.h"
 
 class Camera
 {
@@ -40,10 +39,10 @@ public:
 	virtual void setFilmType(FILM_TYPE filmType);
 	virtual void updateMatrices();
 
-	virtual void setBuffer(int x, int y, const bufferData tmpBuff);
+	//virtual void setBuffer(int x, int y, const bufferData tmpBuff);
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
 
-	virtual bufferData getBufferData(int x, int y) const;
+	//virtual bufferData getBufferData(int x, int y) const;
 	virtual Point3f getTarget() const;
 
 	virtual void setProjection(const Matrix4x4 &perspMat);
@@ -66,7 +65,7 @@ protected:
 	Point3f target;
 	
 	Film film;//contains image size, film size(horApec, verApec)
-	renderBuffer buffer;
+	//renderBuffer buffer;
 
 	Float viewportRatio;//width / height
 	Float focLen;//focal length

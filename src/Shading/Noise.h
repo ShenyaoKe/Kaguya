@@ -3,7 +3,7 @@
 #define __NOISE__
 
 #include "Math/MathUtil.h"
-#include "Math/CGVector.h"
+#include "Math/Geometry.h"
 
 inline Float Noise(int x)
 {

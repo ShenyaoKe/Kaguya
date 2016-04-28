@@ -8,14 +8,15 @@
 #ifndef __renderBuffer__
 #define __renderBuffer__
 //#include "Core/rtdef.h"
-// #include "Math/CGVector.h"
 // #include "Image/ColorData.h"
+
+#include "Math/Geometry.h"
 #include "Image/ImageData.h"
 
 class bufferData
 {
 	Vector3D DifferentialGeometry;
-	Vector3D normalVec = Vector3D(0, 0, -1);
+	Normal3f normalVec(0., 0., -1.);
 	ColorRGBA beauty, ambient, diffuse, specular;
 	int objectID = 0;
 	Float depth = 0;

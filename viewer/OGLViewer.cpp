@@ -335,7 +335,8 @@ void OGLViewer::renderpixels()
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
-	geoSphere sphere;
+	Transform w2o;
+	geoSphere sphere(&w2o, &w2o);
 	DifferentialGeometry* queryPoint = new DifferentialGeometry;
 	for (int j = 0; j < default_resY; j++)
 	{

@@ -11,7 +11,6 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 
 #include "Core/Kaguya.h"
-//#include "Math/CGVector.h"
 #include "Math/Geometry.h"
 
 /************************************************************************/

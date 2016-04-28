@@ -22,7 +22,7 @@ void Camera::setFilm(const Film &f)
 void Camera::setResolution(int resX, int resY)
 {
 	//film.resize(resX, resY);
-	buffer = renderBuffer(resX, resY);
+	//buffer = renderBuffer(resX, resY);
 }
 void Camera::setSample(int aaSample)
 {
@@ -49,6 +49,7 @@ void Camera::updateMatrices()
 
 }
 
+/*
 void Camera::setBuffer(int x, int y, const bufferData tmpBuff)
 {
 	buffer.data[x][y] = tmpBuff;
@@ -56,7 +57,7 @@ void Camera::setBuffer(int x, int y, const bufferData tmpBuff)
 bufferData Camera::getBufferData(int x, int y) const
 {
 	return buffer.data[x][y];
-}
+}*/
 
 Point3f Camera::getTarget() const
 {
