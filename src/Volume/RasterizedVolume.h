@@ -6,14 +6,14 @@
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
-#include "Geometry/Mesh.h"
+#include "Geometry/TriangleMesh.h"
 #include "Tracer/Ray.h"
 #include "Accel/KdTreeAccel.h"
 
 class RasterizedVolume
 {
 public:
-	RasterizedVolume(const Mesh* src, const KdTreeAccel* tree, double div);
+	RasterizedVolume(const TriangleMesh* src, const KdTreeAccel* tree, double div);
 	~RasterizedVolume();
 
 	Point3f center() const;
@@ -24,7 +24,7 @@ private:
 	void rasterize();
 private:
 	const KdTreeAccel* kdtree;
-	const Mesh* mesh;
+	const TriangleMesh* mesh;
 	vector<Point3f> grids;
 	double division;
 };

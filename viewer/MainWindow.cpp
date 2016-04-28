@@ -3,18 +3,18 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	m_oglviewer = new OGLViewer;
-	m_imgviewer = new ImageViewer;
+	viewer = new OGLViewer;
+	imgViewer = new ImageViewer;
 
 	ui.setupUi(this);
-	ui.ogl_layout->addWidget(m_oglviewer);
+	ui.ogl_layout->addWidget(viewer);
 	QTabWidget* shelf = new QTabWidget();
 	shelf->addTab(new QWidget, "1");
 	shelf->addTab(new QWidget, "2");
 	ui.shelf->addWidget(shelf);
 	//setWindowTitle(tr("OpenGL Qt Template"));
 	
-	m_oglviewer->setFocusPolicy(Qt::StrongFocus);
+	viewer->setFocusPolicy(Qt::StrongFocus);
 
 	/*connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);*/
 	connect(ui.render_button, &QPushButton::clicked, this, &MainWindow::connectimg);
@@ -32,9 +32,9 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::connectimg()
 {
-	m_oglviewer->renderpixels();
-	m_imgviewer->setpixmap(m_oglviewer->pixmap);
-	m_imgviewer->show();
+	viewer->renderpixels();
+	imgViewer->setpixmap(viewer->pixmap);
+	imgViewer->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)

@@ -21,8 +21,6 @@ public:
 
 	Transform()
 	{
-		m.setIdentity();
-		mInv.setIdentity();
 	}
 	Transform(const Float mat[4][4])
 	{
@@ -39,15 +37,13 @@ public:
 	Transform(const Matrix4x4 &mat, const Matrix4x4 &matInv)
 		: m(mat), mInv(matInv)
 	{}
-	~Transform() {}
+	//~Transform() {}
 
-	Vector3D operator () (const Vector3D &vec, Float w) const;
-	Vector4D operator () (const Vector4D &vec) const;
 	Point3f operator () (const Point3f &pos) const;
 	Vector3f operator () (const Vector3f &vec) const;
 	BBox operator () (const BBox &bbox) const;
-	//Ray operator () (const Ray &ray) const;
-	void operator () (const Ray& ray, Ray* ret) const;
+	Ray operator () (const Ray &ray) const;
+	void operator () (const Ray &ray, Ray* ret) const;
 
 	//Transform operator * (const Matrix4D &mat);
 	Vector4D xformNormal(const Vector3D &vec) const;

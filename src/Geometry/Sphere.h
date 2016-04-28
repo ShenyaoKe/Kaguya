@@ -7,7 +7,7 @@
 class geoSphere :public Shape
 {
 public:
-	geoSphere(const Point3f &pos = Point3f(), const Float& radius = 1);
+	geoSphere(const Transform* o2w, const Transform* w2o, Float radius = 1);
 	~geoSphere();
 
 	void bounding();

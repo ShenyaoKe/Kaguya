@@ -1,25 +1,5 @@
 #include "Math/Transform.h"
 
-Vector4D Transform::operator()(const Vector4D &vec) const
-{
-	Vector4D ret = m * vec;
-	if (ret.w != 0.0 || ret.w != 1.0)
-	{
-		ret /= ret.w;
-	}
-	return ret;
-}
-Vector3D Transform::operator()(const Vector3D &vec, Float w) const
-{
-	return m(vec, w);
-	/*Vector4D ret = m * Vector4D(vec, w);
-	if (ret.w != 0.0 || ret.w != 1.0)
-	{
-		ret /= ret.w;
-	}
-	return Vector3D(ret.x, ret.y, ret.z);*/
-}
-
 BBox Transform::operator()(const BBox &b) const
 {
 	const Transform &M = *this;
@@ -32,6 +12,13 @@ BBox Transform::operator()(const BBox &b) const
 	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMax.z)));
 	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMax.z)));
 	return ret;
+}
+
+Ray Transform::operator()(const Ray &ray) const
+{
+	Ray ret(m(ray.o), m(ray.d), ray.tmin, ray.tmax);
+	ret.time = ray.time;
+	ret.dp = ray.dp;
 }
 
 void Transform::operator()(const Ray& ray, Ray* ret) const

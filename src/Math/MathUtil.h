@@ -192,4 +192,25 @@ inline Float curve_t(const Float& t)//Mainly used for perlin noise
 {
 	return 6 * cubic(t) * sqr(t) - 15 * sqr(sqr(t)) + 10 * cubic(t);
 }
+/************************************************************************/
+/* Equation Solvers                                                     */
+/************************************************************************/
+inline bool quadratic(Float A, Float B, Float C, Float &t1, Float &t2)
+{
+	// Find quadratic discriminant
+	Float discrim = sqr(B) - 4. * A * C;
+	if (discrim < 0.)
+	{
+		return false;
+	}
+	Float rootDiscrim = sqrt(discrim);
+
+	// Compute quadratic _t_ values
+	Float q = B < 0 ? -0.5 * (B - rootDiscrim)
+					: -0.5 * (B + rootDiscrim);
+	t1 = q / A;
+	t2 = C / q;
+	if (t1 > t2) std::swap(t1, t2);
+	return true;
+}
 #endif // __MATHUTIL__

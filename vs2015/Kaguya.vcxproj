@@ -110,7 +110,7 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
-    <ClInclude Include="..\src\Geometry\Mesh.h" />
+    <ClInclude Include="..\src\Geometry\TriangleMesh.h" />
     <ClInclude Include="..\src\Geometry\Paraboloid.h" />
     <ClInclude Include="..\src\Geometry\Plane.h" />
     <ClInclude Include="..\src\Geometry\Shape.h" />
@@ -164,7 +164,7 @@
     <ClCompile Include="..\src\Shading\Material.cpp" />
     <ClCompile Include="..\src\Shading\Texture3D.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
-    <ClCompile Include="..\src\Geometry\Mesh.cpp" />
+    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />
     <ClCompile Include="..\src\Image\Filter.cpp" />
     <ClCompile Include="..\src\Image\ImageData.cpp" />

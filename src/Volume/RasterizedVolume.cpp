@@ -1,7 +1,7 @@
 #include "RasterizedVolume.h"
 
 RasterizedVolume::RasterizedVolume(
-	const Mesh* src, const KdTreeAccel* tree, double div)
+	const TriangleMesh* src, const KdTreeAccel* tree, double div)
 	: mesh(src), kdtree(tree)
 	, division(div)
 {

@@ -11,7 +11,7 @@
 #include "Accel/BBox.h"
 #include "Geometry/Shape.h"
 #include "Geometry/Sphere.h"
-#include "Geometry/Mesh.h"
+#include "Geometry/TriangleMesh.h"
 #include "Geometry/DifferentialGeometry.h"
 
 class Collision
