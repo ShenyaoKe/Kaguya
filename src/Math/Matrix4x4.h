@@ -19,9 +19,12 @@
 
 struct Matrix4x4
 {
-	Matrix4x4() : mtx{}
+	Matrix4x4()
+		: mtx{	1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1 }
 	{
-		//Determinant();
 	}
 	Matrix4x4(const Float mat[4][4])
 	{

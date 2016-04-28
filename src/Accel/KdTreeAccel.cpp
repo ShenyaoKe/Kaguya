@@ -226,7 +226,7 @@ bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, 
 							*queryPoint = *tmpQuery;
 							*tHit = hitDist;
 							*rayEpsilon = rayEp;
-							queryPoint->object = primitives[idx];
+							queryPoint->shape = primitives[idx];
 							isHit = true;
 						}
 					}

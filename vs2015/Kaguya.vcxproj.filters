@@ -25,9 +25,6 @@
     <Filter Include="Header Files\math">
       <UniqueIdentifier>{38fd9526-3a46-4782-8617-597ecc2182b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\shading">
-      <UniqueIdentifier>{5aa73dc3-808b-4e34-97b5-9ddbd15471cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\tracer">
       <UniqueIdentifier>{94dfb36d-a8f9-43e2-becb-1e3dc219dd30}</UniqueIdentifier>
     </Filter>
@@ -55,9 +52,6 @@
     <Filter Include="Source Files\light">
       <UniqueIdentifier>{2231e18f-25d3-41a4-b858-906716c32383}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\shading">
-      <UniqueIdentifier>{94883acd-c658-4ac8-a507-e6e78413f223}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\tracer">
       <UniqueIdentifier>{c1da9ddb-1484-4010-9793-8dfc61f190fd}</UniqueIdentifier>
     </Filter>
@@ -73,19 +67,22 @@
     <Filter Include="Source Files\Core">
       <UniqueIdentifier>{02694521-e195-4b0c-a565-16081d5eab40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\material">
+      <UniqueIdentifier>{5aa73dc3-808b-4e34-97b5-9ddbd15471cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\material">
+      <UniqueIdentifier>{94883acd-c658-4ac8-a507-e6e78413f223}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
-      <Filter>Header Files\shading</Filter>
+      <Filter>Header Files\material</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\TextureMapping.h">
-      <Filter>Header Files\shading</Filter>
+      <Filter>Header Files\material</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\Texture.h">
-      <Filter>Header Files\shading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Mesh.h">
-      <Filter>Header Files\geometry</Filter>
+      <Filter>Header Files\material</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Tracer\Ray.h">
       <Filter>Header Files\tracer</Filter>
@@ -196,7 +193,7 @@
       <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\Texture3D.h">
-      <Filter>Header Files\shading</Filter>
+      <Filter>Header Files\material</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Geometry\Sphere.h">
       <Filter>Header Files\geometry</Filter>
@@ -204,11 +201,14 @@
     <ClInclude Include="..\src\Core\Primitive.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Shading\Material.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\Geometry\TriangleMesh.h">
+      <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\BxDF.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Shading\Material.h">
+      <Filter>Header Files\material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -217,9 +217,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
       <Filter>Source Files\accel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Mesh.cpp">
-      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Shape.cpp">
       <Filter>Source Files\geometry</Filter>
@@ -234,10 +231,10 @@
       <Filter>Source Files\light</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\Texture.cpp">
-      <Filter>Source Files\shading</Filter>
+      <Filter>Source Files\material</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\TextureMapping.cpp">
-      <Filter>Source Files\shading</Filter>
+      <Filter>Source Files\material</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Tracer\Ray.cpp">
       <Filter>Source Files\tracer</Filter>
@@ -300,7 +297,7 @@
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\Texture3D.cpp">
-      <Filter>Source Files\shading</Filter>
+      <Filter>Source Files\material</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
       <Filter>Source Files\geometry</Filter>
@@ -308,11 +305,14 @@
     <ClCompile Include="..\src\Core\Primitive.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Shading\Material.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\BxDF.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Shading\Material.cpp">
+      <Filter>Source Files\material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

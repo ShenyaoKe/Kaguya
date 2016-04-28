@@ -3,8 +3,9 @@
 #include "Shading/Texture.h"
 #include "Shading/TextureMapping.h"
 
-geoSphere::geoSphere(const Point3f &pos, const Float& radius)
-	: Shape(pos), r(radius)
+geoSphere::geoSphere(const Transform* o2w, const Transform* w2o,
+	Float radius)
+	: Shape(o2w, w2o), r(radius)
 {
 	bounding();
 }
@@ -25,35 +26,48 @@ BBox geoSphere::getWorldBounding() const
 	ret.expand(r);
 	return ret;
 }
-bool geoSphere::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoSphere::intersect(const Ray& inRay,
+	DifferentialGeometry* queryPoint, Float* tHit, Float* rayEpsilon) const
 {
-	Float coeB = Dot(inRay.d, (c - inRay.o));
-	Float coeC = (inRay.o - c).lengthSquared() - sqr(r);
-	Float delta = sqr(coeB) - coeC;
-	if (delta > 0)//delta > 0
+	Ray ray = (*WorldToObject)(inRay);
+	// (ox + t*dx)^2 + (oy + t*dy)^2 + (oz + t*dz)^2 = r^2
+	// A * t^2 + 2B * t + C = 0
+	// A = dx^2 + dy^2 + dz^2
+	// B = dx*ox + dy*oy + dz*oz
+	// C = ox^2 + oy^2 + oz^2 - r^2
+	// t = (-B - sqrt(B^2 - A*C)) / A
+	//  or (-B + sqrt(B^2 - A*C)) / A
+	Float coeA = ray.d.lengthSquared();
+	Float coeB = 2 * (ray.d.x * ray.o.x + ray.d.y * ray.o.y + ray.d.z * ray.o.z);
+	Float coeC = ray.o.x * ray.o.x + ray.o.y * ray.o.y + ray.o.z * ray.o.z - sqr(r);
+	Float t1, t2;
+	
+	if (!quadratic(coeA, coeB, coeC, t1, t2))//delta > 0
 	{
-		Float t1 = coeB - sqrt(delta);
-		Float t2 = 2 * coeB - t1;
-		//inRay.setT(t1, t2);
-		if (t1 <= 0 && t2 <= 0)
+		return false;
+	}
+	// (tmin, tmax) doesn't overlap (t1, t2)
+	if (t1 > ray.tmax || t2 < ray.tmin)
+	{
+		return false;
+	}
+	Float tIntersect = t1;
+	if (tIntersect < ray.tmin)
+	{
+		tIntersect = t2; // Always use the nearest intersection
+		// (tmin, tmax) inside (t1, t2)
+		if (tIntersect > ray.tmax)
 		{
 			return false;
 		}
-		else if (t1 > 0)
-		{
-			*tHit = t1;
-		}
-		else
-		{
-			*tHit = t2;
-		}
-		if (*tHit > inRay.tmin && *tHit < inRay.tmax)
-		{
-			*rayEpsilon = reCE * *tHit;
-			return true;
-		}
 	}
-	return false;
+
+	*tHit = tIntersect;
+	*rayEpsilon = reCE * *tHit;
+	queryPoint->shape = this;
+	queryPoint->pos = inRay(tIntersect);
+	//*queryPoint = DifferentialGeometry(inRay(tIntersect), );
+	return true;
 }
 bool geoSphere::isInside(const Point3f &p) const
 {

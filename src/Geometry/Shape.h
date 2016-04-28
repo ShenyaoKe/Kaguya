@@ -29,6 +29,11 @@ class Shape
 {
 public:
 	Shape(const Point3f &pos = Point3f());
+	Shape(const Transform* o2w, const Transform* w2o)
+		: ObjectToWorld(o2w), WorldToObject(w2o)
+		, shapeID(nextshapeID++)
+	{
+	}
 	virtual ~Shape() = 0;
 
 	virtual void bounding() = 0;
@@ -55,12 +60,13 @@ public:
 	virtual void printInfo() const;
 
 public:
-	const uint32_t shapeId;
-	static uint32_t nextshapeId;
+	const uint32_t shapeID;
+	static uint32_t nextshapeID;
 
 	//Vector3f center;
 	Point3f c;
-	Transform ObjectToWorld;
+	const Transform* ObjectToWorld;
+	const Transform* WorldToObject;
 	BBox ObjBound;
 
 	TextureMapping* UV_Mapping = nullptr;

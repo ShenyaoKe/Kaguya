@@ -3,7 +3,7 @@
 
 OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
-	, m_selectMode(OBJECT_SELECT)
+	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
 		Point3f(10, 6, 10), Point3f(0.0, 0.0, 0.0), Vector3f(0, 1, 0),
 		width() / static_cast<double>(height())))
@@ -21,10 +21,10 @@ OGLViewer::OGLViewer(QWidget *parent)
 
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
-	model_mesh = new Mesh("scene/obj/monkey.obj");
+	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");
 	
 	model_mesh->refine(objlist);
-	tree = new KdTreeAccel(objlist);
+	tree = make_unique<KdTreeAccel>(objlist);
 
 	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 
@@ -35,19 +35,19 @@ OGLViewer::OGLViewer(QWidget *parent)
 		0, 480, 0
 	};
 	resgate.insert(resgate.end(), respos, respos + 12);
-	renderpixels();
+	//renderpixels();
 	//resetCamera();
 }
 
 OGLViewer::~OGLViewer()
 {
-	delete box_mesh;
-	box_mesh = nullptr;
-	delete model_mesh;
+	//delete box_mesh;
+	//box_mesh = nullptr;
+	/*delete model_mesh;
 	model_mesh = nullptr;
 	delete view_cam;
 	delete model_shader;
-	delete gate_shader;
+	delete gate_shader;*/
 }
 /************************************************************************/
 /* OpenGL Rendering Modules                                             */
@@ -75,17 +75,19 @@ void OGLViewer::initializeGL()
 	//////////////////////////////////////////////////////////////////////////
 
 	// Create model_shader files
-#ifdef _DEBUG
-	model_shader = new GLSLProgram("resources/shaders/model_vs.glsl", "resources/shaders/model_fs.glsl");
-	gate_shader = new GLSLProgram("resources/shaders/gate_vs.glsl", "resources/shaders/gate_fs.glsl");
+//#ifdef _DEBUG
+	model_shader.reset(new GLSLProgram("resources/shaders/model_vs.glsl", "resources/shaders/model_fs.glsl", "resources/shaders/model_gs.glsl"));
+	gate_shader.reset(new GLSLProgram("resources/shaders/gate_vs.glsl", "resources/shaders/gate_fs.glsl"));
+/*
 #else
-	model_shader = new GLSLProgram(":shaders/model_vs.glsl", ":shaders/model_fs.glsl");
-	gate_shader = new GLSLProgram(":shaders/gate_vs.glsl", ":shaders/gate_fs.glsl");
-#endif
+	model_shader.reset(new GLSLProgram(":shaders/model_vs.glsl", ":shaders/model_fs.glsl", ":shaders/model_gs.glsl"));
+	gate_shader.reset(new GLSLProgram(":shaders/gate_vs.glsl", ":shaders/gate_fs.glsl"));
+#endif*/
 
 	// Export vbo for shaders
 	//box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
-	model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
+	//model_mesh->exportVBO(&model_verts, &model_uvs, &model_norms);
+	model_mesh->exportIndexedVBO(&model_verts, nullptr, nullptr, &model_ids);
 
 	//bindBox();
 	bindMesh();
@@ -131,8 +133,7 @@ void OGLViewer::bindBox()
 void OGLViewer::bindMesh()
 {
 	glDeleteBuffers(1, &model_vert_vbo);
-	glDeleteBuffers(1, &model_norm_vbo);
-	glDeleteBuffers(1, &model_uv_vbo);
+	glDeleteBuffers(1, &model_ibo);
 	glDeleteVertexArrays(1, &model_vao);
 
 	// Bind VAO
@@ -146,16 +147,15 @@ void OGLViewer::bindMesh()
 	glEnableVertexAttribArray(0);
 
 	// Bind normal value as color
-	glGenBuffers(1, &model_norm_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, model_norm_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model_norms.size(), &model_norms[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(1);
+	glGenBuffers(1, &model_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model_ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * model_ids.size(), &model_ids[0], GL_STATIC_DRAW);
 
 	// Bind UV values
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void OGLViewer::bindReslotionGate()
@@ -210,8 +210,8 @@ void OGLViewer::paintGL()
 	//glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, model_mat);
 	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_mat);
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, proj_mat);
-	glDrawArrays(GL_TRIANGLES, 0, model_verts.size() / 3);
-	
+	//glDrawArrays(GL_TRIANGLES, 0, model_verts.size() / 3);
+	glDrawElements(GL_TRIANGLES, model_ids.size(), GL_UNSIGNED_INT, 0);
 	////////////////////////////////////////////
 	glBindVertexArray(resgate_vao);
 	gate_shader->use_program();
@@ -258,8 +258,8 @@ void OGLViewer::keyPressEvent(QKeyEvent *e)
 
 void OGLViewer::mousePressEvent(QMouseEvent *e)
 {
-	m_lastMousePos[0] = e->x();
-	m_lastMousePos[1] = e->y();
+	lastMousePos[0] = e->x();
+	lastMousePos[1] = e->y();
 	if (e->buttons() == Qt::LeftButton && e->modifiers() == Qt::AltModifier)
 	{
 		// Do something here
@@ -268,14 +268,14 @@ void OGLViewer::mousePressEvent(QMouseEvent *e)
 
 void OGLViewer::mouseReleaseEvent(QMouseEvent *e)
 {
-	m_lastMousePos[0] = e->x();
-	m_lastMousePos[1] = e->y();
+	lastMousePos[0] = e->x();
+	lastMousePos[1] = e->y();
 }
 
 void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 {
-	int dx = e->x() - m_lastMousePos[0];
-	int dy = e->y() - m_lastMousePos[1];
+	int dx = e->x() - lastMousePos[0];
+	int dy = e->y() - lastMousePos[1];
 
 	//printf("dx: %d, dy: %d\n", dx, dy);
 
@@ -308,8 +308,8 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 		QOpenGLWidget::mouseMoveEvent(e);
 	}
 
-	m_lastMousePos[0] = e->x();
-	m_lastMousePos[1] = e->y();
+	lastMousePos[0] = e->x();
+	lastMousePos[1] = e->y();
 }
 
 void OGLViewer::wheelEvent(QWheelEvent *e)
@@ -335,6 +335,7 @@ void OGLViewer::renderpixels()
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
+	geoSphere sphere;
 	DifferentialGeometry* queryPoint = new DifferentialGeometry;
 	for (int j = 0; j < default_resY; j++)
 	{
@@ -346,11 +347,21 @@ void OGLViewer::renderpixels()
 			view_cam->generateRay(camsmp, &traceRay);
 			double tHit(INFINITY), rayEp(0);
 
-			uint8_t isHit = static_cast<uint8_t>(tree->intersect(traceRay, queryPoint, &tHit, &rayEp));
-
+			/*uint8_t isHit = static_cast<uint8_t>(tree->intersect(traceRay, queryPoint, &tHit, &rayEp));
+			
 			pixmap[index++] = isHit * 64;
 			pixmap[index++] = isHit * 128;
-			pixmap[index++] = isHit * 255;
+			pixmap[index++] = isHit * 255;*/
+			Point3f n(0, 0, 0);
+			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
+			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
+			{
+				n = queryPoint->pos;
+			}
+			pixmap[index++] = static_cast<uint8_t>((n.x + 1.0) * 127);
+			pixmap[index++] = static_cast<uint8_t>((n.y + 1.0) * 127);
+			pixmap[index++] = static_cast<uint8_t>((n.z + 1.0) * 127);
 		}
-	}]
+	}
+	delete queryPoint;
 }

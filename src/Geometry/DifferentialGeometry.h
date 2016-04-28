@@ -20,26 +20,31 @@
 struct DifferentialGeometry
 {
 	DifferentialGeometry();
-	DifferentialGeometry(const Shape* obj, const Point3f &pVec, const Normal3f &nVec, const Vector3f &rVec, const int& sX, const int& sY);
+	DifferentialGeometry(const Shape* obj,
+		const Point3f &pVec, const Normal3f &nVec,
+		const int& sX, const int& sY);
+	DifferentialGeometry(const Point3f &_p,
+		const Vector3f &_dpdu, const Vector3f &_dpdv,
+		const Normal3f &_dndu, const Normal3f &_dndv,
+		const Point2f &_uv, const Shape* shp);
 
  	void calculateDir(const Vector3f &inDir, const Normal3f &nVec);
  	void calculateDir(const Vector3f &inDir);
 
 
-	const Shape* object;
-	//int objID;
+	const Shape* shape;
 	Point3f pos;
-	Normal3f normal;
-	Vector3f reflectDir;
+	Normal3f norm;
 
 	Point2f uv;
 	Vector3f dpdu, dpdv;//Partial derivation of the surface position
-	Vector3f dndu, dndv;//Partial derivation of the surface normal
-	struct // Shading
+	Normal3f dndu, dndv;//Partial derivation of the surface normal
+
+	struct // Shading Geometry
 	{
 		Normal3f n;
 		Vector3f dpdu, dpdv;
-		Vector3f dndu, dndv;
+		Normal3f dndu, dndv;
 	}shading;
 };
 #endif // __DifferentialGeometry__

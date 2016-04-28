@@ -160,6 +160,10 @@ public:
 	bool operator!=(const Vector3<T> &v) const {
 		return x != v.x || y != v.y || z != v.z;
 	}
+	Vector3<T> &operator=(const Normal3<T> &n)
+	{
+		x = n.x; y = n.y; z = n.z;
+	}
 	template <typename U>
 		Vector3<T> operator*(U s) const {
 		return Vector3<T>(x * s, y * s, z * s);
@@ -457,11 +461,15 @@ public:
 	Normal3<T> operator-() const {
 		return Normal3<T>(-x, -y, -z);
 	}
-	bool operator==(const Normal3<T> &v) const {
-		return x == v.x && y == v.y && z == v.z;
+	bool operator==(const Normal3<T> &n) const {
+		return x == n.x && y == n.y && z == n.z;
 	}
-	bool operator!=(const Normal3<T> &v) const {
-		return x != v.x || y != v.y || z != v.z;
+	bool operator!=(const Normal3<T> &n) const {
+		return x != n.x || y != n.y || z != n.z;
+	}
+	Normal3<T> &operator=(const Vector3<T> &v)
+	{
+		x = v.x; y = v.y; z = v.z;
 	}
 
 	template <typename U>
@@ -578,4 +586,6 @@ inline Normal3<T> Normalize(const Normal3<T> &n)
 {
 	return n / n.length();
 }
+
+
 #endif // KAGUYA_GEOMETRY_H

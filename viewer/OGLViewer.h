@@ -14,7 +14,7 @@
 
 #include "Math/MathUtil.h"
 #include "Image/ImageData.h"
-#include "Geometry/Mesh.h"
+#include "Geometry/TriangleMesh.h"
 #include "Geometry/DifferentialGeometry.h"
 #include "Accel/KdTreeAccel.h"
 #include "Camera/perspCamera.h"
@@ -60,34 +60,35 @@ private:
 
 	void renderpixels();
 protected:
-	perspCamera* view_cam;
+	unique_ptr<perspCamera> view_cam;
 	vector<uint8_t> pixmap;
 private:
 
-	int m_lastMousePos[2];
-	int m_selectMode;
+	int lastMousePos[2];
+	int selectMode;
 private: // OpenGL variables
 	int display_mode = 0;
 
-	Mesh *box_mesh;// Display object
+	unique_ptr<TriangleMesh> box_mesh;// Display object
 	vector<GLfloat> box_verts;// vertices vbo
 	vector<GLfloat> box_uvs;// Texture coordinates vbo
 	vector<GLfloat> box_norms;// Normal coordinates vbo
 	GLuint box_vert_vbo, box_norm_vbo, box_vao;
 
-	Mesh *model_mesh;
+	unique_ptr<TriangleMesh> model_mesh;
 	vector<Shape*> objlist;
-	KdTreeAccel* tree;
+	unique_ptr<KdTreeAccel> tree;
 	vector<GLfloat> model_verts;// vertices vbo
 	vector<GLfloat> model_uvs;// Texture coordinates vbo
 	vector<GLfloat> model_norms;// Normal coordinates vbo
-	GLuint model_vert_vbo, model_norm_vbo, model_uv_vbo, model_vao;
+	vector<GLuint> model_ids;
+	GLuint model_vert_vbo, model_ibo, model_vao;
 
 	vector<GLfloat> filmgate, resgate;
 	GLuint resgate_vbo, resgate_vao;
 
-	GLSLProgram* model_shader;
-	GLSLProgram* gate_shader;// OpenGL model_shader program
+	unique_ptr<GLSLProgram> model_shader;
+	unique_ptr<GLSLProgram> gate_shader;// OpenGL model_shader program
 
 	friend class MainWindow;
 	friend class ImageViewer;

@@ -27,8 +27,8 @@ protected:
 	void closeEvent(QCloseEvent *e);
 private:
 
-	OGLViewer* m_oglviewer;
-	ImageViewer* m_imgviewer;
+	OGLViewer* viewer;
+	ImageViewer* imgViewer;
 	QDialog* about;
 	Ui::MainWindowClass ui;
 	//Ui::Shelf tool_shelf;
