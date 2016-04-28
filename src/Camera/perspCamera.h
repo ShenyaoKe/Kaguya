@@ -4,9 +4,9 @@
 class perspCamera : public Camera
 {
 public:
-	perspCamera(const Point3f &eye = Point3f(1, 1, 1),
+	perspCamera(const Point3f &eye = Point3f(1., 1., 1.),
 		const Point3f &targ = Point3f(),
-		const Vector3f &up = Vector3f(0, 1, 0),
+		const Vector3f &up = Vector3f(0., 1., 0.),
 		Float asp = 1.0, Float lr = 0, Float fd = INFINITY,
 		const Film &fm = Film());
 	perspCamera(const Transform& cam2wo, const Transform& projection);

@@ -128,8 +128,7 @@ struct Matrix4x4
 
 	/*template <typename vbo_t>
 	friend void exportVBO(const Matrix4D &mat, vbo_t *vtx_array);*/
-	template <typename vbo_t>
-	void exportVBO(vbo_t *vtx_array) const;
+	void exportVBO(float* vtx_array) const;
 
 	// Column Major
 	Float mtx[4][4];
@@ -586,18 +585,17 @@ inline Matrix4x4 Matrix4x4::Orthography(Float lf, Float rt, Float bt, Float tp, 
 /*
 template <typename vbo_t>
 void exportVBO(const Matrix4D &mat, vbo_t *vtx_array)*/
-template <typename vbo_t>
-void Matrix4x4::exportVBO(vbo_t *vtx_array) const
+inline void Matrix4x4::exportVBO(float *vtx_array) const
 {
-	if (sizeof(Float) == sizeof(vbo_t))
+	if (sizeof(Float) == sizeof(float))
 	{
 		memcpy(vtx_array, this->mtx[0], sizeof(this->mtx));
 	}
 	else
 	{
-		for (int i = 0; i < 16; i++)
+		for (size_t i = 0; i < 16; i++)
 		{
-			vtx_array[i] = static_cast<vbo_t>(this->mtx[0][i]);
+			vtx_array[i] = static_cast<float>(this->mtx[0][i]);
 		}
 	}
 }
@@ -762,6 +760,4 @@ inline void Matrix4D::Perspective(Vector3D &vPnt)
  	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
 }
 */
-template void Matrix4x4::exportVBO<float>(float *) const;
-template void Matrix4x4::exportVBO<double>(double *) const;
 #endif

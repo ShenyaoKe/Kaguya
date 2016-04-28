@@ -82,6 +82,8 @@ namespace ObjParser
 			{
 				return V;//001
 			}
+		default:
+			return V;
 		}
 	}
 };
