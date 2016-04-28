@@ -5,7 +5,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
-		Point3f(10, 6, 10), Point3f(0.0, 0.0, 0.0), Vector3f(0, 1, 0),
+		Point3f(10., 6., 10.), Point3f(0.0, 0.0, 0.0), Vector3f(0., 1., 0.),
 		width() / static_cast<double>(height())))
 	, pixmap(default_resX * default_resY * 3, 255)
 {
@@ -34,6 +34,13 @@ OGLViewer::OGLViewer(QWidget *parent)
 		640, 480, 0,
 		0, 480, 0
 	};
+	for (int i = 0; i < 4 ; i++)
+	{
+		cout << rast_mat[i * 4] << ", "
+			<< rast_mat[i * 4 + 1] << ", "
+			<< rast_mat[i * 4 + 2] << ", "
+			<< rast_mat[i * 4 + 3] << ", " << endl;
+	}
 	resgate.insert(resgate.end(), respos, respos + 12);
 	//renderpixels();
 	//resetCamera();
@@ -354,8 +361,8 @@ void OGLViewer::renderpixels()
 			pixmap[index++] = isHit * 128;
 			pixmap[index++] = isHit * 255;*/
 			Point3f n(0, 0, 0);
-			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
-			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
+			if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
+			//if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
 			{
 				n = queryPoint->pos;
 			}
