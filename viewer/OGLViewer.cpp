@@ -34,9 +34,29 @@ OGLViewer::OGLViewer(QWidget *parent)
 		640, 480, 0,
 		0, 480, 0
 	};
-	for (int i = 0; i < 4 ; i++)
+	cout << "View camera\n";
+	for (int i = 0; i < 4; i++)
 	{
-		cout << rast_mat[i * 4] << ", "
+		cout << "\t"
+			<< view_mat[i * 4] << ", "
+			<< view_mat[i * 4 + 1] << ", "
+			<< view_mat[i * 4 + 2] << ", "
+			<< view_mat[i * 4 + 3] << ", " << endl;
+	}
+	cout << "Proj camera\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< proj_mat[i * 4] << ", "
+			<< proj_mat[i * 4 + 1] << ", "
+			<< proj_mat[i * 4 + 2] << ", "
+			<< proj_mat[i * 4 + 3] << ", " << endl;
+	}
+	cout << "Raster camera\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< rast_mat[i * 4] << ", "
 			<< rast_mat[i * 4 + 1] << ", "
 			<< rast_mat[i * 4 + 2] << ", "
 			<< rast_mat[i * 4 + 3] << ", " << endl;

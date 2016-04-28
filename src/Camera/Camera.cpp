@@ -98,6 +98,15 @@ void Camera::updateRasterToCam()
 #else
 	raster2camMat[3][2] = focLen;
 #endif
+	cout << "Raster to Film\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "\t"
+			<< raster2camMat[i][0] << ", "
+			<< raster2camMat[i][1] << ", "
+			<< raster2camMat[i][2] << ", "
+			<< raster2camMat[i][3] << "\n";
+	}
 	RasterToCamera = Transform(raster2camMat);
 }
 
