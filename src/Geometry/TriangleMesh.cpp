@@ -40,75 +40,12 @@ void TriangleMesh::refine(vector<Shape*> &refined)
 }
 bool TriangleMesh::loadOBJ(const char* filename)
 {
-	//doubles_t vs, vts, vns;
+	//vector<PolyIndex> fids;
 	if (ObjParser::parse(filename, verts, uvs, norms, fids))
 	{
+		// Triangulation required!
 		return true;
 	}
-
-	/************************************************************************/
-	/* C++ Style                                                            */
-	/************************************************************************/
-	/*std::ios::sync_with_stdio(false);
-	std::fstream::sync_with_stdio(false);
-	std::ifstream::sync_with_stdio(false);
-	ifstream file(filename, ios::binary);
-	if (!file)
-	{
-		cout << "Unable to open the file!" << endl;
-		return false;
-	}
-	Float value[3];
-	string strs[3];
-	while (!file.eof())
-	{
-		//string curline;
-		string lineHeader;
-		file >> lineHeader;
-		//getline(file, curline);
-		if (lineHeader == "v")
-		{
-			file >> value[0] >> value[1] >> value[2];
-			/ *Point3f* vtx = new Point3f(value[0], value[1], value[2]);
-			vertices.push_back(vtx);* /
-		}
-		else if (lineHeader == "vt")
-		{
-			file >> value[0] >> value[1];
-			/ *Point2f* uv = new Point2f(value[0], value[1]);
-			uvs.push_back(uv);* /
-		}
-		else if (lineHeader == "vn")
-		{
-			file >> value[0] >> value[1] >> value[2];
-			/ *Vector3D* normal = new Vector3D(value[0], value[1], value[2]);
-			normals.push_back(normal);* /
-		}
-		else if (lineHeader == "f")
-		{
-			//string vertex[3];
-			file >> strs[0] >> strs[1] >> strs[2];
-			TriangleFaceIndex* faceIndex = new TriangleFaceIndex;
-			vector<int> v0 = split(strs[0], '/');
-			vector<int> v1 = split(strs[1], '/');
-			vector<int> v2 = split(strs[2], '/');
-			faceIndex->vtx[0] = v0[0]; faceIndex->uv[0] = v0[1]; faceIndex->n[0] = v0[2];
-			faceIndex->vtx[1] = v1[0]; faceIndex->uv[1] = v1[1]; faceIndex->n[1] = v1[2];
-			faceIndex->vtx[2] = v2[0]; faceIndex->uv[2] = v2[1]; faceIndex->n[2] = v2[2];
-			//int faceIndex[3][3];
-
-			fids.push_back(faceIndex);
-		}
-		else
-		{
-			string trash;
-			getline(file, trash);
-			// Probably a comment, eat up the rest of the line
-			//continue;
-		}
-	}
-	file.close();*/
-	//////////////////////////////////////////////////////////////////////////
 
 	return false;
 }
@@ -314,14 +251,14 @@ bool Triangle::intersect(const Ray& inRay,
 {
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
-	Vector3f A = Cross(v1, v2);
-	Vector3f normal = Normalize(A);
+	Vector3f areaVec = Cross(v1, v2);
+	Normal3f normal = Normalize(Normal3f(areaVec));
 
 	Float rayT;//ray triangle DifferentialGeometry length
 	Float cosTheta = Dot(normal, inRay.d);
 	
 	rayT = Dot(normal, (*p[0] - inRay.o)) / cosTheta;
-	if (rayT <= 0)
+	if (rayT < inRay.tmin || rayT > inRay.tmax)
 	{
 		return false;
 	}
@@ -337,14 +274,14 @@ bool Triangle::intersect(const Ray& inRay,
 	int maxIndex = 0;
 	for (int i = 1; i < 3; i++)
 	{
-		maxIndex = abs(A[i]) > abs(A[maxIndex]) ? i : maxIndex;
+		maxIndex = abs(areaVec[i]) > abs(areaVec[maxIndex]) ? i : maxIndex;
 	}
-	Float s = A1[maxIndex] / A[maxIndex], t = A2[maxIndex] / A[maxIndex];
-	queryPoint->norm = Normal3f(normal);
-	queryPoint->pos = ph;
+	// First barycentric coordinate
+	Float s = A1[maxIndex] / areaVec[maxIndex], t = A2[maxIndex] / areaVec[maxIndex];
 	if (inUnitRange(s) && inUnitRange(t) && inUnitRange(1 - s - t))
 	{
-		queryPoint->shape = this;
+
+		*queryPoint = DifferentialGeometry(ph, normal, Vector3f(), Vector3f(), Normal3f(), Normal3f(), Point2f(s, t), this);
 		/*if (n[0] != nullptr)
 		{
 			queryPoint->normal = Normalize(*n[0] * (1 - s - t) + *n[1] * s + *n[2] * t);

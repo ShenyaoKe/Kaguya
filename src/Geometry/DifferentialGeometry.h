@@ -22,7 +22,7 @@ struct DifferentialGeometry
 	DifferentialGeometry(const Shape* obj,
 		const Point3f &pVec, const Normal3f &nVec,
 		const int& sX, const int& sY);
-	DifferentialGeometry(const Point3f &_p,
+	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
 		const Vector3f &_dpdu, const Vector3f &_dpdv,
 		const Normal3f &_dndu, const Normal3f &_dndv,
 		const Point2f &_uv, const Shape* shp);

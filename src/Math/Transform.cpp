@@ -35,14 +35,23 @@ void Transform::operator()(const Ray& ray, Ray* ret) const
 	}
 }
 
-Point3f Transform::operator()(const Point3f &pos) const
+Point3f Transform::operator()(const Point3f &p) const
 {
-	return m(pos);
+	return m(p);
 }
 
-Vector3f Transform::operator()(const Vector3f & vec) const
+Vector3f Transform::operator()(const Vector3f &v) const
 {
-	return m(vec);
+	return m(v);
+}
+
+Normal3f Transform::operator()(const Normal3f &n) const
+{
+	Float x = n.x, y = n.y, z = n.z;
+	return Normal3f(
+		mInv.mtx[0][0] * x + mInv.mtx[0][1] * x + mInv.mtx[0][2] * x,
+		mInv.mtx[1][0] * y + mInv.mtx[1][1] * y + mInv.mtx[1][2] * y,
+		mInv.mtx[2][0] * z + mInv.mtx[2][1] * z + mInv.mtx[2][2] * z);
 }
 
 Matrix4x4 Transform::getMat() const

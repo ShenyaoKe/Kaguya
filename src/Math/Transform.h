@@ -38,8 +38,9 @@ public:
 	{}
 	//~Transform() {}
 
-	Point3f operator () (const Point3f &pos) const;
-	Vector3f operator () (const Vector3f &vec) const;
+	Point3f operator () (const Point3f &p) const;
+	Vector3f operator () (const Vector3f &v) const;
+	Normal3f operator () (const Normal3f &n) const;
 	BBox operator () (const BBox &bbox) const;
 	Ray operator () (const Ray &ray) const;
 	void operator () (const Ray &ray, Ray* ret) const;
