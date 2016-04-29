@@ -43,6 +43,26 @@ bool TriangleMesh::loadOBJ(const char* filename)
 	//vector<PolyIndex> fids;
 	if (ObjParser::parse(filename, verts, uvs, norms, fids))
 	{
+		// If triangulated
+		bool unitUV_needed = false, unitN_needed = false;
+		//size_t nsize = norms.size();
+		size_t uvsize = uvs.size();
+		//size_t nid[3] = { nsize, nsize + 1, nsize + 2 };
+		size_t uvid[3] = { uvsize, uvsize + 1, uvsize + 2 };
+		for (auto f : fids)
+		{
+			if (f.uv.size() == 0)
+			{
+				f.uv.insert(f.uv.end(), uvid, uvid + 3);
+				unitUV_needed = true;
+			}
+		}
+		if (unitUV_needed)
+		{
+			uvs.push_back(Point2f(0., 0.));
+			uvs.push_back(Point2f(1., 0.));
+			uvs.push_back(Point2f(1., 1.));
+		}
 		// Triangulation required!
 		return true;
 	}
@@ -189,14 +209,6 @@ Triangle::Triangle(TriangleMesh *inMesh, size_t fn)
 		this->setUV(&inMesh->uvs[faceIndex.uv[0] - 1],
 			&inMesh->uvs[faceIndex.uv[1] - 1], &inMesh->uvs[faceIndex.uv[2] - 1]);
 	}
-	/*else
-	{
-		Point2f* v00 = new Point2f(0.0, 0.0);
-		Point2f* v10 = new Point2f(1.0, 0.0);
-		Point2f* v01 = new Point2f(0.0, 1.0);
-
-		this->setUV(v00, v10, v01);
-	}*/
 	/************************************************************************/
 	/* Normals                                                              */
 	/************************************************************************/
@@ -207,17 +219,12 @@ Triangle::Triangle(TriangleMesh *inMesh, size_t fn)
 	}
 	else
 	{
-		Normal3f* n = new Normal3f(Normalize(Cross(*p[2] - *p[1], *p[0] - *p[1])));
-		this->setNormal(n, n, n);
+		inMesh->norms.push_back(
+			Normal3f(Cross(*p[2] - *p[1], *p[0] - *p[1])));
+		auto &n = inMesh->norms.back();
+		this->setNormal(&n, &n, &n);
 	}
 	this->bounding();
-}
-Triangle::~Triangle()
-{
-//	mesh = nullptr;
-// 	p.clear();
-// 	uv.clear();
-// 	n.clear();
 }
 void Triangle::bounding()
 {
@@ -252,7 +259,7 @@ bool Triangle::intersect(const Ray& inRay,
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
 	Vector3f areaVec = Cross(v1, v2);
-	Normal3f normal = Normalize(Normal3f(areaVec));
+	Vector3f normal = Normalize(areaVec);
 
 	Float rayT;//ray triangle DifferentialGeometry length
 	Float cosTheta = Dot(normal, inRay.d);
@@ -271,28 +278,36 @@ bool Triangle::intersect(const Ray& inRay,
 	Vector3f A2 = Cross(*p[0] - ph, *p[1] - ph);
 	Vector3f A1 = Cross(*p[2] - ph, *p[0] - ph);
 
-	int maxIndex = 0;
-	for (int i = 1; i < 3; i++)
-	{
-		maxIndex = abs(areaVec[i]) > abs(areaVec[maxIndex]) ? i : maxIndex;
-	}
-	// First barycentric coordinate
+	int maxIndex = abs(areaVec[0]) > abs(areaVec[1]) ? 0 : 1;
+	maxIndex = abs(areaVec[maxIndex]) > abs(areaVec[2]) ? maxIndex : 2;
+	// Barycentric coordinate
 	Float s = A1[maxIndex] / areaVec[maxIndex], t = A2[maxIndex] / areaVec[maxIndex];
-	if (inUnitRange(s) && inUnitRange(t) && inUnitRange(1 - s - t))
+	Float w = 1. - s - t;
+	if (!inUnitRange(s) || !inUnitRange(t) || !inUnitRange(w))
 	{
-
-		*queryPoint = DifferentialGeometry(ph, normal, Vector3f(), Vector3f(), Normal3f(), Normal3f(), Point2f(s, t), this);
-		/*if (n[0] != nullptr)
-		{
-			queryPoint->normal = Normalize(*n[0] * (1 - s - t) + *n[1] * s + *n[2] * t);
-		}
-		if (uv[0] != nullptr)
-		{
-			queryPoint->uv = *uv[0] * (1 - s - t) + *uv[1] * s + *uv[2] * t;
-		}*/
-		return true;
+		return false;
 	}
-	return false;
+
+	// Compute dpdu, dpdv
+	Vector3f dpdu, dpdv;
+	Float du1 = uv[1]->x - uv[0]->x;
+	Float dv1 = uv[1]->y - uv[0]->y;
+	Float du2 = uv[2]->x - uv[0]->x;
+	Float dv2 = uv[2]->y - uv[0]->y;
+	Float detUV = du1 * dv2 - dv1 * du2;
+	if (detUV == 0.)
+	{
+		CoordinateSystem(normal, &dpdu, &dpdv);
+	}
+	Float invDetUV = 1. / detUV;
+	dpdu = (v1 * dv2 - v2 * dv1) * invDetUV;
+	dpdv = (v2 * du1 - v1 * du2) * invDetUV;
+
+	// Interpolate UV parametric coordinates
+	Point2f tuv = *uv[0] * w + *uv[1] * s + *uv[2] * t;
+
+	*queryPoint = DifferentialGeometry(ph, Normal3f(normal), dpdu, dpdv, Normal3f(), Normal3f(), tuv, this);
+	return true;
 }
 void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 {
@@ -326,38 +341,6 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 	}
 }
 
-/*
-void exportVertices(Triangle* tri_mesh, Float* buffer)
-{
-	buffer = 
-	for (int i = 0; i < 3; i++)
-	{
-		*buffer++ = triface->p[i]->x;
-		*buffer++ = triface->p[i]->y;
-		*buffer++ = triface->p[i]->z;
-	}
-}
-
-void exportTexCoords(Triangle* tri_mesh, Float* buffer)
-{
-	for (int i = 0; i < 2; i++)
-	{
-		*buffer++ = triface->uv[i]->x;
-		*buffer++ = triface->uv[i]->y;
-	}
-}
-
-void exportNormals(Triangle* tri_mesh, Float* buffer)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		*buffer++ = triface->n[i]->x;
-		*buffer++ = triface->n[i]->y;
-		*buffer++ = triface->n[i]->z;
-	}
-}
-*/
-
 bool ObjParser::parse(const char* filename,
 	vector<Point3f> &verts,
 	vector<Point2f> &uvs, vector<Normal3f> &norms,
@@ -367,10 +350,7 @@ bool ObjParser::parse(const char* filename,
 	clock_t start, end;//Timer
 	start = clock();
 #endif
-	//////////////////////////////////////////////////////////////////////////
-	/************************************************************************/
-	/* C Stype                                                              */
-	/************************************************************************/
+	
 	FILE* fp = fopen(filename, "r");
 	if (fp == nullptr)
 	{
