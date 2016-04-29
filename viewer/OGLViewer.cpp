@@ -19,6 +19,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	//format.setProfile(QSurfaceFormat::CoreProfile);
 	this->setFormat(format);
 
+
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
 	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");
@@ -34,7 +35,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 		640, 480, 0,
 		0, 480, 0
 	};
-	cout << "View camera\n";
+	/*cout << "View camera\n";
 	for (int i = 0; i < 4; i++)
 	{
 		cout << "\t"
@@ -60,7 +61,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 			<< rast_mat[i * 4 + 1] << ", "
 			<< rast_mat[i * 4 + 2] << ", "
 			<< rast_mat[i * 4 + 3] << ", " << endl;
-	}
+	}*/
 	resgate.insert(resgate.end(), respos, respos + 12);
 	//renderpixels();
 	//resetCamera();
@@ -254,7 +255,7 @@ void OGLViewer::resizeGL(int w, int h)
 {
 	// Widget resize operations
 	view_cam->resizeViewport(width() / static_cast<double>(height()));
-	view_cam->exportVBO(nullptr, proj_mat, rast_mat);
+	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 }
 /************************************************************************/
 /* Qt User Operation Functions                                          */
@@ -381,8 +382,8 @@ void OGLViewer::renderpixels()
 			pixmap[index++] = isHit * 128;
 			pixmap[index++] = isHit * 255;*/
 			Point3f n(0, 0, 0);
-			if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
-			//if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
+			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
+			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
 			{
 				n = queryPoint->pos;
 			}

@@ -157,7 +157,6 @@ Point2f Film::getFilmUV(Float imgX, Float imgY) const
 }
 Matrix4x4 Film::rasterToFilm() const
 {
-	//Matrix4D ret;
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:

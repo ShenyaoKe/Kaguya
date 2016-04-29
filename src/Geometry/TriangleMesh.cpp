@@ -341,6 +341,7 @@ bool Triangle::intersect(const Ray& inRay,
 	}
 	Float s = A1[maxIndex] / A[maxIndex], t = A2[maxIndex] / A[maxIndex];
 	queryPoint->norm = Normal3f(normal);
+	queryPoint->pos = ph;
 	if (inUnitRange(s) && inUnitRange(t) && inUnitRange(1 - s - t))
 	{
 		queryPoint->shape = this;
