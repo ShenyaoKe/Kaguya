@@ -13,13 +13,14 @@ DifferentialGeometry::DifferentialGeometry(const Shape* obj,
 {
 }
 
-DifferentialGeometry::DifferentialGeometry(const Point3f &_p,
+DifferentialGeometry::DifferentialGeometry(
+	const Point3f &_p, const Normal3f &_n,
 	const Vector3f &_dpdu, const Vector3f &_dpdv,
 	const Normal3f &_dndu, const Normal3f &_dndv,
 	const Point2f &_uv, const Shape* shp)
-	: pos(_p), dpdu(_dpdu), dpdv(_dpdv)
+	: pos(_p), norm(_n)
+	, dpdu(_dpdu), dpdv(_dpdv)
 	, dndu(_dndu), dndv(_dndv), uv(_uv), shape(shp)
-	, norm(Normalize(Cross(dpdu, dpdv)))
 {
 	shading.n = norm;
 	shading.dpdu = dpdu;

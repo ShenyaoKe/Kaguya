@@ -127,8 +127,7 @@ class Triangle : public Shape
 {
 public:
 	Triangle();
-	Triangle(TriangleMesh *inMesh, size_t n);
-	~Triangle();
+	Triangle(TriangleMesh* inMesh, size_t n);
 
 	void bounding();
 	void attachMesh(const TriangleMesh* inMesh);

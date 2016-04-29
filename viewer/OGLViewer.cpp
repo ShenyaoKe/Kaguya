@@ -360,6 +360,8 @@ void OGLViewer::saveFrameBuffer()
 
 void OGLViewer::renderpixels()
 {
+	clock_t startT, endT;
+	startT = clock();
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
@@ -376,21 +378,19 @@ void OGLViewer::renderpixels()
 			view_cam->generateRay(camsmp, &traceRay);
 			double tHit(INFINITY), rayEp(0);
 
-			/*uint8_t isHit = static_cast<uint8_t>(tree->intersect(traceRay, queryPoint, &tHit, &rayEp));
-			
-			pixmap[index++] = isHit * 64;
-			pixmap[index++] = isHit * 128;
-			pixmap[index++] = isHit * 255;*/
-			Point3f n(0, 0, 0);
+			Point2f n(0, 0);
 			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
 			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
 			{
-				n = queryPoint->pos;
+				n = queryPoint->uv;
 			}
 			pixmap[index++] = static_cast<uint8_t>((n.x + 1.0) * 127);
 			pixmap[index++] = static_cast<uint8_t>((n.y + 1.0) * 127);
-			pixmap[index++] = static_cast<uint8_t>((n.z + 1.0) * 127);
+			pixmap[index++] = static_cast<uint8_t>((0 + 1.0) * 127);
 		}
 	}
 	delete queryPoint;
+
+	endT = clock();
+	cout << "Rendering Time:\t" << (Float)(endT - startT) / CLOCKS_PER_SEC << "s" << endl;//Timer
 }

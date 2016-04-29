@@ -587,5 +587,20 @@ inline Normal3<T> Normalize(const Normal3<T> &n)
 	return n / n.length();
 }
 
-
+template <typename T>
+inline void CoordinateSystem(const Vector3<T> &v1,
+	Vector3<T>* v2, Vector3<T>* v3)
+{
+	if (abs(v1.x) > abs(v1.y))
+	{
+		*v2 = Vector3<T>(-v1.z, 0, v1.x)
+			/ sqrt(v1.x * v1.x + v1.z * v1.z);
+	} 
+	else
+	{
+		*v2 = Vector3<T>(0, v1.z, -v1.y)
+			/ sqrt(v1.y * v1.y + v1.z * v1.z);
+	}
+	*v3 = Cross(v1, *v2);
+}
 #endif // KAGUYA_GEOMETRY_H
