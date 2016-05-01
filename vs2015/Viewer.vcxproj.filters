@@ -65,6 +65,12 @@
     <ClCompile Include="..\viewer\ImageViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageViewer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ImageViewer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\viewer\MainWindow.h">
@@ -85,6 +91,9 @@
     <CustomBuild Include="..\resources\forms\ImageViewer.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\viewer\ImageViewer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\viewer\common.h">
@@ -98,9 +107,6 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_ImageViewer.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\viewer\ImageViewer.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +123,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\resources\shaders\model_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\model_gs.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

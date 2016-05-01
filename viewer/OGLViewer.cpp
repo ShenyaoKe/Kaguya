@@ -8,6 +8,10 @@ OGLViewer::OGLViewer(QWidget *parent)
 		Point3f(10., 6., 10.), Point3f(0.0, 0.0, 0.0), Vector3f(0., 1., 0.),
 		width() / static_cast<double>(height())))
 	, pixmap(default_resX * default_resY * 3, 255)
+	, resgate{	0, 0,
+				640, 0,
+				640, 480,
+				0, 480 }
 {
 	//this->setAttribute(Qt::WA_DeleteOnClose);
 	// Set surface format for current widget
@@ -29,12 +33,6 @@ OGLViewer::OGLViewer(QWidget *parent)
 
 	view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 
-	float respos[] = {
-		0, 0, 0,
-		640, 0, 0,
-		640, 480, 0,
-		0, 480, 0
-	};
 	/*cout << "View camera\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -62,8 +60,6 @@ OGLViewer::OGLViewer(QWidget *parent)
 			<< rast_mat[i * 4 + 2] << ", "
 			<< rast_mat[i * 4 + 3] << ", " << endl;
 	}*/
-	resgate.insert(resgate.end(), respos, respos + 12);
-	//renderpixels();
 	//resetCamera();
 }
 
@@ -164,34 +160,50 @@ void OGLViewer::bindMesh()
 	glDeleteBuffers(1, &model_ibo);
 	glDeleteVertexArrays(1, &model_vao);
 
+	// VBO
+	glCreateBuffers(1, &model_vert_vbo);
+	glNamedBufferData(model_vert_vbo, sizeof(GLfloat) * model_verts.size(), &model_verts[0], GL_STATIC_DRAW);
+	// IBO
+	glCreateBuffers(1, &model_ibo);
+	glNamedBufferData(model_ibo, sizeof(GLuint) * model_ids.size(), &model_ids[0], GL_STATIC_DRAW);
+
 	// Bind VAO
-	glGenVertexArrays(1, &model_vao);
-	glBindVertexArray(model_vao);
-	
-	glGenBuffers(1, &model_vert_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, model_vert_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model_verts.size(), &model_verts[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(0);
+	glCreateVertexArrays(1, &model_vao);
+	glEnableVertexArrayAttrib(model_vao, 0);
+
+	glVertexArrayAttribFormat(model_vao, 0, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayVertexBuffer(model_vao, 0, model_vert_vbo, 0, sizeof(GLfloat) * 3);
+	glVertexArrayAttribBinding(model_vao, 0, 0);
+	glVertexArrayElementBuffer(model_vao, model_ibo);
 
 	// Bind normal value as color
-	glGenBuffers(1, &model_ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * model_ids.size(), &model_ids[0], GL_STATIC_DRAW);
 
 	// Bind UV values
 	
-	glBindVertexArray(0);
+	/*glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
 }
 
 void OGLViewer::bindReslotionGate()
 {
-	glDeleteBuffers(1, &resgate_vbo);
-	glDeleteVertexArrays(1, &resgate_vao);
+	//glDeleteBuffers(1, &resgate_vbo);
+	//glDeleteVertexArrays(1, &resgate_vao);
+	// DSA
+	// Create VAO
+	glCreateBuffers(1, &resgate_vbo);
+	glNamedBufferData(resgate_vbo, sizeof(GLfloat) * resgate.size(), &resgate[0], GL_STATIC_DRAW);
 
-	// Bind VAO
+	// VAO
+	glCreateVertexArrays(1, &resgate_vao);
+	glEnableVertexArrayAttrib(resgate_vao, 0);
+
+	// Setup the formats
+	glVertexArrayAttribFormat(resgate_vao, 0, 2, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayVertexBuffer(resgate_vao, 0, resgate_vbo, 0, sizeof(float) * 2);
+	glVertexArrayAttribBinding(resgate_vao, 0, 0);
+
+	/*// Bind VAO
 	glGenVertexArrays(1, &resgate_vao);
 	glBindVertexArray(resgate_vao);
 
@@ -202,7 +214,7 @@ void OGLViewer::bindReslotionGate()
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 }
 
 void OGLViewer::paintGL()
@@ -245,7 +257,7 @@ void OGLViewer::paintGL()
 	gate_shader->use_program();
 	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, rast_mat);
 	glLineWidth(2.0);
-	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 3);
+	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 2);
 	
 	glBindVertexArray(0);
 	gate_shader->unuse();
@@ -367,6 +379,8 @@ void OGLViewer::renderpixels()
 	cameraSampler camsmp;
 	Transform w2o;
 	geoSphere sphere(&w2o, &w2o);
+	Point3f lightpos(3, 10, 1);
+	Float cosVal;
 	DifferentialGeometry* queryPoint = new DifferentialGeometry;
 	for (int j = 0; j < default_resY; j++)
 	{
@@ -378,15 +392,17 @@ void OGLViewer::renderpixels()
 			view_cam->generateRay(camsmp, &traceRay);
 			double tHit(INFINITY), rayEp(0);
 
+			cosVal = 0;
 			Point2f n(0, 0);
 			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
 			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
 			{
-				n = queryPoint->uv;
+				cosVal = tHit;
+				//cosVal = (Dot(Normalize(lightpos - queryPoint->pos), queryPoint->norm) + 1) * 0.5;
 			}
-			pixmap[index++] = static_cast<uint8_t>((n.x + 1.0) * 127);
-			pixmap[index++] = static_cast<uint8_t>((n.y + 1.0) * 127);
-			pixmap[index++] = static_cast<uint8_t>((0 + 1.0) * 127);
+			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
+			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
+			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
 		}
 	}
 	delete queryPoint;

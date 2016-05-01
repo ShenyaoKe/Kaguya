@@ -2,12 +2,12 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
+	, viewer(new OGLViewer)
+	, imgViewer(new ImageViewer)
 {
-	viewer = new OGLViewer;
-	imgViewer = new ImageViewer;
 
 	ui.setupUi(this);
-	ui.ogl_layout->addWidget(viewer);
+	ui.ogl_layout->addWidget(viewer.get());
 	QTabWidget* shelf = new QTabWidget();
 	shelf->addTab(new QWidget, "1");
 	shelf->addTab(new QWidget, "2");
@@ -23,17 +23,19 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::on_actionAbout_triggered()
 {
-	about = new QDialog(0,0);
+	about.reset(new QDialog(0,0));
 	Ui::about_dialog about_ui;
-	about_ui.setupUi(about);
+	about_ui.setupUi(about.get());
 	about->setAttribute(Qt::WA_DeleteOnClose);
 	about->show();
 }
 
 void MainWindow::connectimg()
 {
-	viewer->renderpixels();
-	imgViewer->setpixmap(viewer->pixmap);
+	//viewer->renderpixels();
+	imgViewer->setpixmap(&viewer->pixmap);
+	imgViewer->img_panel->setImageResolution(640, 480);
+	imgViewer->adjustSize();
 	imgViewer->show();
 }
 
