@@ -32,7 +32,7 @@ public:
 		, shapeID(nextshapeID++)
 	{
 	}
-	virtual ~Shape() = 0;
+	virtual ~Shape();
 
 	virtual void bounding() = 0;
 	virtual BBox getWorldBounding() const;
