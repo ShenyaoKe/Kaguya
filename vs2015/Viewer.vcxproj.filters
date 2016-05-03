@@ -128,6 +128,12 @@
     <None Include="..\resources\shaders\model_gs.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\resources\shaders\img_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\img_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\resources\Kaguya.rc">

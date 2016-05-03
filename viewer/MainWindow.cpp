@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.shelf->addWidget(shelf);
 	//setWindowTitle(tr("OpenGL Qt Template"));
 	
-	viewer->setFocusPolicy(Qt::StrongFocus);
+	//viewer->setFocusPolicy(Qt::StrongFocus);
 
 	/*connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);*/
 	connect(ui.render_button, &QPushButton::clicked, this, &MainWindow::connectimg);
@@ -32,7 +32,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::connectimg()
 {
-	//viewer->renderpixels();
+	viewer->renderpixels();
 	imgViewer->setpixmap(&viewer->pixmap);
 	imgViewer->img_panel->setImageResolution(640, 480);
 	imgViewer->adjustSize();

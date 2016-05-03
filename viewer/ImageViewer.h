@@ -1,16 +1,18 @@
 #pragma once
 #include "common.h"
 #include "GL/glew.h"
+#include "OpenGL_Utils/GLSLProgram.h"
 #include "Core/Kaguya.h"
 #include <QMainWindow>
 #include <QOpenGLWidget>
+#include <QOpenGLContext>
 #include <QImage>
 #include "ui_ImageViewer.h"
 
 class ImageViewerPanel;
 
-static GLuint ogl_ver_major;
-static GLuint ogl_ver_minor;
+static GLint ogl_ver_major;
+static GLint ogl_ver_minor;
 
 class ImageViewer : public QMainWindow
 {
@@ -18,9 +20,11 @@ class ImageViewer : public QMainWindow
 public:
 	ImageViewer(QWidget* parent = nullptr);
 	~ImageViewer();
-
+	//ImageViewer* getInstance();
 	void setpixmap(const vector<uint8_t>* pixmap);
 private:
+
+	//static ImageViewer* instance;
 	Ui::img_viewer ui;
 	unique_ptr<ImageViewerPanel> img_panel;
 
@@ -41,10 +45,12 @@ protected:
 	void paintGL() Q_DECL_OVERRIDE;
 private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
-	float imgsize[2];
+	uint32_t imgsize[2];
 	
 	const vector<uint8_t>* textures;
-	GLuint vao, vbo, tex;
+	unique_ptr<GLSLProgram> shaderP;
+	GLuint vao, vbo, ibo, tex;
+	GLuint64 texHandle;
 
 	friend class ImageViewer;
 };

@@ -190,6 +190,8 @@
     </CustomBuild>
     <None Include="..\resources\shaders\gate_fs.glsl" />
     <None Include="..\resources\shaders\gate_vs.glsl" />
+    <None Include="..\resources\shaders\img_fs.glsl" />
+    <None Include="..\resources\shaders\img_vs.glsl" />
     <None Include="..\resources\shaders\model_fs.glsl" />
     <None Include="..\resources\shaders\model_gs.glsl" />
     <None Include="..\resources\shaders\model_vs.glsl" />
