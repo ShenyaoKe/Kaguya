@@ -109,7 +109,7 @@ struct KdAccelNode;
 class KdTreeAccel;
 class Shape;
 class Ray;
-struct DifferentialGeometry;
+class DifferentialGeometry;
 class TriangleMesh;
 class Triangle;
 
@@ -121,6 +121,7 @@ class Camera;
 class perspCamera;
 class abstractCamera;
 
+class renderBuffer;
 
 const int default_resX = 640;
 const int default_resY = 480;

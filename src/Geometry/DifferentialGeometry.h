@@ -16,8 +16,9 @@
 /************************************************************************/
 /* DifferentialGeometry                                                 */
 /************************************************************************/
-struct DifferentialGeometry
+class DifferentialGeometry
 {
+public:
 	DifferentialGeometry();
 	DifferentialGeometry(const Shape* obj,
 		const Point3f &pVec, const Normal3f &nVec,

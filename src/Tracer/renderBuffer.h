@@ -9,74 +9,51 @@
 #define __renderBuffer__
 //#include "Core/rtdef.h"
 // #include "Image/ColorData.h"
-
+#include "Core/Kaguya.h"
 #include "Math/Geometry.h"
-#include "Image/ImageData.h"
+#include "Geometry/Shape.h"
+#include "Geometry/DifferentialGeometry.h"
 
-class bufferData
-{
-	Vector3D DifferentialGeometry;
-	Normal3f normalVec(0., 0., -1.);
-	ColorRGBA beauty, ambient, diffuse, specular;
-	int objectID = 0;
-	Float depth = 0;
-public:
-	
-
-	bufferData()
-	{
-		beauty = COLOR_TRANSPARENT_BLACK;
-		ambient = COLOR_TRANSPARENT_BLACK;
-		diffuse = COLOR_TRANSPARENT_BLACK;
-		specular = COLOR_TRANSPARENT_BLACK;
-	}
-
-	virtual ~bufferData()
-	{
-	}
-	void init();
-	void setDifferentialGeometry(const Vector3D &vec);
-	void setNormalVector(const Vector3D &vec);
-	void setBeauty(const ColorRGBA& rgb);
-	void setAmbient(const ColorRGBA& rgb);
-	void setDiffuse(const ColorRGBA& rgb);
-	void setSpecular(const ColorRGBA& rgb);
-	void setObjectID(int id);
-	void setDepth(Float d);
-
-	Vector3D getDifferentialGeometry() const;
-	Vector3D getNormalVec() const;
-	ColorRGBA getNormalAsColor() const;
-	ColorRGBA getBeauty() const;
-	ColorRGBA getAmbient() const;
-	ColorRGBA getDiffuse() const;
-	ColorRGBA getSpecular() const;
-	int getObjectID() const;
-	Float getDepth() const;
-};
 class renderBuffer
 {
 public:
-	int width = 0;
-	int height = 0;
-	bufferData** data = nullptr;
+	renderBuffer(uint32_t w, uint32_t h);
+	~renderBuffer(){}
+	
+	void resize(uint32_t w, uint32_t h);
+	void clear();
+	bool empty() const;
+	void setBuffer(uint32_t x, uint32_t y,
+		const DifferentialGeometry &geom, double zdepth);
 
-	renderBuffer()
+private:
+	template<typename T>
+	void Vec3ToFloats(const T &n, floats_t &buffer, size_t id)
 	{
-	}
-	renderBuffer(int w, int h);
-	virtual ~renderBuffer()
+		buffer[id] = static_cast<float>(n.x);
+		buffer[id + 1] = static_cast<float>(n.y);
+		buffer[id + 2] = static_cast<float>(n.z);
+	};
+	template<typename T>
+	void Vec2ToFloats(const T &n, floats_t &buffer, size_t id)
 	{
-	}
+		buffer[id] = static_cast<float>(n.x);
+		buffer[id + 1] = static_cast<float>(n.y);
+	};
 
-	void setDifferentialGeometry(int x, int y, const Vector3D &vec);
-	void setNormalVector(int x, int y, const Vector3D &vec);
-	void setObjectID(int x, int y, int id);
-	void setDepth(int x, int y, Float d);
+public:
+	uint32_t width;
+	uint32_t height;
+	size_t size;
 
-	void writeNormalImage(string filename);
-	void writeObjectIDImage(string filename);
-	void writeZDepthImage(string filename, Float maxDepth);
+	floats_t p, n;// 3 * n
+	floats_t dpdu, dpdv, dndu, dndv; // 3 * n
+
+	floats_t uv;// 2 * n
+
+	floats_t z;// 1 * n
+	ui32s_t id;// 1 * n
+
 };
 
 #endif

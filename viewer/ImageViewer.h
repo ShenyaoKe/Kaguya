@@ -1,16 +1,19 @@
 #pragma once
 #include "common.h"
 #include "GL/glew.h"
+#include "OpenGL_Utils/GLSLProgram.h"
 #include "Core/Kaguya.h"
+#include "Tracer/renderBuffer.h"
 #include <QMainWindow>
 #include <QOpenGLWidget>
+#include <QOpenGLContext>
 #include <QImage>
 #include "ui_ImageViewer.h"
 
 class ImageViewerPanel;
 
-static GLuint ogl_ver_major;
-static GLuint ogl_ver_minor;
+static GLint ogl_ver_major;
+static GLint ogl_ver_minor;
 
 class ImageViewer : public QMainWindow
 {
@@ -18,9 +21,11 @@ class ImageViewer : public QMainWindow
 public:
 	ImageViewer(QWidget* parent = nullptr);
 	~ImageViewer();
-
-	void setpixmap(const vector<uint8_t>* pixmap);
+	//ImageViewer* getInstance();
+	void setpixmap(const renderBuffer* pixmap);
 private:
+
+	//static ImageViewer* instance;
 	Ui::img_viewer ui;
 	unique_ptr<ImageViewerPanel> img_panel;
 
@@ -39,12 +44,16 @@ public:
 protected:
 	void initializeGL() Q_DECL_OVERRIDE;
 	void paintGL() Q_DECL_OVERRIDE;
+	void resizeGL(int w, int h) Q_DECL_OVERRIDE;
 private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
-	float imgsize[2];
+	uint32_t imgsize[2];
 	
-	const vector<uint8_t>* textures;
-	GLuint vao, vbo, tex;
-
+	const renderBuffer* textures;
+	unique_ptr<GLSLProgram> shaderP;
+	GLuint vao, vbo, ibo;
+	GLuint tex[8];
+	GLuint64 texHandle[8];
+	uint8_t drawType;
 	friend class ImageViewer;
 };

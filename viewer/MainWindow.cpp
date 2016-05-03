@@ -2,8 +2,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
-	, viewer(new OGLViewer)
-	, imgViewer(new ImageViewer)
+	, imgViewer(new ImageViewer(this))
+	, viewer(new OGLViewer(this))
 {
 
 	ui.setupUi(this);
@@ -32,8 +32,8 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::connectimg()
 {
-	//viewer->renderpixels();
-	imgViewer->setpixmap(&viewer->pixmap);
+	viewer->renderpixels();
+	imgViewer->setpixmap(viewer->pixmap);
 	imgViewer->img_panel->setImageResolution(640, 480);
 	imgViewer->adjustSize();
 	imgViewer->show();
