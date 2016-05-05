@@ -13,7 +13,6 @@ OGLViewer::OGLViewer(QWidget *parent)
 				640, 480,
 				0, 480 }
 {
-	//this->setAttribute(Qt::WA_DeleteOnClose);
 	// Set surface format for current widget
 	QSurfaceFormat format;
 	format.setDepthBufferSize(32);
@@ -31,47 +30,12 @@ OGLViewer::OGLViewer(QWidget *parent)
 	model_mesh->refine(objlist);
 	tree = make_unique<KdTreeAccel>(objlist);
 
-	//view_cam->exportVBO(view_mat, proj_mat, rast_mat);
+	// Export View, Projection, Rasterization Matrices
 	view_cam->exportVBO(cam_mat, cam_mat + 16, cam_mat + 32);
-	/*cout << "View camera\n";
-	for (int i = 0; i < 4; i++)
-	{
-		cout << "\t"
-			<< view_mat[i * 4] << ", "
-			<< view_mat[i * 4 + 1] << ", "
-			<< view_mat[i * 4 + 2] << ", "
-			<< view_mat[i * 4 + 3] << ", " << endl;
-	}
-	cout << "Proj camera\n";
-	for (int i = 0; i < 4; i++)
-	{
-		cout << "\t"
-			<< proj_mat[i * 4] << ", "
-			<< proj_mat[i * 4 + 1] << ", "
-			<< proj_mat[i * 4 + 2] << ", "
-			<< proj_mat[i * 4 + 3] << ", " << endl;
-	}
-	cout << "Raster camera\n";
-	for (int i = 0; i < 4; i++)
-	{
-		cout << "\t"
-			<< rast_mat[i * 4] << ", "
-			<< rast_mat[i * 4 + 1] << ", "
-			<< rast_mat[i * 4 + 2] << ", "
-			<< rast_mat[i * 4 + 3] << ", " << endl;
-	}*/
-	//resetCamera();
 }
 
 OGLViewer::~OGLViewer()
 {
-	//delete box_mesh;
-	//box_mesh = nullptr;
-	/*delete model_mesh;
-	model_mesh = nullptr;
-	delete view_cam;
-	delete model_shader;
-	delete gate_shader;*/
 }
 /************************************************************************/
 /* OpenGL Rendering Modules                                             */
@@ -186,8 +150,6 @@ void OGLViewer::bindMesh()
 
 void OGLViewer::bindReslotionGate()
 {
-	//glDeleteBuffers(1, &resgate_vbo);
-	//glDeleteVertexArrays(1, &resgate_vao);
 	// DSA
 	// Create VAO
 	glCreateBuffers(1, &resgate_vbo);
@@ -201,25 +163,13 @@ void OGLViewer::bindReslotionGate()
 	glVertexArrayAttribFormat(resgate_vao, 0, 2, GL_FLOAT, GL_FALSE, 0);
 	glVertexArrayVertexBuffer(resgate_vao, 0, resgate_vbo, 0, sizeof(float) * 2);
 	glVertexArrayAttribBinding(resgate_vao, 0, 0);
-
-	/*// Bind VAO
-	glGenVertexArrays(1, &resgate_vao);
-	glBindVertexArray(resgate_vao);
-
-	glGenBuffers(1, &resgate_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, resgate_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * resgate.size(), &resgate[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(0);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 }
 
 void OGLViewer::paintGL()
 {
 	// Make curent window
 	makeCurrent();
+	glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
 	// Clear background and color buffer
 	glClearColor(0.6, 0.6, 0.6, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -246,12 +196,9 @@ void OGLViewer::paintGL()
 	model_shader->use_program();
 
 	// Apply uniform matrix
-	//glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, model_mat);
-	/*glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_mat);
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, proj_mat);*/
-	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, cam_mat);
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, cam_mat + 16);
-	//glDrawArrays(GL_TRIANGLES, 0, model_verts.size() / 3);
+	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, cam_mat);// View Matrix
+	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, cam_mat + 16);// Projection
+
 	glDrawElements(GL_TRIANGLES, model_ids.size(), GL_UNSIGNED_INT, 0);
 	////////////////////////////////////////////
 	glBindVertexArray(resgate_vao);
@@ -265,7 +212,6 @@ void OGLViewer::paintGL()
 	gate_shader->unuse();
 
 	doneCurrent();
-	cout << "ogl viewer:" << defaultFramebufferObject() << endl;
 }
 // Resize function
 void OGLViewer::resizeGL(int w, int h)
@@ -382,6 +328,7 @@ void OGLViewer::saveFrameBuffer()
 
 void OGLViewer::renderpixels()
 {
+	makeCurrent();
 	clock_t startT, endT;
 	startT = clock();
 	int index = 0;
@@ -419,4 +366,5 @@ void OGLViewer::renderpixels()
 
 	endT = clock();
 	cout << "Rendering Time:\t" << (Float)(endT - startT) / CLOCKS_PER_SEC << "s" << endl;//Timer
+	doneCurrent();
 }

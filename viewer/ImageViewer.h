@@ -43,6 +43,7 @@ public:
 protected:
 	void initializeGL() Q_DECL_OVERRIDE;
 	void paintGL() Q_DECL_OVERRIDE;
+	void resizeGL(int w, int h) Q_DECL_OVERRIDE;
 private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
 	uint32_t imgsize[2];
@@ -51,6 +52,6 @@ private:
 	unique_ptr<GLSLProgram> shaderP;
 	GLuint vao, vbo, ibo, tex;
 	GLuint64 texHandle;
-
+	GLuint defaultFBO, defaultRBO;
 	friend class ImageViewer;
 };

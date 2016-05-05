@@ -2,8 +2,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
-	, viewer(new OGLViewer)
-	, imgViewer(new ImageViewer)
+	, imgViewer(new ImageViewer(this))
+	, viewer(new OGLViewer(this))
 {
 
 	ui.setupUi(this);
@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.shelf->addWidget(shelf);
 	//setWindowTitle(tr("OpenGL Qt Template"));
 	
-	//viewer->setFocusPolicy(Qt::StrongFocus);
+	viewer->setFocusPolicy(Qt::StrongFocus);
 
 	/*connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);*/
 	connect(ui.render_button, &QPushButton::clicked, this, &MainWindow::connectimg);

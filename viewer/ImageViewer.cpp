@@ -4,10 +4,11 @@
 
 ImageViewer::ImageViewer(QWidget* parent)
 	: QMainWindow(parent)
-	, img_panel(new ImageViewerPanel)
+	, img_panel(new ImageViewerPanel(this))
 {
 	ui.setupUi(this);
 	ui.img_panel->addWidget(img_panel.get());
+	img_panel->setFocusPolicy(Qt::StrongFocus);
 }
 
 
@@ -66,16 +67,18 @@ void ImageViewerPanel::setImageResolution(uint32_t w, uint32_t h)
 
 void ImageViewerPanel::updateTexture()
 {
+	makeCurrent();
 	if (!textures->empty())
 	{
 		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
 		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures->front());
 	}
+	doneCurrent();
 }
 
 void ImageViewerPanel::initializeGL()
 {
-	glewInit();
+	//glewInit();
 
 	glGetIntegerv(GL_MAJOR_VERSION, &ogl_ver_major);
 	glGetIntegerv(GL_MINOR_VERSION, &ogl_ver_minor);
@@ -85,6 +88,17 @@ void ImageViewerPanel::initializeGL()
 
 	if (ogl_ver_major == 4 && ogl_ver_minor >= 5)
 	{
+
+		glGenFramebuffers(1, &defaultFBO);
+		glGenRenderbuffers(1, &defaultRBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
+		glBindRenderbuffer(GL_RENDERBUFFER, defaultRBO);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, 640, 480);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, defaultRBO);
+		
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		// DSA
 		// Create VAO
 		glCreateBuffers(1, &vbo);
@@ -143,8 +157,8 @@ void ImageViewerPanel::initializeGL()
 
 void ImageViewerPanel::paintGL()
 {
-	//makeCurrent();
-	// Clear background and color buffer
+	makeCurrent();
+
 	glClearColor(0.2, 0.2, 0.2, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -153,11 +167,14 @@ void ImageViewerPanel::paintGL()
 	glBindVertexArray(vao);
 	shaderP->use_program();
 	glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
-	//glDrawArrays(GL_LINE_LOOP, 0, 4);
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-	//doneCurrent();
+	doneCurrent();
+}
 
-	cout << "img viewer:" << defaultFramebufferObject() << endl;
+void ImageViewerPanel::resizeGL(int w, int h)
+{
+
 }
