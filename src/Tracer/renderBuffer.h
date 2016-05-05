@@ -9,9 +9,8 @@
 #define __renderBuffer__
 //#include "Core/rtdef.h"
 // #include "Image/ColorData.h"
-
+#include "Core/Kaguya.h"
 #include "Math/Geometry.h"
-#include "Image/ImageData.h"
 #include "Geometry/Shape.h"
 #include "Geometry/DifferentialGeometry.h"
 
@@ -19,12 +18,13 @@ class renderBuffer
 {
 public:
 	renderBuffer(uint32_t w, uint32_t h);
+	~renderBuffer(){}
 	
 	void resize(uint32_t w, uint32_t h);
 	void clear();
-	bool empty();
+	bool empty() const;
 	void setBuffer(uint32_t x, uint32_t y,
-		const DifferentialGeometry* geom, Float* zdepth);
+		const DifferentialGeometry &geom, double zdepth);
 
 private:
 	template<typename T>

@@ -39,6 +39,7 @@ ImageViewerPanel::ImageViewerPanel(QWidget *parent)
 	, frame{ -1,-1, 1,-1, 1,1, -1,1 }
 	, imgsize{ 640, 480 }
 	, textures(nullptr)
+	, drawType(0)
 {
 	QSurfaceFormat format;
 	format.setDepthBufferSize(32);
@@ -69,9 +70,12 @@ void ImageViewerPanel::updateTexture()
 	makeCurrent();
 	if (!textures->empty())
 	{
+		for (int i = 0; i < textures->size; i++)
+		{
+			glTextureStorage2D(tex[i], 1, GL_RGB8, imgsize[0], imgsize[1]);
+			glTextureSubImage2D(tex[i], 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		}
 		
-		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
-		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures->front());
 	}
 	doneCurrent();
 }
@@ -83,22 +87,12 @@ void ImageViewerPanel::initializeGL()
 	glGetIntegerv(GL_MAJOR_VERSION, &ogl_ver_major);
 	glGetIntegerv(GL_MINOR_VERSION, &ogl_ver_minor);
 
-	shaderP = make_unique<GLSLProgram>("resources/shaders/img_vs.glsl",
+	shaderP = make_unique<GLSLProgram>(
+		"resources/shaders/img_vs.glsl",
 		"resources/shaders/img_fs.glsl");
 
 	if (ogl_ver_major == 4 && ogl_ver_minor >= 5)
 	{
-
-		glGenFramebuffers(1, &defaultFBO);
-		glGenRenderbuffers(1, &defaultRBO);
-		glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
-		glBindRenderbuffer(GL_RENDERBUFFER, defaultRBO);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, 640, 480);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, defaultRBO);
-		
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 		// DSA
 		// Create VAO
 		glCreateBuffers(1, &vbo);
@@ -166,10 +160,9 @@ void ImageViewerPanel::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glLineWidth(4);
 	glBindVertexArray(vao);
 	shaderP->use_program();
-	glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
+	glUniformHandleui64ARB((*shaderP)["tex"], texHandle[drawType]);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

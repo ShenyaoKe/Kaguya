@@ -51,8 +51,9 @@ private:
 	
 	const renderBuffer* textures;
 	unique_ptr<GLSLProgram> shaderP;
-	GLuint vao, vbo, ibo, tex[8];
+	GLuint vao, vbo, ibo;
+	GLuint tex[8];
 	GLuint64 texHandle[8];
-	GLuint defaultFBO, defaultRBO;
+	uint8_t drawType;
 	friend class ImageViewer;
 };

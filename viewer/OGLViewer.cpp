@@ -347,7 +347,7 @@ void OGLViewer::renderpixels()
 			camsmp.imgY = j;
 
 			view_cam->generateRay(camsmp, &traceRay);
-			double tHit(INFINITY), rayEp(0);
+			Float tHit(INFINITY), rayEp(0);
 
 			cosVal = 0;
 			Point2f n(0, 0);
@@ -356,8 +356,12 @@ void OGLViewer::renderpixels()
 			{
 				cosVal = tHit;
 				//cosVal = (Dot(Normalize(lightpos - queryPoint->pos), queryPoint->norm) + 1) * 0.5;
+				pixmap->setBuffer(uint32_t(i), uint32_t(j), *queryPoint, tHit);
+				//pixmap->setBuffer()
+				//pixmap->empty();
+				//pixmap->setBuffer(0);
+				//pixmap->doSomething();
 			}
-			pixmap->setBuffer(i, j, *queryPoint, tHit);
 		}
 	}
 	delete queryPoint;

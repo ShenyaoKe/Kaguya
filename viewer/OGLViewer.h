@@ -61,7 +61,7 @@ private:
 	void renderpixels();
 protected:
 	unique_ptr<perspCamera> view_cam;
-	shared_ptr<renderBuffer> pixmap;
+	renderBuffer* pixmap;
 private:
 	int lastMousePos[2];
 	int selectMode;

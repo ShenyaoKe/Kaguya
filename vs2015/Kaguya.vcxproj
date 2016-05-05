@@ -152,6 +152,8 @@
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
     <ClCompile Include="..\src\Core\Primitive.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
+    <ClCompile Include="..\src\Geometry\Shape.cpp" />
+    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
     <ClCompile Include="..\src\Geometry\Hyperboloid.cpp" />
     <ClCompile Include="..\src\Geometry\Paraboloid.cpp" />
@@ -162,10 +164,7 @@
     <ClCompile Include="..\src\Shading\BxDF.cpp" />
     <ClCompile Include="..\src\Shading\Material.cpp" />
     <ClCompile Include="..\src\Shading\Texture3D.cpp" />
-    <ClCompile Include="..\src\Tracer\renderBuffer.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
-    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
-    <ClCompile Include="..\src\Geometry\Shape.cpp" />
     <ClCompile Include="..\src\Image\Filter.cpp" />
     <ClCompile Include="..\src\Image\ImageData.cpp" />
     <ClCompile Include="..\src\Image\ImagePyramid.cpp" />
@@ -177,6 +176,7 @@
     <ClCompile Include="..\src\Shading\Texture.cpp" />
     <ClCompile Include="..\src\Shading\TextureMapping.cpp" />
     <ClCompile Include="..\src\Tracer\Ray.cpp" />
+    <ClCompile Include="..\src\Tracer\renderBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
