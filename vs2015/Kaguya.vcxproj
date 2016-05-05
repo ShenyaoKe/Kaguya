@@ -137,6 +137,7 @@
     <ClInclude Include="..\src\Shading\Texture3D.h" />
     <ClInclude Include="..\src\Shading\TextureMapping.h" />
     <ClInclude Include="..\src\Tracer\Ray.h" />
+    <ClInclude Include="..\src\Tracer\renderBuffer.h" />
     <ClInclude Include="..\src\Tracer\Tracer.h" />
     <ClInclude Include="..\src\Core\Kaguya.h" />
     <ClInclude Include="..\src\Volume\RasterizedVolume.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="..\src\Shading\BxDF.cpp" />
     <ClCompile Include="..\src\Shading\Material.cpp" />
     <ClCompile Include="..\src\Shading\Texture3D.cpp" />
+    <ClCompile Include="..\src\Tracer\renderBuffer.cpp" />
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp" />
     <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />

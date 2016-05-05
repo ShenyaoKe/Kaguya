@@ -3,6 +3,7 @@
 #include "GL/glew.h"
 #include "OpenGL_Utils/GLSLProgram.h"
 #include "Core/Kaguya.h"
+#include "Tracer/renderBuffer.h"
 #include <QMainWindow>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
@@ -21,7 +22,7 @@ public:
 	ImageViewer(QWidget* parent = nullptr);
 	~ImageViewer();
 	//ImageViewer* getInstance();
-	void setpixmap(const vector<uint8_t>* pixmap);
+	void setpixmap(const renderBuffer* pixmap);
 private:
 
 	//static ImageViewer* instance;
@@ -48,10 +49,10 @@ private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
 	uint32_t imgsize[2];
 	
-	const vector<uint8_t>* textures;
+	const renderBuffer* textures;
 	unique_ptr<GLSLProgram> shaderP;
-	GLuint vao, vbo, ibo, tex;
-	GLuint64 texHandle;
+	GLuint vao, vbo, ibo, tex[8];
+	GLuint64 texHandle[8];
 	GLuint defaultFBO, defaultRBO;
 	friend class ImageViewer;
 };

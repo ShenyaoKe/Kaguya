@@ -26,7 +26,7 @@ ImageViewer* ImageViewer::getInstance()
 	}
 }*/
 
-void ImageViewer::setpixmap(const vector<uint8_t>* pixmap)
+void ImageViewer::setpixmap(const renderBuffer* pixmap)
 {
 	img_panel->textures = pixmap;
 	img_panel->updateTexture();
@@ -40,7 +40,6 @@ ImageViewerPanel::ImageViewerPanel(QWidget *parent)
 	, imgsize{ 640, 480 }
 	, textures(nullptr)
 {
-
 	QSurfaceFormat format;
 	format.setDepthBufferSize(32);
 	format.setStencilBufferSize(8);
@@ -70,6 +69,7 @@ void ImageViewerPanel::updateTexture()
 	makeCurrent();
 	if (!textures->empty())
 	{
+		
 		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
 		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures->front());
 	}
@@ -122,20 +122,23 @@ void ImageViewerPanel::initializeGL()
 
 		// Setup textures
 		int texSize = 4;
-		glCreateTextures(GL_TEXTURE_2D, 1, &tex);
-		glTextureParameteri(tex, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTextureParameteri(tex, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
-		if (!textures->empty())
+		glCreateTextures(GL_TEXTURE_2D, 8, tex);
+		for (int i = 0; i < 8 ; i++)
 		{
-			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures->front());
-		}
+			glTextureParameteri(tex[i], GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTextureParameteri(tex[i], GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTextureParameteri(tex[i], GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTextureParameteri(tex[i], GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		texHandle = glGetTextureHandleARB(tex);
-		glMakeTextureHandleResidentARB(texHandle);
+			glTextureStorage2D(tex[i], 1, GL_RGB8, imgsize[0], imgsize[1]);
+			if (!textures->empty())
+			{
+				glTextureSubImage2D(tex[i], 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures);
+			}
+			texHandle[i] = glGetTextureHandleARB(tex[i]);
+			glMakeTextureHandleResidentARB(texHandle[i]);
+		}
+		
 	}
 	else
 	{

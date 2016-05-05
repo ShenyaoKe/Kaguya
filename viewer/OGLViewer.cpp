@@ -7,7 +7,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	, view_cam(new perspCamera(
 		Point3f(10., 6., 10.), Point3f(0.0, 0.0, 0.0), Vector3f(0., 1., 0.),
 		width() / static_cast<double>(height())))
-	, pixmap(default_resX * default_resY * 3, 255)
+	, pixmap(new renderBuffer(default_resX, default_resY))
 	, resgate{	0, 0,
 				640, 0,
 				640, 480,
@@ -357,9 +357,7 @@ void OGLViewer::renderpixels()
 				cosVal = tHit;
 				//cosVal = (Dot(Normalize(lightpos - queryPoint->pos), queryPoint->norm) + 1) * 0.5;
 			}
-			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
-			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
-			pixmap[index++] = static_cast<uint8_t>(cosVal * 255);
+			pixmap->setBuffer(i, j, *queryPoint, tHit);
 		}
 	}
 	delete queryPoint;

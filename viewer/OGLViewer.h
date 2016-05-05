@@ -18,6 +18,7 @@
 #include "Geometry/DifferentialGeometry.h"
 #include "Accel/KdTreeAccel.h"
 #include "Camera/perspCamera.h"
+#include "Tracer/renderBuffer.h"
 
 static int model_mat_loc;// Uniform matrix location
 static GLfloat model_mat[16];// Uniform matrix buffer
@@ -60,9 +61,8 @@ private:
 	void renderpixels();
 protected:
 	unique_ptr<perspCamera> view_cam;
-	vector<uint8_t> pixmap;
+	shared_ptr<renderBuffer> pixmap;
 private:
-
 	int lastMousePos[2];
 	int selectMode;
 private: // OpenGL variables
