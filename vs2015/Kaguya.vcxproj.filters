@@ -96,9 +96,6 @@
     <ClInclude Include="..\src\Light\Spectrum.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Accel\BBox.h">
-      <Filter>Header Files\accel</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Light\EnvironmentMap.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
@@ -207,11 +204,11 @@
     <ClInclude Include="..\src\Tracer\renderBuffer.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Accel\Bounds.h">
+      <Filter>Header Files\accel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Accel\BBox.cpp">
-      <Filter>Source Files\accel</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
       <Filter>Source Files\accel</Filter>
     </ClCompile>

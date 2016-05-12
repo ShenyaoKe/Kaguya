@@ -45,8 +45,8 @@ void RasterizedVolume::exportVBO(vector<float>* vtx_array) const
 
 void RasterizedVolume::rasterize()
 {
-	const BBox &bound = kdtree->treeBound;
-	Vector3f diag = bound.getDiagnal();
+	const Bounds3f &bound = kdtree->treeBound;
+	Vector3f diag = bound.diagnal();
 	int zaxis = bound.maxExtent();
 	int xaxis = (zaxis + 1) % 3;
 	int yaxis = (zaxis + 2) % 3;

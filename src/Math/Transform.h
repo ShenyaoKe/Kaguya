@@ -11,8 +11,8 @@
 #endif
 
 #include "Core/Kaguya.h"
+#include "Accel/Bounds.h"
 #include "Math/Matrix4x4.h"
-#include "Accel/BBox.h"
 
 class Transform
 {
@@ -41,7 +41,7 @@ public:
 	Point3f operator () (const Point3f &p) const;
 	Vector3f operator () (const Vector3f &v) const;
 	Normal3f operator () (const Normal3f &n) const;
-	BBox operator () (const BBox &bbox) const;
+	Bounds3f operator () (const Bounds3f &bbox) const;
 	Ray operator () (const Ray &ray) const;
 	void operator () (const Ray &ray, Ray* ret) const;
 

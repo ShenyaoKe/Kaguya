@@ -15,14 +15,14 @@ geoSphere::geoSphere(const Transform* o2w, const Transform* w2o,
 }
 void geoSphere::bounding()
 {
-	ObjBound = BBox(c);
+	ObjBound = Bounds3f(c);
 	ObjBound.expand(r);
 	//return false;
 }
 
-BBox geoSphere::getWorldBounding() const
+Bounds3f geoSphere::getWorldBounding() const
 {
-	BBox ret(c);
+	Bounds3f ret(c);
 	ret.expand(r);
 	return ret;
 }

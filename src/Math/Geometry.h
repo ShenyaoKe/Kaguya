@@ -21,6 +21,7 @@ inline bool isNaN(const int x)
 template <typename T>
 class Vector2
 {
+public:
 	Vector2() { x = y = 0; }
 	Vector2(T _x, T _y) : x(_x), y(_y) {}
 	Vector2(T val[2]) : x(val[0]), y(val[1]) {}
@@ -112,7 +113,6 @@ template <typename T>
 class Vector3
 {
 public:
-
 	Vector3() { x = y = z = 0; }
 	Vector3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
 	Vector3(T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
@@ -249,13 +249,13 @@ public:
 		x += v.x; y += v.y;
 		return *this;
 	}
-	Vector3<T> operator-(const Point2<T> &p) const {
+	Vector2<T> operator-(const Point2<T> &p) const {
 		Assert(!p.hasNaN());
-		return Vector3<T>(x - p.x, y - p.y);
+		return Vector2<T>(x - p.x, y - p.y);
 	}
-	Vector3<T> operator-(const Vector3<T> &v) const {
+	Vector2<T> operator-(const Vector3<T> &v) const {
 		Assert(!v.hasNaN());
-		return Vector3<T>(x - v.x, y - v.y);
+		return Vector2<T>(x - v.x, y - v.y);
 	}
 	Point2<T> &operator-=(const Vector3<T> &v) {
 		Assert(!v.hasNaN());
@@ -537,6 +537,13 @@ inline Vector3<T>::Vector3(const Normal3<T>& n)
 }
 
 template <typename T>
+inline T Cross(const Vector2<T> &v1, const Vector2<T> &v2)
+{
+	Assert(!v1.hasNaN() && !v2.hasNaN());
+	return v1.x * v2.y - v1.y * v2.x;
+}
+
+template <typename T>
 inline Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2)
 {
 	Assert(!v1.hasNaN() && !v2.hasNaN());
@@ -573,6 +580,12 @@ inline T Dot(const Normal3<T> &n, const Vector3<T> &v)
 {
 	Assert(!v.hasNaN() && !n.hasNaN());
 	return v.x * n.x + v.y * n.y + v.z * n.z;
+}
+
+template <typename T>
+inline Vector2<T> Normalize(const Vector2<T> &v)
+{
+	return v / v.length();
 }
 
 template <typename T>

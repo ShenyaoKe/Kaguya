@@ -97,7 +97,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Accel\BBox.h" />
+    <ClInclude Include="..\src\Accel\Bounds.h" />
     <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
     <ClInclude Include="..\src\Camera\abstractCamera.h" />
     <ClInclude Include="..\src\Camera\Camera.h" />
@@ -143,7 +143,6 @@
     <ClInclude Include="..\src\Volume\RasterizedVolume.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Accel\BBox.cpp" />
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp" />
     <ClCompile Include="..\src\Camera\abstractCamera.cpp" />
     <ClCompile Include="..\src\Camera\Camera.cpp" />

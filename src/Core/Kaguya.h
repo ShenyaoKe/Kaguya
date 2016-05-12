@@ -100,11 +100,14 @@ template <typename T>
 class Point3;
 template <typename T>
 class Normal3;
+template <typename T>
+class Bounds2;
+template <typename T>
+class Bounds3;
 
 class Spectrum;
 class Light;
 
-class BBox;
 struct KdAccelNode;
 class KdTreeAccel;
 class Shape;

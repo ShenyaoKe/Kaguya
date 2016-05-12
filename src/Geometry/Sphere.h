@@ -13,7 +13,7 @@ public:
 		Float th0 = 0, Float th1 = M_PI);
 	
 	void bounding();
-	BBox getWorldBounding() const;
+	Bounds3f getWorldBounding() const;
 	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
 	bool isInside(const Point3f &pPos) const;
 
