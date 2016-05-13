@@ -47,7 +47,7 @@ KdTreeAccel::KdTreeAccel(const vector<Shape*> &prims, int md, int mp,
 	}
 }
 
-void KdTreeAccel::buildTree(KdAccelNode *node, const BBox &bound, vector<int> &prims,
+void KdTreeAccel::buildTree(KdAccelNode *node, const Bounds3f &bound, vector<int> &prims,
 	int depth, BoundEdge *edges[3])
 {
 	node->bbox = bound;
@@ -76,7 +76,7 @@ RETRY_SPLIT:
 	for (int i = 0; i < np; ++i)
 	{
 		int prmIdx = prims[i];
-		const BBox tmpBox = primitives[prmIdx]->ObjBound;
+		const Bounds3f tmpBox = primitives[prmIdx]->ObjBound;
 		edges[axis][i * 2] = BoundEdge(tmpBox.pMin[axis], prmIdx, true);
 		edges[axis][i * 2 + 1] = BoundEdge(tmpBox.pMax[axis], prmIdx, false);
 	}
@@ -175,7 +175,7 @@ RETRY_SPLIT:
 		cout << primsBelow[i] << " ";
 	}cout << endl;
 	cout << "////////////////////////" << endl;*/
-	BBox belowBound = bound, aboveBound = bound;
+	Bounds3f belowBound = bound, aboveBound = bound;
 	belowBound.pMax[bestAxis] = aboveBound.pMin[bestAxis] = tsplit;
 
 	buildTree(node->belowNode, belowBound, primsBelow, depth - 1, edges);
@@ -317,7 +317,7 @@ void KdTreeAccel::update()
 {
 	int np = primitives.size();
 	//Initialize bouding box for all primitives in stack
-	treeBound = BBox();
+	treeBound = Bounds3f();
 	for (int i = 0; i < np; ++i)
 	{
 		treeBound.Union(primitives[i]->ObjBound);

@@ -13,9 +13,9 @@
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
 
 #include "Math/Geometry.h"
+#include "Accel/Bounds.h"
 #include "Image/ColorData.h"
 #include "Math/Transform.h"
-#include "Accel/BBox.h"
 #include "Geometry/DifferentialGeometry.h"
 
 const Float reCE = 5e-8;//ray epsilon coefficiency
@@ -35,7 +35,7 @@ public:
 	virtual ~Shape();
 
 	virtual void bounding() = 0;
-	virtual BBox getWorldBounding() const;
+	virtual Bounds3f getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
 	virtual bool intersectP(const Ray& inRay) const;
 	/*virtual bool intersect(const Ray &ray, DifferentialGeometry *dg,
@@ -65,7 +65,7 @@ public:
 	Point3f c;
 	const Transform* ObjectToWorld;
 	const Transform* WorldToObject;
-	BBox ObjBound;
+	Bounds3f ObjBound;
 
 	TextureMapping* UV_Mapping = nullptr;
 	Texture* normalMap = nullptr;

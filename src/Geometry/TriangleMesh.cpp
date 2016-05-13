@@ -228,7 +228,7 @@ Triangle::Triangle(TriangleMesh *inMesh, size_t fn)
 }
 void Triangle::bounding()
 {
-	ObjBound = Union(BBox(*p[0], *p[1]), *p[2]);
+	ObjBound = Union(Bounds3f(*p[0], *p[1]), *p[2]);
 }
 void Triangle::attachMesh(const TriangleMesh* inMesh)
 {

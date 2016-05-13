@@ -1,9 +1,9 @@
 #include "Math/Transform.h"
 
-BBox Transform::operator()(const BBox &b) const
+Bounds3f Transform::operator()(const Bounds3f &b) const
 {
 	const Transform &M = *this;
-	BBox ret(M(b.pMin));
+	Bounds3f ret(M(b.pMin));
 	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMin.z)));
 	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMin.z)));
 	ret = Union(ret, M(Point3f(b.pMin.x, b.pMin.y, b.pMax.z)));

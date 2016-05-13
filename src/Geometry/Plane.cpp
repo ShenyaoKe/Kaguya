@@ -62,5 +62,5 @@ bool geoPlane::isInside(const Point3f &pPos) const
 
 void geoPlane::bounding()
 {
-	ObjBound = BBox(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
+	ObjBound = Bounds3f(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
 }

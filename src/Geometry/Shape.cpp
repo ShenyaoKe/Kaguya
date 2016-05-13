@@ -16,7 +16,7 @@ Shape::Shape(const Point3f &pos)
 Shape::~Shape()
 {
 }
-BBox Shape::getWorldBounding() const
+Bounds3f Shape::getWorldBounding() const
 {
 	return this->ObjBound;
 }

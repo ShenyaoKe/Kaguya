@@ -6,7 +6,7 @@
 #ifndef KAGUYA_DOUBLE_AS_FLOAT
 #define KAGUYA_DOUBLE_AS_FLOAT
 #endif // !KAGUYA_DOUBLE_AS_FLOAT
-#include "Core/Kaguya.h"
+#include "Accel/Bounds.h"
 #include "Geometry/Shape.h"
 #include "Geometry/DifferentialGeometry.h"
 
@@ -39,7 +39,7 @@ struct BoundEdge
 };
 struct KdAccelNode//Node class
 {
-	BBox bbox;
+	Bounds3f bbox;
 	//vector<Shape*> primitives;
 	int flags;//index of split axes
 	vector<int> primIndex;//only for leaf
@@ -88,9 +88,9 @@ private:
 	Float emptyBonus;
 	vector<Shape*> primitives;
 	KdAccelNode *root;
-	BBox treeBound;
+	Bounds3f treeBound;
 
-	void buildTree(KdAccelNode *node, const BBox &bound, vector<int> &prims,
+	void buildTree(KdAccelNode *node, const Bounds3f &bound, vector<int> &prims,
 		int depth, BoundEdge *edges[3]);
 
 };
