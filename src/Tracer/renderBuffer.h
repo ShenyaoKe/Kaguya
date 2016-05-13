@@ -46,6 +46,10 @@ public:
 	uint32_t height;
 	size_t size;
 
+	floats_t beauty;
+	floats_t diff, spec;
+	//floats_t fl, fr, sss;
+
 	floats_t p, n;// 3 * n
 	floats_t dpdu, dpdv, dndu, dndv; // 3 * n
 

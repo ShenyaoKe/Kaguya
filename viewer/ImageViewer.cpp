@@ -28,7 +28,7 @@ ImageViewer* ImageViewer::getInstance()
 
 void ImageViewer::setpixmap(const renderBuffer* pixmap)
 {
-	img_panel->textures = pixmap;
+	img_panel->textures = &pixmap->beauty[0];
 	img_panel->updateTexture();
 	img_panel->update();
 }
@@ -39,7 +39,7 @@ ImageViewerPanel::ImageViewerPanel(QWidget *parent)
 	, frame{ -1,-1, 1,-1, 1,1, -1,1 }
 	, imgsize{ 640, 480 }
 	, textures(nullptr)
-	, drawType(0)
+	, texType(GL_RGB)
 {
 	QSurfaceFormat format;
 	format.setDepthBufferSize(32);
@@ -68,13 +68,10 @@ void ImageViewerPanel::setImageResolution(uint32_t w, uint32_t h)
 void ImageViewerPanel::updateTexture()
 {
 	makeCurrent();
-	if (!textures->empty())
+	if (texLen > 0)
 	{
-		for (int i = 0; i < textures->size; i++)
-		{
-			glTextureStorage2D(tex[i], 1, GL_RGB8, imgsize[0], imgsize[1]);
-			glTextureSubImage2D(tex[i], 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-		}
+		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
+		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], texType, GL_UNSIGNED_BYTE, textures);
 		
 	}
 	doneCurrent();
@@ -116,22 +113,20 @@ void ImageViewerPanel::initializeGL()
 
 		// Setup textures
 		int texSize = 4;
-		glCreateTextures(GL_TEXTURE_2D, 8, tex);
-		for (int i = 0; i < 8 ; i++)
-		{
-			glTextureParameteri(tex[i], GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTextureParameteri(tex[i], GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTextureParameteri(tex[i], GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTextureParameteri(tex[i], GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glCreateTextures(GL_TEXTURE_2D, 1, &tex);
+		glTextureParameteri(tex, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(tex, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-			glTextureStorage2D(tex[i], 1, GL_RGB8, imgsize[0], imgsize[1]);
-			if (!textures->empty())
-			{
-				glTextureSubImage2D(tex[i], 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_UNSIGNED_BYTE, &textures);
-			}
-			texHandle[i] = glGetTextureHandleARB(tex[i]);
-			glMakeTextureHandleResidentARB(texHandle[i]);
+		glTextureStorage2D(tex, 1, GL_RGBA32F, imgsize[0], imgsize[1]);
+		if (texLen > 0)
+		{
+			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGBA, GL_UNSIGNED_BYTE, textures);
 		}
+		texHandle = glGetTextureHandleARB(tex);
+		glMakeTextureHandleResidentARB(texHandle);
+		
 		
 	}
 	else
@@ -162,7 +157,7 @@ void ImageViewerPanel::paintGL()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindVertexArray(vao);
 	shaderP->use_program();
-	glUniformHandleui64ARB((*shaderP)["tex"], texHandle[drawType]);
+	glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

@@ -49,11 +49,14 @@ private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
 	uint32_t imgsize[2];
 	
-	const renderBuffer* textures;
 	unique_ptr<GLSLProgram> shaderP;
 	GLuint vao, vbo, ibo;
-	GLuint tex[8];
-	GLuint64 texHandle[8];
-	uint8_t drawType;
+
+	GLuint tex;
+	GLuint64 texHandle;
+	uint32_t texLen;
+	const void* textures;
+	GLenum texType;
+
 	friend class ImageViewer;
 };
