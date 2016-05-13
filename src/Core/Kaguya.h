@@ -16,6 +16,8 @@
 #include <cstdint>
 #include <cmath>
 #include <assert.h>
+#include <type_traits>
+#include <limits>
 #include <iostream>
 #include <algorithm>
 using std::min;
@@ -62,6 +64,8 @@ typedef float Float;
 #if defined(KAGUYA_IS_WINDOWS)
 #ifdef _MSC_VER
 #pragma once
+#include <cfloat>
+#include <intrin.h>
 #pragma warning (disable:4996) // scanf_s error
 #endif // _MSVC
 #pragma warning (disable : 4305) // double constant assigned to float

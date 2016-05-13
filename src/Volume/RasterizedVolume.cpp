@@ -62,7 +62,7 @@ void RasterizedVolume::rasterize()
 	
 
 	DifferentialGeometry queryPoint;
-	double tHit = INFINITY, rayEp;
+	Float tHit = INFINITY, rayEp;
 	//vector<Point3f> grid;
 	Ray rasterRay;
 	while (rayPos[xaxis] < bound.pMax[xaxis])

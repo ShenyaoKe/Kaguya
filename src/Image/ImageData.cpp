@@ -37,21 +37,21 @@ ImageData::ImageData(int wd, int ht, unsigned char* pixMap, int pixtype)
 		{
 		case RGB:
 			pixels[0][i] = ColorRGBA(
-				static_cast<Float>(pixMap[i * 3]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0);
+				static_cast<Float>(pixMap[i * 3]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f);
 		case RGBA:
 			pixels[0][i] = ColorRGBA(
-				static_cast<Float>(pixMap[i * 3]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0,
+				static_cast<Float>(pixMap[i * 3]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f,
 				static_cast<Float>(pixMap[i * 3 + 3]) / 255.0);
 		case BGRA:
 			pixels[0][i] = ColorRGBA(
-				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0,
-				static_cast<Float>(pixMap[i * 3]) / 255.0,
-				static_cast<Float>(pixMap[i * 3 + 3]) / 255.0);
+				static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3]) / 255.0f,
+				static_cast<Float>(pixMap[i * 3 + 3]) / 255.0f);
 		default:
 			break;
 		}

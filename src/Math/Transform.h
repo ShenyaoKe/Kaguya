@@ -2,14 +2,6 @@
 #ifndef __TRANSFORM__
 #define __TRANSFORM__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
-#ifndef RIGHT_HAND_ORDER
-#define RIGHT_HAND_ORDER
-#endif
-
 #include "Core/Kaguya.h"
 #include "Accel/Bounds.h"
 #include "Math/Matrix4x4.h"

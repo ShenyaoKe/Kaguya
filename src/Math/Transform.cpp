@@ -1,16 +1,16 @@
 #include "Math/Transform.h"
 
-Bounds3f Transform::operator()(const Bounds3f &b) const
+Bounds3f Transform::operator()(const Bounds3f &bbox) const
 {
 	const Transform &M = *this;
-	Bounds3f ret(M(b.pMin));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMin.z)));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMin.z)));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMin.y, b.pMax.z)));
-	ret = Union(ret, M(Point3f(b.pMin.x, b.pMax.y, b.pMax.z)));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMin.z)));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMin.y, b.pMax.z)));
-	ret = Union(ret, M(Point3f(b.pMax.x, b.pMax.y, b.pMax.z)));
+	Bounds3f ret(M(bbox.pMin));
+	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMin.z)));
+	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMax.z)));
+	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMax.z)));
 	return ret;
 }
 
@@ -97,7 +97,7 @@ Transform xformTRS(
 Transform Rotate(const Vector3f &axis, Float theta)
 {
 	Vector3f u = Normalize(axis);
-	Float rad = DegreeToRadian(theta);
+	Float rad = DegToRad(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
 	Float t = 1 - c;

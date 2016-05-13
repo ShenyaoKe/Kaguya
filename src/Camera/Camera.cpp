@@ -131,9 +131,9 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 	Float vt_len = vt.length();
 	Float upCoef = lookAtMat[1][1] < 0 ? -1 : 1;
 	
-	Float phi = atan2(vt.x, vt.z) + DegreeToRadian(y_rot) * upCoef;
+	Float phi = atan2(vt.x, vt.z) + DegToRad(y_rot) * upCoef;
 	Float old_theta = asin(vt.y / vt_len);
-	Float theta = old_theta + DegreeToRadian(x_rot) * upCoef;
+	Float theta = old_theta + DegToRad(x_rot) * upCoef;
 	
 	if ((old_theta < M_HALFPI && theta > M_HALFPI) || (old_theta > -M_HALFPI && theta < -M_HALFPI))
 	{

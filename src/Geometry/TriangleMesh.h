@@ -2,18 +2,8 @@
 #ifndef __MESH__
 #define __MESH__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
-//#include "Core/rtdef.h"
 #include "Geometry/Shape.h"
 #include "Math/Geometry.h"
-#include <fstream>
-#include <sstream>
-#include <cstring>
-#include <cstdio>
-#include <vector>
 
 struct PolyIndex
 {

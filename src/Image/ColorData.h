@@ -8,18 +8,8 @@
 #ifndef __ColorData__
 #define __ColorData__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
-
 #include "Core/Kaguya.h"
 #include "Math/MathUtil.h"
-
-/*
-#ifndef Float
-typedef float Float
-#endif // !Float*/
 
 using namespace std;
 

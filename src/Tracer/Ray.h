@@ -8,10 +8,6 @@
 #ifndef __Ray__
 #define __Ray__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Math/Geometry.h"
 
 class Ray

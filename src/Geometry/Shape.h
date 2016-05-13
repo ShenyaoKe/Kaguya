@@ -8,10 +8,6 @@
 #ifndef __SHAPE__
 #define __SHAPE__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Math/Geometry.h"
 #include "Accel/Bounds.h"
 #include "Image/ColorData.h"

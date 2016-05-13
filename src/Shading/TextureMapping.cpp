@@ -81,8 +81,8 @@ Point2f SphericalMapping2D::posToUV(const Point3f &pos) const
 	Float y = Dot(ny, np);
 	Float z = Dot(nz, np);
 
-	Float v = acos(clamp(z, -1.0, 1.0)) / M_PI;
-	Float u = acos(clamp(y / sqrt(1.0 - sqr(z)), -1.0, 1.0)) / (2.0 * M_PI);
+	Float v = acos(clamp(z, -1, 1)) / M_PI;
+	Float u = acos(clamp(y / sqrt(1.0 - sqr(z)), -1, 1)) / (2.f * M_PI);
 	if (z == 1 || z == -1)
 	{
 		u = unitRandom(20);

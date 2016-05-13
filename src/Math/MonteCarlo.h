@@ -2,12 +2,7 @@
 #ifndef __MONTECARLO__
 #define __MONTECARLO__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Math/MathUtil.h"
-//#include "Core/rtdef.h"
 #include "Math/Geometry.h"
 #include "Math/Matrix3x3.h"
 

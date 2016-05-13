@@ -54,11 +54,11 @@ public:
 	}
 	Vector2<T> &operator-=(const Vector2<T> &v) {
 		Assert(!v.hasNaN());
-		x -= v.x; y -= v.y; z -= v.z;
+		x -= v.x; y -= v.y;
 		return *this;
 	}
 	Vector2<T> operator-() const {
-		return Vector2<T>(-x, -y, -z);
+		return Vector2<T>(-x, -y);
 	}
 	bool operator==(const Vector2<T> &v) const {
 		return x == v.x && y == v.y;
@@ -240,11 +240,11 @@ public:
 		x += p.x; y += p.y;
 		return *this;
 	}
-	Point2<T> operator+(const Vector3<T> &v) const {
+	Point2<T> operator+(const Vector2<T> &v) const {
 		Assert(!v.hasNaN());
 		return Point2<T>(x + v.x, y + v.y);
 	}
-	Point2<T> &operator+=(const Vector3<T> &v) {
+	Point2<T> &operator+=(const Vector2<T> &v) {
 		Assert(!v.hasNaN());
 		x += v.x; y += v.y;
 		return *this;
@@ -253,17 +253,17 @@ public:
 		Assert(!p.hasNaN());
 		return Vector2<T>(x - p.x, y - p.y);
 	}
-	Vector2<T> operator-(const Vector3<T> &v) const {
+	Vector2<T> operator-(const Vector2<T> &v) const {
 		Assert(!v.hasNaN());
 		return Vector2<T>(x - v.x, y - v.y);
 	}
-	Point2<T> &operator-=(const Vector3<T> &v) {
+	Point2<T> &operator-=(const Vector2<T> &v) {
 		Assert(!v.hasNaN());
 		x -= v.x; y -= v.y;
 		return *this;
 	}
 	Point2<T> operator-() const {
-		return Point2<T>(-x, -y, -z);
+		return Point2<T>(-x, -y);
 	}
 	bool operator==(const Point2<T> &p) const {
 		return x == p.x && y == p.y;

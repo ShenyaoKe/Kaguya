@@ -8,10 +8,6 @@
 #ifndef __Matrix4x4__
 #define __Matrix4x4__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Core/Kaguya.h"
 #include "Math/Geometry.h"
 #include "Math/Matrix3x3.h"
@@ -491,8 +487,8 @@ inline Matrix4x4 Matrix4x4::LookAt(const Point3f &pos, const Point3f &target, co
 inline Matrix4x4 Matrix4x4::Perspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
 {
 
-	Float radAngle = DegreeToRadian(verticalAngle * 0.5);
-	Float sy = std::sin(DegreeToRadian(verticalAngle * 0.5));
+	Float radAngle = DegToRad(verticalAngle * 0.5);
+	Float sy = std::sin(DegToRad(verticalAngle * 0.5));
 	if (sy == 0)
 	{
 		return Matrix4x4(0.);
@@ -591,7 +587,7 @@ inline Matrix4x4 Matrix4x4::RotateX(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegreeToRadian(theta);
+	theta = DegToRad(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -607,7 +603,7 @@ inline Matrix4x4 Matrix4x4::RotateY(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegreeToRadian(theta);
+	theta = DegToRad(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -623,7 +619,7 @@ inline Matrix4x4 Matrix4x4::RotateZ(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegreeToRadian(theta);
+	theta = DegToRad(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -638,9 +634,9 @@ inline Matrix4x4 Matrix4x4::RotateZ(Float theta)
 inline Matrix4x4 Matrix4x4::Rotate(Float alpha, Float beta, Float gamma)
 {
 	Matrix4x4 ret;
-	alpha = DegreeToRadian(alpha);
-	beta = DegreeToRadian(beta);
-	gamma = DegreeToRadian(gamma);
+	alpha = DegToRad(alpha);
+	beta = DegToRad(beta);
+	gamma = DegToRad(gamma);
 	Float cosA = cos(alpha), sinA = sin(alpha);
 	Float cosB = cos(beta), sinB = sin(beta);
 	Float cosG = cos(gamma), sinG = sin(gamma);
@@ -662,7 +658,7 @@ inline Matrix4x4 Matrix4x4::Rotate(Float alpha, Float beta, Float gamma)
 inline Matrix4x4 Matrix4x4::Rotate(const Vector3f &axis, Float theta, bool isNormalized)
 {
 	Vector3f u = isNormalized ? axis : Normalize(axis);
-	Float rad = DegreeToRadian(theta);
+	Float rad = DegToRad(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
 	Float t = 1 - c;

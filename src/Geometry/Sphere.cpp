@@ -89,7 +89,7 @@ bool geoSphere::intersect(const Ray& inRay,
 	}
 
 	// Compute parametric representation
-	theta = acos(clamp(pHit.z / r, -1., 1.));
+	theta = acos(clamp(pHit.z / r, (Float)-1, (Float)1));
 	Point2f uv(phi / phiMax,
 		(theta - thetaMin) / (thetaMax - thetaMin));
 

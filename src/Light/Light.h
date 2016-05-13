@@ -99,8 +99,8 @@ protected:
 	Vector3f dir;
 	Float coneAngle = 40;
 	Float penumbraAngle = 0;
-	Float cosCA = cos(DegreeToRadian(cosCA));
-	Float cosPA = cos(DegreeToRadian(coneAngle + penumbraAngle));
+	Float cosCA = cos(DegToRad(cosCA));
+	Float cosPA = cos(DegToRad(coneAngle + penumbraAngle));
 	Float dropoff = 0;
 public:
 	spotLight();

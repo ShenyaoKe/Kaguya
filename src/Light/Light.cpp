@@ -142,8 +142,8 @@ void spotLight::setAngles(const Float& ca, const Float& pa)
 }
 void spotLight::updateCosAngle()
 {
-	cosCA = cos(DegreeToRadian(coneAngle));
-	cosPA = cos(DegreeToRadian(coneAngle + penumbraAngle));
+	cosCA = cos(DegToRad(coneAngle));
+	cosPA = cos(DegToRad(coneAngle + penumbraAngle));
 }
 void spotLight::setDropOff(const Float& dpo)
 {

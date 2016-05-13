@@ -5,7 +5,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
-		Point3f(10., 6., 10.), Point3f(0.0, 0.0, 0.0), Vector3f(0., 1., 0.),
+		Point3f(10, 6, 10), Point3f(0, 0, 0), Vector3f(0, 1, 0),
 		width() / static_cast<double>(height())))
 	, pixmap(new renderBuffer(default_resX, default_resY))
 	, resgate{	0, 0,
@@ -22,7 +22,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	//format.setProfile(QSurfaceFormat::CoreProfile);
 	this->setFormat(format);
 
-
+	Float assetsssss;
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
 	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");

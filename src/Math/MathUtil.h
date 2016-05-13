@@ -2,10 +2,6 @@
 #ifndef __MATHUTIL__
 #define __MATHUTIL__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Core/Kaguya.h"
 /************************************************************************/
 /* Definition                                                           */
@@ -51,15 +47,22 @@ inline bool chechSign(double val)
 		return 1;
 	}
 }
-template <typename T>
-inline const T& clamp(const T& data, const T& minValue, const T& maxValue)
+/*
+template <typename T, typename U, typename V>
+inline T clamp(T val, U minVal, V maxVal)
 {
-	return data > maxValue ? maxValue : (data < minValue ? minValue : data);
+	return val > maxVal ? maxVal : (data < minVal ? minVal : val);
+}*/
+template <typename T, typename U, typename V>
+inline T clamp(T val, U low, V high) {
+	if (val < low) return low;
+	else if (val > high) return high;
+	else return val;
 }
-template <typename T2>
-inline const T2& clampFromZeroToOne(const T2& data)
+template <typename T>
+inline T clampFromZeroToOne(const T& data)
 {
-	return clamp(data, static_cast<T2>(0), static_cast<T2>(1));
+	return clamp(data, 0, 1);
 }
 template <typename T>
 inline const T& remap(const T& data, const T& oldMin, const T& oldMax,
@@ -95,13 +98,13 @@ inline bool inUnitRange(Float data, Float epsilon)
 	//Float epsilon = 5e-4f;
 	return inRange(data, 0.f - epsilon, 1.f + epsilon);
 }
-inline Float RadianToDegree(Float radian)
+inline Float RadToDeg(Float rad)
 {
-	return radian * 180.0 * INV_PI;
+	return rad * 180.0 * INV_PI;
 }
-inline Float DegreeToRadian(Float degree)
+inline Float DegToRad(Float deg)
 {
-	return degree * M_PI / 180.0;
+	return deg * M_PI / 180.0;
 }
 inline float isFuzzyNull(float val)
 {

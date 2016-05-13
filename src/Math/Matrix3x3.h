@@ -5,12 +5,9 @@
 //  Copyright (c) 2015 AKIKA. All rights reserved.
 //
 #pragma once
-#ifndef __Matrix3D__
-#define __Matrix3D__
+#ifndef __Matrix3x3__
+#define __Matrix3x3__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
 #include "Math/MathUtil.h"
 #include "Math/Geometry.h"
 #include "Core/MemoryControl.h"
@@ -230,7 +227,7 @@ inline void Matrix3x3::setRotation(Float theta)
 		setIdentity();
 		return;
 	}
-	setRotation(sin(DegreeToRadian(theta)), cos(DegreeToRadian(theta)));
+	setRotation(sin(DegToRad(theta)), cos(DegToRad(theta)));
 }
 inline void Matrix3x3::setRotation(Float sinth, Float costh)
 {

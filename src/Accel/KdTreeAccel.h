@@ -2,10 +2,6 @@
 #ifndef __KDTREEACCEL__
 #define __KDTREEACCEL__
 
-
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
 #include "Accel/Bounds.h"
 #include "Geometry/Shape.h"
 #include "Geometry/DifferentialGeometry.h"
@@ -63,8 +59,8 @@ struct KdAccelNode//Node class
 class KdTreeAccel//Tree class
 {
 public:
-	KdTreeAccel(const vector<Shape*> &prims, int md = -1, int mp = 3,
-		Float eb = 0.5);
+	KdTreeAccel(const vector<Shape*> &prims,
+		int md = -1, int mp = 3, Float eb = 0.5);
 	~KdTreeAccel();
 	bool intersectP(const Ray &inRay) const;
 	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint,

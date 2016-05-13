@@ -2,10 +2,6 @@
 #ifndef __RASTERIZED_VOLUME__
 #define __RASTERIZED_VOLUME__
 
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Geometry/TriangleMesh.h"
 #include "Tracer/Ray.h"
 #include "Accel/KdTreeAccel.h"

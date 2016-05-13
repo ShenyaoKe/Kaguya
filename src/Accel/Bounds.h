@@ -234,9 +234,9 @@ public:
 			pMax[i] = max(pMax[i], box.pMax[i]);
 		}
 	}
-	friend Bounds3 Union(const Bounds3<T> &box, const Point3<T> &p);
+	/*friend Bounds3 Union(const Bounds3<T> &box, const Point3<T> &p);
 	friend Bounds3 Union(const Bounds3<T> &box1, const Bounds3<T> &box2);
-	friend bool overlaps(const Bounds3<T> &box0, const Bounds3<T> &box1);
+	friend bool overlaps(const Bounds3<T> &box0, const Bounds3<T> &box1);*/
 
 	int maxExtent() const
 	{
@@ -295,7 +295,7 @@ inline bool overlaps(const Bounds2<T> &box0, const Bounds2<T> &box1)
 template <typename T>
 inline Bounds3<T> Union(const Bounds3<T> &box, const Point3<T> &p)
 {
-	Bounds3<T> &ret = box;
+	Bounds3<T> ret = box;
 	for (int i = 0; i < 3; i++)
 	{
 		ret.pMin[i] = min(box.pMin[i], p[i]);

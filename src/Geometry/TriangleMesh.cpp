@@ -24,9 +24,9 @@ TriangleMesh::~TriangleMesh()
 }
 void TriangleMesh::bounding()
 {
-	for (int i = 0; i < verts.size(); ++i)
+	for (auto v : verts)
 	{
-		ObjBound.Union(verts[i]);
+		ObjBound.Union(v);
 	}
 }
 void TriangleMesh::refine(vector<Shape*> &refined)
@@ -359,7 +359,7 @@ bool ObjParser::parse(const char* filename,
 	int err;
 	char buff[256] = {};
 	char lineHeader[3] = {};
-	double val[3] = {};
+	Float val[3] = {};
 	uint32_t indices[3];
 	char endflg;
 
