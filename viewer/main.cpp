@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-
+	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QApplication qtApp(argc, argv);
 	QFile File(":stylesheets/dark.qss");
 	if (File.open(QFile::ReadOnly))
