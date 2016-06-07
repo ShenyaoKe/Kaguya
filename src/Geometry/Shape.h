@@ -38,6 +38,9 @@ public:
 		Float *tHit, Float *rayEpsilon) const = 0;*/
 	virtual bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const = 0;
+	virtual bool postIntersect(const Ray& inRay,
+		DifferentialGeometry* queryPoint,
+		Float *tHit, Float *rayEpsilon) const = 0;
 
 	// Surface Area
 	virtual Float area() const;
@@ -58,7 +61,6 @@ public:
 	static uint32_t nextshapeID;
 
 	//Vector3f center;
-	Point3f c;
 	const Transform* ObjectToWorld;
 	const Transform* WorldToObject;
 	Bounds3f ObjBound;

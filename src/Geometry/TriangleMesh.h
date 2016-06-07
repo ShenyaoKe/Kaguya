@@ -101,6 +101,9 @@ public:
 	bool intersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
+	bool postIntersect(const Ray& inRay,
+		DifferentialGeometry* queryPoint,
+		Float *tHit, Float *rayEpsilon) const;
 
 	void exportVBO(
 		vector<float>* vtx_array = nullptr,
@@ -126,6 +129,9 @@ public:
 	void setNormal(Normal3f* n0, Normal3f* v1, Normal3f* v2);
 
 	bool intersect(const Ray& inRay,
+		DifferentialGeometry* queryPoint,
+		Float *tHit, Float *rayEpsilon) const;
+	bool postIntersect(const Ray& inRay,
 		DifferentialGeometry* queryPoint,
 		Float *tHit, Float *rayEpsilon) const;
 	void getNormal(DifferentialGeometry* queryPoint) const;

@@ -97,6 +97,11 @@ bool TriangleMesh::intersect(const Ray& inRay, DifferentialGeometry* queryPoint,
 {
 	return false;
 }
+bool TriangleMesh::postIntersect(const Ray & inRay,
+	DifferentialGeometry * queryPoint, Float * tHit, Float * rayEpsilon) const
+{
+	return false;
+}
 void TriangleMesh::exportVBO(
 	vector<float>* vtx_array,
 	vector<float>* uv_array,
@@ -308,6 +313,10 @@ bool Triangle::intersect(const Ray& inRay,
 
 	*queryPoint = DifferentialGeometry(ph, Normal3f(normal), dpdu, dpdv, Normal3f(), Normal3f(), tuv, this);
 	return true;
+}
+bool Triangle::postIntersect(const Ray & inRay, DifferentialGeometry * queryPoint, Float * tHit, Float * rayEpsilon) const
+{
+	return false;
 }
 void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 {
