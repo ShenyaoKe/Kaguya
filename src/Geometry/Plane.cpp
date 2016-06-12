@@ -11,17 +11,17 @@
 geoPlane::geoPlane()
 	: n(0., 1., 0.)
 {
-	//n = Y_AXIS3D;
 	bounding();
 }
-geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm)
+geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm,
+	Float w, Float h)
+	: p(pos), n(norm)
+	, width(w), height(h)
 {
-	c = pos;
-	n = norm;
 	bounding();
 }
 
-bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
 {
 	Float t = Dot(this->n, inRay.d);
 	if (t >= 0)
@@ -31,7 +31,7 @@ bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	}
 	else
 	{
-		t = Dot(n, (this->c - inRay.o)) / t;
+		t = Dot(n, (p - inRay.o)) / t;
 		if (t > 0 && t > inRay.tmin && t < inRay.tmax)
 		{
 
@@ -47,20 +47,8 @@ bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Flo
 	}
 }
 
-/*
-bool geoPlane::isInside(const Point3f &pPos) const
-{
-	if ((pPos - c) * n == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}*/
-
 void geoPlane::bounding()
 {
+	// TODO: Plane bouding method
 	ObjBound = Bounds3f(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
 }

@@ -21,7 +21,7 @@ public:
 	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
 	void setParaboloidType(PARABOLOID_TYPE newType);
 
-	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const;
 	//Vector3D getNormal(const Point3f &pos) const;
 
 	bool isInside(const Point3f &pPos) const;

@@ -26,7 +26,7 @@ void geoEllipsoid::setSemiAxes(const Float& semiA, const Float& semiB, const Flo
 	sb = semiB;
 	sc = semiC;
 }
-bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
 {
 	Point3f rp = inRay.o;
 	Vector3f rd = inRay.d;// Ray postion and ray direction.

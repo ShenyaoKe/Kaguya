@@ -93,14 +93,13 @@ void TriangleMesh::printInfo(const string &msg) const
 		fids[i].printInfo();
 	}
 }
-bool TriangleMesh::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool TriangleMesh::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
 {
 	return false;
 }
-bool TriangleMesh::postIntersect(const Ray & inRay,
-	DifferentialGeometry * queryPoint, Float * tHit, Float * rayEpsilon) const
+void TriangleMesh::postIntersect(const Ray& inRay, DifferentialGeometry* dg) const
 {
-	return false;
+	// TODO: Implement post-intersection method
 }
 void TriangleMesh::exportVBO(
 	vector<float>* vtx_array,
@@ -258,40 +257,50 @@ void Triangle::setNormal(Normal3f* n0, Normal3f* n1, Normal3f* n2)
 	n[0] = n2;
 }
 bool Triangle::intersect(const Ray& inRay,
-	DifferentialGeometry* queryPoint,
+	DifferentialGeometry* dg,
 	Float *tHit, Float *rayEpsilon) const
 {
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
 	Vector3f areaVec = Cross(v1, v2);
 	Vector3f normal = Normalize(areaVec);
-
-	Float rayT;//ray triangle DifferentialGeometry length
-	Float cosTheta = Dot(normal, inRay.d);
 	
-	rayT = Dot(normal, (*p[0] - inRay.o)) / cosTheta;
-	if (rayT < inRay.tmin || rayT > inRay.tmax)
+	//ray triangle DifferentialGeometry length
+	Float rayt = Dot(normal, (*p[0] - inRay.o))
+		/ Dot(normal, inRay.d);
+	if (rayt < inRay.tmin || rayt > inRay.tmax)
 	{
 		return false;
 	}
-	*tHit = rayT;
-	
-	*rayEpsilon = reCE * *tHit;
 	
 	//inRay.tmin = rayT;
-	Point3f ph = inRay(rayT);
+	Point3f ph = inRay(rayt);
 	Vector3f A2 = Cross(*p[0] - ph, *p[1] - ph);
 	Vector3f A1 = Cross(*p[2] - ph, *p[0] - ph);
 
 	int maxIndex = abs(areaVec[0]) > abs(areaVec[1]) ? 0 : 1;
 	maxIndex = abs(areaVec[maxIndex]) > abs(areaVec[2]) ? maxIndex : 2;
 	// Barycentric coordinate
-	Float s = A1[maxIndex] / areaVec[maxIndex], t = A2[maxIndex] / areaVec[maxIndex];
-	Float w = 1. - s - t;
+	Float s = A1[maxIndex] / areaVec[maxIndex];
+	Float t = A2[maxIndex] / areaVec[maxIndex];
+	Float w = 1.0 - s - t;
 	if (!inUnitRange(s) || !inUnitRange(t) || !inUnitRange(w))
 	{
 		return false;
 	}
+
+	*dg = DifferentialGeometry(ph, Normal3f(normal), Vector2f(s, t), this);
+
+	*tHit = rayt;
+	*rayEpsilon = reCE * *tHit;
+
+	return true;
+}
+void Triangle::postIntersect(const Ray& inRay,
+	DifferentialGeometry* dg) const
+{
+	Vector3f v1 = *p[1] - *p[0];
+	Vector3f v2 = *p[2] - *p[0];
 
 	// Compute dpdu, dpdv
 	Vector3f dpdu, dpdv;
@@ -300,34 +309,34 @@ bool Triangle::intersect(const Ray& inRay,
 	Float du2 = uv[2]->x - uv[0]->x;
 	Float dv2 = uv[2]->y - uv[0]->y;
 	Float detUV = du1 * dv2 - dv1 * du2;
-	if (detUV == 0.)
+	if (detUV == 0.0)
 	{
-		CoordinateSystem(normal, &dpdu, &dpdv);
+		CoordinateSystem(Vector3f(dg->Ng), &dg->dPdu, &dg->dPdv);
 	}
-	Float invDetUV = 1. / detUV;
-	dpdu = (v1 * dv2 - v2 * dv1) * invDetUV;
-	dpdv = (v2 * du1 - v1 * du2) * invDetUV;
+	else
+	{
+		Float invDetUV = 1. / detUV;
+		dg->dPdu = (v1 * dv2 - v2 * dv1) * invDetUV;
+		dg->dPdv = (v2 * du1 - v1 * du2) * invDetUV;
+	}
 
-	// Interpolate UV parametric coordinates
-	Point2f tuv = *uv[0] * w + *uv[1] * s + *uv[2] * t;
-
-	*queryPoint = DifferentialGeometry(ph, Normal3f(normal), dpdu, dpdv, Normal3f(), Normal3f(), tuv, this);
-	return true;
-}
-bool Triangle::postIntersect(const Ray & inRay, DifferentialGeometry * queryPoint, Float * tHit, Float * rayEpsilon) const
-{
-	return false;
+	// Interpolate Texture Coordinates
+	Float s = dg->st.x;
+	Float t = dg->st.y;
+	Float w = 1.0 - s - t;
+	dg->uv = *uv[0] * w + *uv[1] * s + *uv[2] * t;
 }
 void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 {
+	// TODO: Triangle shading methods
 	if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
 	{
 		ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		tmpNormal.printInfo();
-		queryPoint->norm = Normalize(
-			- Normal3f(queryPoint->dpdu) * tmpNormal.r
-			- Normal3f(queryPoint->dpdv) * tmpNormal.g
-			+ queryPoint->norm * tmpNormal.b);
+		queryPoint->Ng = Normalize(
+			- Normal3f(queryPoint->dPdu) * tmpNormal.r
+			- Normal3f(queryPoint->dPdv) * tmpNormal.g
+			+ queryPoint->Ng * tmpNormal.b);
 	}
 	else
 	{
@@ -344,8 +353,8 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 		else
 		{
 			det = 1.0 / det;
-			queryPoint->dpdu = Normalize((dp1 * dv2 - dp2 * dv1) * det);
-			queryPoint->dpdv = Normalize((dp1 * -du2 + dp2 * du1) * det);
+			queryPoint->dPdu = Normalize((dp1 * dv2 - dp2 * dv1) * det);
+			queryPoint->dPdv = Normalize((dp1 * -du2 + dp2 * du1) * det);
 		}
 	}
 }

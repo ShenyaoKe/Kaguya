@@ -19,10 +19,11 @@
 class DifferentialGeometry
 {
 public:
-	DifferentialGeometry();
-	DifferentialGeometry(const Shape* obj,
-		const Point3f &pVec, const Normal3f &nVec,
-		const int& sX, const int& sY);
+	DifferentialGeometry() : shape(nullptr) {}
+	DifferentialGeometry(
+		const Point3f &_p, const Normal3f &_n,
+		const Vector2f &_st, const Shape* shp)
+		: P(_p), Ng(_n), st(_st), shape(shp) {}
 	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
 		const Vector3f &_dpdu, const Vector3f &_dpdv,
 		const Normal3f &_dndu, const Normal3f &_dndv,
@@ -33,18 +34,19 @@ public:
 
 
 	const Shape* shape;
-	Point3f pos;
-	Normal3f norm;
+	Point3f P;
+	Normal3f Ng;
+	Vector2f st;//barycentric coordinate
 
 	Point2f uv;
-	Vector3f dpdu, dpdv;//Partial derivation of the surface position
-	Normal3f dndu, dndv;//Partial derivation of the surface normal
+	Vector3f dPdu, dPdv;//Partial derivation of the surface position
+	Normal3f dNdu, dNdv;//Partial derivation of the surface normal
 
 	struct // Shading Geometry
 	{
 		Normal3f n;
-		Vector3f dpdu, dpdv;
-		Normal3f dndu, dndv;
+		Vector3f dPdu, dPdv;
+		Normal3f dNdu, dNdv;
 	}shading;
 };
 #endif // __DifferentialGeometry__

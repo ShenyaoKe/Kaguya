@@ -73,12 +73,12 @@ void renderBuffer::setBuffer(uint32_t x, uint32_t y,
 
 	size_t id3 = index * 3, id2 = index << 1;
 
-	Vec3ToFloats(geom.pos, p, id3);
-	Vec3ToFloats(geom.norm, n, id3);
-	Vec3ToFloats(geom.dpdu, dpdu, id3);
-	Vec3ToFloats(geom.dpdv, dpdv, id3);
-	Vec3ToFloats(geom.dndu, dndu, id3);
-	Vec3ToFloats(geom.dndv, dndv, id3);
+	Vec3ToFloats(geom.P, p, id3);
+	Vec3ToFloats(geom.Ng, n, id3);
+	Vec3ToFloats(geom.dPdu, dpdu, id3);
+	Vec3ToFloats(geom.dPdv, dpdv, id3);
+	Vec3ToFloats(geom.dNdu, dndu, id3);
+	Vec3ToFloats(geom.dNdv, dndv, id3);
 
 	Vec2ToFloats(geom.uv, uv, id2);
 	z[index] = static_cast<float>(zdepth);

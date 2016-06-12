@@ -165,3 +165,18 @@ Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
 
 	return Transform(mat);
 }
+
+bool solveLinearSystem2x2(
+	const Float A[2][2], const Float b[2], Float *x0, Float *x1)
+{
+	// x = A^-1 * b
+	// A^-1 = 1/det * | +A11  -A01 |
+	//				  | -A10  +A00 |
+	Float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+	if (std::abs(det) < 1e-10f) return false;
+	*x0 = (A[1][1] * b[0] - A[0][1] * b[1]) / det;
+	*x1 = (A[0][0] * b[1] - A[1][0] * b[0]) / det;
+
+	if (std::isnan(*x0) || std::isnan(*x1)) return false;
+	return true;
+}

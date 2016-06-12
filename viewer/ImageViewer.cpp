@@ -15,20 +15,10 @@ ImageViewer::ImageViewer(QWidget* parent)
 ImageViewer::~ImageViewer()
 {
 }
-/*
-
-ImageViewer* ImageViewer::getInstance()
-{
-	if (instance == nullptr)
-	{
-		instance = new ImageViewer();
-		return instance;
-	}
-}*/
 
 void ImageViewer::setpixmap(const renderBuffer* pixmap)
 {
-	img_panel->textures = &pixmap->beauty[0];
+	img_panel->textures = static_cast<const void*>(pixmap->dpdv.data());
 	img_panel->updateTexture();
 	img_panel->update();
 }
@@ -61,8 +51,6 @@ void ImageViewerPanel::setImageResolution(uint32_t w, uint32_t h)
 	this->setFixedSize(w, h);
 	imgsize[0] = w;
 	imgsize[1] = h;
-	/*frame[2] = frame[4] = static_cast<float>(w);
-	frame[5] = frame[7] = static_cast<float>(h);*/
 }
 
 void ImageViewerPanel::updateTexture()
@@ -70,9 +58,8 @@ void ImageViewerPanel::updateTexture()
 	makeCurrent();
 	if (texLen > 0)
 	{
-		glTextureStorage2D(tex, 1, GL_RGB8, imgsize[0], imgsize[1]);
-		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], texType, GL_UNSIGNED_BYTE, textures);
-		
+		glTextureStorage2D(tex, 1, GL_RGB32F, imgsize[0], imgsize[1]);
+		glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], texType, GL_FLOAT, textures);
 	}
 	doneCurrent();
 }
@@ -119,10 +106,10 @@ void ImageViewerPanel::initializeGL()
 		glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureStorage2D(tex, 1, GL_RGBA32F, imgsize[0], imgsize[1]);
+		glTextureStorage2D(tex, 1, GL_RGB32F, imgsize[0], imgsize[1]);
 		if (texLen > 0)
 		{
-			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGBA, GL_UNSIGNED_BYTE, textures);
+			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, textures);
 		}
 		texHandle = glGetTextureHandleARB(tex);
 		glMakeTextureHandleResidentARB(texHandle);

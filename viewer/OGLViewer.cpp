@@ -354,7 +354,9 @@ void OGLViewer::renderpixels()
 			//if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
 			if (tree->intersect(traceRay, queryPoint, &tHit, &rayEp))
 			{
+				//cout << "hit something\n" << endl;
 				cosVal = tHit;
+				queryPoint->shape->postIntersect(traceRay, queryPoint);
 				//cosVal = (Dot(Normalize(lightpos - queryPoint->pos), queryPoint->norm) + 1) * 0.5;
 				pixmap->setBuffer(uint32_t(i), uint32_t(j), *queryPoint, tHit);
 				//pixmap->setBuffer()

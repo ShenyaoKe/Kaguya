@@ -11,7 +11,7 @@ public:
 	geoTorus() {};
 	geoTorus(const Point3f &pos, const Float& radius, const Float& secRadius);
 
-	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const;
 	bool isInside(const Point3f &pPos) const;
 
 public:

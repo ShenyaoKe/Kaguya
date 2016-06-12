@@ -15,19 +15,19 @@ geoSphere::geoSphere(const Transform* o2w, const Transform* w2o,
 }
 void geoSphere::bounding()
 {
-	ObjBound = Bounds3f(c);
+	ObjBound = Bounds3f();
 	ObjBound.expand(r);
 	//return false;
 }
 
 Bounds3f geoSphere::getWorldBounding() const
 {
-	Bounds3f ret(c);
+	Bounds3f ret;
 	ret.expand(r);
 	return ret;
 }
 bool geoSphere::intersect(const Ray& inRay,
-	DifferentialGeometry* queryPoint, Float* tHit, Float* rayEpsilon) const
+	DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
 {
 	Float phi, theta;
 	Point3f pHit;
@@ -103,24 +103,21 @@ bool geoSphere::intersect(const Ray& inRay,
 	Vector3f dpdv = (thetaMax - thetaMin)
 		* Vector3f(pHit.z * cosPhi, pHit.z * sinPhi, -xyRadius);
 
-
-	// Compute dndu, dndv
-
 	*tHit = tHitLoc;
 	*rayEpsilon = reCE * *tHit;
 
 	const Transform &o2w = *ObjectToWorld;
-	*queryPoint = DifferentialGeometry(o2w(pHit), o2w(Normal3f()), o2w(dpdu), o2w(dpdv), o2w(Normal3f()), o2w(Normal3f()), uv, this);
+	*dg = DifferentialGeometry(o2w(pHit), o2w(Normal3f()), o2w(dpdu), o2w(dpdv), o2w(Normal3f()), o2w(Normal3f()), uv, this);
 	return true;
 }
+
+void geoSphere::postIntersect(const Ray& inRay,
+	DifferentialGeometry* dg) const
+{
+	// TODO: Move post intersection from intersect
+}
+
 bool geoSphere::isInside(const Point3f &p) const
 {
-	if ((p - c).lengthSquared() <= sqr(r))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (sqr(p.x) + sqr(p.y) + sqr(p.z)) <= sqr(r);
 }

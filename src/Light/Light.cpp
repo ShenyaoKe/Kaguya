@@ -38,7 +38,7 @@ Spectrum Light::getSpectrum(const DifferentialGeometry* queryPoint) const
 }
 Float Light::getDistance(const DifferentialGeometry* queryPoint) const
 {
-	return (pos - queryPoint->pos).length();
+	return (pos - queryPoint->P).length();
 }
 void Light::printInfo() const
 {
@@ -152,7 +152,7 @@ void spotLight::setDropOff(const Float& dpo)
 Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float tmpIts = Dot(queryPoint->pos - pos,  dir);
+	Float tmpIts = Dot(queryPoint->P - pos,  dir);
 
 	if (penumbraAngle != 0)
 	{

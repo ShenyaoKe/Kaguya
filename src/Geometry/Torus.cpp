@@ -14,7 +14,7 @@ geoTorus::geoTorus(const Point3f &pos, const Float& radius, const Float& secRadi
 	sr = secRadius;
 }
 
-bool geoTorus::intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const
+bool geoTorus::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
 {
 	//Float coeA = inRay.d * inRay.d;//len == 1
 	Float coeB = Dot(inRay.d, (inRay.o - c));

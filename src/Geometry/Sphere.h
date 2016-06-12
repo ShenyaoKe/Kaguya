@@ -14,7 +14,9 @@ public:
 	
 	void bounding();
 	Bounds3f getWorldBounding() const;
-	bool intersect(const Ray& inRay, DifferentialGeometry* queryPoint, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const;
+	void postIntersect(const Ray& inRay,
+		DifferentialGeometry* dg) const;
 	bool isInside(const Point3f &pPos) const;
 
 private:
