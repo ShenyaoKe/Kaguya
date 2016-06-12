@@ -14,17 +14,24 @@ class ImageViewerPanel;
 
 static GLint ogl_ver_major;
 static GLint ogl_ver_minor;
+enum class DISPLAY_TYPE
+{
+	BEAUTY = 0,
+	P, N, DPDU, DPDV
 
+};
 class ImageViewer : public QMainWindow
 {
 	Q_OBJECT
 public:
 	ImageViewer(QWidget* parent = nullptr);
-	~ImageViewer();
+	//~ImageViewer();
 	//ImageViewer* getInstance();
 	void setpixmap(const renderBuffer* pixmap);
 private:
-
+	void switchTexture();
+private:
+	const renderBuffer* rbuf;
 	//static ImageViewer* instance;
 	Ui::img_viewer ui;
 	unique_ptr<ImageViewerPanel> img_panel;
@@ -56,7 +63,7 @@ private:
 	GLuint64 texHandle;
 	uint32_t texLen;
 	const void* textures;
-	GLenum texType;
+	DISPLAY_TYPE texType;
 
 	friend class ImageViewer;
 };

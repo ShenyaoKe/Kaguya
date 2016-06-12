@@ -20,7 +20,10 @@
    <string>Image Viewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QComboBox" name="display_t"/>
+    </item>
     <item>
      <layout class="QVBoxLayout" name="img_panel">
       <property name="sizeConstraint">
