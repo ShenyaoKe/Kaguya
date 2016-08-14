@@ -34,7 +34,6 @@ void ImageViewer::switchTexture()
 	case 0:
 		img_panel->texType = DISPLAY_TYPE::BEAUTY;
 		img_panel->textures = static_cast<const void*>(rbuf->beauty.data());
-		cout << rbuf->beauty.data() << endl;
 		break;
 	case 1:
 		img_panel->texType = DISPLAY_TYPE::P;
@@ -112,6 +111,11 @@ void ImageViewerPanel::updateTexture()
 			break;
 		}
 		
+	}
+	else
+	{
+		glTextureStorage2D(tex, 1, GL_RGBA32F, 0, 0);
+		glTextureSubImage2D(tex, 0, 0, 0, 0, 0, GL_RGBA, GL_FLOAT, 0);
 	}
 	doneCurrent();
 }
@@ -196,7 +200,10 @@ void ImageViewerPanel::paintGL()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindVertexArray(vao);
 	shaderP->use_program();
-	glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
+	if (textures)
+	{
+		glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
+	}
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

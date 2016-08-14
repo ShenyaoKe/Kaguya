@@ -27,9 +27,12 @@ public:
 public:
 	Point3f o;// Origin point position
 	Vector3f d;// Ray Direction
+	mutable Float u, v;
 	mutable Float tmin = 0.0, tmax = INFINITY;
 	Float time;
 	int dp;//ray depth count
+	int32_t geomID;
+	int32_t primID;
 };
 
 #endif

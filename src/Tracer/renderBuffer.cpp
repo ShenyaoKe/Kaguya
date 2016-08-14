@@ -6,8 +6,8 @@
 
 renderBuffer::renderBuffer(uint32_t w, uint32_t h)
 	: width(w), height(h), size(w * h)
-	, beauty(size * 3)
-	, diff(size * 3), spec(size * 3)
+	, beauty(size << 2)
+	, diff(size << 2), spec(size << 2)
 	//, fl(size * 3), fr(size * 3), sss(size * 3)
 	, p(size * 3), n(size * 3)
 	, dpdu(size * 3), dpdv(size * 3)
@@ -18,17 +18,19 @@ renderBuffer::renderBuffer(uint32_t w, uint32_t h)
 
 void renderBuffer::resize(uint32_t w, uint32_t h)
 {
-	width = w;
-	height = h;
-	size = w * h;
 	clear();
 
-	size_t size3 = size * 3;
-	size_t size2 = size * 2;
+	width = w;
+	height = h;
 
-	beauty.resize(size3);
-	diff.resize(size3);
-	spec.resize(size3);
+	size = w * h;
+	size_t size2 = size << 1;
+	size_t size3 = size * 3;
+	size_t size4 = size << 2;
+
+	beauty.resize(size4);
+	diff.resize(size4);
+	spec.resize(size4);
 
 
 	p.resize(size3);

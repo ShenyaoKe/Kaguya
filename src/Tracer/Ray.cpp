@@ -16,19 +16,23 @@ Ray::Ray(const Point3f &pos, const Vector3f &dir,
 	//pos = p;
 	d = Normalize(dir);
 }
+
 Point3f Ray::operator()(const Float& t) const
 {
 	return o + d * t;
 }
+
 void Ray::setT(const Float& t1, const Float& t2) const
 {
 	tmin = t1;
 	tmax = t2;
 }
+
 Float Ray::getDifferenceT() const
 {
 	return tmax - tmin;
 }
+
 // Vector3D Ray::getPoint(Float t) const
 // {
 // 	return pos + dir * t;

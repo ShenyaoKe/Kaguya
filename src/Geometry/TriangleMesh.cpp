@@ -260,6 +260,7 @@ bool Triangle::intersect(const Ray& inRay,
 	DifferentialGeometry* dg,
 	Float *tHit, Float *rayEpsilon) const
 {
+	// Moller¨CTrumbore Intersection Algorithm
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
 	Vector3f areaVec = Cross(v1, v2);
@@ -268,10 +269,7 @@ bool Triangle::intersect(const Ray& inRay,
 	//ray triangle DifferentialGeometry length
 	Float rayt = Dot(normal, (*p[0] - inRay.o))
 		/ Dot(normal, inRay.d);
-	if (rayt < inRay.tmin || rayt > inRay.tmax)
-	{
-		return false;
-	}
+	if (rayt < inRay.tmin || rayt > inRay.tmax) return false;
 	
 	//inRay.tmin = rayT;
 	Point3f ph = inRay(rayt);
@@ -291,6 +289,8 @@ bool Triangle::intersect(const Ray& inRay,
 
 	*dg = DifferentialGeometry(ph, Normal3f(normal), Vector2f(s, t), this);
 
+	inRay.u = s;
+	inRay.v = t;
 	*tHit = rayt;
 	*rayEpsilon = reCE * *tHit;
 

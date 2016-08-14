@@ -25,7 +25,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	Float assetsssss;
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
-	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");
+	model_mesh = make_unique<TriangleMesh>("scene/obj/bunny.obj");
 	
 	model_mesh->refine(objlist);
 	tree = make_unique<KdTreeAccel>(objlist);
