@@ -1,5 +1,5 @@
 #version 450
-in layout(location = 0) vec2 vp;
+layout(location = 0) in vec2 vp;
 
 //uniform mat4 transform;
 out vec2 uv;

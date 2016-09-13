@@ -1,5 +1,5 @@
 #version 450
-in layout(location = 0) vec3 vp;
+layout(location = 0) in vec3 vp;
 
 uniform mat4 view_matrix;
 
