@@ -8,8 +8,6 @@
 #ifndef __DifferentialGeometry__
 #define __DifferentialGeometry__
 
-//#define KAGUYA_DOUBLE_AS_FLOAT
-
 #include "Core/Kaguya.h"
 #include "Math/Geometry.h"
 

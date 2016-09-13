@@ -24,7 +24,7 @@ public:
 	void clear();
 	bool empty() const;
 	void setBuffer(uint32_t x, uint32_t y,
-		const DifferentialGeometry &geom, double zdepth);
+		const DifferentialGeometry &geom, Float zdepth);
 
 private:
 	template<typename T>

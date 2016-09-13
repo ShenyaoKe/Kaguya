@@ -58,7 +58,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>KAGUYA_DOUBLE_AS_FLOAT;RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -81,7 +81,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>KAGUYA_DOUBLE_AS_FLOAT;RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,6 +106,7 @@
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Camera\orthoCamera.h" />
     <ClInclude Include="..\src\Camera\perspCamera.h" />
+    <ClInclude Include="..\src\Core\error.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\Primitive.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
     <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Core\error.cpp" />
     <ClCompile Include="..\src\Core\Primitive.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />

@@ -9,7 +9,7 @@
 class RasterizedVolume
 {
 public:
-	RasterizedVolume(const TriangleMesh* src, const KdTreeAccel* tree, double div);
+	RasterizedVolume(const TriangleMesh* src, const KdTreeAccel* tree, Float div);
 	~RasterizedVolume();
 
 	Point3f center() const;

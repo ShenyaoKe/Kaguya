@@ -207,6 +207,9 @@
     <ClInclude Include="..\src\Math\Transform.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\error.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -307,6 +310,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Math\Transform.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\error.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

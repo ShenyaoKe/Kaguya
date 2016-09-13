@@ -11,6 +11,7 @@ public:
 		const Film &fm = Film());
 	perspCamera(const Transform& cam2wo, const Transform& projection);
 	~perspCamera();
+
 	//Vector3D getPos() { return pos; }
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);

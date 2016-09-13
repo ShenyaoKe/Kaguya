@@ -6,7 +6,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
 		Point3f(10, 6, 10), Point3f(0, 0, 0), Vector3f(0, 1, 0),
-		width() / static_cast<double>(height())))
+		width() / static_cast<Float>(height())))
 	, pixmap(new renderBuffer(default_resX, default_resY))
 	, resgate{	0, 0,
 				640, 0,
@@ -25,7 +25,7 @@ OGLViewer::OGLViewer(QWidget *parent)
 	Float assetsssss;
 	// Read obj file
 	//box_mesh = new Mesh("scene/obj/cube_large.obj");
-	model_mesh = make_unique<TriangleMesh>("scene/obj/bunny.obj");
+	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");
 	
 	model_mesh->refine(objlist);
 	tree = make_unique<KdTreeAccel>(objlist);
@@ -217,7 +217,7 @@ void OGLViewer::paintGL()
 void OGLViewer::resizeGL(int w, int h)
 {
 	// Widget resize operations
-	view_cam->resizeViewport(width() / static_cast<double>(height()));
+	view_cam->resizeViewport(width() / static_cast<Float>(height()));
 	//view_cam->exportVBO(view_mat, proj_mat, rast_mat);
 	view_cam->exportVBO(cam_mat, cam_mat + 16, cam_mat + 32);
 }

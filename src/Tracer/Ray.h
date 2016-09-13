@@ -8,6 +8,7 @@
 #ifndef __Ray__
 #define __Ray__
 
+#include "Math/MathUtil.h"
 #include "Math/Geometry.h"
 
 class Ray
@@ -17,7 +18,7 @@ private:
 public:
 	Ray();
 	Ray(const Point3f &pos, const Vector3f &dir,
-		double minT = 0.0, double maxT = INFINITY);
+		Float minT = 0, Float maxT = NUM_INFINITY);
 
 	Point3f operator()(const Float& t) const;
 	void setT(const Float& t1, const Float& t2) const;
@@ -28,7 +29,7 @@ public:
 	Point3f o;// Origin point position
 	Vector3f d;// Ray Direction
 	mutable Float u, v;
-	mutable Float tmin = 0.0, tmax = INFINITY;
+	mutable Float tmin = 0.0, tmax = NUM_INFINITY;
 	Float time;
 	int dp;//ray depth count
 	int32_t geomID;

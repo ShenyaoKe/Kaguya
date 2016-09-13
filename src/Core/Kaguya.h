@@ -51,6 +51,8 @@ using int32s_t = vector<int32_t>;
 
 #include <memory>
 
+#include "Core/error.h"
+
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 typedef double Float;
 #else
@@ -73,6 +75,9 @@ typedef float Float;
 #pragma warning (disable : 4267) // size_t -> unsigned int conversion
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// Assertion
+//////////////////////////////////////////////////////////////////////////
 #if !defined(NDEBUG) && !defined(_DEBUG)
 #	define _DEBUG
 #endif
@@ -81,11 +86,11 @@ typedef float Float;
 #define Assert(expr) ((void)0)
 #else
 #define Assert(expr)                                                     \
-    ((expr) ? (void)0 : assert("Assertion \"%s\" failed in %s, line %d", \
+    ((expr) ? (void)0 : Severe("Assertion \"%s\" failed in %s, line %d", \
                                #expr, __FILE__, __LINE__))
 #endif  // NDEBUG
-using namespace std;
 
+using namespace std;
 
 //Class declaration
 class ColorWebRGB;

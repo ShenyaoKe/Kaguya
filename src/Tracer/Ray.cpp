@@ -8,7 +8,7 @@ Ray::Ray() : time(0), dp(0)
 }
 
 Ray::Ray(const Point3f &pos, const Vector3f &dir,
-	double minT, double maxT)
+	Float minT, Float maxT)
 	: o(pos)
 	, time(0), dp(0)
 	, tmin(minT), tmax(maxT)

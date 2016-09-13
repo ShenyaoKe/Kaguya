@@ -68,7 +68,7 @@ bool renderBuffer::empty() const
 	return p.size() == 0;
 }
 void renderBuffer::setBuffer(uint32_t x, uint32_t y,
-	const DifferentialGeometry &geom, double zdepth)
+	const DifferentialGeometry &geom, Float zdepth)
 {
 	size_t index = y * width + x;
 	if (index >= size) return;

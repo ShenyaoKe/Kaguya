@@ -8,12 +8,6 @@
 #ifndef __Camera__
 #define __Camera__
 
-
-/*
-#ifndef KAGUYA_DOUBLE_AS_FLOAT
-#define KAGUYA_DOUBLE_AS_FLOAT
-#endif // !KAGUYA_DOUBLE_AS_FLOAT*/
-
 #include "Core/Kaguya.h"
 #include "Math/Matrix4x4.h"
 #include "Math/Transform.h"
@@ -26,9 +20,9 @@ class Camera
 {
 public:
 	//Camera();
-	Camera(const Point3f &eye = Point3f(1.,1.,1.),
-		const Point3f &targ = Point3f(0.,0.,0.),
-		const Vector3f &up = Vector3f(0.,1.,0.),
+	Camera(const Point3f &eye = Point3f(1, 1, 1),
+		const Point3f &targ = Point3f(0, 0, 0),
+		const Vector3f &up = Vector3f(0, 1, 0),
 		Float asp = 1.0, Float lr = 0., Float fd = INFINITY,
 		const Film &fm = Film());
 	virtual~Camera(){}

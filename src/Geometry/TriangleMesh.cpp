@@ -46,9 +46,9 @@ bool TriangleMesh::loadOBJ(const char* filename)
 		// If triangulated
 		bool unitUV_needed = false, unitN_needed = false;
 		//size_t nsize = norms.size();
-		size_t uvsize = uvs.size();
+		uint32_t uvsize = uvs.size();
 		//size_t nid[3] = { nsize, nsize + 1, nsize + 2 };
-		size_t uvid[3] = { uvsize, uvsize + 1, uvsize + 2 };
+		uint32_t uvid[] = { uvsize, uvsize + 1, uvsize + 2 };
 		for (auto f : fids)
 		{
 			if (f.uv.size() == 0)
@@ -59,9 +59,9 @@ bool TriangleMesh::loadOBJ(const char* filename)
 		}
 		if (unitUV_needed)
 		{
-			uvs.push_back(Point2f(0., 0.));
-			uvs.push_back(Point2f(1., 0.));
-			uvs.push_back(Point2f(1., 1.));
+			uvs.push_back(Point2f(0, 0));
+			uvs.push_back(Point2f(1, 0));
+			uvs.push_back(Point2f(1, 1));
 		}
 		// Triangulation required!
 		return true;
@@ -392,20 +392,20 @@ bool ObjParser::parse(const char* filename,
 		// Vertex
 		if (strcmp(lineHeader, "v") == 0)
 		{
-			fscanf(fp, "%lf %lf %lf\n", val, val + 1, val + 2);
+			fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
 			verts.push_back(Point3f(val));
 		}
 		// Texture Coordinate
 		else if (strcmp(lineHeader, "vt") == 0)
 		{
-			fscanf(fp, "%lf %lf\n", val, val + 1);
+			fscanf(fp, "%f %f\n", val, val + 1);
 			uvs.push_back(Point2f(val));
 		}
 		// Vertex Normal
 		else if (strcmp(lineHeader, "vn") == 0)
 		{
 			//float val[3];
-			fscanf(fp, "%lf %lf %lf\n", val, val + 1, val + 2);
+			fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
 			norms.push_back(Normal3f(val));
 		}
 		// Face Index

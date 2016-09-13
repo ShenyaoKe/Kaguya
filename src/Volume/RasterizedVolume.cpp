@@ -1,7 +1,7 @@
 #include "RasterizedVolume.h"
 
 RasterizedVolume::RasterizedVolume(
-	const TriangleMesh* src, const KdTreeAccel* tree, double div)
+	const TriangleMesh* src, const KdTreeAccel* tree, Float div)
 	: mesh(src), kdtree(tree)
 	, division(div)
 {
@@ -19,7 +19,7 @@ Point3f RasterizedVolume::center() const
 	{
 		centroid += grid;
 	}
-	centroid /= static_cast<double>(grids.size());
+	centroid /= static_cast<Float>(grids.size());
 	return centroid;
 }
 
@@ -52,8 +52,8 @@ void RasterizedVolume::rasterize()
 	int yaxis = (zaxis + 2) % 3;
 
 	Point3f rayPos = bound.pMin;
-	double initZ = rayPos[zaxis] - division;
-	double initY = rayPos[yaxis] + 0.01;
+	Float initZ = rayPos[zaxis] - division;
+	Float initY = rayPos[yaxis] + 0.01;
 	rayPos[zaxis] = initZ;
 	rayPos[yaxis] = initY;
 	rayPos[xaxis] += division * 0.01;
@@ -69,7 +69,7 @@ void RasterizedVolume::rasterize()
 	{
 		while (rayPos[yaxis] < bound.pMax[yaxis])
 		{
-			vector<double> hitLen;
+			vector<Float> hitLen;
 			rasterRay = Ray(rayPos, rayDir);
 			while (kdtree->intersect(rasterRay, &queryPoint, &tHit, &rayEp))
 			{
@@ -84,7 +84,7 @@ void RasterizedVolume::rasterize()
 				for (int i = 0; i < hitLen.size() - 1; i += 2)
 				{
 					curPos[zaxis] += hitLen[i];
-					double newDP = hitLen[i + 1] + curPos[zaxis];
+					Float newDP = hitLen[i + 1] + curPos[zaxis];
 					while (curPos[zaxis] < newDP)
 					{
 						grids.push_back(curPos);

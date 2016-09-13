@@ -142,8 +142,8 @@ public:
 			pMin[i] = pMax[i] = mat[3][i];
 			for (int j = 0; j < 3; j++)
 			{
-				double e = mat[j][i] * bound.pMin[j];
-				double f = mat[j][i] * bound.pMax[j];
+				Float e = mat[j][i] * bound.pMin[j];
+				Float f = mat[j][i] * bound.pMax[j];
 				if (e < f)
 				{
 					pMin[i] += e;
