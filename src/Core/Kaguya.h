@@ -54,9 +54,9 @@ using int32s_t = vector<int32_t>;
 #include "Core/error.h"
 
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
-typedef double Float;
+using Float = double;
 #else
-typedef float Float;
+using Float = float;
 #endif // Float
 
 #ifndef RIGHT_HAND_ORDER

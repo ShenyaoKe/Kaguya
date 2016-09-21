@@ -5,12 +5,12 @@
 /************************************************************************/
 /* Hyperboloid Function Definition                                      */
 /************************************************************************/
-typedef enum
+enum HYPERBOLOID_TYPE
 {
 	ONE_SHEET = 1,
 	TWO_SHEET = -1,
 	CONE = 0
-}HYPERBOLOID_TYPE;
+};
 
 class geoHyperboloid :public Shape
 {

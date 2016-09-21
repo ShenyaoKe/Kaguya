@@ -105,8 +105,8 @@ public:
 	}
 };
 
-typedef Bounds2<int32_t> Bounds2i;
-typedef Bounds2<Float> Bounds2f;
+using Bounds2i = Bounds2<int32_t>;
+using Bounds2f = Bounds2<Float>;
 
 //Bounding box
 template <typename T>
@@ -252,8 +252,8 @@ public:
 	}
 };
 
-typedef Bounds3<int32_t> Bounds3i;
-typedef Bounds3<Float> Bounds3f;
+using Bounds3i = Bounds3<int32_t>;
+using Bounds3f = Bounds3<Float>;
 
 template <typename T>
 inline Bounds2<T> Union(const Bounds2<T> &box, const Point2<T> &p)

@@ -106,8 +106,8 @@ public:
 	T x, y;
 };
 
-typedef Vector2<Float> Vector2f;
-typedef Vector2<int> Vector2i;
+using Vector2f = Vector2<Float>;
+using Vector2i = Vector2<int32_t>;
 
 template <typename T>
 class Vector3
@@ -205,8 +205,8 @@ public:
 	T x, y, z;
 };
 
-typedef Vector3<Float> Vector3f;
-typedef Vector3<int> Vector3i;
+using Vector3f = Vector3<Float>;
+using Vector3i = Vector3<int32_t>;
 
 /************************************************************************/
 /* Point                                                                */
@@ -308,8 +308,8 @@ public:
 	T x, y;
 };
 
-typedef Point2<Float> Point2f;
-typedef Point2<int> Point2i;
+using Point2f = Point2<Float>;
+using Point2i = Point2<int32_t>;
 
 template <typename T>
 class Point3
@@ -411,8 +411,8 @@ public:
 	T x, y, z;
 };
 
-typedef Point3<Float> Point3f;
-typedef Point3<int> Point3i;
+using Point3f = Point3<Float>;
+using Point3i = Point3<int32_t>;
 
 /************************************************************************/
 /* Normal                                                               */
@@ -512,7 +512,7 @@ public:
 public:
 	T x, y, z;
 };
-typedef Normal3<Float> Normal3f;
+using Normal3f = Normal3<Float>;
 
 /************************************************************************/
 /* Vector Implementation                                                */

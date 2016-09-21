@@ -10,7 +10,7 @@
 
 #include "Math/Transform.h"
 
-typedef unsigned char RES_FIT_TYPE;
+using RES_FIT_TYPE = uint8_t;
 
 enum FILM_TYPE
 {
@@ -20,13 +20,13 @@ enum FILM_TYPE
 	FT_35MM_ACADEMY,
 	FT_IMAX
 };
-typedef enum
+enum FIT_RESOLUTION_GATE
 {
 	FRG_HORIZONTAL_FIT = 0,
 	FRG_VERTICAL_FIT = 1,
 	FRG_FILL_FIT = 2,
 	FRG_OVERSCAN_FIT = 3
-}FIT_RESOLUTION_GATE;
+};
 
 class Film//:public ImageData
 {

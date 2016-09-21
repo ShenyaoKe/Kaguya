@@ -5,11 +5,11 @@
 /************************************************************************/
 /* Paraboloid Function Definition                                       */
 /************************************************************************/
-typedef enum
+enum PARABOLOID_TYPE
 {
 	ELLIPTIC_PARABOLOID = 1,
 	HYPERBOLIC_PARABOLOID = -1
-}PARABOLOID_TYPE;
+};
 class geoParaboloid :public Shape
 {
 public:

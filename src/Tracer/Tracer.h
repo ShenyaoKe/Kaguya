@@ -11,7 +11,7 @@ struct render_setting
 	const int aaSample = 1;
 	Float* kernal;
 	const bool IS_RENDER_SHADOW = false;
-	typedef enum RENDER_VIEW_TYPE
+	enum RENDER_VIEW_TYPE
 	{
 		RENDER_BEAUTY = 0,
 		RENDER_DIFFUSE = 1,
