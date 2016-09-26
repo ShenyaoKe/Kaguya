@@ -1,0 +1,10 @@
+#*.h *.hh linguist-language=C++
+
+# Set linguist ignorad file
+bin/* linguist-vendored
+include/* linguist-vendored
+lib/* linguist-vendored
+resources/* linguist-vendored
+resources/shaders/* linguist-vendored=false
+scene/* linguist-vendored
+vs2015/* linguist-vendored

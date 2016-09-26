@@ -1,6 +1,6 @@
 #include "TextureSynthesis.h"
 
-ImageData* synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/, int nr)
+ImageData* TextureSynthesis::synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/, int nr)
 {
 	int srcW = sample->getWidth();
 	int srcH = sample->getHeight();

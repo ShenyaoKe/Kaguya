@@ -1,11 +1,11 @@
-#ifndef __TRACER__
-#define __TRACER__
+#pragma once
 //#include "Core/rtdef.h"
 #include "Image/ColorData.h"
 #include "Accel/KdTreeAccel.h"
 
-struct render_setting
+class render_setting
 {
+public:
 	const int width = 960, height = 720;
 	unsigned char *pixmap;
 	const int aaSample = 1;
@@ -117,4 +117,3 @@ ColorRGBA render_refraction(const KdTreeAccel *sceneTree, Ray &inRay, Differenti
 	retColor = envm->getColor(inRay.dir);
 	return retColor;
 }*/
-#endif // __TRACER__
