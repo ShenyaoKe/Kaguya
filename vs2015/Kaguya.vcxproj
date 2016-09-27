@@ -67,7 +67,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
@@ -92,7 +92,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>

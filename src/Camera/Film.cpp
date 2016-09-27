@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 Film::Film(FILM_TYPE filmType,
-	int resX, int resY, FIT_RESOLUTION_GATE fitTyep)
+	int32_t resX, int32_t resY, FIT_RESOLUTION_GATE fitTyep)
 	: width(resX), height(resY)
 	, resFT(fitTyep)
 	//: ImageData(resX, resY)

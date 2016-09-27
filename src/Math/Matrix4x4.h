@@ -47,6 +47,10 @@ struct Matrix4x4
 	}
 	~Matrix4x4() {}
 	
+	// Utils
+	Float* data() { return *mtx; }
+	const Float* data() const { return *mtx; }
+
 	// Operators
 	Float* operator [] (int i);
 	const Float* operator [] (int i) const;
@@ -136,9 +140,10 @@ inline Point3f Matrix4x4::operator ()(const Point3f &v, Float w) const
 		w = mtx[0][3] * x + mtx[1][3] * y + mtx[2][3] * z + mtx[3][3];
 		if (w != 1.0)
 		{
-			xp /= w;
-			yp /= w;
-			zp /= w;
+			Float invW = (Float)1 / w;
+			xp *= invW;
+			yp *= invW;
+			zp *= invW;
 		}
 	}
 	return Point3f(xp, yp, zp);
@@ -158,7 +163,7 @@ inline Point3f Matrix4x4::operator()(const Point3f &v) const
 	}
 	else
 	{
-		wp = 1. / wp;
+		wp = (Float)1 / wp;
 		return Point3f(xp * wp, yp * wp, zp * wp);
 	}
 }

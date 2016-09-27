@@ -32,7 +32,7 @@ class Film//:public ImageData
 {
 public:
 	Film(FILM_TYPE filmType = FT_DEFAULT,
-		int resX = default_resX, int resY = default_resY,
+		int32_t resX = default_resX, int32_t resY = default_resY,
 		FIT_RESOLUTION_GATE fitType = FRG_HORIZONTAL_FIT);
 	~Film();
 

@@ -5,8 +5,6 @@
 //  Copyright (c) 2015 AKIKA. All rights reserved.
 //
 #pragma once
-#ifndef __Camera__
-#define __Camera__
 
 #include "Core/Kaguya.h"
 #include "Math/Matrix4x4.h"
@@ -20,10 +18,11 @@ class Camera
 {
 public:
 	//Camera();
-	Camera(const Point3f &eye = Point3f(1, 1, 1),
+	Camera(
+		const Point3f &eye = Point3f(1, 1, 1),
 		const Point3f &targ = Point3f(0, 0, 0),
 		const Vector3f &up = Vector3f(0, 1, 0),
-		Float asp = 1.0, Float lr = 0., Float fd = INFINITY,
+		Float asp = 1, Float lr = 0, Float fd = NUM_INFINITY,
 		const Film &fm = Film());
 	virtual~Camera(){}
 
@@ -32,7 +31,7 @@ public:
 	virtual void setSample(int aaSample);
 	virtual void setFocLen(Float fl);
 	virtual void setFilmType(FILM_TYPE filmType);
-	virtual void updateMatrices();
+	void updateMatrices();
 
 	//virtual void setBuffer(int x, int y, const bufferData tmpBuff);
 	virtual Float generateRay(const cameraSampler &sample, Ray* ray) const = 0;
@@ -47,17 +46,23 @@ public:
 	virtual void updateRasterToScreen();
 
 	// Camera Roaming Operation
-	virtual void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
-	virtual void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
-	virtual void rotatePYR(Float pitch = 0, Float yaw = 0, Float roll = 0);
+	void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
+	void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
+	void rotatePYR(Float pitch = 0, Float yaw = 0, Float roll = 0);
 	virtual void resizeViewport(Float aspr = 1.0);
-	virtual void exportVBO(float *view, float *proj, float *raster) const;
 
+	const Float* cam_to_world() const { return CameraToWorld.m.data(); }
+	const Float* world_to_cam() const { return CameraToWorld.mInv.data(); }
+	const Float* cam_to_screen() const { return CameraToScreen.m.data(); }
+	const Float* screen_to_cam() const { return CameraToScreen.mInv.data(); }
+	const Float* raster_to_screen() const { return RasterToScreen.m.data(); }
+	const Float* screen_to_raster() const { return RasterToScreen.mInv.data(); }
+	
 	Transform CameraToWorld;
 	Transform CameraToScreen, RasterToCamera, RasterToScreen;
 
 protected:
-	Point3f target;
+	Point3f viewTarget;
 	
 	Film film;//contains image size, film size(horApec, verApec)
 	//renderBuffer buffer;
@@ -70,5 +75,3 @@ protected:
 	int sample = 1;
 private:
 };
-
-#endif

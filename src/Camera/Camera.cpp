@@ -3,11 +3,11 @@
 Camera::Camera(const Point3f &eye,
 	const Point3f &targ, const Vector3f &up,
 	Float asp, Float lr, Float fd, const Film &fm)
-	: CameraToWorld(Matrix4x4::LookAt(eye, target, up))
-	, target(targ)
+	: CameraToWorld(Matrix4x4::LookAt(eye, targ, up))
+	, viewTarget(targ)
 	, viewportRatio(1), focLen(35)
 	, lensRadius(lr), focalDistance(fd)
-	, nearPlane(0.1), farPlane(100)
+	, nearPlane(0.1f), farPlane(100)
 	, film(fm)
 {
 }
@@ -23,18 +23,22 @@ void Camera::setResolution(int resX, int resY)
 	//film.resize(resX, resY);
 	//buffer = renderBuffer(resX, resY);
 }
+
 void Camera::setSample(int aaSample)
 {
 	sample = aaSample;
 }
+
 void Camera::setFocLen(Float fl)
 {
 	focLen = fl;
 }
+
 void Camera::setFilmType(FILM_TYPE filmType)
 {
 	film.setFilmType(filmType);
 }
+
 void Camera::updateMatrices()
 {
 	// Raster to camera
@@ -60,7 +64,7 @@ bufferData Camera::getBufferData(int x, int y) const
 
 Point3f Camera::getTarget() const
 {
-	return target;
+	return viewTarget;
 }
 
 void Camera::setCamToWorld(const Matrix4x4 &cam2wMat)
@@ -71,22 +75,6 @@ void Camera::setCamToWorld(const Matrix4x4 &cam2wMat)
 void Camera::setProjection(const Matrix4x4 &perspMat)
 {
 	CameraToScreen = Transform(perspMat);
-}
-
-void Camera::exportVBO(float *view, float *proj, float *raster) const
-{
-	if (view != nullptr)
-	{
-		CameraToWorld.mInv.exportVBO(view);
-	}
-	if (proj != nullptr)
-	{
-		CameraToScreen.m.exportVBO(proj);
-	}
-	if (raster != nullptr)
-	{
-		RasterToScreen.m.exportVBO(raster);
-	}
 }
 
 void Camera::updateRasterToCam()
@@ -116,7 +104,7 @@ void Camera::zoom(Float x_val, Float y_val, Float z_val)
 	//cout << "befor: " << target << endl;
 
 	Vector3f _nx(cam2w[0]), _ny(cam2w[1]);
-	target += _nx * x_val + _ny * y_val;
+	viewTarget += _nx * x_val + _ny * y_val;
 	//cout << "after: " << target << endl;
 	CameraToWorld.setMat(newLookAt);
 }
@@ -127,7 +115,7 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 	Matrix4x4 lookAtMat = CameraToWorld.getMat();
 
 	Point3f _pos(lookAtMat[3]);
-	Vector3f vt = _pos - target;
+	Vector3f vt = _pos - viewTarget;
 	Float vt_len = vt.length();
 	Float upCoef = lookAtMat[1][1] < 0 ? -1 : 1;
 	
@@ -140,7 +128,7 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 		upCoef *= -1;
 	}
 	Vector3f newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
-	CameraToWorld.setMat(Matrix4x4::LookAt(target + newVt * vt_len, target, Vector3f(0, upCoef, 0)));
+	CameraToWorld.setMat(Matrix4x4::LookAt(viewTarget + newVt * vt_len, viewTarget, Vector3f(0, upCoef, 0)));
 }
 
 void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
