@@ -5,7 +5,7 @@ Camera::Camera(const Point3f &eye,
 	Float asp, Float lr, Float fd, const Film &fm)
 	: CameraToWorld(Matrix4x4::LookAt(eye, targ, up))
 	, viewTarget(targ)
-	, viewportRatio(1), focLen(35)
+	, viewportRatio(asp), focLen(35)
 	, lensRadius(lr), focalDistance(fd)
 	, nearPlane(0.1f), farPlane(100)
 	, film(fm)
