@@ -13,22 +13,12 @@ public:
 	Transform()
 	{
 	}
-	Transform(const Float mat[4][4])
-	{
-		m = Matrix4x4(
-			mat[0][0], mat[0][1], mat[0][2], mat[0][3],
-			mat[1][0], mat[1][1], mat[1][2], mat[1][3],
-			mat[2][0], mat[2][1], mat[2][2], mat[2][3],
-			mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
-		mInv = m.Inverse();
-	}
-	Transform(const Matrix4x4 &mat)
-		: m(mat), mInv(mat.Inverse())
-	{}
+	Transform(const Float mat[4][4]) : m(mat), mInv(m.Inverse()) {}
+	Transform(const Matrix4x4 &mat) : m(mat), mInv(mat.Inverse()) {}
 	Transform(const Matrix4x4 &mat, const Matrix4x4 &matInv)
 		: m(mat), mInv(matInv)
 	{}
-	//~Transform() {}
+	~Transform() {}
 
 	Point3f operator () (const Point3f &p) const;
 	Vector3f operator () (const Vector3f &v) const;
@@ -39,8 +29,8 @@ public:
 
 	//Transform operator * (const Matrix4x4 &mat);
 
-	Matrix4x4 getMat() const;
-	Matrix4x4 getInvMat() const;
+	const Matrix4x4 &getMat() const { return m; }
+	const Matrix4x4 &getInvMat() const { return mInv; }
 	void setMat(const Matrix4x4 &mat);
 	void setInvMat(const Matrix4x4 &mat);
 
@@ -50,8 +40,7 @@ public:
 	}
 	friend Transform transpose(const Transform &t)
 	{
-		return Transform(t.m.Transpose(),
-			t.mInv.Transpose());
+		return Transform(t.m.Transpose(), t.mInv.Transpose());
 	}
 private:
 	Matrix4x4 m, mInv;

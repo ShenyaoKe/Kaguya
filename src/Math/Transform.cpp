@@ -54,16 +54,6 @@ Normal3f Transform::operator()(const Normal3f &n) const
 		mInv.mtx[2][0] * z + mInv.mtx[2][1] * z + mInv.mtx[2][2] * z);
 }
 
-Matrix4x4 Transform::getMat() const
-{
-	return m;
-}
-
-Matrix4x4 Transform::getInvMat() const
-{
-	return mInv;
-}
-
 void Transform::setMat(const Matrix4x4 &mat)
 {
 	m = mat;
@@ -132,16 +122,14 @@ Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
 	const Vector3f &up = Vector3f(0, 1, 0))
 {
 	//Camera to World
-	Vector3f nz = target - pos;//pos - target;
+	Vector3f nz = target - pos;
 	// distance between target and camera position is too small
 	if (isFuzzyNull(nz.x) && isFuzzyNull(nz.y) && isFuzzyNull(nz.z))
 	{
 		return Transform();
 	}
-	
+
 	nz.normalize();
-	//Vector3f nx = Normalize(Cross(up, nz));//left dir
-	//Vector3f ny = Cross(nz, nx);
 #ifdef RIGHT_HAND_ORDER // OpenGL style
 	Vector3f nx = Normalize(Cross(up, nz));
 	Vector3f ny = Cross(nz, nx);
