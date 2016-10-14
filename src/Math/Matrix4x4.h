@@ -87,6 +87,7 @@ struct Matrix4x4
 	Matrix4x4 Inverse() const;
 
 	//Set transformation matrix
+	static Matrix4x4 Zero();
 	static Matrix4x4 Identity();
 	static Matrix4x4 Translate(Float tx, Float ty, Float tz);
 	static Matrix4x4 Translate(const Vector3f &vec);
@@ -117,10 +118,12 @@ struct Matrix4x4
 	Float mtx[4][4];
 	//Float det = 0;
 };
+
 inline Float* Matrix4x4::operator[](int i)
 {
 	return mtx[i];
 }
+
 inline const Float* Matrix4x4::operator[](int i) const
 {
 	return mtx[i];
@@ -402,6 +405,11 @@ inline Float Matrix4x4::Cofactor(int x, int y) const
 	}
 }
 
+inline Matrix4x4 Matrix4x4::Zero()
+{
+	return Matrix4x4((Float)0);
+}
+
 inline Matrix4x4 Matrix4x4::Identity()
 {
 	return Matrix4x4(
@@ -432,7 +440,6 @@ inline Matrix4x4 Matrix4x4::Adjoint() const
 			ret.mtx[i][j] = Cofactor(j, i);
 		}
 	}
-	//buffer.det = 1.0 / det;
 	return ret;
 }
 
@@ -442,8 +449,10 @@ inline Matrix4x4 Matrix4x4::Inverse() const
 	Float det = Determinant();
 	if (det == 0)
 	{
+#ifdef _DEBUG
 		cout << "The matrix is non-inversable!" << endl;
-		return Matrix4x4(0.);
+#endif
+		return Zero();
 	}
 	adjM = Adjoint();
 
