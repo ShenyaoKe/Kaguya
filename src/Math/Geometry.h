@@ -281,7 +281,7 @@ public:
 		return p * s;
 	}
 	template <typename U>
-	Point2<T> operator*=(U s) const {
+	Point2<T> operator*=(U s) {
 		Assert(!isNaN(s));
 		x *= s; y *= s;
 		return *this;
@@ -293,7 +293,7 @@ public:
 		return Point2<T>(x * inv, y * inv);
 	}
 	template <typename U>
-	Point2<T> operator/=(U f) const {
+	Point2<T> operator/=(U f) {
 		Assert(f != 0);
 		Float inv = (Float)1 / f;
 		x *= inv; y *= inv;
@@ -383,7 +383,7 @@ public:
 		return p * s;
 	}
 	template <typename U>
-	Point3<T> operator*=(U s) const {
+	Point3<T> operator*=(U s) {
 		Assert(!isNaN(s));
 		x *= s; y *= s; z *= s;
 		return *this;
