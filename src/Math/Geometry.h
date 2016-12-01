@@ -11,7 +11,7 @@ inline bool isNaN(const T x)
 {
 	return std::isnan(x);
 }
-inline bool isNaN(const int x)
+inline bool isNaN(const int /*x*/)
 {
 	return false;
 }

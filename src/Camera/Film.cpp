@@ -152,9 +152,10 @@ Point2f Film::getFilmUV(Float imgX, Float imgY) const
 	case FRG_VERTICAL_FIT:
 		return Point2f(imgX / height, imgY / height);
 	default:
-		break;
+		return Point2f();
 	}
 }
+
 Matrix4x4 Film::rasterToFilm() const
 {
 	switch (resFT)
