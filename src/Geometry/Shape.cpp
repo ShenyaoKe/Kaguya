@@ -23,7 +23,7 @@ Bounds3f Shape::getWorldBounding() const
 void Shape::refine(vector<Shape*> &refined)
 {
 }
-bool Shape::intersectP(const Ray& inRay) const
+bool Shape::intersectP(const Ray &inRay) const
 {
 	return ObjBound.intersectP(inRay);
 }

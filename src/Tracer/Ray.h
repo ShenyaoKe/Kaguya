@@ -20,8 +20,8 @@ public:
 	Ray(const Point3f &pos, const Vector3f &dir,
 		Float minT = 0, Float maxT = NUM_INFINITY);
 
-	Point3f operator()(const Float& t) const;
-	void setT(const Float& t1, const Float& t2) const;
+	Point3f operator()(Float t) const;
+	void setT(Float t1, Float t2) const;
 	Float getDifferenceT() const;
 
 	void printInfo() const;

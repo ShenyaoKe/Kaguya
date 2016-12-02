@@ -14,14 +14,14 @@ class geoParaboloid :public Shape
 {
 public:
 	geoParaboloid();
-	geoParaboloid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC, PARABOLOID_TYPE newType);
+	geoParaboloid(const Point3f &pos, Float semiA, Float semiB, Float semiC, PARABOLOID_TYPE newType);
 	~geoParaboloid();
 
 	void setCenter(const Point3f &pos);
-	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
+	void setSemiAxes(Float semiA, Float semiB, Float semiC);
 	void setParaboloidType(PARABOLOID_TYPE newType);
 
-	bool intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const;
+	bool intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const;
 	//Vector3D getNormal(const Point3f &pos) const;
 
 	bool isInside(const Point3f &pPos) const;

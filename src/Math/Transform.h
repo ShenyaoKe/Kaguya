@@ -13,8 +13,8 @@ public:
 	Transform()
 	{
 	}
-	Transform(const Float mat[4][4]) : m(mat), mInv(m.Inverse()) {}
-	Transform(const Matrix4x4 &mat) : m(mat), mInv(mat.Inverse()) {}
+	Transform(const Float mat[4][4]) : m(mat), mInv(m.inverse()) {}
+	Transform(const Matrix4x4 &mat) : m(mat), mInv(mat.inverse()) {}
 	Transform(const Matrix4x4 &mat, const Matrix4x4 &matInv)
 		: m(mat), mInv(matInv)
 	{}
@@ -40,7 +40,7 @@ public:
 	}
 	friend Transform transpose(const Transform &t)
 	{
-		return Transform(t.m.Transpose(), t.mInv.Transpose());
+		return Transform(t.m.transpose(), t.mInv.transpose());
 	}
 private:
 	Matrix4x4 m, mInv;
@@ -52,5 +52,5 @@ private:
 // where b is Vector2, A is Matrix2x2,
 // x is Vector2
 bool solveLinearSystem2x2(
-	const Float A[2][2], const Float b[2], Float *x0, Float *x1);
+	const Float A[2][2], const Float b[2], Float* x0, Float* x1);
 #endif // __TRANSFORM__

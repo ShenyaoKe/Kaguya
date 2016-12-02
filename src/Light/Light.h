@@ -41,12 +41,12 @@ protected:
 public:
 
 	Light();
-	Light(const Spectrum& its);
+	Light(const Spectrum &its);
 	virtual ~Light();
 
-	virtual void setExposure(const Float& xps);
+	virtual void setExposure(Float xps);
 	virtual void setDecayType(LIGHT_DECAY_TYPE dctype);
-	virtual void setRadius(const Float& rd);
+	virtual void setRadius(Float rd);
 
 	virtual LIGHT_TYPE getLightType() const;
 	virtual Spectrum getSpectrum(const DifferentialGeometry* queryPoint) const;
@@ -62,7 +62,7 @@ class directionalLight :public Light
 public:
 	directionalLight();
 	directionalLight(const Vector3f &vec);
-	directionalLight(const Vector3f &vec, const Spectrum& spt);
+	directionalLight(const Vector3f &vec, const Spectrum &spt);
 	~directionalLight();
 
 	void printInfo() const;
@@ -79,8 +79,8 @@ class pointLight :public Light
 	//Point3f pos;
 public:
 	pointLight();
-	pointLight(const Point3f &p, const Float& its);
-	pointLight(const Point3f &p, const Spectrum& spt);
+	pointLight(const Point3f &p, Float its);
+	pointLight(const Point3f &p, const Spectrum &spt);
 	~pointLight();
 
 	void printInfo() const;
@@ -99,20 +99,20 @@ protected:
 	Vector3f dir;
 	Float coneAngle = 40;
 	Float penumbraAngle = 0;
-	Float cosCA = cos(DegToRad(cosCA));
-	Float cosPA = cos(DegToRad(coneAngle + penumbraAngle));
+	Float cosCA = cos(degreeToRadian(cosCA));
+	Float cosPA = cos(degreeToRadian(coneAngle + penumbraAngle));
 	Float dropoff = 0;
 public:
 	spotLight();
 	spotLight(const Point3f &p, const Vector3f &d);
-	spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo);
-	spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt);
+	spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo);
+	spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const Spectrum &spt);
 	~spotLight();
 
 	void printInfo() const;
-	void setAngles(const Float& ca, const Float& pa);
+	void setAngles(Float ca, Float pa);
 	void updateCosAngle();
-	void setDropOff(const Float& dpo);
+	void setDropOff(Float dpo);
 
 	Float getIntensity(const DifferentialGeometry* queryPoint) const;
 };
@@ -133,9 +133,9 @@ class areaLight :public Light
 	AREA_LIGHT_SHAPE shapeType = QUAD;
 public:
 	areaLight();
-	areaLight(const Point3f &p, const Float& shpSize);
-	areaLight(const Point3f &p, const Float& shpSize, const Spectrum& spt);
-	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, const Float& shpSize, const Spectrum& spt);
+	areaLight(const Point3f &p, Float shpSize);
+	areaLight(const Point3f &p, Float shpSize, const Spectrum &spt);
+	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt);
 	~areaLight();
 
 	Float getIntensity(const DifferentialGeometry* queryPoint) const;

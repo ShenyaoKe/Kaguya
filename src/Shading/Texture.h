@@ -27,8 +27,8 @@ class FileTexture :public Texture
 	ImageData* img = nullptr;
 public:
 	FileTexture();
-	FileTexture(const string& filename);
-	FileTexture(ImageData& image);
+	FileTexture(const string &filename);
+	FileTexture(ImageData &image);
 	~FileTexture();
 
 	void assignImage(ImageData* &image);

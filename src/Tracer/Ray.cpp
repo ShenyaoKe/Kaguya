@@ -17,12 +17,12 @@ Ray::Ray(const Point3f &pos, const Vector3f &dir,
 	d = Normalize(dir);
 }
 
-Point3f Ray::operator()(const Float& t) const
+Point3f Ray::operator()(Float t) const
 {
 	return o + d * t;
 }
 
-void Ray::setT(const Float& t1, const Float& t2) const
+void Ray::setT(Float t1, Float t2) const
 {
 	tmin = t1;
 	tmax = t2;

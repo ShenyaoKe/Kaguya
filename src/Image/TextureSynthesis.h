@@ -10,7 +10,7 @@ namespace TextureSynthesis
 		return Vector3f(clr.r, clr.g, clr.b);
 
 	}
-	ImageData* synth(const ImageData * src, int wdt = 640, int hgt = 480, int nr = 2);
+	ImageData* synth(const ImageData* src, int wdt = 640, int hgt = 480, int nr = 2);
 }
 
 

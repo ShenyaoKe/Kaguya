@@ -29,7 +29,7 @@ Point3f SampleSphere(Float u, Float v)
 	return Point3f(x, y, z);
 }
 
-void ConcentricSampleDisk(Float u, Float v, Float& dx, Float &dy)
+void ConcentricSampleDisk(Float u, Float v, Float &dx, Float &dy)
 {
 	Float r, theta;
 

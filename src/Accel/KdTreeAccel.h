@@ -39,11 +39,12 @@ struct KdAccelNode//Node class
 	//vector<Shape*> primitives;
 	int flags;//index of split axes
 	vector<int> primIndex;//only for leaf
-	KdAccelNode *belowNode, *aboveNode;//only for interior
+    KdAccelNode* belowNode;
+    KdAccelNode* aboveNode;//only for interior
 	Float split;//split position only for interior
 
 
-	//void initLeaf(int *prims, int np);//primitive indices array
+	//void initLeaf(int* prims, int np);//primitive indices array
 	void initLeaf(vector<int> &prims);//primitive indices array
 	void initInterior(int axis, Float s);
 
@@ -51,8 +52,8 @@ struct KdAccelNode//Node class
 	int axis() const;
 	~KdAccelNode();
 	//KdAccelNode* build(vector<Shape*> &tris, int depth) const;
-// 	bool hit(KdAccelNode* node, const Ray& inRay,
-// 		Float& t, Float& tmin, DifferentialGeometry* queryPoint) const;
+// 	bool hit(KdAccelNode* node, const Ray &inRay,
+// 		Float &t, Float &tmin, DifferentialGeometry* queryPoint) const;
 
 	void printInfo() const;
 };
@@ -64,11 +65,11 @@ public:
 	~KdTreeAccel();
 	bool intersectP(const Ray &inRay) const;
 	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint,
-		Float *tHit, Float *rayEpsilon) const;
-	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
-		Float *tHit, Float *rayEpsilon) const;
+		Float* tHit, Float* rayEpsilon) const;
+	bool intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode* node,
+		Float* tHit, Float* rayEpsilon) const;
 	bool inLeaf(const Point3f &pos) const;
-	bool inLeaf(const Point3f &pos, const KdAccelNode *node) const;
+	bool inLeaf(const Point3f &pos, const KdAccelNode* node) const;
 
 	//update tree?
 	void update();
@@ -83,11 +84,11 @@ private:
 	int maxDepth, maxPrims;
 	Float emptyBonus;
 	vector<Shape*> primitives;
-	KdAccelNode *root;
+	KdAccelNode* root;
 	Bounds3f treeBound;
 
-	void buildTree(KdAccelNode *node, const Bounds3f &bound, vector<int> &prims,
-		int depth, BoundEdge *edges[3]);
+	void buildTree(KdAccelNode* node, const Bounds3f &bound, vector<int> &prims,
+		int depth, BoundEdge* edges[3]);
 
 };
 

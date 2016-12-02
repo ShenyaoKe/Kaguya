@@ -1,6 +1,7 @@
 #include "TextureSynthesis.h"
 
-ImageData* TextureSynthesis::synth(const ImageData * sample, int wdt /*= 640*/, int hgt /*= 480*/, int nr)
+ImageData* TextureSynthesis::synth(const ImageData * sample,
+                                   int wdt, int hgt, int nr)
 {
 	int srcW = sample->getWidth();
 	int srcH = sample->getHeight();
@@ -16,7 +17,7 @@ ImageData* TextureSynthesis::synth(const ImageData * sample, int wdt /*= 640*/, 
 		for (int u = 0; u < srcW; u++)
 		{
 			smpVec[v][u] = ColorToVector(sample->getRGBA(u, v));
-				//Vector3D(sample.pixels[u][v].r, sample.pixels[u][v].g, sample.pixels[u][v].b);
+			//Vector3D(sample.pixels[u][v].r, sample.pixels[u][v].g, sample.pixels[u][v].b);
 			//smpVec[u + v * srcW].getInfo();
 		}
 	}

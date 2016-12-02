@@ -62,25 +62,25 @@ public:
 	Matrix3x3 operator = (const Matrix3x3 &mat) const;
 	Matrix3x3 operator == (const Matrix3x3 &mat) const;
 	Matrix3x3 operator != (const Matrix3x3 &mat) const;
-	//Vector2D operator * (Vector2D& p) const;
+	//Vector2D operator * (Vector2D &p) const;
 	//Matrix3D operator / (const Matrix3D &) const;
 
-	void setIdentity() { mtx[0][0] = mtx[1][1] = mtx[2][2] = 1.0; }
+	void setToIdentity() { mtx[0][0] = mtx[1][1] = mtx[2][2] = 1.0; }
 	void printMat();
 	Float determinant() const;
-	Matrix3x3 transposeMat() const;
-	Matrix3x3 adjointMat() const;
-	Matrix3x3 inverseMat() const;
+	Matrix3x3 transpose() const;
+	Matrix3x3 adjoint() const;
+	Matrix3x3 inverse() const;
 
 	//Set transformation matrix
-	void setTranslation(const Point2f& vec);
+	void setTranslation(const Point2f &vec);
 	void setRotation(Float theta);
 	void setRotation(Float sinth, Float costh);
 	void setScale(Float sx, Float sy);
 	void setScale(Float scale);
-	void setShear(const Point2f& vec);
-	void setReflection(const Point2f& vec);
-	void setPerspective(const Point2f& vPnt);
+	void setShear(const Point2f &vec);
+	void setReflection(const Point2f &vec);
+	void setPerspective(const Point2f &vPnt);
 };
 inline Float* Matrix3x3::operator[](int i)
 {
@@ -142,7 +142,7 @@ inline Point3f Matrix3x3::operator * (Point3f &p) const
 		p.x * mtx[2][0] + p.y * mtx[2][1] + p.z * mtx[2][2]);
 }
 /*
-inline Vector2D Matrix3D::operator * (Vector2D& p) const
+inline Vector2D Matrix3D::operator * (Vector2D &p) const
 {
 	return Vector2D(p.x * mtx[0][0] + p.y * mtx[0][1] + mtx[0][2],
 		p.x * mtx[1][0] + p.y * mtx[1][1] + mtx[1][2]);
@@ -167,7 +167,7 @@ inline Float Matrix3x3::determinant() const
 	}
 	return det;
 }
-inline Matrix3x3 Matrix3x3::transposeMat() const
+inline Matrix3x3 Matrix3x3::transpose() const
 {
 	return Matrix3x3(
 		mtx[0][0], mtx[1][0], mtx[2][0],
@@ -175,11 +175,11 @@ inline Matrix3x3 Matrix3x3::transposeMat() const
 		mtx[0][2], mtx[1][2], mtx[2][2]);
 
 }
-inline Matrix3x3 Matrix3x3::adjointMat() const
+inline Matrix3x3 Matrix3x3::adjoint() const
 {
 	Matrix3x3 buffer, trpM;// trpM is transposed matrix of origin matrix.
 
-	trpM = transposeMat();
+	trpM = transpose();
 	int coeff = -1;
 	for (int i = 0; i < 3; i++)
 	{
@@ -193,7 +193,7 @@ inline Matrix3x3 Matrix3x3::adjointMat() const
 
 	return buffer;
 }
-inline Matrix3x3 Matrix3x3::inverseMat() const
+inline Matrix3x3 Matrix3x3::inverse() const
 {
 	Matrix3x3 buffer, adjM;
 	Float det = this->determinant();
@@ -202,7 +202,7 @@ inline Matrix3x3 Matrix3x3::inverseMat() const
 		cout << "The matrix is non-inversable!" << endl;
 		return Matrix3x3();
 	}
-	adjM = adjointMat();
+	adjM = adjoint();
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -216,7 +216,7 @@ inline Matrix3x3 Matrix3x3::inverseMat() const
 }
 inline void Matrix3x3::setTranslation(const Point2f &vec)
 {
-	setIdentity();
+	setToIdentity();
 	mtx[0][2] = vec.x;
 	mtx[1][2] = vec.y;
 }
@@ -224,10 +224,10 @@ inline void Matrix3x3::setRotation(Float theta)
 {
 	if (cos(theta) ==  1)
 	{
-		setIdentity();
+		setToIdentity();
 		return;
 	}
-	setRotation(sin(DegToRad(theta)), cos(DegToRad(theta)));
+	setRotation(sin(degreeToRadian(theta)), cos(degreeToRadian(theta)));
 }
 inline void Matrix3x3::setRotation(Float sinth, Float costh)
 {
@@ -243,22 +243,22 @@ inline void Matrix3x3::setScale(Float scale)
 {
 	mtx[0][0] = scale;	mtx[1][1] = scale; mtx[2][2] = 1;
 }
-inline void Matrix3x3::setShear(const Point2f& vec)
+inline void Matrix3x3::setShear(const Point2f &vec)
 {
-	setIdentity();
+	setToIdentity();
 	mtx[0][1] = vec.x;
 	mtx[1][0] = vec.y;
 }
-inline void Matrix3x3::setReflection(const Point2f& vec)
+inline void Matrix3x3::setReflection(const Point2f &vec)
 {
 	// vec is a vector in the direction of the line
 	mtx[0][0] = vec.x * vec.x - vec.y * vec.y;	mtx[0][1] = 2 * vec.x * vec.y;
 	mtx[1][0] = 2 * vec.x * vec.y;	mtx[1][1] = vec.y * vec.y - vec.x * vec.x;
 	mtx[2][2] = 1;
 }
-inline void Matrix3x3::setPerspective(const Point2f& vPnt)
+inline void Matrix3x3::setPerspective(const Point2f &vPnt)
 {
-	setIdentity();
+	setToIdentity();
 	mtx[2][0] = 1.0 / vPnt.x; mtx[2][1] = 1.0 / vPnt.y;
 }
 #endif

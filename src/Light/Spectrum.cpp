@@ -18,11 +18,11 @@ Spectrum::Spectrum(ColorRGBA spc)
 Spectrum::~Spectrum()
 {
 }
-ColorRGBA Spectrum::operator*(const ColorRGBA& color2) const
+ColorRGBA Spectrum::operator*(const ColorRGBA &color2) const
 {
 	return color * color2 * intensity;
 }
-ColorRGBA operator*(const ColorRGBA& color, const Spectrum& spec)
+ColorRGBA operator*(const ColorRGBA &color, const Spectrum &spec)
 {
 	return spec * color;
 }

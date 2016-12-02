@@ -30,7 +30,7 @@ public:
 	virtual Point2f posToUV(const Point3f &pos) const;
 	//virtual void mapToUV(const DifferentialGeometry* queryPoint) const = 0;
 	//virtual void getUVDir(const DifferentialGeometry* queryPoint) const = 0;
-	//virtual Point2f mapToXY(const Float& x, const Float& y) const;
+	//virtual Point2f mapToXY(Float x, Float y) const;
 };
 /************************************************************************/
 /* Spherical Mapping                                                    */
@@ -58,14 +58,14 @@ class PlanarMapping2D :public TextureMapping
 	Float uSize = 1, vSize = 1;
 public:
 	PlanarMapping2D();
-	PlanarMapping2D(const Float& us, const Float& vs);
+	PlanarMapping2D(Float us, Float vs);
 	PlanarMapping2D(const Point3f &center);
-	PlanarMapping2D(const Point3f &center, const Float& us, const Float& vs);
+	PlanarMapping2D(const Point3f &center, Float us, Float vs);
 	PlanarMapping2D(const Point3f &center, const Vector3f &view, const Vector3f &upVec);
 	PlanarMapping2D(const Point3f &center, const Vector3f &xDir, const Vector3f &yDir, const Vector3f &zDir);
 	~PlanarMapping2D();
 
-	void setSize(const Float& us, const Float& vs);
+	void setSize(Float us, Float vs);
 	//void mapToUV(const DifferentialGeometry* queryPoint) const;
 protected:
 

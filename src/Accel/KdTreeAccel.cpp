@@ -10,7 +10,7 @@ KdTreeAccel::KdTreeAccel(const vector<Shape*> &prims, int md, int mp,
 	//Initialize tree depth
 	if (maxDepth <= 0)
 	{
-		maxDepth = Round2Int(8 + 1.3 * Log2Int(static_cast<Float>(np)));
+		maxDepth = roundToInt(8 + 1.3 * logToInt(static_cast<Float>(np)));
 	}
 	// If no node in vector, terminate initialization
 	if (np == 0)
@@ -24,7 +24,7 @@ KdTreeAccel::KdTreeAccel(const vector<Shape*> &prims, int md, int mp,
 		treeBound.Union(prims[i]->ObjBound);
 	}
 	//Allocate bound edge info
-	BoundEdge *edges[3];
+	BoundEdge* edges[3];
 	for (int i = 0; i < 3; ++i)
 	{
 		edges[i] = new BoundEdge[np * 2];
@@ -47,8 +47,8 @@ KdTreeAccel::KdTreeAccel(const vector<Shape*> &prims, int md, int mp,
 	}
 }
 
-void KdTreeAccel::buildTree(KdAccelNode *node, const Bounds3f &bound, vector<int> &prims,
-	int depth, BoundEdge *edges[3])
+void KdTreeAccel::buildTree(KdAccelNode* node, const Bounds3f &bound, vector<int> &prims,
+	int depth, BoundEdge* edges[3])
 {
 	node->bbox = bound;
 	int np = prims.size();
@@ -183,12 +183,12 @@ RETRY_SPLIT:
 
 }
 bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint,
-	Float *tHit, Float *rayEpsilon) const
+	Float* tHit, Float* rayEpsilon) const
 {
 	return intersect(inRay, queryPoint, root, tHit, rayEpsilon);
 }
-bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode *node,
-	Float *tHit, Float *rayEpsilon) const
+bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode* node,
+	Float* tHit, Float* rayEpsilon) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
 	Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
@@ -242,7 +242,8 @@ bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, 
 			Float tsplit = (node->split - inRay.o[axis]) * invDir[axis];
 
 			//get children node for ray
-			const KdAccelNode *nearChild, *farChild;
+            const KdAccelNode* nearChild;
+            const KdAccelNode* farChild;
 			bool belowFisrt = ((inRay.o[axis] < node->split) ||
 				(inRay.o[axis] == node->split && inRay.d[axis] < 0));
 			if (belowFisrt)
@@ -323,7 +324,7 @@ void KdTreeAccel::update()
 		treeBound.Union(primitives[i]->ObjBound);
 	}
 	//Allocate bound edge info
-	BoundEdge *edges[3];
+	BoundEdge* edges[3];
 	for (int i = 0; i < 3; ++i)
 	{
 		edges[i] = new BoundEdge[np * 2];
@@ -354,7 +355,7 @@ bool KdTreeAccel::inLeaf(const Point3f &pos) const
 	return inLeaf(pos, root);
 }
 
-bool KdTreeAccel::inLeaf(const Point3f &pos, const KdAccelNode *node) const
+bool KdTreeAccel::inLeaf(const Point3f &pos, const KdAccelNode* node) const
 {
 	bool isInLeaf = false;
 	if (node!=nullptr)

@@ -48,9 +48,9 @@ void Aligned_2DArray(T** &twod_array, size_t wdt = 3, size_t hgt = 3,
 	// To access data in 2D array, use A[y][x]
 	// To access data in 1D array, use A[0][i]
 	// Row Matrix
-	T *oned_array = new T[major * secondary];
+	T* oned_array = new T[major * secondary];
 	
-	twod_array = new T *[major];
+	twod_array = new T*[major];
 
 	for (size_t i = 0; i < major; i++)
 	{

@@ -10,7 +10,7 @@ public:
 		const Vector3f &up = Vector3f(0, 1, 0),
 		Float asp = 1, Float lr = 0, Float fd = NUM_INFINITY,
 		const Film &fm = Film());
-	perspCamera(const Transform& cam2wo, const Transform& projection);
+	perspCamera(const Transform &cam2wo, const Transform &projection);
 	~perspCamera();
 
 	//Vector3D getPos() { return pos; }
@@ -19,7 +19,7 @@ public:
 	void updateCamToScreen();
 	void setDoF(Float lr, Float fd);
 	Float generateRay(const cameraSampler &sample, Ray* ray) const;
-	void renderImg(int x, int y, ColorRGBA& pixColor);
+	void renderImg(int x, int y, ColorRGBA &pixColor);
 	void saveResult(const char* filename);
 	void resizeViewport(Float aspr = 1.0);
 

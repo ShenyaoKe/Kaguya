@@ -8,7 +8,7 @@ perspCamera::perspCamera(const Point3f &eye,
 	updateMatrices();
 }
 
-perspCamera::perspCamera(const Transform& cam2wo, const Transform& projection)
+perspCamera::perspCamera(const Transform &cam2wo, const Transform &projection)
 {
 	CameraToWorld = cam2wo;
 	CameraToScreen = projection;
@@ -34,7 +34,7 @@ void perspCamera::updateCamToScreen()
 		horisize = vertsize * viewportRatio;
 	}
 
-	CameraToScreen.setMat(Matrix4x4::PerspectiveFromFilm(
+	CameraToScreen.setMat(Matrix4x4::perspectiveFromFilm(
 		vertsize, horisize, focLen, nearPlane, farPlane));
 }
 
@@ -64,7 +64,7 @@ Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 	return 1.0;
 }
 
-void perspCamera::renderImg(int x, int y, ColorRGBA& pixColor)
+void perspCamera::renderImg(int x, int y, ColorRGBA &pixColor)
 {
 	//film.setRGBA(x, y, pixColor);
 }

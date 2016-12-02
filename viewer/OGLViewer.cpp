@@ -1,7 +1,7 @@
 #include "OGLViewer.h"
 #include "Geometry/Sphere.h"
 
-OGLViewer::OGLViewer(QWidget *parent)
+OGLViewer::OGLViewer(QWidget* parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
 	, view_cam(new perspCamera(
@@ -29,9 +29,6 @@ OGLViewer::OGLViewer(QWidget *parent)
 	
 	model_mesh->refine(objlist);
 	tree = make_unique<KdTreeAccel>(objlist);
-
-	// Export View, Projection, Rasterization Matrices
-	view_cam->exportVBO(cam_mat, cam_mat + 16, cam_mat + 32);
 }
 
 OGLViewer::~OGLViewer()
@@ -196,15 +193,15 @@ void OGLViewer::paintGL()
 	model_shader->use_program();
 
 	// Apply uniform matrix
-	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, cam_mat);// View Matrix
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, cam_mat + 16);// Projection
+	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_cam->world_to_cam());// View Matrix
+	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, view_cam->cam_to_screen());// Projection
 
 	glDrawElements(GL_TRIANGLES, model_ids.size(), GL_UNSIGNED_INT, 0);
 	////////////////////////////////////////////
 	glBindVertexArray(resgate_vao);
 	gate_shader->use_program();
 	//glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, rast_mat);
-	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, cam_mat + 32);
+	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, view_cam->screen_to_raster());
 	glLineWidth(2.0);
 	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 2);
 	
@@ -218,14 +215,12 @@ void OGLViewer::resizeGL(int w, int h)
 {
 	// Widget resize operations
 	view_cam->resizeViewport(width() / static_cast<Float>(height()));
-	//view_cam->exportVBO(view_mat, proj_mat, rast_mat);
-	view_cam->exportVBO(cam_mat, cam_mat + 16, cam_mat + 32);
 }
 /************************************************************************/
 /* Qt User Operation Functions                                          */
 /************************************************************************/
 
-void OGLViewer::keyPressEvent(QKeyEvent *e)
+void OGLViewer::keyPressEvent(QKeyEvent* e)
 {
 	if (e->key() == Qt::Key_Home)
 	{
@@ -248,7 +243,7 @@ void OGLViewer::keyPressEvent(QKeyEvent *e)
 	update();
 }
 
-void OGLViewer::mousePressEvent(QMouseEvent *e)
+void OGLViewer::mousePressEvent(QMouseEvent* e)
 {
 	lastMousePos[0] = e->x();
 	lastMousePos[1] = e->y();
@@ -258,13 +253,13 @@ void OGLViewer::mousePressEvent(QMouseEvent *e)
 	}
 };
 
-void OGLViewer::mouseReleaseEvent(QMouseEvent *e)
+void OGLViewer::mouseReleaseEvent(QMouseEvent* e)
 {
 	lastMousePos[0] = e->x();
 	lastMousePos[1] = e->y();
 }
 
-void OGLViewer::mouseMoveEvent(QMouseEvent *e)
+void OGLViewer::mouseMoveEvent(QMouseEvent* e)
 {
 	int dx = e->x() - lastMousePos[0];
 	int dy = e->y() - lastMousePos[1];
@@ -274,8 +269,6 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 	if (e->buttons() == Qt::LeftButton && e->modifiers() == Qt::AltModifier)
 	{
 		view_cam->rotate(dy * 0.25, -dx * 0.25, 0.0);
-		//view_cam->exportVBO(view_mat, nullptr, nullptr);
-		view_cam->exportVBO(cam_mat, nullptr, nullptr);
 		update();
 	}
 	else if (e->buttons() == Qt::RightButton && e->modifiers() == Qt::AltModifier)
@@ -283,8 +276,6 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 		if (dx != e->x() && dy != e->y())
 		{
 			view_cam->zoom(0.0, 0.0, dx * 0.05);
-			//view_cam->exportVBO(view_mat, nullptr, nullptr);
-			view_cam->exportVBO(cam_mat, nullptr, nullptr);
 			update();
 		}
 	}
@@ -293,8 +284,6 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 		if (dx != e->x() && dy != e->y())
 		{
 			view_cam->zoom(-dx * 0.05, dy * 0.05, 0.0);
-			//view_cam->exportVBO(view_mat, nullptr, nullptr);
-			view_cam->exportVBO(cam_mat, nullptr, nullptr);
 			update();
 		}
 	}
@@ -307,11 +296,9 @@ void OGLViewer::mouseMoveEvent(QMouseEvent *e)
 	lastMousePos[1] = e->y();
 }
 
-void OGLViewer::wheelEvent(QWheelEvent *e)
+void OGLViewer::wheelEvent(QWheelEvent* e)
 {
 	view_cam->zoom(0.0, 0.0, -e->delta() * 0.01);
-	//view_cam->exportVBO(view_mat, nullptr, nullptr);
-	view_cam->exportVBO(cam_mat, nullptr, nullptr);
 	update();
 }
 

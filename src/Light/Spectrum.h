@@ -19,8 +19,8 @@ public:
 	Spectrum(ColorRGBA spc);
 	~Spectrum();
 
-	ColorRGBA operator*(const ColorRGBA& color2) const;
-	friend ColorRGBA operator*(const ColorRGBA& color, const Spectrum& spec);
+	ColorRGBA operator*(const ColorRGBA &color2) const;
+	friend ColorRGBA operator*(const ColorRGBA &color, const Spectrum &spec);
 	void printInfo() const;
 protected:
 

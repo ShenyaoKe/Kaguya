@@ -98,10 +98,10 @@ public:
 	bool loadOBJ(const char* filename);
 	void printInfo(const string &msg = "") const;
 
-	bool intersect(const Ray& inRay,
+	bool intersect(const Ray &inRay,
 		DifferentialGeometry* dg,
-		Float *tHit, Float *rayEpsilon) const;
-	void postIntersect(const Ray& inRay, DifferentialGeometry* dg) const;
+		Float* tHit, Float* rayEpsilon) const;
+	void postIntersect(const Ray &inRay, DifferentialGeometry* dg) const;
 
 	void exportVBO(
 		vector<float>* vtx_array = nullptr,
@@ -126,10 +126,10 @@ public:
 	void setUV(Point2f* uv0, Point2f* uv1, Point2f* uv2);
 	void setNormal(Normal3f* n0, Normal3f* v1, Normal3f* v2);
 
-	bool intersect(const Ray& inRay,
+	bool intersect(const Ray &inRay,
 		DifferentialGeometry* dg,
-		Float *tHit, Float *rayEpsilon) const;
-	void postIntersect(const Ray& inRay,
+		Float* tHit, Float* rayEpsilon) const;
+	void postIntersect(const Ray &inRay,
 		DifferentialGeometry* dg) const;
 	void getNormal(DifferentialGeometry* queryPoint) const;
 	

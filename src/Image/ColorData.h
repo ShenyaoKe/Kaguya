@@ -76,7 +76,7 @@ public:
 	ColorRGB &operator/=(Float n) { *this = *this / n; return *this; }
 
 	friend ColorRGB operator*(Float n, const ColorRGB &color){ return color * n; }
-	friend ostream& operator<<(ostream &os, const ColorRGB &color);
+	friend ostream &operator<<(ostream &os, const ColorRGB &color);
 
 	virtual void setRGB(Float red, Float green, Float blue){ r = red; g = green; b = blue; };
 	virtual void setWebColor(unsigned char red, unsigned char green, unsigned char blue){ r = red / 255.0; g = green / 255.0; b = blue / 255.0; };
@@ -109,23 +109,23 @@ public:
 		: ColorRGB(rgb.r, rgb.g, rgb.b), a(alpha){}
 	~ColorRGBA(){}
 
-	ColorRGBA operator+(const ColorRGBA& color2) const { return ColorRGBA(r + color2.r, g + color2.g, b + color2.b, a + color2.a); }
-	ColorRGBA operator-(const ColorRGBA& color2) const { return ColorRGBA(r - color2.r, g - color2.g, b - color2.b, a - color2.a); }
-	ColorRGBA operator*(const ColorRGBA& color2) const { return ColorRGBA(r * color2.r, g * color2.g, b * color2.b, a * color2.a); }
-	ColorRGBA operator/(const ColorRGBA& color2) const { return ColorRGBA(r / color2.r, g / color2.g, b / color2.b, a / color2.a); }
+	ColorRGBA operator+(const ColorRGBA &color2) const { return ColorRGBA(r + color2.r, g + color2.g, b + color2.b, a + color2.a); }
+	ColorRGBA operator-(const ColorRGBA &color2) const { return ColorRGBA(r - color2.r, g - color2.g, b - color2.b, a - color2.a); }
+	ColorRGBA operator*(const ColorRGBA &color2) const { return ColorRGBA(r * color2.r, g * color2.g, b * color2.b, a * color2.a); }
+	ColorRGBA operator/(const ColorRGBA &color2) const { return ColorRGBA(r / color2.r, g / color2.g, b / color2.b, a / color2.a); }
 	ColorRGBA operator*(Float n) const { return ColorRGBA(r * n, g * n, b * n, a * n); }
 	ColorRGBA operator/(Float n) const { return ColorRGBA(r / n, g / n, b / n, a / n); }
 
-	ColorRGBA& operator+=(const ColorRGBA& color2) { *this = *this + color2; return *this; }
-	ColorRGBA& operator-=(const ColorRGBA& color2) { *this = *this - color2; return *this; }
-	ColorRGBA& operator*=(Float n) { *this = *this * n; return *this; }
-	ColorRGBA& operator/=(Float n) { *this = *this / n; return *this; }
-	ColorRGBA& operator=(const ColorRGB &color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
-	friend ColorRGBA operator*(Float n, const ColorRGBA& color1){ return color1 * n; }
-	friend ostream& operator<<(ostream &os, const ColorRGBA &color);
+	ColorRGBA &operator+=(const ColorRGBA &color2) { *this = *this + color2; return *this; }
+	ColorRGBA &operator-=(const ColorRGBA &color2) { *this = *this - color2; return *this; }
+	ColorRGBA &operator*=(Float n) { *this = *this * n; return *this; }
+	ColorRGBA &operator/=(Float n) { *this = *this / n; return *this; }
+	ColorRGBA &operator=(const ColorRGB &color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
+	friend ColorRGBA operator*(Float n, const ColorRGBA &color1){ return color1 * n; }
+	friend ostream &operator<<(ostream &os, const ColorRGBA &color);
 
-	ColorRGBA compAdd(const ColorRGBA& color2) const{ return *this * this->a + color2 * (1 - this->a); }
-	friend ColorRGBA compAdd(const ColorRGBA& color1, const ColorRGBA& color2);
+	ColorRGBA compAdd(const ColorRGBA &color2) const{ return *this * this->a + color2 * (1 - this->a); }
+	friend ColorRGBA compAdd(const ColorRGBA &color1, const ColorRGBA &color2);
 
 	ColorRGBA multiplyRGB(Float n) const{ return ColorRGBA(r * n, g * n, b * n, a); }
 
@@ -140,7 +140,7 @@ public:
 	void clamp();
 	ColorRGBA returnClamp();
 };
-inline ColorRGBA compAdd(const ColorRGBA& color1, const ColorRGBA& color2)
+inline ColorRGBA compAdd(const ColorRGBA &color1, const ColorRGBA &color2)
 {
 	ColorRGBA tmp = color1 * color1.a + color2 * (1 - color1.a);
 	//
@@ -263,7 +263,7 @@ inline ColorRGBA ColorRGBA::returnClamp()
 }
 
 /*
-const ColorHSVA& ColorRGBA::conv2hsva() const
+const ColorHSVA &ColorRGBA::conv2hsva() const
 {
 	return;
 }*/
@@ -311,12 +311,12 @@ inline ColorHSV ColorRGB::conv2hsv() const
 //cout << "HSV:" << h << ", " << s << ", " << v << ", " << endl;
 }
 
-inline ostream& operator<<(ostream &os, const ColorRGB &color)
+inline ostream &operator<<(ostream &os, const ColorRGB &color)
 {
 	os << "Color data\n\tRed:\t" << color.r << "\n\tGreen:\t" << color.g << "\n\tBlue:\t" << color.b;
 	return os;
 }
-inline ostream& operator<<(ostream &os, const ColorRGBA &color)
+inline ostream &operator<<(ostream &os, const ColorRGBA &color)
 {
 	os << "Color data\n\tRed:\t" << color.r << "\n\tGreen:\t" << color.g << "\n\tBlue:\t" << color.b << "\n\tAlpha:\t" << color.a;
 	return os;

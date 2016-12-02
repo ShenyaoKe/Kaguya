@@ -21,7 +21,7 @@ geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm,
 	bounding();
 }
 
-bool geoPlane::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	Float t = Dot(this->n, inRay.d);
 	if (t >= 0)

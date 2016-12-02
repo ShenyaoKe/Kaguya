@@ -251,7 +251,7 @@ ImageData::ImageData(const string &filename)
 	}
 }
 
-ImageData::ImageData(const ImageData& src)
+ImageData::ImageData(const ImageData &src)
 {
 	// Declare width and height
 	width = src.getWidth();
@@ -271,12 +271,12 @@ void ImageData::setRGBA(int x, int y, const ColorRGBA &color)
 {
 	pixels[y][x] = color;
 }
-const ColorRGBA& ImageData::getRGBA(int x, int y) const
+const ColorRGBA &ImageData::getRGBA(int x, int y) const
 {
 	return pixels[y][x];
 }
 
-const ColorRGBA& ImageData::getRGBA(int idx) const
+const ColorRGBA &ImageData::getRGBA(int idx) const
 {
 	return pixels[0][idx];
 }
@@ -345,7 +345,7 @@ ColorRGBA ImageData::bilinearPixel(Float x, Float y) const
 	}
 	ColorRGBA pixC[4];
 	//cout << "x:" << x << "\ty:" << y << endl;
-	int floorX = Floor2Int(x), floorY = Floor2Int(y);
+	int floorX = floorToInt(x), floorY = floorToInt(y);
 	Float tX = x - floorX, tY = y - floorY;
 	//int ceilX = (tX == 0 || floorX == width - 1) ? floorX : (floorX + 1);
 	//int ceilY = (tY == 0 || floorY == height - 1) ? floorY : (floorY + 1);

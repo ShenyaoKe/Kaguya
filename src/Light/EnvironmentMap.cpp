@@ -5,7 +5,7 @@ EnvironmentMap::EnvironmentMap()
 {
 }
 
-EnvironmentMap::EnvironmentMap(const string& filename)
+EnvironmentMap::EnvironmentMap(const string &filename)
 {
 	tex = FileTexture(filename);
 	mapping = SphericalMapping2D(Point3f(), Vector3f(0,-1,0), Vector3f(-1,0,-1));

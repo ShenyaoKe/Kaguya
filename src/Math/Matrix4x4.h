@@ -61,7 +61,7 @@ struct Matrix4x4
 	friend Matrix4x4 operator + (const Matrix4x4 &m1, const Matrix4x4 &m2);
 	friend Matrix4x4 operator - (const Matrix4x4 &m1, const Matrix4x4 &m2);
 	friend Matrix4x4 operator * (const Matrix4x4 &m1, const Matrix4x4 &m2);
-	//friend Vector4D operator * (const Matrix4x4 &m, const Vector4D& p);
+	//friend Vector4D operator * (const Matrix4x4 &m, const Vector4D &p);
 	Vector3f operator * (const Vector3f &v);
 	Point3f operator * (const Point3f &p);
 	friend bool operator == (const Matrix4x4 &m1, const Matrix4x4 &m2);
@@ -69,8 +69,8 @@ struct Matrix4x4
 	//Vector3D operator * (Vector3D &p) const;
 	//Matrix4x4 operator / (const Matrix4x4 &) const;
 
-	void zero();
-	void setIdentity();
+	void setToZero();
+	void setToIdentity();
 
 	void setValueAt(int x, int y, Float val)
 	{
@@ -79,40 +79,38 @@ struct Matrix4x4
 	}
 
 	void printInfo(const string &text = "") const;
-	Float Determinant() const;
-	Float Minor(int x, int y) const;
-	Float Cofactor(int x, int y) const;
-	Matrix4x4 Transpose() const;
-	Matrix4x4 Adjoint() const;
-	Matrix4x4 Inverse() const;
+	Float determinant() const;
+	Float minor(int x, int y) const;
+	Float cofactor(int x, int y) const;
+	Matrix4x4 transpose() const;
+	Matrix4x4 adjoint() const;
+	Matrix4x4 inverse() const;
 
 	//Set transformation matrix
-	static Matrix4x4 Zero();
-	static Matrix4x4 Identity();
-	static Matrix4x4 Translate(Float tx, Float ty, Float tz);
-	static Matrix4x4 Translate(const Vector3f &vec);
+	static Matrix4x4 zero();
+	static Matrix4x4 identity();
+	static Matrix4x4 translate(Float tx, Float ty, Float tz);
+	static Matrix4x4 translate(const Vector3f &vec);
 	static Matrix4x4 RotateX(Float theta);
 	static Matrix4x4 RotateY(Float theta);
 	static Matrix4x4 RotateZ(Float theta);
-	static Matrix4x4 Rotate(Float alpha, Float beta, Float gamma);// in degree
-	static Matrix4x4 Rotate(const Vector3f &axis, Float theta,
+	static Matrix4x4 rotate(Float alpha, Float beta, Float gamma);// in degree
+	static Matrix4x4 rotate(const Vector3f &axis, Float theta,
 		bool isNormalized = false);
-	static Matrix4x4 Scale(Float sx, Float sy, Float sz);
-	static Matrix4x4 Scale(Float scale);
-	static Matrix4x4 Shear(const Vector3f &vec);
-	static Matrix4x4 Reflect(const Vector3f &vec);
-	static Matrix4x4 LookAt(const Point3f &pos = Point3f(),
+	static Matrix4x4 scale(Float sx, Float sy, Float sz);
+	static Matrix4x4 scale(Float scale);
+	static Matrix4x4 shear(const Vector3f &vec);
+	static Matrix4x4 reflect(const Vector3f &vec);
+	static Matrix4x4 lookAt(const Point3f &pos = Point3f(),
 		const Point3f &target = Point3f(0, 0, 1), const Vector3f &up = Vector3f(0, 1, 0));
-	static Matrix4x4 Perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
+	static Matrix4x4 perspective(Float verticalAngle = 90, Float aspectRatio = 1.6,
 		Float nearPlane = 0.001, Float farPlane = 100);
 
-	static Matrix4x4 PerspectiveFromFilm(Float filmVert = 1, Float filmHori = 1,
+	static Matrix4x4 perspectiveFromFilm(Float filmVert = 1, Float filmHori = 1,
 		Float focal = 1, Float nearPlane = 0.001, Float farPlane = 100);
 
-	static Matrix4x4 Orthography(Float lf = -1, Float rt = 1,
+	static Matrix4x4 orthography(Float lf = -1, Float rt = 1,
 		Float bt = -1, Float tp = 1, Float nr = -1, Float fr = 1);
-
-	void exportVBO(float* vtx_array) const;
 
 	// Column Major
 	Float mtx[4][4];
@@ -129,7 +127,7 @@ inline const Float* Matrix4x4::operator[](int i) const
 	return mtx[i];
 }
 
-inline Point3f Matrix4x4::operator ()(const Point3f &v, Float w) const
+inline Point3f Matrix4x4::operator()(const Point3f &v, Float w) const
 {
 	Float x = v.x, y = v.y, z = v.z;
 	Float xp = mtx[0][0] * x + mtx[1][0] * y + mtx[2][0] * z;
@@ -171,7 +169,7 @@ inline Point3f Matrix4x4::operator()(const Point3f &v) const
 	}
 }
 
-inline Vector3f Matrix4x4::operator()(const Vector3f & v) const
+inline Vector3f Matrix4x4::operator()(const Vector3f &v) const
 {
 	return Vector3f(
 		v.x * mtx[0][0] + v.y * mtx[1][0] + v.z * mtx[2][0],
@@ -180,7 +178,7 @@ inline Vector3f Matrix4x4::operator()(const Vector3f & v) const
 		);
 }
 
-inline Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2)
+inline Matrix4x4 operator+(const Matrix4x4 &m1, const Matrix4x4 &m2)
 {
 	return Matrix4x4(
 			m1.mtx[0][0] + m2.mtx[0][0],
@@ -205,7 +203,7 @@ inline Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2)
 			);
 }
 
-inline Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2)
+inline Matrix4x4 operator-(const Matrix4x4 &m1, const Matrix4x4 &m2)
 {
 	return Matrix4x4(
 		m1.mtx[0][0] - m2.mtx[0][0],
@@ -230,7 +228,7 @@ inline Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2)
 		);
 }
 
-inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2)
+inline Matrix4x4 operator*(const Matrix4x4 &m1, const Matrix4x4 &m2)
 {
 	Matrix4x4 ret(0.);
 
@@ -248,7 +246,7 @@ inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2)
 }
 /*
 
-inline Vector4D operator*(const Matrix4x4& m, const Vector4D& p)
+inline Vector4D operator*(const Matrix4x4 &m, const Vector4D &p)
 {
 	return Vector4D(
 		p.x * m.mtx[0][0] + p.y * m.mtx[1][0] + p.z * m.mtx[2][0] + p.w * m.mtx[3][0],
@@ -288,7 +286,7 @@ inline Point3f Matrix4x4::operator*(const Point3f &p)
 
 
 
-inline bool operator==(const Matrix4x4& m1, const Matrix4x4& m2)
+inline bool operator==(const Matrix4x4 &m1, const Matrix4x4 &m2)
 {
 	return m1.mtx[0][0] == m2.mtx[0][0]
 		&& m1.mtx[0][1] == m2.mtx[0][1]
@@ -308,7 +306,7 @@ inline bool operator==(const Matrix4x4& m1, const Matrix4x4& m2)
 		&& m1.mtx[3][3] == m2.mtx[3][3];
 }
 
-inline bool operator!=(const Matrix4x4& m1, const Matrix4x4& m2)
+inline bool operator!=(const Matrix4x4 &m1, const Matrix4x4 &m2)
 {
 	return m1.mtx[0][0] != m2.mtx[0][0]
 		|| m1.mtx[0][1] != m2.mtx[0][1]
@@ -328,18 +326,18 @@ inline bool operator!=(const Matrix4x4& m1, const Matrix4x4& m2)
 		|| m1.mtx[3][3] != m2.mtx[3][3];
 }
 
-inline const Matrix4x4& Matrix4x4::operator = (const Matrix4x4 &mat)
+inline const Matrix4x4 &Matrix4x4::operator = (const Matrix4x4 &mat)
 {
 	memcpy(mtx, mat.mtx, sizeof(mtx));
 	return *this;
 }
 
-inline void Matrix4x4::zero()
+inline void Matrix4x4::setToZero()
 {
 	memset(mtx, 0, sizeof(mtx));
 }
 
-inline void Matrix4x4::setIdentity()
+inline void Matrix4x4::setToIdentity()
 {
 	mtx[0][0] = mtx[1][1] = mtx[2][2] = mtx[3][3] = 1.0;
 
@@ -371,7 +369,7 @@ inline void Matrix4x4::printInfo(const string &msg) const
 		cout << endl;
 	}
 }
-inline Float Matrix4x4::Determinant() const
+inline Float Matrix4x4::determinant() const
 {
 	Float det = 0;
 	for (int i = 0; i < 4; i++)
@@ -381,7 +379,7 @@ inline Float Matrix4x4::Determinant() const
 	}
 	return det;
 }
-inline Float Matrix4x4::Minor(int x, int y) const
+inline Float Matrix4x4::minor(int x, int y) const
 {
 	Matrix3x3 tmpM;
 	for (int i = 1; i < 4; i++)
@@ -393,24 +391,24 @@ inline Float Matrix4x4::Minor(int x, int y) const
 	}
 	return tmpM.determinant();
 }
-inline Float Matrix4x4::Cofactor(int x, int y) const
+inline Float Matrix4x4::cofactor(int x, int y) const
 {
 	if ((x + y) % 2 == 0)
 	{
-		return Minor(x, y);
+		return minor(x, y);
 	}
 	else
 	{
-		return -Minor(x, y);
+		return -minor(x, y);
 	}
 }
 
-inline Matrix4x4 Matrix4x4::Zero()
+inline Matrix4x4 Matrix4x4::zero()
 {
 	return Matrix4x4((Float)0);
 }
 
-inline Matrix4x4 Matrix4x4::Identity()
+inline Matrix4x4 Matrix4x4::identity()
 {
 	return Matrix4x4(
 		1.0, 0.0, 0.0, 0.0,
@@ -420,7 +418,7 @@ inline Matrix4x4 Matrix4x4::Identity()
 		);
 }
 
-inline Matrix4x4 Matrix4x4::Transpose() const
+inline Matrix4x4 Matrix4x4::transpose() const
 {
 	return Matrix4x4(
 		mtx[0][0], mtx[1][0], mtx[2][0], mtx[3][0],
@@ -429,7 +427,7 @@ inline Matrix4x4 Matrix4x4::Transpose() const
 		mtx[0][3], mtx[1][3], mtx[2][3], mtx[3][3]);
 }
 
-inline Matrix4x4 Matrix4x4::Adjoint() const
+inline Matrix4x4 Matrix4x4::adjoint() const
 {
 	Matrix4x4 ret;
 
@@ -437,24 +435,24 @@ inline Matrix4x4 Matrix4x4::Adjoint() const
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			ret.mtx[i][j] = Cofactor(j, i);
+			ret.mtx[i][j] = cofactor(j, i);
 		}
 	}
 	return ret;
 }
 
-inline Matrix4x4 Matrix4x4::Inverse() const
+inline Matrix4x4 Matrix4x4::inverse() const
 {
 	Matrix4x4 ret, adjM;
-	Float det = Determinant();
+	Float det = determinant();
 	if (det == 0)
 	{
 #ifdef _DEBUG
 		cout << "The matrix is non-inversable!" << endl;
 #endif
-		return Zero();
+		return zero();
 	}
-	adjM = Adjoint();
+	adjM = adjoint();
 
 	Float invDet = 1.0 / det;
 	for (int i = 0; i < 4; i++)
@@ -468,7 +466,7 @@ inline Matrix4x4 Matrix4x4::Inverse() const
 	return ret;
 }
 
-inline Matrix4x4 Matrix4x4::LookAt(const Point3f &pos, const Point3f &target, const Vector3f &up)
+inline Matrix4x4 Matrix4x4::lookAt(const Point3f &pos, const Point3f &target, const Vector3f &up)
 {
 	//Camera to World
 	Vector3f nz = pos - target;
@@ -498,11 +496,11 @@ inline Matrix4x4 Matrix4x4::LookAt(const Point3f &pos, const Point3f &target, co
 #endif
 }
 
-inline Matrix4x4 Matrix4x4::Perspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
+inline Matrix4x4 Matrix4x4::perspective(Float verticalAngle, Float aspectRatio, Float nearPlane, Float farPlane)
 {
 
-	Float radAngle = DegToRad(verticalAngle * 0.5);
-	Float sy = std::sin(DegToRad(verticalAngle * 0.5));
+	Float radAngle = degreeToRadian(verticalAngle * 0.5);
+	Float sy = std::sin(degreeToRadian(verticalAngle * 0.5));
 	if (sy == 0)
 	{
 		return Matrix4x4(0.);
@@ -528,7 +526,7 @@ inline Matrix4x4 Matrix4x4::Perspective(Float verticalAngle, Float aspectRatio, 
 		0.0, 0.0, pz, 0.0
 		);
 }
-inline Matrix4x4 Matrix4x4::PerspectiveFromFilm(
+inline Matrix4x4 Matrix4x4::perspectiveFromFilm(
 	Float filmVert, Float filmHori,	Float focal,
 	Float nearPlane, Float farPlane)
 {
@@ -557,7 +555,7 @@ inline Matrix4x4 Matrix4x4::PerspectiveFromFilm(
 		0.0, 0.0, pz, 0.0
 		);
 }
-inline Matrix4x4 Matrix4x4::Orthography(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)
+inline Matrix4x4 Matrix4x4::orthography(Float lf, Float rt, Float bt, Float tp, Float nr, Float fr)
 {
 	return Matrix4x4(
 		2.0 / (lf - rt), 0.0, 0.0, 0.0,
@@ -567,27 +565,12 @@ inline Matrix4x4 Matrix4x4::Orthography(Float lf, Float rt, Float bt, Float tp, 
 		);
 }
 
-inline void Matrix4x4::exportVBO(float *vtx_array) const
+inline Matrix4x4 Matrix4x4::translate(const Vector3f &vec)
 {
-	if (sizeof(Float) == sizeof(float))
-	{
-		memcpy(vtx_array, this->mtx[0], sizeof(this->mtx));
-	}
-	else
-	{
-		for (size_t i = 0; i < 16; i++)
-		{
-			vtx_array[i] = static_cast<float>(this->mtx[0][i]);
-		}
-	}
+	return translate(vec.x, vec.y, vec.z);
 }
 
-inline Matrix4x4 Matrix4x4::Translate(const Vector3f &vec)
-{
-	return Translate(vec.x, vec.y, vec.z);
-}
-
-inline Matrix4x4 Matrix4x4::Translate(Float tx, Float ty, Float tz)
+inline Matrix4x4 Matrix4x4::translate(Float tx, Float ty, Float tz)
 {
 	return Matrix4x4(
 		1.0, 0.0, 0.0, 0.0,
@@ -601,7 +584,7 @@ inline Matrix4x4 Matrix4x4::RotateX(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegToRad(theta);
+	theta = degreeToRadian(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -617,7 +600,7 @@ inline Matrix4x4 Matrix4x4::RotateY(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegToRad(theta);
+	theta = degreeToRadian(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -633,7 +616,7 @@ inline Matrix4x4 Matrix4x4::RotateZ(Float theta)
 {
 	Matrix4x4 ret;
 
-	theta = DegToRad(theta);
+	theta = degreeToRadian(theta);
 	Float costh = cos(theta);
 	Float sinth = sin(theta);
 
@@ -645,12 +628,12 @@ inline Matrix4x4 Matrix4x4::RotateZ(Float theta)
 	return ret;
 }
 
-inline Matrix4x4 Matrix4x4::Rotate(Float alpha, Float beta, Float gamma)
+inline Matrix4x4 Matrix4x4::rotate(Float alpha, Float beta, Float gamma)
 {
 	Matrix4x4 ret;
-	alpha = DegToRad(alpha);
-	beta = DegToRad(beta);
-	gamma = DegToRad(gamma);
+	alpha = degreeToRadian(alpha);
+	beta = degreeToRadian(beta);
+	gamma = degreeToRadian(gamma);
 	Float cosA = cos(alpha), sinA = sin(alpha);
 	Float cosB = cos(beta), sinB = sin(beta);
 	Float cosG = cos(gamma), sinG = sin(gamma);
@@ -669,10 +652,10 @@ inline Matrix4x4 Matrix4x4::Rotate(Float alpha, Float beta, Float gamma)
 	return ret;
 }
 
-inline Matrix4x4 Matrix4x4::Rotate(const Vector3f &axis, Float theta, bool isNormalized)
+inline Matrix4x4 Matrix4x4::rotate(const Vector3f &axis, Float theta, bool isNormalized)
 {
 	Vector3f u = isNormalized ? axis : Normalize(axis);
-	Float rad = DegToRad(theta);
+	Float rad = degreeToRadian(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
 	Float t = 1 - c;
@@ -701,7 +684,7 @@ inline Matrix4x4 Matrix4x4::Rotate(const Vector3f &axis, Float theta, bool isNor
 	return ret;
 }
 
-inline Matrix4x4 Matrix4x4::Scale(Float sx, Float sy, Float sz)
+inline Matrix4x4 Matrix4x4::scale(Float sx, Float sy, Float sz)
 {
 	return Matrix4x4(
 		sx, 0.0, 0.0, 0.0,
@@ -711,7 +694,7 @@ inline Matrix4x4 Matrix4x4::Scale(Float sx, Float sy, Float sz)
 		);
 }
 
-inline Matrix4x4 Matrix4x4::Scale(Float scale)
+inline Matrix4x4 Matrix4x4::scale(Float scale)
 {
 	return Matrix4x4(
 		scale, 0.0, 0.0, 0.0,

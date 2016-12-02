@@ -22,13 +22,13 @@ static const Float NUM_NAN = std::numeric_limits<Float>::quiet_NaN();
 /************************************************************************/
 /*
 template <typename T>
-inline const T& min(const T& d1, const T& d2)
+inline const T &min(const T &d1, const T &d2)
 {
 	return (d1 < d2 ? d1 : d2);
 }
 //template min<int>(int, int);
 template <typename T>
-inline const T& max(const T& d1, const T& d2)
+inline const T &max(const T &d1, const T &d2)
 {
 	return (d1 > d2 ? d1 : d2);
 }
@@ -60,24 +60,24 @@ inline T clamp(T val, U low, V high) {
 	else return val;
 }
 template <typename T>
-inline T clampFromZeroToOne(const T& data)
+inline T clampFromZeroToOne(const T &data)
 {
 	return clamp(data, 0, 1);
 }
 template <typename T>
-inline const T& remap(const T& data, const T& oldMin, const T& oldMax,
-	const T& newMin, const T& newMax)
+inline const T &remap(const T &data, const T &oldMin, const T &oldMax,
+	const T &newMin, const T &newMax)
 {
 	T tmp = (data * (newMax - newMin) - (newMin * oldMax - newMax * oldMin))
 		/ (oldMax - oldMin);
 	return clamp(tmp, newMin, newMax);
 }
 template <typename T>
-inline const T& RemapToUnit(const T& data, const T& minV, const T& maxV)
+inline const T &RemapToUnit(const T &data, const T &minV, const T &maxV)
 {
 	return clampFromZeroToOne((data - minV) / (maxV - minV));
 }
-template <typename T> inline bool inRange(const T& data, const T& minv, const T& maxv)
+template <typename T> inline bool inRange(const T &data, const T &minv, const T &maxv)
 {
 	if (data >= minv && data <= maxv)
 	{
@@ -98,11 +98,11 @@ inline bool inUnitRange(Float data, Float epsilon)
 	//Float epsilon = 5e-4f;
 	return inRange(data, 0.f - epsilon, 1.f + epsilon);
 }
-inline Float RadToDeg(Float rad)
+inline Float radianToDegree(Float rad)
 {
 	return rad * 180.0 * INV_PI;
 }
-inline Float DegToRad(Float deg)
+inline Float degreeToRadian(Float deg)
 {
 	return deg * M_PI / 180.0;
 }
@@ -114,22 +114,22 @@ inline double isFuzzyNull(double val)
 {
 	return abs(val) < 0.000000000001;
 }
-inline int Ceil2Int(Float val)
+inline int ceilToInt(Float val)
 {
 	return static_cast<int>(ceil(val));
 }
-inline int Floor2Int(Float val)
+inline int floorToInt(Float val)
 {
 	return static_cast<int>(floor(val));
 }
-inline int Round2Int(Float val)
+inline int roundToInt(Float val)
 {
-	return Floor2Int(val + 0.5);
+	return floorToInt(val + 0.5);
 }
-inline Float Log2Int(Float val)
+inline Float logToInt(Float val)
 {
 	//static Float invLog2 = 1.0 / log(2.0);
-	return Floor2Int(log2(val));
+	return floorToInt(log2(val));
 }
 inline int findMinPositiveT(Float* &ts, int size)
 {
@@ -146,25 +146,25 @@ inline int findMinPositiveT(Float* &ts, int size)
 	return interID;
 }
 
-inline int Random(int range)
+inline int random(int range)
 {
 	return rand() % range;
 }
 inline Float unitRandom(int segment)
 {
-	return static_cast<Float>(Random(segment)) / static_cast<Float>(segment);
+	return static_cast<Float>(random(segment)) / static_cast<Float>(segment);
 }
 inline Float symUnitRandom(int segment)
 {
-	return (static_cast<Float>(Random(segment)) / static_cast<Float>(segment)-0.5) * 2.0;
+	return (static_cast<Float>(random(segment)) / static_cast<Float>(segment)-0.5) * 2.0;
 }
 template <typename T>
-inline T sqr(const T& data)
+inline T sqr(const T &data)
 {
 	return data * data;
 }
 template <typename T>
-inline T cubic(const T& data)
+inline T cubic(const T &data)
 {
 	return data * data * data;
 }
@@ -172,18 +172,18 @@ inline T cubic(const T& data)
 /* Interpolation Methods                                                */
 /************************************************************************/
 template <typename T>
-inline T lerp(const T& data1, const T& data2, const Float& t)//Linear Interpolation
+inline T lerp(const T &data1, const T &data2, Float t)//Linear Interpolation
 {
 	return data1 * (1 - t) + data2 * t;
 }
 template <typename T>
-inline T cosInterpolate(const T& data1, const T& data2, const Float& t)//cosInterpolate
+inline T cosInterpolate(const T &data1, const T &data2, Float t)//cosInterpolate
 {
 	Float nt = (1 - cos(t * M_PI)) * 0.5;
 	return data1 * (1 - nt) + data2 * nt;
 }
 template <typename T>
-inline T cubicInterpolate(const T& data0, const T& data1, const T& data2, const T& data3, const Float& t)
+inline T cubicInterpolate(const T &data0, const T &data1, const T &data2, const T &data3, Float t)
 {
 	T P = (data3 - data2) - (data0 - data1);
 	T Q = (data0 - data1) - P;
@@ -191,7 +191,7 @@ inline T cubicInterpolate(const T& data0, const T& data1, const T& data2, const 
 	T S = data1;
 	return P * cubic(t) + Q * sqr(t) + R * t + S;
 }
-inline Float curve_t(const Float& t)//Mainly used for perlin noise
+inline Float curve_t(Float t)//Mainly used for perlin noise
 {
 	return 6 * cubic(t) * sqr(t) - 15 * sqr(sqr(t)) + 10 * cubic(t);
 }
@@ -202,10 +202,8 @@ inline bool quadratic(Float A, Float B, Float C, Float &t1, Float &t2)
 {
 	// Find quadratic discriminant
 	Float discrim = sqr(B) - 4. * A * C;
-	if (discrim < 0.)
-	{
-		return false;
-	}
+	if (discrim < 0) return false;
+
 	Float rootDiscrim = sqrt(discrim);
 
 	// Compute quadratic _t_ values

@@ -22,7 +22,7 @@ Ray Transform::operator()(const Ray &ray) const
 	return ret;
 }
 
-void Transform::operator()(const Ray& ray, Ray* ret) const
+void Transform::operator()(const Ray &ray, Ray* ret) const
 {
 	ret->d = m(ray.d);
 	ret->o = m(ray.o);
@@ -57,13 +57,13 @@ Normal3f Transform::operator()(const Normal3f &n) const
 void Transform::setMat(const Matrix4x4 &mat)
 {
 	m = mat;
-	mInv = m.Inverse();
+	mInv = m.inverse();
 }
 
 void Transform::setInvMat(const Matrix4x4 &matInv)
 {
 	mInv = matInv;
-	m = mInv.Inverse();
+	m = mInv.inverse();
 }
 
 Transform xformTRS(
@@ -78,16 +78,16 @@ Transform xformTRS(
 	Float rx, Float ry, Float rz,
 	Float sx, Float sy, Float sz)
 {
-	Matrix4x4 T = Matrix4x4::Translate(tx, ty, tz);
-	Matrix4x4 R = Matrix4x4::Rotate(rx, ry, rz);
-	Matrix4x4 S = Matrix4x4::Scale(sx, sy, sz);
+	Matrix4x4 T = Matrix4x4::translate(tx, ty, tz);
+	Matrix4x4 R = Matrix4x4::rotate(rx, ry, rz);
+	Matrix4x4 S = Matrix4x4::scale(sx, sy, sz);
 	return Transform(T * R * S);
 }
 
 Transform Rotate(const Vector3f &axis, Float theta)
 {
 	Vector3f u = Normalize(axis);
-	Float rad = DegToRad(theta);
+	Float rad = degreeToRadian(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
 	Float t = 1 - c;
@@ -155,7 +155,7 @@ Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
 }
 
 bool solveLinearSystem2x2(
-	const Float A[2][2], const Float b[2], Float *x0, Float *x1)
+	const Float A[2][2], const Float b[2], Float* x0, Float* x1)
 {
 	// x = A^-1 * b
 	// A^-1 = 1/det * | +A11  -A01 |

@@ -7,9 +7,17 @@ abstractCamera::abstractCamera()
 {
 }
 
-abstractCamera::abstractCamera(const Point3f &eyePos, const Vector3f &viewDir, const Vector3f &upVec,
-	Texture *posImg, Texture *dirImg, Float tp, Float td, Float lr, Float fd)
-	: perspCamera(eyePos, eyePos + viewDir, upVec, lr, fd), tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
+abstractCamera::abstractCamera(const Point3f    &eyePos,
+                               const Vector3f   &viewDir,
+                               const Vector3f   &upVec,
+                                     Texture*    posImg,
+                                     Texture*    dirImg,
+                                     Float       tp,
+                                     Float       td,
+                                     Float       lr,
+                                     Float       fd)
+    : perspCamera(eyePos, eyePos + viewDir, upVec, lr, fd)
+    , tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
 {
 }
 abstractCamera::~abstractCamera()
@@ -40,7 +48,7 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	return ret;
 }
 */
-void abstractCamera::setImage(Texture *posImg, Texture *dirImg)
+void abstractCamera::setImage(Texture* posImg, Texture* dirImg)
 {
 	posTex = posImg;
 	dirTex = dirImg;

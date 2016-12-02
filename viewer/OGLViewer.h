@@ -25,7 +25,7 @@ static GLfloat model_mat[16];// Uniform matrix buffer
 static int view_mat_loc;// Uniform matrix location
 static int proj_mat_loc;// Porjection matrix location
 
-static GLfloat cam_mat[48]; // view[16], proj[16], rast[16]
+//static GLfloat cam_mat[48]; // view[16], proj[16], rast[16]
 
 // OpenGL Window in Qt
 class OGLViewer : public QOpenGLWidget

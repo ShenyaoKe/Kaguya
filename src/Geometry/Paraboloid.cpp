@@ -14,7 +14,7 @@ geoParaboloid::geoParaboloid()
 	sc = 1;
 	pbType = ELLIPTIC_PARABOLOID;
 }
-geoParaboloid::geoParaboloid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC, PARABOLOID_TYPE newType)
+geoParaboloid::geoParaboloid(const Point3f &pos, Float semiA, Float semiB, Float semiC, PARABOLOID_TYPE newType)
 {
 	c = pos;
 	sa = semiA;
@@ -29,7 +29,7 @@ void geoParaboloid::setCenter(const Point3f &pos)
 {
 	c = pos;
 }
-void geoParaboloid::setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC)
+void geoParaboloid::setSemiAxes(Float semiA, Float semiB, Float semiC)
 {
 	sa = semiA;
 	sb = semiB;
@@ -39,7 +39,7 @@ void geoParaboloid::setParaboloidType(PARABOLOID_TYPE newType)
 {
 	pbType = newType;
 }
-bool geoParaboloid::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool geoParaboloid::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	Point3f rp = inRay.o; 
 	Vector3f rd = inRay.d;// Ray postion and ray direction.	

@@ -93,11 +93,12 @@ void TriangleMesh::printInfo(const string &msg) const
 		fids[i].printInfo();
 	}
 }
-bool TriangleMesh::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool TriangleMesh::intersect(const Ray &inRay, DifferentialGeometry* dg,
+                             Float* tHit, Float* rayEpsilon) const
 {
 	return false;
 }
-void TriangleMesh::postIntersect(const Ray& inRay, DifferentialGeometry* dg) const
+void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) const
 {
 	// TODO: Implement post-intersection method
 }
@@ -114,7 +115,7 @@ void TriangleMesh::exportVBO(
 			auto cur_fid = fids[i];
 			for (int j = 0; j < 3; j++)
 			{
-				auto& cur_vtx = verts[cur_fid.v[j] - 1];
+				auto &cur_vtx = verts[cur_fid.v[j] - 1];
 				vtx_array->push_back(static_cast<float>(cur_vtx.x));
 				vtx_array->push_back(static_cast<float>(cur_vtx.y));
 				vtx_array->push_back(static_cast<float>(cur_vtx.z));
@@ -129,7 +130,7 @@ void TriangleMesh::exportVBO(
 			auto cur_fid = this->fids[i];
 			for (int j = 0; j < 3; j++)
 			{
-				auto& cur_norm = norms[cur_fid.n[j] - 1];
+				auto &cur_norm = norms[cur_fid.n[j] - 1];
 				norm_array->push_back(static_cast<float>(cur_norm.x));
 				norm_array->push_back(static_cast<float>(cur_norm.y));
 				norm_array->push_back(static_cast<float>(cur_norm.z));
@@ -138,9 +139,10 @@ void TriangleMesh::exportVBO(
 	}
 }
 
-void TriangleMesh::exportIndexedVBO(
-	vector<float>* vtx_array, vector<float>* uv_array,
-	vector<float>* norm_array, vector<unsigned int>* idx_array) const
+void TriangleMesh::exportIndexedVBO(vector<float>* vtx_array,
+                                    vector<float>* uv_array,
+	                                vector<float>* norm_array,
+                                    vector<unsigned int>* idx_array) const
 {
 	bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
 	
@@ -171,14 +173,14 @@ void TriangleMesh::exportIndexedVBO(
 
 	for (int i = 0; i < verts.size(); i++)
 	{
-		auto& point = verts[i];
+		auto &point = verts[i];
 		vtx_array->push_back(static_cast<float>(point.x));
 		vtx_array->push_back(static_cast<float>(point.y));
 		vtx_array->push_back(static_cast<float>(point.z));
 	}
 	for (int i = 0; i < fids.size(); i++)
 	{
-		auto& fid = fids[i];
+		auto &fid = fids[i];
 		idx_array->push_back(static_cast<uint32_t>(fid.v[0] - 1));
 		idx_array->push_back(static_cast<uint32_t>(fid.v[1] - 1));
 		idx_array->push_back(static_cast<uint32_t>(fid.v[2] - 1));
@@ -195,15 +197,16 @@ Triangle::Triangle()
 	mesh = nullptr;
 }
 
-Triangle::Triangle(TriangleMesh *inMesh, size_t fn)
+Triangle::Triangle(TriangleMesh* inMesh, size_t fn)
 	: mesh(inMesh), p{ nullptr }, uv{ nullptr }, n{ nullptr }
 {
 
-	auto& faceIndex = inMesh->fids[fn];
+	auto &faceIndex = inMesh->fids[fn];
 	if (faceIndex.v.size() > 0)
 	{
 		this->setPoint(&inMesh->verts[faceIndex.v[0] - 1],
-			&inMesh->verts[faceIndex.v[1] - 1], &inMesh->verts[faceIndex.v[2] - 1]);
+			           &inMesh->verts[faceIndex.v[1] - 1],
+                       &inMesh->verts[faceIndex.v[2] - 1]);
 	}
 	/************************************************************************/
 	/* UV                                                                   */
@@ -219,7 +222,8 @@ Triangle::Triangle(TriangleMesh *inMesh, size_t fn)
 	if (faceIndex.n.size() > 0)
 	{
 		this->setNormal(&inMesh->norms[faceIndex.n[0] - 1],
-			&inMesh->norms[faceIndex.n[1] - 1], &inMesh->norms[faceIndex.n[2] - 1]);
+			            &inMesh->norms[faceIndex.n[1] - 1],
+                        &inMesh->norms[faceIndex.n[2] - 1]);
 	}
 	else
 	{
@@ -256,9 +260,9 @@ void Triangle::setNormal(Normal3f* n0, Normal3f* n1, Normal3f* n2)
 	n[0] = n1;
 	n[0] = n2;
 }
-bool Triangle::intersect(const Ray& inRay,
+bool Triangle::intersect(const Ray &inRay,
 	DifferentialGeometry* dg,
-	Float *tHit, Float *rayEpsilon) const
+	Float* tHit, Float* rayEpsilon) const
 {
 	// Moller¨CTrumbore Intersection Algorithm
 	Vector3f v1 = *p[1] - *p[0];
@@ -296,7 +300,7 @@ bool Triangle::intersect(const Ray& inRay,
 
 	return true;
 }
-void Triangle::postIntersect(const Ray& inRay,
+void Triangle::postIntersect(const Ray &inRay,
 	DifferentialGeometry* dg) const
 {
 	Vector3f v1 = *p[1] - *p[0];

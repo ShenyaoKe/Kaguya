@@ -325,7 +325,8 @@ ImageData* filter::threshold(const ImageData* src, Float th)
 	return ret;
 }
 
-ImageData* filter::edgeDetect(const ImageData* src, Float **lumaImg, EdgeOperator opType)
+ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
+                              EdgeOperator opType)
 {
 	int width = src->getWidth();
 	int height = src->getHeight();
@@ -335,7 +336,8 @@ ImageData* filter::edgeDetect(const ImageData* src, Float **lumaImg, EdgeOperato
 	ImageData* ret = new ImageData(width, height);
 
 	// horizontal and vertical derivative kernels
-	int **gX, **gY;
+    int** gX;
+    int** gY;
 	Aligned_2DArray(gX, 3, 3);
 	Aligned_2DArray(gY, 3, 3);
 	Float gMax(0), gMin(0);
@@ -420,7 +422,8 @@ ImageData* filter::boxBlur(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
     
-	ColorRGBA **tmpImgX, **tmpImgY;
+    ColorRGBA** tmpImgX;
+    ColorRGBA** tmpImgY;
 	Aligned_2DArray(tmpImgX, width, height);
 	Aligned_2DArray(tmpImgY, width, height);
 
@@ -486,7 +489,8 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
     
-	ColorRGBA **tmpImgX, **tmpImgY;
+    ColorRGBA** tmpImgX;
+    ColorRGBA** tmpImgY;
 	Aligned_2DArray(tmpImgX, width, height);
 	Aligned_2DArray(tmpImgY, width, height);
 
@@ -566,7 +570,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
 
-	Float **lumaImg = src->getLuma();
+	Float** lumaImg = src->getLuma();
 	//cout << kSize << endl;
 	for (int i = 0; i < width; i++)
 	{
@@ -1021,7 +1025,7 @@ ImageData* filter::circlepix(const ImageData* src, int radius, Float para)
 		kernel[i] = nullptr;
 	}
 }
-ImageData* filter::translate(const ImageData* src, Vector2D& tVec, int& winWid, int& winHgt)
+ImageData* filter::translate(const ImageData* src, Vector2D &tVec, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D tMat, itMat;
@@ -1051,7 +1055,7 @@ ImageData* filter::translate(const ImageData* src, Vector2D& tVec, int& winWid, 
 	}
 	
 }
-ImageData* filter::rotate(const ImageData* src, Float theta, int& winWid, int& winHgt)
+ImageData* filter::rotate(const ImageData* src, Float theta, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D rMat, tMat1, tMat2, mat, iMat;
@@ -1080,7 +1084,7 @@ ImageData* filter::rotate(const ImageData* src, Float theta, int& winWid, int& w
 		}
 	}
 }
-ImageData* filter::scale(const ImageData* src, Vector2D& sVec, int& winWid, int& winHgt)
+ImageData* filter::scale(const ImageData* src, Vector2D &sVec, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D sMat, tMat1, tMat2, mat, iMat;
@@ -1109,7 +1113,7 @@ ImageData* filter::scale(const ImageData* src, Vector2D& sVec, int& winWid, int&
 		}
 	}
 }
-ImageData* filter::shear(const ImageData* src, Vector2D& shVec, int& winWid, int& winHgt)
+ImageData* filter::shear(const ImageData* src, Vector2D &shVec, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D shMat, iMat;
@@ -1135,7 +1139,7 @@ ImageData* filter::shear(const ImageData* src, Vector2D& shVec, int& winWid, int
 		}
 	}
 }
-ImageData* filter::reflect(const ImageData* src, Vector2D& rflVec, int& winWid, int& winHgt)
+ImageData* filter::reflect(const ImageData* src, Vector2D &rflVec, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D rflMat, tMat1, tMat2, mat, iMat;
@@ -1165,7 +1169,7 @@ ImageData* filter::reflect(const ImageData* src, Vector2D& rflVec, int& winWid, 
 		}
 	}
 }
-ImageData* filter::perspective(const ImageData* src, Vector2D& vPnt1, int& winWid, int& winHgt)
+ImageData* filter::perspective(const ImageData* src, Vector2D &vPnt1, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D mat, iMat;
@@ -1193,7 +1197,7 @@ ImageData* filter::perspective(const ImageData* src, Vector2D& vPnt1, int& winWi
 		}
 	}
 }
-ImageData* filter::bilnear(const ImageData* src, Vector2D* pos, int& winWid, int& winHgt)
+ImageData* filter::bilnear(const ImageData* src, Vector2D* pos, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	// 
@@ -1228,7 +1232,7 @@ ImageData* filter::bilnear(const ImageData* src, Vector2D* pos, int& winWid, int
 		}
 	}
 }
-ImageData* filter::inflateScale(const ImageData* src, Float radius, int& winWid, int& winHgt)
+ImageData* filter::inflateScale(const ImageData* src, Float radius, int &winWid, int &winHgt)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	Matrix3D sMat, tMat1, tMat2, mat, iMat;

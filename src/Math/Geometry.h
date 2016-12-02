@@ -98,7 +98,7 @@ public:
 	Float length() const { return std::sqrt(lengthSquared()); }
 	void normalize() { *this /= length(); }
 
-	friend std::ostream &operator<<(ostream& os, const Vector2<T> &v) {
+	friend std::ostream &operator<<(ostream &os, const Vector2<T> &v) {
 		os << "[ " << v.x << ", " << v.y << " ]";
 		return os;
 	}
@@ -196,7 +196,7 @@ public:
 	Float length() const { return std::sqrt(lengthSquared()); }
 	void normalize() { *this /= length(); }
 
-	friend std::ostream &operator<<(ostream& os, const Vector3<T> &v)
+	friend std::ostream &operator<<(ostream &os, const Vector3<T> &v)
 	{
 		os << "[" << v.x << ", " << v.y << ", " << v.z << "]";
 		return os;
@@ -300,7 +300,7 @@ public:
 		return *this;
 	}
 
-	friend std::ostream &operator<<(ostream& os, const Point2<T> &p) {
+	friend std::ostream &operator<<(ostream &os, const Point2<T> &p) {
 		os << "[ " << p.x << ", " << p.y << " ]";
 		return os;
 	}
@@ -402,7 +402,7 @@ public:
 		return *this;
 	}
 
-	friend std::ostream &operator<<(ostream& os, const Point3<T> &p)
+	friend std::ostream &operator<<(ostream &os, const Point3<T> &p)
 	{
 		os << "[ " << p.x << ", " << p.y << ", " << p.z << " ]";
 		return os;
@@ -505,7 +505,7 @@ public:
 	void normalize() { *this /= length(); }
 
 
-	friend std::ostream &operator<<(ostream& os, const Normal3<T> &v) {
+	friend std::ostream &operator<<(ostream &os, const Normal3<T> &v) {
 		os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
 		return os;
 	}
@@ -525,13 +525,13 @@ Vector2<T>::Vector2(const Point2<T> &p)
 }
 
 template<typename T>
-inline Vector3<T>::Vector3(const Point3<T>& p)
+inline Vector3<T>::Vector3(const Point3<T> &p)
 	: x(p.x), y(p.y), z(p.z)
 {
 }
 
 template<typename T>
-inline Vector3<T>::Vector3(const Normal3<T>& n)
+inline Vector3<T>::Vector3(const Normal3<T> &n)
 	: x(n.x), y(n.y), z(n.z)
 {
 }

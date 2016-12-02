@@ -31,7 +31,7 @@ namespace filter
 	ImageData* equalizeLuma(const ImageData* src);
 	ImageData* posterize(const ImageData* src, int level = 8);
 	ImageData* threshold(const ImageData* src, Float th = 0.5);
-	ImageData* edgeDetect(const ImageData* src, Float **lumaImg = nullptr, EdgeOperator opType = EdgeOperator::SOBEL);
+	ImageData* edgeDetect(const ImageData* src, Float** lumaImg = nullptr, EdgeOperator opType = EdgeOperator::SOBEL);
 
 	ImageData* boxBlur(const ImageData* src, int radius = 3);
 	ImageData* gaussianBlur(const ImageData* src, int radius = 3);
@@ -50,14 +50,14 @@ namespace filter
 
 	// Transform
 	/*
-	ImageData* translate(const ImageData* src, const Vector2D& translation, int& winWid, int& winHgt);
-	ImageData* rotate(const ImageData* src, Float theta, int& winWid, int& winHgt);
-	ImageData* scale(const ImageData* src, const Vector2D& sVec, int& winWid, int& winHgt);
-	ImageData* shear(const ImageData* src, const Vector2D& shVec, int& winWid, int& winHgt);
-	ImageData* reflect(const ImageData* src, const Vector2D& rflVec, int& winWid, int& winHgt);
-	ImageData* perspective(const ImageData* src, const Vector2f& vPnt1, int& winWid, int& winHgt);
-	ImageData* bilnear(const ImageData* src, const Vector2D* pos, int& winWid, int& winHgt);// 4Corner points
-	ImageData* inflateScale(const ImageData* src, Float radius, int& winWid, int& winHgt);
+	ImageData* translate(const ImageData* src, const Vector2D &translation, int &winWid, int &winHgt);
+	ImageData* rotate(const ImageData* src, Float theta, int &winWid, int &winHgt);
+	ImageData* scale(const ImageData* src, const Vector2D &sVec, int &winWid, int &winHgt);
+	ImageData* shear(const ImageData* src, const Vector2D &shVec, int &winWid, int &winHgt);
+	ImageData* reflect(const ImageData* src, const Vector2D &rflVec, int &winWid, int &winHgt);
+	ImageData* perspective(const ImageData* src, const Vector2f &vPnt1, int &winWid, int &winHgt);
+	ImageData* bilnear(const ImageData* src, const Vector2D* pos, int &winWid, int &winHgt);// 4Corner points
+	ImageData* inflateScale(const ImageData* src, Float radius, int &winWid, int &winHgt);
 	ImageData* textureSynth(const ImageData* sample, int radius);
 	*/
 }

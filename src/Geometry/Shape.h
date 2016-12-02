@@ -33,12 +33,12 @@ public:
 	virtual void bounding() = 0;
 	virtual Bounds3f getWorldBounding() const;
 	virtual void refine(vector<Shape*> &refined);
-	virtual bool intersectP(const Ray& inRay) const;
-	/*virtual bool intersect(const Ray &ray, DifferentialGeometry *dg,
-		Float *tHit, Float *rayEpsilon) const = 0;*/
-	virtual bool intersect(const Ray& inRay, DifferentialGeometry* dg,
-		Float *tHit, Float *rayEpsilon) const = 0;
-	virtual void postIntersect(const Ray& inRay,
+	virtual bool intersectP(const Ray &inRay) const;
+	/*virtual bool intersect(const Ray &ray, DifferentialGeometry* dg,
+		Float* tHit, Float* rayEpsilon) const = 0;*/
+	virtual bool intersect(const Ray &inRay, DifferentialGeometry* dg,
+		Float* tHit, Float* rayEpsilon) const = 0;
+	virtual void postIntersect(const Ray &inRay,
 		DifferentialGeometry* dg) const = 0;
 
 	// Surface Area

@@ -9,10 +9,10 @@ class geoEllipsoid :public Shape
 {
 public:
 	geoEllipsoid();
-	geoEllipsoid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC);
+	geoEllipsoid(const Point3f &pos, Float semiA, Float semiB, Float semiC);
 
-	void setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC);
-	bool intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const;
+	void setSemiAxes(Float semiA, Float semiB, Float semiC);
+	bool intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const;
 	
 	bool isInside(const Point3f &pPos) const;
 

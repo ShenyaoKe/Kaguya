@@ -3,7 +3,7 @@
 Camera::Camera(const Point3f &eye,
 	const Point3f &targ, const Vector3f &up,
 	Float asp, Float lr, Float fd, const Film &fm)
-	: CameraToWorld(Matrix4x4::LookAt(eye, targ, up))
+	: CameraToWorld(Matrix4x4::lookAt(eye, targ, up))
 	, viewTarget(targ)
 	, viewportRatio(asp), focLen(35)
 	, lensRadius(lr), focalDistance(fd)
@@ -100,7 +100,7 @@ void Camera::zoom(Float x_val, Float y_val, Float z_val)
 	// Pw: world space position, Pc: Camera space position
 	// Pw = c2w1 * Pc1 = c2w1 * T^-1 * Pc = c2w * Pc
 	// c2w1 = T * c2w
-	Matrix4x4 newLookAt = cam2w * Matrix4x4::Translate(x_val, y_val, z_val);
+	Matrix4x4 newLookAt = cam2w * Matrix4x4::translate(x_val, y_val, z_val);
 	//cout << "befor: " << target << endl;
 
 	Vector3f _nx(cam2w[0]), _ny(cam2w[1]);
@@ -119,16 +119,16 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 	Float vt_len = vt.length();
 	Float upCoef = lookAtMat[1][1] < 0 ? -1 : 1;
 	
-	Float phi = atan2(vt.x, vt.z) + DegToRad(y_rot) * upCoef;
+	Float phi = atan2(vt.x, vt.z) + degreeToRadian(y_rot) * upCoef;
 	Float old_theta = asin(vt.y / vt_len);
-	Float theta = old_theta + DegToRad(x_rot) * upCoef;
+	Float theta = old_theta + degreeToRadian(x_rot) * upCoef;
 	
 	if ((old_theta < M_HALFPI && theta > M_HALFPI) || (old_theta > -M_HALFPI && theta < -M_HALFPI))
 	{
 		upCoef *= -1;
 	}
 	Vector3f newVt(sin(phi) * cos(theta), sin(theta), cos(phi) * cos(theta));
-	CameraToWorld.setMat(Matrix4x4::LookAt(viewTarget + newVt * vt_len, viewTarget, Vector3f(0, upCoef, 0)));
+	CameraToWorld.setMat(Matrix4x4::lookAt(viewTarget + newVt * vt_len, viewTarget, Vector3f(0, upCoef, 0)));
 }
 
 void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)

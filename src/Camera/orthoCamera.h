@@ -5,7 +5,7 @@ class orthoCamera : public Camera
 {
 public:
 	orthoCamera();
-	orthoCamera(const Transform& cam2wo, const Transform& projection);
+	orthoCamera(const Transform &cam2wo, const Transform &projection);
 	~orthoCamera();
 	//Vector3D getPos() { return pos; }
 	//void setResolution(int resX, int resY);

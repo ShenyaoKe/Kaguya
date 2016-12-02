@@ -8,14 +8,14 @@
 Light::Light()
 {
 }
-Light::Light(const Spectrum& its)
+Light::Light(const Spectrum &its)
 {
 	lightSpectrum = its;
 }
 Light::~Light()
 {
 }
-void Light::setExposure(const Float& xps)
+void Light::setExposure(Float xps)
 {
 	exposure = xps;
 }
@@ -23,7 +23,7 @@ void Light::setDecayType(LIGHT_DECAY_TYPE dctype)
 {
 	decayType = dctype;
 }
-void Light::setRadius(const Float& rd)
+void Light::setRadius(Float rd)
 {
 	radius = rd;
 }
@@ -57,7 +57,7 @@ directionalLight::directionalLight(const Vector3f &vec)
 {
 	dir = Normalize(vec); type = LT_DIRECTIONAL_LIGHT;
 }
-directionalLight::directionalLight(const Vector3f &vec, const Spectrum& spt)
+directionalLight::directionalLight(const Vector3f &vec, const Spectrum &spt)
 {
 	dir = Normalize(vec); lightSpectrum = spt; type = LT_DIRECTIONAL_LIGHT;
 }
@@ -82,11 +82,11 @@ pointLight::pointLight()
 {
 	type = LT_POINT_LIGHT;
 }
-pointLight::pointLight(const Point3f &p, const Float& its)
+pointLight::pointLight(const Point3f &p, Float its)
 {
 	pos = p; lightSpectrum.intensity = its; type = LT_POINT_LIGHT;
 }
-pointLight::pointLight(const Point3f &p, const Spectrum& spt)
+pointLight::pointLight(const Point3f &p, const Spectrum &spt)
 {
 	pos = p; lightSpectrum = spt; type = LT_POINT_LIGHT;
 }
@@ -113,7 +113,7 @@ spotLight::spotLight(const Point3f &p, const Vector3f &d)
 spotLight::~spotLight()
 {
 }
-spotLight::spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo)
+spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo)
 {
 	pos = p;
 	dir = Normalize(d);
@@ -121,7 +121,7 @@ spotLight::spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const
 	dropoff = dpo;
 	type = LT_SPOT_LIGHT;
 }
-spotLight::spotLight(const Point3f &p, const Vector3f &d, const Float& ca, const Float& pa, const Float& dpo, const Spectrum& spt)
+spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const Spectrum &spt)
 {
 	pos = p;
 	dir = Normalize(d);
@@ -134,7 +134,7 @@ void spotLight::printInfo() const
 {
 
 }
-void spotLight::setAngles(const Float& ca, const Float& pa)
+void spotLight::setAngles(Float ca, Float pa)
 {
 	coneAngle = ca;
 	penumbraAngle = pa;
@@ -142,10 +142,10 @@ void spotLight::setAngles(const Float& ca, const Float& pa)
 }
 void spotLight::updateCosAngle()
 {
-	cosCA = cos(DegToRad(coneAngle));
-	cosPA = cos(DegToRad(coneAngle + penumbraAngle));
+	cosCA = cos(degreeToRadian(coneAngle));
+	cosPA = cos(degreeToRadian(coneAngle + penumbraAngle));
 }
-void spotLight::setDropOff(const Float& dpo)
+void spotLight::setDropOff(Float dpo)
 {
 	dropoff = dpo;
 }
@@ -183,7 +183,7 @@ areaLight::areaLight()
 	nz = Vector3f(0, 0, 1);
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Point3f &p, const Float& shpSize)
+areaLight::areaLight(const Point3f &p, Float shpSize)
 {
 	nx = Vector3f(1, 0, 0);
 	ny = Vector3f(0, 1, 0);
@@ -192,7 +192,7 @@ areaLight::areaLight(const Point3f &p, const Float& shpSize)
 	size = shpSize;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Point3f &p, const Float& shpSize, const Spectrum& spt)
+areaLight::areaLight(const Point3f &p, Float shpSize, const Spectrum &spt)
 {
 	nx = Vector3f(1, 0, 0);
 	ny = Vector3f(0, 1, 0);
@@ -202,7 +202,7 @@ areaLight::areaLight(const Point3f &p, const Float& shpSize, const Spectrum& spt
 	lightSpectrum = spt;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, const Float& shpSize, const Spectrum& spt)
+areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt)
 {
 	nz = Normalize(dir);
 	nx = Normalize(Cross(nz, up));

@@ -13,7 +13,7 @@ private:
 	SphericalMapping2D mapping;
 public:
 	EnvironmentMap();
-	EnvironmentMap(const string& filename);
+	EnvironmentMap(const string &filename);
 	~EnvironmentMap();
 
 	ColorRGBA getColor(const Vector3f &dir) const;

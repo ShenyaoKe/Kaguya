@@ -13,20 +13,20 @@ geoEllipsoid::geoEllipsoid()
 	sb = 1;
 	sc = 1;
 }
-geoEllipsoid::geoEllipsoid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC)
+geoEllipsoid::geoEllipsoid(const Point3f &pos, Float semiA, Float semiB, Float semiC)
 {
 	c = pos;
 	sa = semiA;
 	sb = semiB;
 	sc = semiC;
 }
-void geoEllipsoid::setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC)
+void geoEllipsoid::setSemiAxes(Float semiA, Float semiB, Float semiC)
 {
 	sa = semiA;
 	sb = semiB;
 	sc = semiC;
 }
-bool geoEllipsoid::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool geoEllipsoid::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	Point3f rp = inRay.o;
 	Vector3f rd = inRay.d;// Ray postion and ray direction.

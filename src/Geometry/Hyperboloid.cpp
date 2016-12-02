@@ -14,7 +14,7 @@ geoHyperboloid::geoHyperboloid()
 	sc = 1;
 	hbType = ONE_SHEET;
 }
-geoHyperboloid::geoHyperboloid(const Point3f &pos, const Float& semiA, const Float& semiB, const Float& semiC, HYPERBOLOID_TYPE newType)
+geoHyperboloid::geoHyperboloid(const Point3f &pos, Float semiA, Float semiB, Float semiC, HYPERBOLOID_TYPE newType)
 {
 	c = pos;
 	sa = semiA;
@@ -29,7 +29,7 @@ void geoHyperboloid::setCenter(const Point3f &pos)
 {
 	c = pos;
 }
-void geoHyperboloid::setSemiAxes(const Float& semiA, const Float& semiB, const Float& semiC)
+void geoHyperboloid::setSemiAxes(Float semiA, Float semiB, Float semiC)
 {
 	sa = semiA;
 	sb = semiB;
@@ -39,7 +39,7 @@ void geoHyperboloid::setHyperboloidType(HYPERBOLOID_TYPE newType)
 {
 	hbType = newType;
 }
-bool geoHyperboloid::intersect(const Ray& inRay, DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool geoHyperboloid::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	Point3f rp = inRay.o;
 	Vector3f rd = inRay.d;// Ray postion and ray direction.	

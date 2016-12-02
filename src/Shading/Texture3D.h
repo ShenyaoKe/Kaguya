@@ -29,8 +29,8 @@ public:
 	PerlinNoiseTexture3D(Float persistence, int octaves, int wd, int ht, int dp);
 	~PerlinNoiseTexture3D();
 
-	virtual void setColor(const ColorRGBA& bc, const ColorRGBA& dc);
-	virtual void setRange(const Float& max_value, const Float& min_value);
+	virtual void setColor(const ColorRGBA &bc, const ColorRGBA &dc);
+	virtual void setRange(Float max_value, Float min_value);
 	ColorRGBA getColor(const Point3f &pos) const;
 protected:
 

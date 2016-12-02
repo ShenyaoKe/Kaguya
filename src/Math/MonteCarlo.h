@@ -14,6 +14,6 @@ public:
 };
 Point3f SampleHemisphere(Float u, Float v);
 Point3f SampleSphere(Float u, Float v);
-void ConcentricSampleDisk(Float u, Float v, Float& dx, Float &dy);
+void ConcentricSampleDisk(Float u, Float v, Float &dx, Float &dy);
 
 #endif // __MONTECARLO__

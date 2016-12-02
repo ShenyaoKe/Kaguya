@@ -21,11 +21,11 @@ ColorRGBA Texture::getColor(const DifferentialGeometry* queryPoint) const
 FileTexture::FileTexture()
 {
 }
-FileTexture::FileTexture(const string& filename)
+FileTexture::FileTexture(const string &filename)
 {
 	img = new ImageData(filename);
 }
-FileTexture::FileTexture(ImageData& filename)
+FileTexture::FileTexture(ImageData &filename)
 {
 	img = &filename;
 }

@@ -181,7 +181,7 @@ public:
 
 		return true;
 	}
-	bool intersectP(const Ray& inRay, Float *hitt0 = nullptr, Float *hitt1 = nullptr) const
+	bool intersectP(const Ray &inRay, Float* hitt0 = nullptr, Float* hitt1 = nullptr) const
 	{
 		Float t0 = inRay.tmin, t1 = inRay.tmax;
 

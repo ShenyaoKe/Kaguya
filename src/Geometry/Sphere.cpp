@@ -26,8 +26,8 @@ Bounds3f geoSphere::getWorldBounding() const
 	ret.expand(r);
 	return ret;
 }
-bool geoSphere::intersect(const Ray& inRay,
-	DifferentialGeometry* dg, Float *tHit, Float *rayEpsilon) const
+bool geoSphere::intersect(const Ray &inRay,
+	DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	Float phi, theta;
 	Point3f pHit;
@@ -61,9 +61,9 @@ bool geoSphere::intersect(const Ray& inRay,
 
 	// Compute intersection position
 	pHit = ray(tHitLoc);
-	if (pHit.x == 0. && pHit.y == 0) pHit.x = 1e-5f * r;
+	if (pHit.x == 0 && pHit.y == 0) pHit.x = 1e-5f * r;
 	phi = atan2(pHit.y, pHit.x);
-	if (phi < 0.) phi += M_TWOPI;
+	if (phi < 0) phi += M_TWOPI;
 
 	// Test against clipping range
 	if (pHit.z < zMin || pHit.z > zMax || phi > phiMax)
@@ -79,9 +79,9 @@ bool geoSphere::intersect(const Ray& inRay,
 		// Re-Compute new intersection point
 		tHitLoc = t2;
 		pHit = ray(tHitLoc);
-		if (pHit.x == 0. && pHit.y == 0) pHit.x = 1e-5f * r;
+		if (pHit.x == 0 && pHit.y == 0) pHit.x = 1e-5f * r;
 		phi = atan2(pHit.y, pHit.x);
-		if (phi < 0.) phi += M_TWOPI;
+		if (phi < 0) phi += M_TWOPI;
 		if (pHit.z < zMin || pHit.z > zMax || phi > phiMax)
 		{
 			return false;
@@ -111,7 +111,7 @@ bool geoSphere::intersect(const Ray& inRay,
 	return true;
 }
 
-void geoSphere::postIntersect(const Ray& inRay,
+void geoSphere::postIntersect(const Ray &inRay,
 	DifferentialGeometry* dg) const
 {
 	// TODO: Move post intersection from intersect

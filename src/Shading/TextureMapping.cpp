@@ -117,7 +117,7 @@ Point2f SphericalMapping2D::posToUV(const Point3f &pos) const
 PlanarMapping2D::PlanarMapping2D() :TextureMapping()
 {
 }
-PlanarMapping2D::PlanarMapping2D(const Float& us, const Float& vs) : TextureMapping()
+PlanarMapping2D::PlanarMapping2D(Float us, Float vs) : TextureMapping()
 {
 	setSize(us, vs);
 }
@@ -125,7 +125,7 @@ PlanarMapping2D::PlanarMapping2D(const Point3f &center)
 	: TextureMapping(center)
 {
 }
-PlanarMapping2D::PlanarMapping2D(const Point3f &center, const Float& us, const Float& vs)
+PlanarMapping2D::PlanarMapping2D(const Point3f &center, Float us, Float vs)
 	: TextureMapping(center)
 {
 	setSize(us, vs);
@@ -141,7 +141,7 @@ PlanarMapping2D::PlanarMapping2D(const Point3f &center, const Vector3f &xDir, co
 PlanarMapping2D::~PlanarMapping2D()
 {
 }
-void PlanarMapping2D::setSize(const Float& us, const Float& vs)
+void PlanarMapping2D::setSize(Float us, Float vs)
 {
 	uSize = us;
 	vSize = vs;

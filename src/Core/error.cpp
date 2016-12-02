@@ -8,8 +8,8 @@
 #define KAGUYA_ERROR_CONTINUE 1
 #define KAGUYA_ERROR_ABORT 2
 /*
-static void processError(const char *format, va_list args,
-	const char *errorType, int disposition) {
+static void processError(const char* format, va_list args,
+	const char* errorType, int disposition) {
 	// Report error
 	if (disposition == KAGUYA_ERROR_IGNORE) return;
 
@@ -35,12 +35,12 @@ static void processError(const char *format, va_list args,
 
 	std::string message = StringVaprintf(format, args);
 
-	const char *msgPos = message.c_str();
+	const char* msgPos = message.c_str();
 	while (true) {
 		while (*msgPos != '\0' && isspace(*msgPos)) ++msgPos;
 		if (*msgPos == '\0') break;
 
-		const char *wordEnd = findWordEnd(msgPos);
+		const char* wordEnd = findWordEnd(msgPos);
 		if (column + wordEnd - msgPos > width) {
 			errorString += "\n    ";
 			column = 4;
@@ -71,14 +71,14 @@ static void processError(const char *format, va_list args,
 	}
 }*/
 
-void Error(const char *format, ...) {
+void Error(const char* format, ...) {
 	va_list args;
 	va_start(args, format);
 	//processError(format, args, "Error", KAGUYA_ERROR_CONTINUE);
 	va_end(args);
 }
 
-void Severe(const char *format, ...) {
+void Severe(const char* format, ...) {
 	va_list args;
 	va_start(args, format);
 	//processError(format, args, "Fatal Error", KAGUYA_ERROR_ABORT);

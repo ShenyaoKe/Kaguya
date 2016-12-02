@@ -44,15 +44,15 @@ public:
 	ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data
 	explicit ImageData(int wd, int ht, unsigned char* pixMap, int pixtype = RGB);//pixMap stores rgb data
 	ImageData(const string &filename);
-	ImageData(const ImageData& src);
+	ImageData(const ImageData &src);
 	virtual~ImageData();
     
 	virtual const int getWidth() const { return width; }
 	virtual const int getHeight() const { return height; }
 	virtual const int getBPP() const { return bpp; }
-	virtual const ColorRGBA& getRGBA(int x, int y) const;
-	virtual const ColorRGBA& getRGBA(int idx) const;
-	virtual void setRGBA(int x, int y, const ColorRGBA& color);
+	virtual const ColorRGBA &getRGBA(int x, int y) const;
+	virtual const ColorRGBA &getRGBA(int idx) const;
+	virtual void setRGBA(int x, int y, const ColorRGBA &color);
 	virtual void getPixels(unsigned char* &pixMap) const;
 	virtual void getPixelsRGBA(unsigned char* &pixMap) const;
 	virtual int** genHist() const;//Generate histogram
@@ -61,11 +61,11 @@ public:
 	virtual void printRGBA(int x, int y) const;
 	virtual void resize(int x, int y);
 	virtual ColorRGBA bilinearPixel(Float x, Float y) const;
-	//virtual const ColorRGBA& bicubicPixel(Float x, Float y) const;
+	//virtual const ColorRGBA &bicubicPixel(Float x, Float y) const;
 	virtual bool writeFile(const string &filename) const;
 	//ColorRGB bicubicPixel(Float x, Float y);
 	//void convert2PPM(ppmImage &ppmData);
 
-	//friend const ImageData& downsampling(const ImageData& src);
+	//friend const ImageData &downsampling(const ImageData &src);
 };
 #endif /* defined(__ImageData__) */
