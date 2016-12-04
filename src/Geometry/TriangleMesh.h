@@ -2,8 +2,8 @@
 #ifndef __MESH__
 #define __MESH__
 
-#include "Geometry/Shape.h"
 #include "Math/Geometry.h"
+#include "Geometry/PolygonMesh.h"
 
 struct PolyIndex
 {
@@ -38,10 +38,11 @@ struct PolyIndex
 
 namespace ObjParser
 {
-	bool parse(const char* filename,
-		vector<Point3f> &verts,
-		vector<Point2f> &uvs, vector<Normal3f> &norms,
-		vector<PolyIndex> &polys);
+	bool parse(const char*          filename,
+		       vector<Point3f>     &verts,
+		       vector<Point2f>     &uvs,
+               vector<Normal3f>    &norms,
+		       vector<PolyIndex>   &polys);
 
 	enum index_t : uint8_t
 	{
@@ -78,17 +79,17 @@ namespace ObjParser
 	}
 };
 
-class TriangleMesh :public Shape
+class TriangleMesh : public Shape
 {
 protected:
-	vector<Point3f> verts;
-	vector<Point2f> uvs;
-	vector<Normal3f> norms;
-	vector<PolyIndex> fids;
-	//vector<Triangle> faces;
+	vector<Point3f>     verts;
+	vector<Point2f>     uvs;
+	vector<Normal3f>    norms;
+	vector<PolyIndex>   fids;
+    vector<uint32_t>    vids;
 public:
 	friend class Triangle;
-	//Mesh();
+
 	TriangleMesh(const char* filename);
 	~TriangleMesh();
 
@@ -99,20 +100,20 @@ public:
 	void printInfo(const string &msg = "") const;
 
 	bool intersect(const Ray &inRay,
-		DifferentialGeometry* dg,
-		Float* tHit, Float* rayEpsilon) const;
+		           DifferentialGeometry* dg,
+		           Float* tHit, Float* rayEpsilon) const;
 	void postIntersect(const Ray &inRay, DifferentialGeometry* dg) const;
 
-	void exportVBO(
-		vector<float>* vtx_array = nullptr,
-		vector<float>* uv_array = nullptr,
-		vector<float>* norm_array = nullptr) const;
+    void getBufferObject(BufferTrait* vertTraits,
+                         BufferTrait* vidTraits) const;
+	void exportVBO(vector<float>* vtx_array  = nullptr,
+		           vector<float>* uv_array   = nullptr,
+		           vector<float>* norm_array = nullptr) const;
 	
-	void exportIndexedVBO(
-		vector<float>* vtx_array = nullptr,
-		vector<float>* uv_array = nullptr,
-		vector<float>* norm_array = nullptr,
-		vector<unsigned int>* idx_array = nullptr) const;
+	void exportIndexedVBO(vector<float>*    vtx_array   = nullptr,
+		                  vector<float>*    uv_array    = nullptr,
+		                  vector<float>*    norm_array  = nullptr,
+		                  vector<uint32_t>* idx_array   = nullptr) const;
 };
 class Triangle : public Shape
 {
@@ -127,15 +128,12 @@ public:
 	void setNormal(Normal3f* n0, Normal3f* v1, Normal3f* v2);
 
 	bool intersect(const Ray &inRay,
-		DifferentialGeometry* dg,
-		Float* tHit, Float* rayEpsilon) const;
+		           DifferentialGeometry* dg,
+		           Float* tHit, Float* rayEpsilon) const;
 	void postIntersect(const Ray &inRay,
-		DifferentialGeometry* dg) const;
+                       DifferentialGeometry* dg) const;
 	void getNormal(DifferentialGeometry* queryPoint) const;
 	
-	/*friend void exportVertices(Triangle* triface, Float* buffer);
-	friend void exportTexCoords(Triangle* triface, Float* buffer);
-	friend void exportNormals(Triangle* triface, Float* buffer);*/
 protected:
 	const TriangleMesh* mesh;
 	array<Point3f*, 3> p;

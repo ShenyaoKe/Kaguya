@@ -102,6 +102,28 @@ void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) con
 {
 	// TODO: Implement post-intersection method
 }
+
+void TriangleMesh::getBufferObject(BufferTrait* vertTraits,
+                                   BufferTrait* vidTraits) const
+{
+    if (vertTraits)
+    {
+        vertTraits->data    = (void*)(verts.data());
+        vertTraits->count   = verts.size();
+        vertTraits->size    = sizeof(Point3f) * vertTraits->count;
+        vertTraits->offset  = 0;
+        vertTraits->stride  = sizeof(Point3f);
+    }
+    if (vidTraits)
+    {
+        vidTraits->data     = (void*)(vids.data());
+        vidTraits->count    = vids.size();
+        vidTraits->size     = sizeof(uint32_t) * vidTraits->count;
+        vidTraits->offset   = 0;
+        vidTraits->stride   = sizeof(uint32_t);
+    }
+}
+
 void TriangleMesh::exportVBO(
 	vector<float>* vtx_array,
 	vector<float>* uv_array,
@@ -301,7 +323,7 @@ bool Triangle::intersect(const Ray &inRay,
 	return true;
 }
 void Triangle::postIntersect(const Ray &inRay,
-	DifferentialGeometry* dg) const
+	                         DifferentialGeometry* dg) const
 {
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
@@ -363,10 +385,11 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 	}
 }
 
-bool ObjParser::parse(const char* filename,
-	vector<Point3f> &verts,
-	vector<Point2f> &uvs, vector<Normal3f> &norms,
-	vector<PolyIndex> &polys)
+bool ObjParser::parse(const char*        filename,
+	                  vector<Point3f>   &verts,
+	                  vector<Point2f>   &uvs,
+                      vector<Normal3f>  &norms,
+	                  vector<PolyIndex> &polys)
 {
 #ifdef _DEBUG
 	clock_t start, end;//Timer

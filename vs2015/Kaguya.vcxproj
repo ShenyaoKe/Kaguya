@@ -113,6 +113,7 @@
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
+    <ClInclude Include="..\src\Geometry\PolygonMesh.h" />
     <ClInclude Include="..\src\Geometry\TriangleMesh.h" />
     <ClInclude Include="..\src\Geometry\Paraboloid.h" />
     <ClInclude Include="..\src\Geometry\Plane.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="..\src\Core\error.cpp" />
     <ClCompile Include="..\src\Core\Primitive.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
+    <ClCompile Include="..\src\Geometry\PolygonMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />
     <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
