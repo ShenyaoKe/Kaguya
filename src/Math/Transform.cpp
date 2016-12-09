@@ -66,17 +66,9 @@ void Transform::setInvMat(const Matrix4x4 &matInv)
 	m = mInv.inverse();
 }
 
-Transform xformTRS(
-	Float tx, Float ty, Float tz,
-	Float rx, Float ry, Float rz,
-	Float sx, Float sy, Float sz
-	);
-//Transform Rotate(const Vector3D &axis, Float theta);
-
-Transform xformTRS(
-	Float tx, Float ty, Float tz,
-	Float rx, Float ry, Float rz,
-	Float sx, Float sy, Float sz)
+Transform xformTRS(Float tx, Float ty, Float tz,
+	               Float rx, Float ry, Float rz,
+	               Float sx, Float sy, Float sz)
 {
 	Matrix4x4 T = Matrix4x4::translate(tx, ty, tz);
 	Matrix4x4 R = Matrix4x4::rotate(rx, ry, rz);
@@ -86,7 +78,7 @@ Transform xformTRS(
 
 Transform Rotate(const Vector3f &axis, Float theta)
 {
-	Vector3f u = Normalize(axis);
+	Vector3f u = normalize(axis);
 	Float rad = degreeToRadian(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
@@ -117,9 +109,9 @@ Transform Rotate(const Vector3f &axis, Float theta)
 	return Transform(mat);
 }
 
-Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
-	const Point3f &target = Point3f(0, 0, 1),
-	const Vector3f &up = Vector3f(0, 1, 0))
+Transform lookAt(const Point3f &pos    = Point3f(0, 0, 0),
+	             const Point3f &target = Point3f(0, 0, 1),
+	             const Vector3f &up    = Vector3f(0, 1, 0))
 {
 	//Camera to World
 	Vector3f nz = target - pos;
@@ -131,31 +123,27 @@ Transform lookAt(const Point3f &pos = Point3f(0, 0, 0),
 
 	nz.normalize();
 #ifdef RIGHT_HAND_ORDER // OpenGL style
-	Vector3f nx = Normalize(Cross(up, nz));
-	Vector3f ny = Cross(nz, nx);
-	Float mat[4][4] = {
-		nx.x, nx.y, nx.z, 0.0,
-		ny.x, ny.y, ny.z, 0.0,
-		-nz.x, -nz.y, -nz.z, 0.0,
-		pos.x, pos.y, pos.z, 1.0
-	};
+	Vector3f nx = normalize(cross(up, nz));
+	Vector3f ny = cross(nz, nx);
+	Float mat[4][4] = {  nx.x,  nx.y,  nx.z,  0.0,
+		                 ny.x,  ny.y,  ny.z,  0.0,
+		                -nz.x, -nz.y, -nz.z,  0.0,
+		                 pos.x, pos.y, pos.z, 1.0 };
 #else // DirectX style
 	nz = -nz;
-	Vector3f nx = Normalize(Cross(nz, up));//left dir
-	Vector3f ny = Cross(nx, nz);
-	Float mat[4][4] = {
-		nx.x, nx.y, nx.z, 0.0,
-		ny.x, ny.y, ny.z, 0.0,
-		nz.x, nz.y, nz.z, 0.0,
-		pos.x, pos.y, pos.z, 1.0
-	};
+	Vector3f nx = normalize(cross(nz, up));//left dir
+	Vector3f ny = cross(nx, nz);
+	Float mat[4][4] = { nx.x, nx.y, nx.z, 0.0,
+		                ny.x, ny.y, ny.z, 0.0,
+		                nz.x, nz.y, nz.z, 0.0,
+		                pos.x, pos.y, pos.z, 1.0 };
 #endif
 
 	return Transform(mat);
 }
 
-bool solveLinearSystem2x2(
-	const Float A[2][2], const Float b[2], Float* x0, Float* x1)
+bool solveLinearSystem2x2(const Float A[2][2], const Float b[2],
+                          Float* x0, Float* x1)
 {
 	// x = A^-1 * b
 	// A^-1 = 1/det * | +A11  -A01 |

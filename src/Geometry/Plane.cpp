@@ -23,7 +23,7 @@ geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm,
 
 bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
-	Float t = Dot(this->n, inRay.d);
+	Float t = dot(this->n, inRay.d);
 	if (t >= 0)
 	{
 		//cout << "Ray parallels to the plane or in the plane." << endl;
@@ -31,7 +31,7 @@ bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit
 	}
 	else
 	{
-		t = Dot(n, (p - inRay.o)) / t;
+		t = dot(n, (p - inRay.o)) / t;
 		if (t > 0 && t > inRay.tmin && t < inRay.tmax)
 		{
 

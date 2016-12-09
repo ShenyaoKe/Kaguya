@@ -114,6 +114,11 @@ public:
 		                  vector<float>*    uv_array    = nullptr,
 		                  vector<float>*    norm_array  = nullptr,
 		                  vector<uint32_t>* idx_array   = nullptr) const;
+
+    vector<Point3f>     vertices() const { return verts; }
+    vector<Point2f>     uvcoords() const { return uvs; }
+    vector<Normal3f>    normals() const { return norms; }
+    vector<PolyIndex>   faceids() const { return fids; }
 };
 class Triangle : public Shape
 {
@@ -130,6 +135,9 @@ public:
 	bool intersect(const Ray &inRay,
 		           DifferentialGeometry* dg,
 		           Float* tHit, Float* rayEpsilon) const;
+    bool intersectWatertight(const Ray &inRay,
+                             DifferentialGeometry* dg,
+                             Float* tHit, Float* rayEpsilon) const;
 	void postIntersect(const Ray &inRay,
                        DifferentialGeometry* dg) const;
 	void getNormal(DifferentialGeometry* queryPoint) const;

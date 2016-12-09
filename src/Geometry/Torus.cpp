@@ -17,7 +17,7 @@ geoTorus::geoTorus(const Point3f &pos, Float radius, Float secRadius)
 bool geoTorus::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
 {
 	//Float coeA = inRay.d * inRay.d;//len == 1
-	Float coeB = Dot(inRay.d, (inRay.o - c));
+	Float coeB = dot(inRay.d, (inRay.o - c));
 	Float coeC = (inRay.o - c).lengthSquared() - r * r;
 	//Float delta = coeB * coeB - 4 * coeA * coeB;
 	Float delta = coeB * coeB - coeC;

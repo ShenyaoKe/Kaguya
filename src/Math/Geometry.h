@@ -355,7 +355,7 @@ public:
 		Assert(!p.hasNaN());
 		return Vector3<T>(x - p.x, y - p.y, z - p.z);
 	}
-	Vector3<T> operator-(const Vector3<T> &v) const {
+	Point3<T> operator-(const Vector3<T> &v) const {
 		Assert(!v.hasNaN());
 		return Vector3<T>(x - v.x, y - v.y, z - v.z);
 	}
@@ -537,14 +537,14 @@ inline Vector3<T>::Vector3(const Normal3<T> &n)
 }
 
 template <typename T>
-inline T Cross(const Vector2<T> &v1, const Vector2<T> &v2)
+inline T cross(const Vector2<T> &v1, const Vector2<T> &v2)
 {
 	Assert(!v1.hasNaN() && !v2.hasNaN());
 	return v1.x * v2.y - v1.y * v2.x;
 }
 
 template <typename T>
-inline Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2)
+inline Vector3<T> cross(const Vector3<T> &v1, const Vector3<T> &v2)
 {
 	Assert(!v1.hasNaN() && !v2.hasNaN());
 	return Vector3<T>(
@@ -555,54 +555,110 @@ inline Vector3<T> Cross(const Vector3<T> &v1, const Vector3<T> &v2)
 }
 
 template <typename T>
-inline T Dot(const Vector2<T> &v1, const Vector2<T> &v2)
+inline T dot(const Vector2<T> &v1, const Vector2<T> &v2)
 {
 	Assert(!v1.hasNaN() && !v2.hasNaN());
 	return v1.x * v2.x + v1.y * v2.y;
 }
 
 template <typename T>
-inline T Dot(const Vector3<T> &v1, const Vector3<T> &v2)
+inline T dot(const Vector3<T> &v1, const Vector3<T> &v2)
 {
 	Assert(!v1.hasNaN() && !v2.hasNaN());
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 template <typename T>
-inline T Dot(const Vector3<T> &v, const Normal3<T> &n)
+inline T dot(const Vector3<T> &v, const Normal3<T> &n)
 {
 	Assert(!v.hasNaN() && !n.hasNaN());
 	return v.x * n.x + v.y * n.y + v.z * n.z;
 }
 
 template <typename T>
-inline T Dot(const Normal3<T> &n, const Vector3<T> &v)
+inline T dot(const Normal3<T> &n, const Vector3<T> &v)
 {
 	Assert(!v.hasNaN() && !n.hasNaN());
 	return v.x * n.x + v.y * n.y + v.z * n.z;
 }
 
 template <typename T>
-inline Vector2<T> Normalize(const Vector2<T> &v)
+inline Vector2<T> normalize(const Vector2<T> &v)
 {
 	return v / v.length();
 }
 
 template <typename T>
-inline Vector3<T> Normalize(const Vector3<T> &v)
+inline Vector3<T> normalize(const Vector3<T> &v)
 {
 	return v / v.length();
 }
 
 template <typename T>
-inline Normal3<T> Normalize(const Normal3<T> &n)
+inline Normal3<T> normalize(const Normal3<T> &n)
 {
 	return n / n.length();
 }
 
 template <typename T>
-inline void CoordinateSystem(const Vector3<T> &v1,
-	Vector3<T>* v2, Vector3<T>* v3)
+Vector2<T> abs(const Vector2<T> &v)
+{
+    return Vector2<T>(std::abs(v.x), std::abs(v.y));
+}
+
+template <typename T>
+Vector3<T> abs(const Vector3<T> &v)
+{
+    return Vector3<T>(std::abs(v.x), std::abs(v.y), std::abs(v.z));
+}
+
+template <typename T>
+Point2<T> abs(const Point2<T> &p)
+{
+    return Point2<T>(std::abs(p.x), std::abs(p.y));
+}
+
+template <typename T>
+Point3<T> abs(const Point3<T> &p)
+{
+    return Point3<T>(std::abs(p.x), std::abs(p.y), std::abs(p.z));
+}
+
+template <typename T>
+int maxDimension(const Vector3<T> &v)
+{
+    return (v.x > v.y) ? ((v.x > v.z) ? 0 : 2)
+                       : ((v.y > v.z) ? 1 : 2);
+}
+
+template <typename T>
+Point2<T> permute(const Point2<T> &p, int x, int y)
+{
+    return Point2<T>(p[x], p[y], p[z]);
+}
+
+template <typename T>
+Point3<T> permute(const Point3<T> &p, int x, int y, int z)
+{
+    return Point3<T>(p[x], p[y], p[z]);
+}
+
+template <typename T>
+Vector2<T> permute(const Vector2<T> &v, int x, int y)
+{
+    return Vector2<T>(v[x], v[y], v[z]);
+}
+
+template <typename T>
+Vector3<T> permute(const Vector3<T> &v, int x, int y, int z)
+{
+    return Vector3<T>(v[x], v[y], v[z]);
+}
+
+template <typename T>
+inline void coordinateSystem(const Vector3<T> &v1,
+                             Vector3<T>* v2,
+                             Vector3<T>* v3)
 {
 	if (abs(v1.x) > abs(v1.y))
 	{
@@ -614,6 +670,6 @@ inline void CoordinateSystem(const Vector3<T> &v1,
 		*v2 = Vector3<T>(0, v1.z, -v1.y)
 			/ sqrt(v1.y * v1.y + v1.z * v1.z);
 	}
-	*v3 = Cross(v1, *v2);
+	*v3 = cross(v1, *v2);
 }
 #endif // KAGUYA_GEOMETRY_H

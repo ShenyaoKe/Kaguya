@@ -25,9 +25,9 @@ TextureMapping::TextureMapping(const Point3f &center, const Vector3f &view, cons
 TextureMapping::TextureMapping(const Point3f &center, const Vector3f &xDir, const Vector3f &yDir, const Vector3f &zDir)
 	: c(center)
 {
-	nx = Normalize(xDir);
-	ny = Normalize(yDir);
-	nz = Normalize(zDir);
+	nx = normalize(xDir);
+	ny = normalize(yDir);
+	nz = normalize(zDir);
 }
 void TextureMapping::printInfo() const
 {
@@ -42,9 +42,9 @@ void TextureMapping::setPos(const Point3f &pos)
 }
 void TextureMapping::setDir(const Vector3f &view, const Vector3f &upVec)
 {
-	nz = Normalize(view);
-	nx = Normalize(Cross(nz, upVec));
-	ny = Normalize(Cross(nx, nz));
+	nz = normalize(view);
+	nx = normalize(cross(nz, upVec));
+	ny = normalize(cross(nx, nz));
 }
 
 Point2f TextureMapping::posToUV(const Point3f &pos) const
@@ -76,10 +76,10 @@ SphericalMapping2D::~SphericalMapping2D()
 
 Point2f SphericalMapping2D::posToUV(const Point3f &pos) const
 {
-	Vector3f np = Normalize(pos - c);
-	Float x = Dot(nx, np);
-	Float y = Dot(ny, np);
-	Float z = Dot(nz, np);
+	Vector3f np = normalize(pos - c);
+	Float x = dot(nx, np);
+	Float y = dot(ny, np);
+	Float z = dot(nz, np);
 
 	Float v = acos(clamp(z, -1, 1)) / M_PI;
 	Float u = acos(clamp(y / sqrt(1.0 - sqr(z)), -1, 1)) / (2.f * M_PI);

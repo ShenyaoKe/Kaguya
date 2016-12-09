@@ -4,27 +4,18 @@
 #include "Shading/Shader.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
-/*
 
-Mesh::Mesh()
-{
-	index = Shape::assignIndex();
-}*/
 TriangleMesh::TriangleMesh(const char* filename)
 {
-	//index = Shape::assignIndex();
 	loadOBJ(filename);
 	bounding();
-	/*index = Shape::assignIndex();
-	Shape::offsetUID(fids.size());*/
 }
 TriangleMesh::~TriangleMesh()
 {
-	
 }
 void TriangleMesh::bounding()
 {
-	for (auto v : verts)
+	for (auto &v : verts)
 	{
 		ObjBound.Union(v);
 	}
@@ -250,7 +241,7 @@ Triangle::Triangle(TriangleMesh* inMesh, size_t fn)
 	else
 	{
 		inMesh->norms.push_back(
-			Normal3f(Cross(*p[2] - *p[1], *p[0] - *p[1])));
+			Normal3f(cross(*p[2] - *p[1], *p[0] - *p[1])));
 		auto &n = inMesh->norms.back();
 		this->setNormal(&n, &n, &n);
 	}
@@ -283,24 +274,24 @@ void Triangle::setNormal(Normal3f* n0, Normal3f* n1, Normal3f* n2)
 	n[0] = n2;
 }
 bool Triangle::intersect(const Ray &inRay,
-	DifferentialGeometry* dg,
-	Float* tHit, Float* rayEpsilon) const
+	                     DifferentialGeometry* dg,
+	                     Float* tHit, Float* rayEpsilon) const
 {
 	// Moller¨CTrumbore Intersection Algorithm
 	Vector3f v1 = *p[1] - *p[0];
 	Vector3f v2 = *p[2] - *p[0];
-	Vector3f areaVec = Cross(v1, v2);
-	Vector3f normal = Normalize(areaVec);
+	Vector3f areaVec = cross(v1, v2);
+	Vector3f normal = normalize(areaVec);
 	
 	//ray triangle DifferentialGeometry length
-	Float rayt = Dot(normal, (*p[0] - inRay.o))
-		/ Dot(normal, inRay.d);
+	Float rayt = dot(normal, (*p[0] - inRay.o))
+		/ dot(normal, inRay.d);
 	if (rayt < inRay.tmin || rayt > inRay.tmax) return false;
 	
 	//inRay.tmin = rayT;
 	Point3f ph = inRay(rayt);
-	Vector3f A2 = Cross(*p[0] - ph, *p[1] - ph);
-	Vector3f A1 = Cross(*p[2] - ph, *p[0] - ph);
+	Vector3f A2 = cross(*p[0] - ph, *p[1] - ph);
+	Vector3f A1 = cross(*p[2] - ph, *p[0] - ph);
 
 	int maxIndex = abs(areaVec[0]) > abs(areaVec[1]) ? 0 : 1;
 	maxIndex = abs(areaVec[maxIndex]) > abs(areaVec[2]) ? maxIndex : 2;
@@ -322,6 +313,62 @@ bool Triangle::intersect(const Ray &inRay,
 
 	return true;
 }
+
+bool Triangle::intersectWatertight(const Ray &inRay,
+                                   DifferentialGeometry* dg,
+                                   Float* tHit, Float* rayEpsilon) const
+{
+
+    Vector3f rd = Vector3f(-10, -6, -11);
+    Point3f ro = Point3f(10, 6, 11);
+    
+    Vector3f vro = Vector3f(ro);
+    Point3f v0 = *p[0] - vro;
+    Point3f v1 = *p[1] - vro;
+    Point3f v2 = *p[2] - vro;
+
+    // Permute Ray
+    int kz = maxDimension(abs(rd));
+    int kx = kz + 1; if (kx == 3) kx = 0;
+    int ky = kx + 1; if (ky == 3) ky = 0;
+    Vector3f pmDir = permute(rd, kx, ky, kz);
+
+    // Permute Points
+    v0 = permute(v0, kx, ky, kz);
+    v1 = permute(v1, kx, ky, kz);
+    v2 = permute(v2, kx, ky, kz);
+    
+    // Shear Ray
+    float sz = 1.0f / pmDir.z;
+    float sx = -pmDir.x * sz;
+    float sy = -pmDir.y * sz;
+
+    // Shear Points
+    v0.x += sx * v0.z;
+    v0.y += sy * v0.z;
+    v1.x += sx * v1.z;
+    v1.y += sy * v1.z;
+    v2.x += sx * v2.z;
+    v2.y += sy * v2.z;
+
+    // area = (p_i+1 - p_i) x (p - p_i), where p = (0, 0)
+    //      = p_i x p_i+1 = x_i * y_i+1 - x_i+1 * y_i
+    Float e0 = v1.x * v2.y - v2.x * v1.y;
+    Float e1 = v2.x * v0.y - v0.x * v2.y;
+    Float e2 = v0.x * v1.y - v1.x * v0.y;
+    if (e0 < 0 || e1 < 0 || e2 < 0) return false;
+
+    v0.z *= sz;
+    v1.z *= sz;
+    v2.z *= sz;
+    Float det = e0 + e1 + e2;
+    Float invDet = 1.0f / det;
+    // TODO: finish intersection
+    // Barycentric Coordinates
+    Float u = e0 * invDet;
+    Float v = e1 * invDet;
+}
+
 void Triangle::postIntersect(const Ray &inRay,
 	                         DifferentialGeometry* dg) const
 {
@@ -337,7 +384,7 @@ void Triangle::postIntersect(const Ray &inRay,
 	Float detUV = du1 * dv2 - dv1 * du2;
 	if (detUV == 0.0)
 	{
-		CoordinateSystem(Vector3f(dg->Ng), &dg->dPdu, &dg->dPdv);
+		coordinateSystem(Vector3f(dg->Ng), &dg->dPdu, &dg->dPdv);
 	}
 	else
 	{
@@ -359,7 +406,7 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 	{
 		ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
 		tmpNormal.printInfo();
-		queryPoint->Ng = Normalize(
+		queryPoint->Ng = normalize(
 			- Normal3f(queryPoint->dPdu) * tmpNormal.r
 			- Normal3f(queryPoint->dPdv) * tmpNormal.g
 			+ queryPoint->Ng * tmpNormal.b);
@@ -379,8 +426,8 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 		else
 		{
 			det = 1.0 / det;
-			queryPoint->dPdu = Normalize((dp1 * dv2 - dp2 * dv1) * det);
-			queryPoint->dPdv = Normalize((dp1 * -du2 + dp2 * du1) * det);
+			queryPoint->dPdu = normalize((dp1 * dv2 - dp2 * dv1) * det);
+			queryPoint->dPdv = normalize((dp1 * -du2 + dp2 * du1) * det);
 		}
 	}
 }

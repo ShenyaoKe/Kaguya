@@ -55,11 +55,11 @@ directionalLight::directionalLight()
 }
 directionalLight::directionalLight(const Vector3f &vec)
 {
-	dir = Normalize(vec); type = LT_DIRECTIONAL_LIGHT;
+	dir = normalize(vec); type = LT_DIRECTIONAL_LIGHT;
 }
 directionalLight::directionalLight(const Vector3f &vec, const Spectrum &spt)
 {
-	dir = Normalize(vec); lightSpectrum = spt; type = LT_DIRECTIONAL_LIGHT;
+	dir = normalize(vec); lightSpectrum = spt; type = LT_DIRECTIONAL_LIGHT;
 }
 directionalLight::~directionalLight()
 {
@@ -116,7 +116,7 @@ spotLight::~spotLight()
 spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo)
 {
 	pos = p;
-	dir = Normalize(d);
+	dir = normalize(d);
 	setAngles(ca, pa);
 	dropoff = dpo;
 	type = LT_SPOT_LIGHT;
@@ -124,7 +124,7 @@ spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Fl
 spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const Spectrum &spt)
 {
 	pos = p;
-	dir = Normalize(d);
+	dir = normalize(d);
 	setAngles(ca, pa);
 	dropoff = dpo;
 	lightSpectrum = spt;
@@ -152,7 +152,7 @@ void spotLight::setDropOff(Float dpo)
 Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
-	Float tmpIts = Dot(queryPoint->P - pos,  dir);
+	Float tmpIts = dot(queryPoint->P - pos,  dir);
 
 	if (penumbraAngle != 0)
 	{
@@ -204,9 +204,9 @@ areaLight::areaLight(const Point3f &p, Float shpSize, const Spectrum &spt)
 }
 areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt)
 {
-	nz = Normalize(dir);
-	nx = Normalize(Cross(nz, up));
-	ny = Cross(nx, nz);
+	nz = normalize(dir);
+	nx = normalize(cross(nz, up));
+	ny = cross(nx, nz);
 	pos = p;
 	size = shpSize;
 	lightSpectrum = spt;

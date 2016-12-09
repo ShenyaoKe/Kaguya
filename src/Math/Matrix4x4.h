@@ -476,8 +476,8 @@ inline Matrix4x4 Matrix4x4::lookAt(const Point3f &pos, const Point3f &target, co
 		return Matrix4x4();
 	}
 	nz.normalize();
-	Vector3f nx = Normalize(Cross(up, nz));//right dir
-	Vector3f ny = Cross(nz, nx);
+	Vector3f nx = normalize(cross(up, nz));//right dir
+	Vector3f ny = cross(nz, nx);
 	nz.normalize();
 #ifdef RIGHT_HAND_ORDER // OpenGL style
 	return Matrix4x4(
@@ -654,7 +654,7 @@ inline Matrix4x4 Matrix4x4::rotate(Float alpha, Float beta, Float gamma)
 
 inline Matrix4x4 Matrix4x4::rotate(const Vector3f &axis, Float theta, bool isNormalized)
 {
-	Vector3f u = isNormalized ? axis : Normalize(axis);
+	Vector3f u = isNormalized ? axis : normalize(axis);
 	Float rad = degreeToRadian(theta);
 	Float c = cos(rad);
 	Float s = sin(rad);
