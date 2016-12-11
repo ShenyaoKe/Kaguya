@@ -1,25 +1,29 @@
-#include "perspCamera.h"
+#include "PerspectiveCamera.h"
 
-perspCamera::perspCamera(const Point3f &eye,
-	const Point3f &targ, const Vector3f &up,
-	Float asp, Float lr, Float fd, const Film &fm)
-	: Camera(eye, targ, up, asp, lr, fd, fm)
+PerspectiveCamera::PerspectiveCamera(const Point3f &eye,
+                                     const Point3f &targ,
+                                     const Vector3f &up,
+                                     Float asp,
+                                     Float lr,
+                                     Float fd,
+                                     const Film &fm)
+	: ProjectiveCamera(eye, targ, up, asp, lr, fd, fm)
 {
 	updateMatrices();
 }
 
-perspCamera::perspCamera(const Transform &cam2wo, const Transform &projection)
+PerspectiveCamera::PerspectiveCamera(const Transform &cam2wo, const Transform &projection)
 {
 	CameraToWorld = cam2wo;
 	CameraToScreen = projection;
 }
 
-perspCamera::~perspCamera()
+PerspectiveCamera::~PerspectiveCamera()
 {
 
 }
 
-void perspCamera::updateCamToScreen()
+void PerspectiveCamera::updateCamToScreen()
 {
 	Float horisize, vertsize;
 
@@ -38,7 +42,8 @@ void perspCamera::updateCamToScreen()
 		vertsize, horisize, focLen, nearPlane, farPlane));
 }
 
-Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
+Float PerspectiveCamera::generateRay(const cameraSampler &sample,
+                                     Ray* ray) const
 {
 	Point3f pCam = RasterToCamera(Point3f(sample.imgX, sample.imgY, 0));
 	*ray = Ray(Point3f(), normalize(Vector3f(pCam)));
@@ -64,24 +69,24 @@ Float perspCamera::generateRay(const cameraSampler &sample, Ray* ray) const
 	return 1.0;
 }
 
-void perspCamera::renderImg(int x, int y, ColorRGBA &pixColor)
+void PerspectiveCamera::renderImg(int x, int y, ColorRGBA &pixColor)
 {
 	//film.setRGBA(x, y, pixColor);
 }
 
-void perspCamera::saveResult(const char* filename)
+void PerspectiveCamera::saveResult(const char* filename)
 {
 	//film.writeFile(filename);
 }
 
-void perspCamera::resizeViewport(Float aspr)
+void PerspectiveCamera::resizeViewport(Float aspr)
 {
 	viewportRatio = aspr;
 	updateCamToScreen();
 	updateRasterToScreen();
 }
 
-void perspCamera::setDoF(Float lr, Float fd)
+void PerspectiveCamera::setDoF(Float lr, Float fd)
 {
 	lensRadius = lr;
 	focalDistance = fd;

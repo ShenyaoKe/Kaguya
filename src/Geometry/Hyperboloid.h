@@ -1,6 +1,5 @@
 #pragma once
-#include "Core/Kaguya.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
 /************************************************************************/
 /* Hyperboloid Function Definition                                      */
@@ -12,7 +11,7 @@ enum HYPERBOLOID_TYPE
 	CONE = 0
 };
 
-class geoHyperboloid :public Shape
+class geoHyperboloid : public ParametricGeomtry
 {
 public:
 	geoHyperboloid();

@@ -1,12 +1,12 @@
 #pragma once
 #include "Camera\Camera.h"
 
-class orthoCamera : public Camera
+class OrthographicCamera : public ProjectiveCamera
 {
 public:
-	orthoCamera();
-	orthoCamera(const Transform &cam2wo, const Transform &projection);
-	~orthoCamera();
+	OrthographicCamera();
+	OrthographicCamera(const Transform &cam2wo, const Transform &projection);
+	~OrthographicCamera();
 	//Vector3D getPos() { return pos; }
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);
@@ -20,5 +20,4 @@ public:
 	//void setUpVec(Vector3D &upVec);
 protected:
 	Float nearPlane = -1.0, farPlane = 1.0;
-private:
 };

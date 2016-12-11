@@ -6,14 +6,16 @@
 #include "Shading/Texture.h"
 #include "QuadMesh.h"
 
-QuadMesh::QuadMesh(vector<Point3f>& inVerts,
-                   vector<uint32_t>& vid)
-    : verts(std::move(inVerts)), vids(std::move(vid))
+QuadMesh::QuadMesh(vector<Point3f>  &inVerts,
+                   vector<uint32_t> &inIndices)
+    : PolyMesh(inVerts, inIndices)
 {
 }
+
 QuadMesh::~QuadMesh()
 {
 }
+
 void QuadMesh::bounding()
 {
 	for (auto &v : verts)
@@ -21,10 +23,11 @@ void QuadMesh::bounding()
 		ObjBound.Union(v);
 	}
 }
+
 void QuadMesh::refine(vector<Shape*> &refined)
 {
-	
 }
+
 void QuadMesh::printInfo(const string &msg) const
 {
 	if (!msg.empty())
@@ -41,11 +44,13 @@ void QuadMesh::printInfo(const string &msg) const
 		vids[i].printInfo();*/
 	}
 }
+
 bool QuadMesh::intersect(const Ray &inRay, DifferentialGeometry* dg,
                              Float* tHit, Float* rayEpsilon) const
 {
 	return false;
 }
+
 void QuadMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) const
 {
 	// TODO: Implement post-intersection method
@@ -72,17 +77,16 @@ void QuadMesh::getBufferObject(BufferTrait* vertTraits,
     }
 }
 
-void QuadMesh::exportVBO(
-	vector<float>* vtx_array,
-	vector<float>* uv_array,
-	vector<float>* norm_array) const
+void QuadMesh::exportVBO(vector<float>* vtx_array,
+	                     vector<float>* uv_array,
+	                     vector<float>* norm_array) const
 {
 }
 
 void QuadMesh::exportIndexedVBO(vector<float>* vtx_array,
                                 vector<float>* uv_array,
 	                            vector<float>* norm_array,
-                                vector<unsigned int>* idx_array) const
+                                vector<uint32_t>* idx_array) const
 {
 	bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
 	

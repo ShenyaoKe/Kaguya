@@ -45,7 +45,7 @@ public:
 private:
 	Matrix4x4 m, mInv;
 	friend class Quaternion;
-	friend class Camera;
+	friend class ProjectiveCamera;
 };
 
 // b = A * x

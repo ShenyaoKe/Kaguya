@@ -1,6 +1,5 @@
 #pragma once
-#include "Core/Kaguya.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
 /************************************************************************/
 /* Paraboloid Function Definition                                       */
@@ -10,7 +9,7 @@ enum PARABOLOID_TYPE
 	ELLIPTIC_PARABOLOID = 1,
 	HYPERBOLIC_PARABOLOID = -1
 };
-class geoParaboloid :public Shape
+class geoParaboloid : public ParametricGeomtry
 {
 public:
 	geoParaboloid();

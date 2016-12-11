@@ -17,15 +17,8 @@
 #include "Geometry/TriangleMesh.h"
 #include "Geometry/DifferentialGeometry.h"
 #include "Accel/KdTreeAccel.h"
-#include "Camera/perspCamera.h"
+#include "Camera/PerspectiveCamera.h"
 #include "Tracer/renderBuffer.h"
-
-static int model_mat_loc;// Uniform matrix location
-static GLfloat model_mat[16];// Uniform matrix buffer
-static int view_mat_loc;// Uniform matrix location
-static int proj_mat_loc;// Porjection matrix location
-
-//static GLfloat cam_mat[48]; // view[16], proj[16], rast[16]
 
 // OpenGL Window in Qt
 class OGLViewer : public QOpenGLWidget
@@ -52,27 +45,19 @@ protected:
 	void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void wheelEvent(QWheelEvent *e) Q_DECL_OVERRIDE;
 private:
-	
-	void bindBox();
 	void bindMesh();
 	void bindReslotionGate();
 	void saveFrameBuffer();
 
 	void renderpixels();
 protected:
-	unique_ptr<perspCamera> view_cam;
+	unique_ptr<PerspectiveCamera> view_cam;
 	renderBuffer* pixmap;
 private:
 	int lastMousePos[2];
 	int selectMode;
 private: // OpenGL variables
 	int display_mode = 0;
-
-	unique_ptr<TriangleMesh> box_mesh;// Display object
-	vector<GLfloat> box_verts;// vertices vbo
-	vector<GLfloat> box_uvs;// Texture coordinates vbo
-	vector<GLfloat> box_norms;// Normal coordinates vbo
-	GLuint box_vert_vbo, box_norm_vbo, box_vao;
 
 	unique_ptr<TriangleMesh> model_mesh;
 	vector<Shape*> objlist;

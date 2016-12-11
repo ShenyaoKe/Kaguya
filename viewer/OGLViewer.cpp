@@ -4,14 +4,12 @@
 OGLViewer::OGLViewer(QWidget* parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
-	, view_cam(new perspCamera(
-		Point3f(10, 6, 10), Point3f(0, 0, 0), Vector3f(0, 1, 0),
-		width() / static_cast<Float>(height())))
+	, view_cam(new PerspectiveCamera(Point3f(10, 6, 10),
+                                     Point3f(0, 0, 0),
+                                     Vector3f(0, 1, 0),
+                                     width() / Float(height())))
 	, pixmap(new renderBuffer(default_resX, default_resY))
-	, resgate{	0, 0,
-				640, 0,
-				640, 480,
-				0, 480 }
+	, resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
 	// Set surface format for current widget
 	QSurfaceFormat format;
@@ -24,7 +22,6 @@ OGLViewer::OGLViewer(QWidget* parent)
 
 	Float assetsssss;
 	// Read obj file
-	//box_mesh = new Mesh("scene/obj/cube_large.obj");
 	model_mesh = make_unique<TriangleMesh>("scene/obj/monkey.obj");
 	
 	model_mesh->refine(objlist);
@@ -70,48 +67,13 @@ void OGLViewer::initializeGL()
 #endif*/
 
 	// Export vbo for shaders
-	//box_mesh->exportVBO(&box_verts, &box_uvs, &box_norms);
 	model_mesh->exportIndexedVBO(&model_verts, nullptr, nullptr, &model_ids);
 
 	//bindBox();
 	bindMesh();
 	bindReslotionGate();
 
-	// Get uniform variable location
-	model_mat_loc = model_shader->getUniformLocation("model_matrix");
-	view_mat_loc = model_shader->getUniformLocation("view_matrix");
-	proj_mat_loc = model_shader->getUniformLocation("proj_matrix");; // WorldToCamera matrix
-
 	gate_shader->add_uniformv("transform");
-}
-
-
-void OGLViewer::bindBox()
-{
-	glDeleteBuffers(1, &box_vert_vbo);
-	glDeleteBuffers(1, &box_norm_vbo);
-	glDeleteVertexArrays(1, &box_vao);
-	// Bind VAO
-	glGenVertexArrays(1, &box_vao);
-	glBindVertexArray(box_vao);
-
-	//GLuint box_vert_vbo;
-	glGenBuffers(1, &box_vert_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, box_vert_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * box_verts.size(), &box_verts[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(0);
-
-	// Bind normal value as color
-	//GLuint box_norm_vbo;
-	glGenBuffers(1, &box_norm_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, box_norm_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * box_norms.size(), &box_norms[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void OGLViewer::bindMesh()
@@ -150,7 +112,10 @@ void OGLViewer::bindReslotionGate()
 	// DSA
 	// Create VAO
 	glCreateBuffers(1, &resgate_vbo);
-	glNamedBufferData(resgate_vbo, sizeof(GLfloat) * resgate.size(), &resgate[0], GL_STATIC_DRAW);
+	glNamedBufferData(resgate_vbo,
+                      sizeof(GLfloat) * resgate.size(),
+                      &resgate[0],
+                      GL_STATIC_DRAW);
 
 	// VAO
 	glCreateVertexArrays(1, &resgate_vao);
@@ -158,7 +123,11 @@ void OGLViewer::bindReslotionGate()
 
 	// Setup the formats
 	glVertexArrayAttribFormat(resgate_vao, 0, 2, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayVertexBuffer(resgate_vao, 0, resgate_vbo, 0, sizeof(float) * 2);
+	glVertexArrayVertexBuffer(resgate_vao,
+                              0,
+                              resgate_vbo,
+                              0,
+                              sizeof(float) * 2);
 	glVertexArrayAttribBinding(resgate_vao, 0, 0);
 }
 
@@ -171,18 +140,6 @@ void OGLViewer::paintGL()
 	glClearColor(0.6, 0.6, 0.6, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	//Draw box
-	/*glDisable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(1.0);
-	glBindVertexArray(box_vao);
-	model_shader->use_program();
-	vector<GLfloat> projmatvec(proj_mat, proj_mat + 16);
-	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_mat);
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &projmatvec[0]);
-	glDrawArrays(GL_TRIANGLES, 0, box_verts.size() / 3);*/
-
 	//////////////////////////////////////////////////////////////////////////
 	// Model
 	glEnable(GL_CULL_FACE);
@@ -193,15 +150,17 @@ void OGLViewer::paintGL()
 	model_shader->use_program();
 
 	// Apply uniform matrix
-	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, view_cam->world_to_cam());// View Matrix
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, view_cam->cam_to_screen());// Projection
+	glUniformMatrix4fv((*model_shader)["view_matrix"], 1, GL_FALSE,
+                       view_cam->world_to_cam());// View Matrix
+	glUniformMatrix4fv((*model_shader)["proj_matrix"], 1, GL_FALSE,
+                       view_cam->cam_to_screen());// Projection
 
 	glDrawElements(GL_TRIANGLES, model_ids.size(), GL_UNSIGNED_INT, 0);
 	////////////////////////////////////////////
 	glBindVertexArray(resgate_vao);
 	gate_shader->use_program();
-	//glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, rast_mat);
-	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE, view_cam->screen_to_raster());
+	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE,
+                       view_cam->screen_to_raster());
 	glLineWidth(2.0);
 	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 2);
 	
@@ -227,12 +186,14 @@ void OGLViewer::keyPressEvent(QKeyEvent* e)
 		//initParas();
 	}
 	// Save frame buffer
-	else if (e->key() == Qt::Key_P && e->modifiers() == Qt::ControlModifier)
+	else if (e->key() == Qt::Key_P &&
+             e->modifiers() == Qt::ControlModifier)
 	{
 		this->saveFrameBuffer();
 	}
 	// Render
-	else if (e->key() == Qt::Key_R && e->modifiers() == Qt::ControlModifier)
+	else if (e->key() == Qt::Key_R &&
+             e->modifiers() == Qt::ControlModifier)
 	{
 		this->renderpixels();
 	}
@@ -247,7 +208,8 @@ void OGLViewer::mousePressEvent(QMouseEvent* e)
 {
 	lastMousePos[0] = e->x();
 	lastMousePos[1] = e->y();
-	if (e->buttons() == Qt::LeftButton && e->modifiers() == Qt::AltModifier)
+	if (e->buttons() == Qt::LeftButton &&
+        e->modifiers() == Qt::AltModifier)
 	{
 		// Do something here
 	}
@@ -266,12 +228,14 @@ void OGLViewer::mouseMoveEvent(QMouseEvent* e)
 
 	//printf("dx: %d, dy: %d\n", dx, dy);
 
-	if (e->buttons() == Qt::LeftButton && e->modifiers() == Qt::AltModifier)
+	if (e->buttons() == Qt::LeftButton &&
+        e->modifiers() == Qt::AltModifier)
 	{
 		view_cam->rotate(dy * 0.25, -dx * 0.25, 0.0);
 		update();
 	}
-	else if (e->buttons() == Qt::RightButton && e->modifiers() == Qt::AltModifier)
+	else if (e->buttons() == Qt::RightButton &&
+             e->modifiers() == Qt::AltModifier)
 	{
 		if (dx != e->x() && dy != e->y())
 		{
@@ -279,7 +243,8 @@ void OGLViewer::mouseMoveEvent(QMouseEvent* e)
 			update();
 		}
 	}
-	else if (e->buttons() == Qt::MidButton && e->modifiers() == Qt::AltModifier)
+	else if (e->buttons() == Qt::MidButton &&
+             e->modifiers() == Qt::AltModifier)
 	{
 		if (dx != e->x() && dy != e->y())
 		{
@@ -344,8 +309,14 @@ void OGLViewer::renderpixels()
 				//cout << "hit something\n" << endl;
 				cosVal = tHit;
 				queryPoint->shape->postIntersect(traceRay, queryPoint);
-				//cosVal = (Dot(Normalize(lightpos - queryPoint->pos), queryPoint->norm) + 1) * 0.5;
+				cosVal = (dot(normalize(lightpos - queryPoint->P), queryPoint->Ng) + 1) * 0.5;
 				pixmap->setBuffer(uint32_t(i), uint32_t(j), *queryPoint, tHit);
+                size_t index = (j * width() + i) << 2;
+                pixmap->beauty[index++] = cosVal;
+                pixmap->beauty[index++] = cosVal;
+                pixmap->beauty[index++] = cosVal;
+                pixmap->beauty[index++] = cosVal;
+
 				//pixmap->setBuffer()
 				//pixmap->empty();
 				//pixmap->setBuffer(0);

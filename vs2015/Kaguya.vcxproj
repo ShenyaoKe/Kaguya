@@ -101,19 +101,24 @@
   <ItemGroup>
     <ClInclude Include="..\src\Accel\Bounds.h" />
     <ClInclude Include="..\src\Accel\KdTreeAccel.h" />
-    <ClInclude Include="..\src\Camera\abstractCamera.h" />
     <ClInclude Include="..\src\Camera\Camera.h" />
     <ClInclude Include="..\src\Camera\Film.h" />
-    <ClInclude Include="..\src\Camera\orthoCamera.h" />
-    <ClInclude Include="..\src\Camera\perspCamera.h" />
+    <ClInclude Include="..\src\Camera\OrthographicCamera.h" />
+    <ClInclude Include="..\src\Camera\PerspectiveCamera.h" />
     <ClInclude Include="..\src\Core\error.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\Primitive.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
+    <ClInclude Include="..\src\Geometry\BezierCurve.h" />
+    <ClInclude Include="..\src\Geometry\Curve.h" />
     <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
-    <ClInclude Include="..\src\Geometry\PolygonMesh.h" />
+    <ClInclude Include="..\src\Geometry\Mesh.h" />
+    <ClInclude Include="..\src\Geometry\ParametricGeomtry.h" />
+    <ClInclude Include="..\src\Geometry\PolyMesh.h" />
+    <ClInclude Include="..\src\Geometry\QuadMesh.h" />
+    <ClInclude Include="..\src\Geometry\SubdMesh.h" />
     <ClInclude Include="..\src\Geometry\TriangleMesh.h" />
     <ClInclude Include="..\src\Geometry\Paraboloid.h" />
     <ClInclude Include="..\src\Geometry\Plane.h" />
@@ -148,16 +153,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp" />
-    <ClCompile Include="..\src\Camera\abstractCamera.cpp" />
     <ClCompile Include="..\src\Camera\Camera.cpp" />
     <ClCompile Include="..\src\Camera\Film.cpp" />
-    <ClCompile Include="..\src\Camera\orthoCamera.cpp" />
-    <ClCompile Include="..\src\Camera\perspCamera.cpp" />
+    <ClCompile Include="..\src\Camera\OrthographicCamera.cpp" />
+    <ClCompile Include="..\src\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="..\src\Core\error.cpp" />
     <ClCompile Include="..\src\Core\Primitive.cpp" />
+    <ClCompile Include="..\src\Geometry\BezierCurve.cpp" />
+    <ClCompile Include="..\src\Geometry\Curve.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
-    <ClCompile Include="..\src\Geometry\PolygonMesh.cpp" />
+    <ClCompile Include="..\src\Geometry\Mesh.cpp" />
+    <ClCompile Include="..\src\Geometry\ParametricGeomtry.cpp" />
+    <ClCompile Include="..\src\Geometry\PolyMesh.cpp" />
+    <ClCompile Include="..\src\Geometry\QuadMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />
+    <ClCompile Include="..\src\Geometry\SubdMesh.cpp" />
     <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />
     <ClCompile Include="..\src\Geometry\Hyperboloid.cpp" />

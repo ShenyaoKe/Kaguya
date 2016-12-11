@@ -1,11 +1,10 @@
 #pragma once
-#include "Core/Kaguya.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
 /************************************************************************/
 /* Torus Fuction Definition                                             */
 /************************************************************************/
-class geoTorus :public Shape
+class geoTorus : public ParametricGeomtry
 {
 public:
 	geoTorus() {};

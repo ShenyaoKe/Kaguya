@@ -129,9 +129,9 @@ class Texture;
 class TextureMapping;
 class Shader;
 
-class Camera;
-class perspCamera;
-class abstractCamera;
+class ProjectiveCamera;
+class PerspectiveCamera;
+class AklemanCamera;
 
 class renderBuffer;
 

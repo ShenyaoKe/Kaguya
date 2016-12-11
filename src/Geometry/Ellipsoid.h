@@ -1,11 +1,10 @@
 #pragma once
-#include "Core/Kaguya.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
 /************************************************************************/
 /* Ellipsoid Function Definition                                        */
 /************************************************************************/
-class geoEllipsoid :public Shape
+class geoEllipsoid : public ParametricGeomtry
 {
 public:
 	geoEllipsoid();

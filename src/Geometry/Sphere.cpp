@@ -5,7 +5,8 @@
 
 geoSphere::geoSphere(const Transform* o2w, const Transform* w2o,
 	Float radius, Float phi, Float th0, Float th1)
-	: Shape(o2w, w2o), r(radius), phiMax(phi)
+	: ParametricGeomtry(o2w, w2o)
+    , r(radius), phiMax(phi)
 	, thetaMin(th0), thetaMax(th1)
 {
 	zMin = clamp(cos(thetaMax), -radius, radius);

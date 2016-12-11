@@ -1,8 +1,20 @@
 #include "Camera/Camera.h"
 
-Camera::Camera(const Point3f &eye,
-	const Point3f &targ, const Vector3f &up,
-	Float asp, Float lr, Float fd, const Film &fm)
+Camera::Camera()
+{
+}
+
+Camera::~Camera()
+{
+}
+
+ProjectiveCamera::ProjectiveCamera(const Point3f &eye,
+                                   const Point3f &targ,
+                                   const Vector3f &up,
+                                   Float asp,
+                                   Float lr,
+                                   Float fd,
+                                   const Film &fm)
 	: CameraToWorld(Matrix4x4::lookAt(eye, targ, up))
 	, viewTarget(targ)
 	, viewportRatio(asp), focLen(35)
@@ -12,34 +24,34 @@ Camera::Camera(const Point3f &eye,
 {
 }
 
-void Camera::setFilm(const Film &f)
+void ProjectiveCamera::setFilm(const Film &f)
 {
 	film = f;
 	updateMatrices();
 }
 
-void Camera::setResolution(int resX, int resY)
+void ProjectiveCamera::setResolution(int resX, int resY)
 {
 	//film.resize(resX, resY);
 	//buffer = renderBuffer(resX, resY);
 }
 
-void Camera::setSample(int aaSample)
+void ProjectiveCamera::setSample(int aaSample)
 {
 	sample = aaSample;
 }
 
-void Camera::setFocLen(Float fl)
+void ProjectiveCamera::setFocLen(Float fl)
 {
 	focLen = fl;
 }
 
-void Camera::setFilmType(FILM_TYPE filmType)
+void ProjectiveCamera::setFilmType(FILM_TYPE filmType)
 {
 	film.setFilmType(filmType);
 }
 
-void Camera::updateMatrices()
+void ProjectiveCamera::updateMatrices()
 {
 	// Raster to camera
 	updateRasterToCam();
@@ -62,22 +74,22 @@ bufferData Camera::getBufferData(int x, int y) const
 	return buffer.data[x][y];
 }*/
 
-Point3f Camera::getTarget() const
+Point3f ProjectiveCamera::getTarget() const
 {
 	return viewTarget;
 }
 
-void Camera::setCamToWorld(const Matrix4x4 &cam2wMat)
+void ProjectiveCamera::setCamToWorld(const Matrix4x4 &cam2wMat)
 {
 	CameraToWorld = Transform(cam2wMat);
 }
 
-void Camera::setProjection(const Matrix4x4 &perspMat)
+void ProjectiveCamera::setProjection(const Matrix4x4 &perspMat)
 {
 	CameraToScreen = Transform(perspMat);
 }
 
-void Camera::updateRasterToCam()
+void ProjectiveCamera::updateRasterToCam()
 {
 	Matrix4x4 raster2camMat = film.rasterToFilm();
 #ifdef RIGHT_HAND_ORDER
@@ -88,12 +100,12 @@ void Camera::updateRasterToCam()
 	RasterToCamera = Transform(raster2camMat);
 }
 
-void Camera::updateRasterToScreen()
+void ProjectiveCamera::updateRasterToScreen()
 {
 	RasterToScreen.setMat(CameraToScreen.getMat() * RasterToCamera.getMat());
 }
 
-void Camera::zoom(Float x_val, Float y_val, Float z_val)
+void ProjectiveCamera::zoom(Float x_val, Float y_val, Float z_val)
 {
 	Matrix4x4 cam2w = CameraToWorld.getMat();
 	
@@ -109,7 +121,7 @@ void Camera::zoom(Float x_val, Float y_val, Float z_val)
 	CameraToWorld.setMat(newLookAt);
 }
 
-void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
+void ProjectiveCamera::rotate(Float x_rot, Float y_rot, Float z_rot)
 {
 	//pitch, yaw, roll
 	Matrix4x4 lookAtMat = CameraToWorld.getMat();
@@ -131,7 +143,7 @@ void Camera::rotate(Float x_rot, Float y_rot, Float z_rot)
 	CameraToWorld.setMat(Matrix4x4::lookAt(viewTarget + newVt * vt_len, viewTarget, Vector3f(0, upCoef, 0)));
 }
 
-void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
+void ProjectiveCamera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 {
 
 	/*Matrix4x4 lookAtMat = CameraToWorld.getMat();
@@ -163,7 +175,7 @@ void Camera::rotatePYR(Float pitchAngle, Float yawAngle, Float rollAngle)
 	CameraToWorld.setMat(Matrix4x4::LookAt(_pos.toVector3D(), target, _ny.toVector3D()));*/
 }
 
-void Camera::resizeViewport(Float aspr)
+void ProjectiveCamera::resizeViewport(Float aspr)
 {
 	Matrix4x4 newProj= CameraToScreen.getMat();
 	newProj[0][0] = -newProj[1][1] / aspr;

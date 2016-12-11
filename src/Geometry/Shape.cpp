@@ -9,54 +9,11 @@
 /************************************************************************/
 uint32_t Shape::nextshapeID = 1;
 
-Shape::Shape(const Point3f &pos)
-	: shapeID(nextshapeID++)
-{
-}
-Shape::~Shape()
-{
-}
-Bounds3f Shape::getWorldBounding() const
-{
-	return this->ObjBound;
-}
-void Shape::refine(vector<Shape*> &refined)
-{
-}
 bool Shape::intersectP(const Ray &inRay) const
 {
 	return ObjBound.intersectP(inRay);
 }
 
-Float Shape::area() const
-{
-	return 0;
-}
-
-Float Shape::Pdf() const
-{
-	return 1;
-}
-
-void Shape::getShadingGeometry(const Transform &obj2world, DifferentialGeometry* dg) const
-{
-
-}
-
-bool Shape::isInside(const Point3f &pPos) const
-{
-	return false;
-}
-void Shape::assignTextureMapping(TextureMapping* &mapping)
-{
-	UV_Mapping = mapping;
-}
-void Shape::assignNormalMap(Texture* nMap)
-{
-	normalMap = nMap;
-}
-
 void Shape::printInfo() const
 {
-
 }

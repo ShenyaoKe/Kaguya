@@ -13,18 +13,26 @@
 #include "Tracer/Ray.h"
 #include "Camera/Film.h"
 //#include "Tracer/renderBuffer.h"
-
 class Camera
 {
 public:
-	//Camera();
-	Camera(
-		const Point3f &eye = Point3f(1, 1, 1),
-		const Point3f &targ = Point3f(0, 0, 0),
-		const Vector3f &up = Vector3f(0, 1, 0),
-		Float asp = 1, Float lr = 0, Float fd = NUM_INFINITY,
-		const Film &fm = Film());
-	virtual~Camera(){}
+    Camera();
+    ~Camera();
+
+private:
+
+};
+
+class ProjectiveCamera : public Camera
+{
+public:
+	ProjectiveCamera(const Point3f &eye = Point3f(1, 1, 1),
+		             const Point3f &targ = Point3f(0, 0, 0),
+		             const Vector3f &up = Vector3f(0, 1, 0),
+		             Float asp = 1, Float lr = 0,
+                     Float fd = NUM_INFINITY,
+		             const Film &fm = Film());
+	virtual ~ProjectiveCamera(){}
 
 	virtual void setFilm(const Film &f);
 	virtual void setResolution(int resX, int resY);

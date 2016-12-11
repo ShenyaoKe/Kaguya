@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Math/Geometry.h"
 #include "Geometry/PolyMesh.h"
 
 class QuadMesh : public PolyMesh
@@ -14,10 +13,11 @@ public:
 	void refine(vector<Shape*> &refined);
 	void printInfo(const string &msg = "") const;
 
-	bool intersect(const Ray &inRay,
-		           DifferentialGeometry* dg,
-		           Float* tHit, Float* rayEpsilon) const;
-	void postIntersect(const Ray &inRay, DifferentialGeometry* dg) const;
+    bool intersect(const Ray &inRay,
+                   DifferentialGeometry* dg,
+                   Float* tHit, Float* rayEpsilon) const override;
+	void postIntersect(const Ray &inRay,
+                       DifferentialGeometry* dg) const override;
 
     void getBufferObject(BufferTrait* vertTraits,
                          BufferTrait* vidTraits) const;
@@ -33,7 +33,4 @@ public:
     vector<Point3f>  vertices() const { return verts; }
     vector<uint32_t> faceids() const { return vids; }
 
-protected:
-    vector<Point3f>  verts;
-    vector<uint32_t> vids;
 };

@@ -37,11 +37,9 @@ public:
     vector<PolyIndex>   faceids() const { return fids; }
 
 protected:
-	vector<Point3f>     verts;
 	vector<Point2f>     uvs;
 	vector<Normal3f>    norms;
 	vector<PolyIndex>   fids;
-    vector<uint32_t>    vids;
 };
 
 class Triangle : public Shape

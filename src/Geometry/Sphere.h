@@ -3,9 +3,9 @@
 /************************************************************************/
 #pragma once
 #include "Math/MathUtil.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
-class geoSphere :public Shape
+class geoSphere : public ParametricGeomtry
 {
 public:
 	geoSphere(const Transform* o2w, const Transform* w2o,

@@ -1,11 +1,10 @@
 #pragma once
-#include "Core/Kaguya.h"
-#include "Geometry/Shape.h"
+#include "Geometry/ParametricGeomtry.h"
 
 /************************************************************************/
 /* Plane Function Definition                                            */
 /************************************************************************/
-class geoPlane :public Shape
+class geoPlane : public ParametricGeomtry
 {
 public:
 	geoPlane();

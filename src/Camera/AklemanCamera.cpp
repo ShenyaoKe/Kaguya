@@ -1,13 +1,13 @@
-#include "abstractCamera.h"
+#include "AklemanCamera.h"
 #include "Shading/Texture.h"
 
 
-abstractCamera::abstractCamera()
-	: perspCamera()
+AklemanCamera::AklemanCamera()
+	: PerspectiveCamera()
 {
 }
 
-abstractCamera::abstractCamera(const Point3f    &eyePos,
+AklemanCamera::AklemanCamera(const Point3f    &eyePos,
                                const Vector3f   &viewDir,
                                const Vector3f   &upVec,
                                      Texture*    posImg,
@@ -16,11 +16,11 @@ abstractCamera::abstractCamera(const Point3f    &eyePos,
                                      Float       td,
                                      Float       lr,
                                      Float       fd)
-    : perspCamera(eyePos, eyePos + viewDir, upVec, lr, fd)
+    : PerspectiveCamera(eyePos, eyePos + viewDir, upVec, lr, fd)
     , tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
 {
 }
-abstractCamera::~abstractCamera()
+AklemanCamera::~AklemanCamera()
 {
 	posTex = nullptr;
 	dirTex = nullptr;
@@ -48,13 +48,13 @@ Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 	return ret;
 }
 */
-void abstractCamera::setImage(Texture* posImg, Texture* dirImg)
+void AklemanCamera::setImage(Texture* posImg, Texture* dirImg)
 {
 	posTex = posImg;
 	dirTex = dirImg;
 }
 
-void abstractCamera::setAbstraction(Float tp, Float td)
+void AklemanCamera::setAbstraction(Float tp, Float td)
 {
 	tpos = tp;
 	tdir = td;

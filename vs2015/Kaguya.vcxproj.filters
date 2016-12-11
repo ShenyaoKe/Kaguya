@@ -73,6 +73,24 @@
     <Filter Include="Source Files\material">
       <UniqueIdentifier>{94883acd-c658-4ac8-a507-e6e78413f223}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\geometry\parametric">
+      <UniqueIdentifier>{11e919b8-d0b4-4e1f-b85d-bcd9ae44d99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry\parametric">
+      <UniqueIdentifier>{fa531f82-50ab-43ed-9700-83cf7e0e363e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry\curve">
+      <UniqueIdentifier>{0e88f4ac-1e55-4634-a138-16c6a33b51a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\geometry\curve">
+      <UniqueIdentifier>{3fc26b7d-0916-42e5-8eb0-c1193a5d8b4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\geometry\polygonal">
+      <UniqueIdentifier>{ef23f1da-c803-4059-920c-f3fda64bf1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry\polygonal">
+      <UniqueIdentifier>{8b1d9007-d961-45cd-92b6-aa8e292dbe57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -144,35 +162,11 @@
     <ClInclude Include="..\src\Volume\RasterizedVolume.h">
       <Filter>Header Files\volume</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Camera\abstractCamera.h">
-      <Filter>Header Files\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Camera\perspCamera.h">
-      <Filter>Header Files\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Camera\orthoCamera.h">
-      <Filter>Header Files\camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Core\Sampler.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math\Geometry.h">
       <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Ellipsoid.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Hyperboloid.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Paraboloid.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Plane.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\Torus.h">
-      <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math\Matrix4x4.h">
       <Filter>Header Files\math</Filter>
@@ -183,14 +177,8 @@
     <ClInclude Include="..\src\Shading\Texture3D.h">
       <Filter>Header Files\material</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\Sphere.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Core\Primitive.h">
       <Filter>Header Files\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\TriangleMesh.h">
-      <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\BxDF.h">
       <Filter>Header Files\material</Filter>
@@ -210,8 +198,53 @@
     <ClInclude Include="..\src\Core\error.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\PolygonMesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\Geometry\Paraboloid.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Hyperboloid.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Ellipsoid.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\ParametricGeomtry.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Plane.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Sphere.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Torus.h">
+      <Filter>Header Files\geometry\parametric</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Curve.h">
+      <Filter>Header Files\geometry\curve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\BezierCurve.h">
+      <Filter>Header Files\geometry\curve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Mesh.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\PolyMesh.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\QuadMesh.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\SubdMesh.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\TriangleMesh.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\PerspectiveCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\OrthographicCamera.h">
+      <Filter>Header Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,33 +296,6 @@
     <ClCompile Include="..\src\Volume\RasterizedVolume.cpp">
       <Filter>Source Files\volume</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Camera\perspCamera.cpp">
-      <Filter>Source Files\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Camera\orthoCamera.cpp">
-      <Filter>Source Files\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Camera\abstractCamera.cpp">
-      <Filter>Source Files\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Ellipsoid.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Hyperboloid.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Paraboloid.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Plane.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Torus.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Sphere.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Shading\Texture3D.cpp">
       <Filter>Source Files\material</Filter>
     </ClCompile>
@@ -298,9 +304,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Core\Primitive.cpp">
       <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp">
-      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\BxDF.cpp">
       <Filter>Source Files\material</Filter>
@@ -317,8 +320,53 @@
     <ClCompile Include="..\src\Core\error.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Geometry\PolygonMesh.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\Geometry\Torus.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Sphere.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Plane.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\ParametricGeomtry.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Paraboloid.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Hyperboloid.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Ellipsoid.cpp">
+      <Filter>Source Files\geometry\parametric</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Curve.cpp">
+      <Filter>Source Files\geometry\curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\BezierCurve.cpp">
+      <Filter>Source Files\geometry\curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\TriangleMesh.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\SubdMesh.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\QuadMesh.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\PolyMesh.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Mesh.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\PerspectiveCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\OrthographicCamera.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
