@@ -135,6 +135,20 @@ void TriangleMesh::exportVBO(
 			}
 		}
 	}
+    if (uv_array != nullptr)
+    {
+        uv_array->reserve(fids.size() * 6);
+        for (int i = 0; i < fids.size(); i++)
+        {
+            auto cur_fid = this->fids[i];
+            for (int j = 0; j < 3; j++)
+            {
+                auto &cur_uv = uvs[cur_fid.uv[j] - 1];
+                uv_array->push_back(static_cast<float>(cur_uv.x));
+                uv_array->push_back(static_cast<float>(cur_uv.y));
+            }
+        }
+    }
 	if (norm_array != nullptr)
 	{
 		norm_array->reserve(fids.size() * 9);
