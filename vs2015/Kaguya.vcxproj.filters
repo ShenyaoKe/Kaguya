@@ -246,6 +246,12 @@
     <ClInclude Include="..\src\Camera\OrthographicCamera.h">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Geometry\PolygonAttributes.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Utils.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -367,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Camera\OrthographicCamera.cpp">
       <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

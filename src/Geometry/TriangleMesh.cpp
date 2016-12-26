@@ -32,7 +32,7 @@ void TriangleMesh::refine(vector<Shape*> &refined)
 bool TriangleMesh::loadOBJ(const char* filename)
 {
 	//vector<PolyIndex> fids;
-	if (ObjParser::parse(filename, verts, uvs, norms, fids))
+	if (objFileParser::parse(filename, verts, uvs, norms, fids))
 	{
 		// If triangulated
 		bool unitUV_needed = false, unitN_needed = false;
@@ -40,7 +40,7 @@ bool TriangleMesh::loadOBJ(const char* filename)
 		uint32_t uvsize = uvs.size();
 		//size_t nid[3] = { nsize, nsize + 1, nsize + 2 };
 		uint32_t uvid[] = { uvsize, uvsize + 1, uvsize + 2 };
-		for (auto f : fids)
+		for (auto &f : fids)
 		{
 			if (f.uv.size() == 0)
 			{

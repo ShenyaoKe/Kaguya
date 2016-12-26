@@ -5,8 +5,6 @@
 //  Copyright (c) 2015 AKIKA. All rights reserved.
 //
 #pragma once
-#ifndef __Ray__
-#define __Ray__
 
 #include "Math/MathUtil.h"
 #include "Math/Geometry.h"
@@ -35,5 +33,3 @@ public:
 	int32_t geomID;
 	int32_t primID;
 };
-
-#endif

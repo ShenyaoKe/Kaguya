@@ -106,6 +106,7 @@
     <ClInclude Include="..\src\Camera\OrthographicCamera.h" />
     <ClInclude Include="..\src\Camera\PerspectiveCamera.h" />
     <ClInclude Include="..\src\Core\error.h" />
+    <ClInclude Include="..\src\core\Utils.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
     <ClInclude Include="..\src\Core\Primitive.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
@@ -116,6 +117,7 @@
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
     <ClInclude Include="..\src\Geometry\Mesh.h" />
     <ClInclude Include="..\src\Geometry\ParametricGeomtry.h" />
+    <ClInclude Include="..\src\Geometry\PolygonAttributes.h" />
     <ClInclude Include="..\src\Geometry\PolyMesh.h" />
     <ClInclude Include="..\src\Geometry\QuadMesh.h" />
     <ClInclude Include="..\src\Geometry\SubdMesh.h" />
@@ -164,6 +166,7 @@
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\ParametricGeomtry.cpp" />
+    <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp" />
     <ClCompile Include="..\src\Geometry\PolyMesh.cpp" />
     <ClCompile Include="..\src\Geometry\QuadMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Shape.cpp" />

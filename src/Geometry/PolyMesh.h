@@ -13,20 +13,3 @@ protected:
     vector<Point3f>  verts;
     vector<uint32_t> vids;
 };
-
-enum class AttributesType
-{
-    CONSTANT,
-    UNIFORM,
-    VERTEX_VARYING,
-    FACE_VARYING,
-};
-
-class PolyAttributes
-{
-public:
-	PolyAttributes() {}
-	~PolyAttributes() {}
-};
-
-
