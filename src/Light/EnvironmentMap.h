@@ -1,23 +1,23 @@
 #pragma once
-#ifndef __ENVIRONMENTMAP__
-#define __ENVIRONMENTMAP__
 
 //#include "Core/rtdef.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
 
+namespace Kaguya
+{
+
 class EnvironmentMap
 {
 private:
-	FileTexture tex;
-	SphericalMapping2D mapping;
+    FileTexture tex;
+    SphericalMapping2D mapping;
 public:
-	EnvironmentMap();
-	EnvironmentMap(const string &filename);
-	~EnvironmentMap();
+    EnvironmentMap();
+    EnvironmentMap(const std::string &filename);
+    ~EnvironmentMap();
 
-	ColorRGBA getColor(const Vector3f &dir) const;
+    ColorRGBA getColor(const Vector3f &dir) const;
 };
 
-
-#endif // __ENVIRONMENTMAP__
+}

@@ -20,6 +20,7 @@
 #include <limits>
 #include <iostream>
 #include <algorithm>
+#include <numeric>
 using std::min;
 using std::max;
 using std::swap;
@@ -90,7 +91,10 @@ using Float = float;
                                #expr, __FILE__, __LINE__))
 #endif  // NDEBUG
 
-using namespace std;
+//using namespace std;
+
+namespace Kaguya
+{
 
 //Class declaration
 class ColorWebRGB;
@@ -119,7 +123,7 @@ class Light;
 
 struct KdAccelNode;
 class KdTreeAccel;
-class Shape;
+class Primitive;
 class Ray;
 class DifferentialGeometry;
 class TriangleMesh;
@@ -137,5 +141,7 @@ class renderBuffer;
 
 const int default_resX = 640;
 const int default_resY = 480;
+
+}
 
 #endif // __KAGUYA__

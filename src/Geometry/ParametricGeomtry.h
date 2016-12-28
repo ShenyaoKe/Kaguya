@@ -1,14 +1,18 @@
 #pragma once
-#include "Geometry/Shape.h"
+#include "Geometry/Primitive.h"
 
-class ParametricGeomtry : public Shape
+namespace Kaguya
+{
+
+class ParametricGeomtry : public Primitive
 {
 public:
-    ParametricGeomtry(const Transform* o2w = nullptr,
-                      const Transform* w2o = nullptr)
-        : Shape(o2w, w2o)
+    ParametricGeomtry(const Transform* o2w = nullptr)
+        : Primitive(o2w)
     {
     }
     virtual ~ParametricGeomtry() {}
 
 };
+
+}

@@ -60,7 +60,7 @@ private: // OpenGL variables
 	int display_mode = 0;
 
 	unique_ptr<TriangleMesh> model_mesh;
-	vector<Shape*> objlist;
+	vector<Primitive*> objlist;
 	unique_ptr<KdTreeAccel> tree;
 	vector<GLfloat> model_verts;// vertices vbo
 	vector<GLfloat> model_uvs;// Texture coordinates vbo

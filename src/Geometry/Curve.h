@@ -1,13 +1,18 @@
 #pragma once
-#include "Geometry/Shape.h"
+#include "Geometry/Primitive.h"
 
-class Curve : public Shape
+namespace Kaguya
+{
+
+class Curve : public Primitive
 {
 public:
-	Curve();
-	virtual ~Curve();
+    Curve();
+    virtual ~Curve();
 
 protected:
     vector<Point3f> verts;
     uint8_t         degree;
 };
+
+}

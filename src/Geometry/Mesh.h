@@ -1,13 +1,24 @@
 #pragma once
-#include "Geometry/Shape.h"
+#include "Geometry/Primitive.h"
 
-class Mesh : public Shape
+namespace Kaguya
+{
+
+struct BufferTrait
+{
+    const void* data = nullptr;
+    uint32_t    count = 0;
+    uint32_t    size = 0;
+    uint32_t    offset = 0;
+    uint32_t    stride = 0;
+};
+
+class Mesh : public Primitive
 {
 public:
     Mesh();
     virtual ~Mesh() = 0;
 private:
-    std::unique_ptr<Mesh> mImpl;
 };
 
 struct PolyIndex
@@ -24,27 +35,23 @@ struct PolyIndex
         if (ids[1] > 0) uv.push_back(ids[1]);
         if (ids[2] > 0) n.push_back(ids[2]);
     }
-    void printInfo(const string &msg = "") const
+    void printInfo(const std::string &msg = "") const
     {
         if (!msg.empty())
         {
-            cout << msg << endl;
+            std::cout << msg << std::endl;
         }
         for (int i = 0; i < size; i++)
         {
-            cout << v[i] << "/" << uv[i] << "/" << n[i] << "\t";
+            std::cout << v[i] << "/" << uv[i] << "/" << n[i] << "\t";
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 
     size_t size;
     ui32s_t v, uv, n;
 };
-struct PolyElementBuffer
-{
-    vector<int32_t> indices;
-    vector<int32_t> primCount;
-};
+
 enum class MeshType
 {
     UNKNOWN,
@@ -52,7 +59,8 @@ enum class MeshType
     SUBDIVISION_MESH,
 };
 
-Mesh* createMesh(const string &filename, MeshType meshType = MeshType::UNKNOWN);
+Mesh* createMesh(const std::string &filename,
+                 MeshType meshType = MeshType::UNKNOWN);
 
 namespace objFileParser
 {
@@ -61,13 +69,14 @@ bool parse(const char*          filename,
            vector<Point2f>     &uvs,
            vector<Normal3f>    &norms,
            vector<PolyIndex>   &polys);
-bool parse(const char*          filename,
-           vector<Point3f>     &verts,
-           vector<Point2f>     &uvs,
-           vector<Normal3f>    &norms,
-           PolyElementBuffer   &faceId,
-           PolyElementBuffer   &texcoordId,
-           PolyElementBuffer   &normId);
+bool parse(const char*       filename,
+           vector<Point3f>  &verts,
+           vector<Point2f>  &uvs,
+           vector<Normal3f> &norms,
+           vector<uint32_t> &faceId,
+           vector<uint32_t> &texcoordId,
+           vector<uint32_t> &normId,
+           vector<uint32_t> &faceCount);
 
 enum index_t : uint8_t
 {
@@ -105,5 +114,7 @@ inline index_t facetype(const char* str, uint32_t* val)
 };
 namespace plyFileParser
 {
+
+}
 
 }

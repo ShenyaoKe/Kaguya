@@ -1,6 +1,9 @@
 #include "Mesh.h"
 #include "Core/Utils.h"
-#include "Geometry/PolygonAttributes.h"
+#include "Geometry/PolyMesh.h"
+
+namespace Kaguya
+{
 
 Mesh::Mesh()
 {
@@ -21,7 +24,7 @@ bool objFileParser::parse(const char*        filename,
     start = clock();
 #endif
 
-    FILE* fp = fopen(filename, "r");
+    FILE* fp = std::fopen(filename, "r");
     if (fp == nullptr)
     {
         return false;
@@ -129,21 +132,22 @@ bool objFileParser::parse(const char*        filename,
 
 #ifdef _DEBUG
     end = clock();
-    cout << "OBJ File " << filename << " Loding Time:" << (Float)(end - start) / CLOCKS_PER_SEC << "s" << endl;//Timer
+    std::cout << "OBJ File " << filename << " Loding Time:" << (Float)(end - start) / CLOCKS_PER_SEC << "s" << std::endl;//Timer
 #endif // _DEBUG
 
     return true;
 }
 
-bool objFileParser::parse(const char*          filename,
-                          vector<Point3f>     &verts,
-                          vector<Point2f>     &uvs,
-                          vector<Normal3f>    &norms,
-                          PolyElementBuffer   &faceId,
-                          PolyElementBuffer   &texcoordId,
-                          PolyElementBuffer   &normId)
+bool objFileParser::parse(const char*       filename,
+                          vector<Point3f>  &verts,
+                          vector<Point2f>  &uvs,
+                          vector<Normal3f> &norms,
+                          vector<uint32_t> &faceId,
+                          vector<uint32_t> &texcoordId,
+                          vector<uint32_t> &normId,
+                          vector<uint32_t> &faceCount)
 {
-    FILE* fp = fopen(filename, "r");
+    std::FILE* fp = std::fopen(filename, "r");
     if (fp == nullptr)
     {
         return false;
@@ -189,60 +193,54 @@ bool objFileParser::parse(const char*          filename,
             err = fscanf(fp, "%s", &buff);
             indices[1] = indices[2] = 0;
             index_t ft = facetype(buff, indices);
-            faceId.indices.push_back(indices[0]);
+            faceId.push_back(indices[0]);
             int count = 1;
             endflg = fgetc(fp);
             switch (ft)
             {
             case VTN://111
                 count++;
-                texcoordId.indices.push_back(indices[1]);
-                normId.indices.push_back(indices[2]);
+                texcoordId.push_back(indices[1]);
+                normId.push_back(indices[2]);
                 while (endflg != '\n' && endflg != '\r' && endflg != '\0')
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d/%d/%d", indices, indices + 1, indices + 2);
-                    faceId.indices.push_back(indices[0]);
-                    texcoordId.indices.push_back(indices[1]);
-                    normId.indices.push_back(indices[2]);
+                    faceId.push_back(indices[0]);
+                    texcoordId.push_back(indices[1]);
+                    normId.push_back(indices[2]);
                     count++;
                     endflg = fgetc(fp);
                 }
-                faceId.primCount.push_back(count);
-                texcoordId.primCount.push_back(count);
-                normId.primCount.push_back(count);
+                faceCount.push_back(count);
                 break;
             case VT://011
                 count++;
-                texcoordId.indices.push_back(indices[1]);
+                texcoordId.push_back(indices[1]);
                 while (endflg != '\n' && endflg != '\r' && endflg != '\0')
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d/%d", indices, indices + 1);
-                    faceId.indices.push_back(indices[0]);
-                    texcoordId.indices.push_back(indices[1]);
+                    faceId.push_back(indices[0]);
+                    texcoordId.push_back(indices[1]);
                     count++;
                     endflg = fgetc(fp);
                 }
-                faceId.primCount.push_back(count);
-                texcoordId.primCount.push_back(count);
-                normId.primCount.push_back(0);
+                faceCount.push_back(count);
                 break;
             case VN://101
                 count++;
-                normId.indices.push_back(indices[2]);
+                normId.push_back(indices[2]);
                 while (endflg != '\n' && endflg != '\r' && endflg != '\0')
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d//%d", indices, indices + 2);
-                    faceId.indices.push_back(indices[0]);
-                    normId.indices.push_back(indices[2]);
+                    faceId.push_back(indices[0]);
+                    normId.push_back(indices[2]);
                     count++;
                     endflg = fgetc(fp);
                 }
-                faceId.primCount.push_back(count);
-                texcoordId.primCount.push_back(0);
-                normId.primCount.push_back(count);
+                faceCount.push_back(count);
                 break;
             case V://001
                 count++;
@@ -250,13 +248,11 @@ bool objFileParser::parse(const char*          filename,
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d", indices);
-                    faceId.indices.push_back(indices[0]);
+                    faceId.push_back(indices[0]);
                     count++;
                     endflg = fgetc(fp);
                 }
-                faceId.primCount.push_back(count);
-                texcoordId.primCount.push_back(0);
-                normId.primCount.push_back(0);
+                faceCount.push_back(count);
                 break;
             default:
                 break;
@@ -278,39 +274,55 @@ bool objFileParser::parse(const char*          filename,
     return false;
 }
 
-Mesh* createMesh(const string &filename, MeshType meshType)
+Mesh* createMesh(const std::string &filename, MeshType meshType)
 {
-    vector<Point3f>     verts;
-    vector<Point2f>     uvs;
-    vector<Normal3f>    norms;
-    PolyElementBuffer   faceId;
-    PolyElementBuffer   texcoordId;
-    PolyElementBuffer   normId;
+    vector<Point3f>   vertexBuffer;
+    vector<Point2f>   textureCoords;
+    vector<Normal3f>  norms;
+    vector<uint32_t>  faceIndexBuffer;
+    vector<uint32_t>  texcoordsIndexBuffer;
+    vector<uint32_t>  normIndexBuffer;
+    vector<uint32_t>  faceCount;
+    TextureAttribute* texAttr;
+    NormalAttribute*  normAttr;
     if (Utils::endsWith(filename, "obj"))
     {
         if (!objFileParser::parse(filename.c_str(),
-                                  verts, uvs, norms,
-                                  faceId, texcoordId, normId))
+                                  vertexBuffer,
+                                  textureCoords,
+                                  norms,
+                                  faceIndexBuffer,
+                                  texcoordsIndexBuffer,
+                                  normIndexBuffer,
+                                  faceCount))
         {
             return nullptr;
         }
-        AttriType attriType;
-        PolyAttributes* attris = new PolyAttributes;
-        if (uvs.empty())
-        {
-            attris->addAttributeTrait(AttriTraitType::TEXTURE_COORDS,
-                                      new AttributeTrait(AttriType::CONSTANT));
-        }
-        else
-        {
-            attris->addAttributeTrait(AttriTraitType::TEXTURE_COORDS,
-                                      new AttributeTrait(AttriType::FACE_VARYING,
-                                                         uvs, texcoordId.indices));
-        }
     }
-    else if (Utils::endsWith(filename, "ply"))
+    /*else if (Utils::endsWith(filename, "ply"))
     {
+    }*/
+    texAttr = texcoordsIndexBuffer.size() == faceIndexBuffer.size()
+        ? new TextureAttribute(textureCoords, texcoordsIndexBuffer)
+        : new TextureAttribute;
+    normAttr = normIndexBuffer.size() == faceIndexBuffer.size()
+        ? new NormalAttribute(norms, normIndexBuffer)
+        : new NormalAttribute;
+    if (meshType == MeshType::POLYGONAL_MESH)
+    {
+        return PolyMesh::createPolyMesh(vertexBuffer,
+                                        faceIndexBuffer,
+                                        faceCount,
+                                        texAttr,
+                                        normAttr);
     }
+    else if (meshType == MeshType::SUBDIVISION_MESH)
+    {
+        
+    }
+    
 
     return nullptr;
+}
+
 }

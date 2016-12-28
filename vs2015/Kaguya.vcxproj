@@ -57,7 +57,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;$(EMBREE_INSTALL_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -66,8 +66,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget);$(EMBREE_INSTALL_DIR)\lib</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
@@ -80,7 +80,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;$(EMBREE_INSTALL_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -91,8 +91,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget);$(EMBREE_INSTALL_DIR)\lib</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
@@ -105,10 +105,11 @@
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Camera\OrthographicCamera.h" />
     <ClInclude Include="..\src\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="..\src\Core\EmbreeUtils.h" />
     <ClInclude Include="..\src\Core\error.h" />
+    <ClInclude Include="..\src\Core\Scene.h" />
     <ClInclude Include="..\src\core\Utils.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
-    <ClInclude Include="..\src\Core\Primitive.h" />
     <ClInclude Include="..\src\Core\Sampler.h" />
     <ClInclude Include="..\src\Geometry\BezierCurve.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
@@ -124,7 +125,7 @@
     <ClInclude Include="..\src\Geometry\TriangleMesh.h" />
     <ClInclude Include="..\src\Geometry\Paraboloid.h" />
     <ClInclude Include="..\src\Geometry\Plane.h" />
-    <ClInclude Include="..\src\Geometry\Shape.h" />
+    <ClInclude Include="..\src\Geometry\Primitive.h" />
     <ClInclude Include="..\src\Geometry\Sphere.h" />
     <ClInclude Include="..\src\Geometry\Torus.h" />
     <ClInclude Include="..\src\Image\ColorData.h" />
@@ -159,8 +160,9 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="..\src\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="..\src\Core\EmbreeUtils.cpp" />
     <ClCompile Include="..\src\Core\error.cpp" />
-    <ClCompile Include="..\src\Core\Primitive.cpp" />
+    <ClCompile Include="..\src\Core\Scene.cpp" />
     <ClCompile Include="..\src\Geometry\BezierCurve.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
@@ -169,7 +171,7 @@
     <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp" />
     <ClCompile Include="..\src\Geometry\PolyMesh.cpp" />
     <ClCompile Include="..\src\Geometry\QuadMesh.cpp" />
-    <ClCompile Include="..\src\Geometry\Shape.cpp" />
+    <ClCompile Include="..\src\Geometry\Primitive.cpp" />
     <ClCompile Include="..\src\Geometry\SubdMesh.cpp" />
     <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />

@@ -1,4 +1,4 @@
-#include "Geometry/Shape.h"
+#include "Geometry/Primitive.h"
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
@@ -7,13 +7,18 @@
 /************************************************************************/
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
-uint32_t Shape::nextshapeID = 1;
-
-bool Shape::intersectP(const Ray &inRay) const
+namespace Kaguya
 {
-	return ObjBound.intersectP(inRay);
+
+uint32_t Primitive::nextshapeID = 1;
+
+bool Primitive::intersectP(const Ray &inRay) const
+{
+    return ObjBound.intersectP(inRay);
 }
 
-void Shape::printInfo() const
+void Primitive::printInfo() const
 {
+}
+
 }

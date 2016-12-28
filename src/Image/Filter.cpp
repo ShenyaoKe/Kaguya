@@ -1,5 +1,8 @@
 #include "Image/Filter.h"
 
+namespace Kaguya
+{
+
 /*
 ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 {
@@ -125,21 +128,21 @@ ImageData* filter::hsvOffset(const ImageData* src, Float hue, Float saturation, 
 	int wdt = src->getWidth(), hgt = src->getHeight();
 	ImageData* ret = new ImageData(wdt, hgt);
 	if (hue > 180 || hue < -180) {
-		cout << "Error: Hue offset is beyond control!" << endl;
+		std::cout << "Error: Hue offset is beyond control!" << std::endl;
 	}
 	if (saturation > 1.0 || saturation < -1.0) {
-		cout << "Error: Saturation offset is beyond control!" << endl;
+		std::cout << "Error: Saturation offset is beyond control!" << std::endl;
 	}
 	if (value > 1.0 || value < -1.0) {
-		cout << "Error: Value offset is beyond control!" << endl;
+		std::cout << "Error: Value offset is beyond control!" << std::endl;
 	}
     
 	for (int i = 0; i < wdt; i++)
 	{
 		for (int j = 0; j < hgt; j++)
 		{
-			//cout << i << ", " << j << endl;
-			//cout << "HSV:" << src->pixels[i][j].hgt << ", " << src->pixels[i][j].s << ", " << src->pixels[i][j].v << ", " << endl;
+			//std::cout << i << ", " << j << std::endl;
+			//std::cout << "HSV:" << src->pixels[i][j].hgt << ", " << src->pixels[i][j].s << ", " << src->pixels[i][j].v << ", " << std::endl;
 			ColorRGBA curRGBA = src->getRGBA(i, j);
 			ColorHSV curHSV = curRGBA.conv2hsv();
 			curHSV.h += hue;
@@ -156,10 +159,10 @@ ImageData* filter::hueSwitch(const ImageData* src, Float oriHue, Float range, Fl
 	int wdt = src->getWidth(), hgt = src->getHeight();
 	ImageData* ret = new ImageData(wdt, hgt);
 	if (oriHue >= 360 || oriHue < 0) {
-		cout << "Error: Hue offset is beyond control!" << endl;
+		std::cout << "Error: Hue offset is beyond control!" << std::endl;
 	}
 	if (range > 180.0 || range < -180.0) {
-		cout << "Error: Switch range is beyond control!" << endl;
+		std::cout << "Error: Switch range is beyond control!" << std::endl;
 	}
 	Float hueOffset = newHue - oriHue;
 
@@ -278,7 +281,7 @@ ImageData* filter::posterize(const ImageData* src, int level)
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	if (level == 1)
 	{
-		cout << "Error: Level 1 is not allowed!\nAutomaticly switch to Level 2!" << endl;
+		std::cout << "Error: Level 1 is not allowed!\nAutomaticly switch to Level 2!" << std::endl;
 		level++;
 	}
 	Float color_div = 1.0 / static_cast<Float>(level - 1.0);
@@ -482,7 +485,7 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	for (int i = 0; i < size; i++)
 	{
 		kernel[i] /= kSum;
-		std::cout << i << ": " << kernel[i] << endl;
+		std::cout << i << ": " << kernel[i] << std::endl;
 	}
 
 	// Start Blur
@@ -519,7 +522,7 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	}
     
 	endT = clock();
-	std::cout << "Gaussian blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << endl;
+	std::cout << "Gaussian blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
     
 	delete [] kernel;
 	delete_2DArray(tmpImgX);
@@ -571,7 +574,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	startT = clock();
 
 	Float** lumaImg = src->getLuma();
-	//cout << kSize << endl;
+	//std::cout << kSize << std::endl;
 	for (int i = 0; i < width; i++)
 	{
 		for (int j = 0; j < height; j++)
@@ -591,23 +594,23 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 						//obradius += gKernel[m + radius][n + radius];
 						continue;
 					}
-					tmpDist = abs(lumaImg[j + n][i + m] - lumaImg[i][j]);
+					tmpDist = std::abs(lumaImg[j + n][i + m] - lumaImg[i][j]);
 					sKernel[m + radius][n + radius] = exp(-tmpDist * tmpDist / sqSigmaR / 2.0) * gKernel[m + radius][n + radius];
-					//cout << sKernel[m + radius][n + radius] << endl;
+					//std::cout << sKernel[m + radius][n + radius] << std::endl;
 					kSum += sKernel[m + radius][n + radius];
 					
 					tmpColor += src->getRGBA(i + m, j + n) * sKernel[m + radius][n + radius];
 					//obradius+=0.1;
 				}
 			}
-			//cout << kSum << endl;
+			//std::cout << kSum << std::endl;
 			//endT = clock();
-			//cout << "kernel time:\t" << (endT - startT) << endl;
+			//std::cout << "kernel time:\t" << (endT - startT) << std::endl;
 			ret->setRGBA(i, j, tmpColor / kSum);
 		}
 	}
 	endT = clock();
-	std::cout << "Bilateral blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << endl;
+	std::cout << "Bilateral blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
 
 	delete_2DArray(sKernel);
 	delete_2DArray(gKernel);
@@ -692,7 +695,7 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
 	for (int j = 0; j < size; j++) {
 		for (int i = 0; i < size; i++) {
 			kernel[i][j] = dir.dotMul(Vector2D(i - 1, j - 1));
-			//cout << kernel[i][j] << endl;
+			//std::cout << kernel[i][j] << std::endl;
 			kMax = (kMax > kernel[i][j]) ? kMax : kernel[i][j];
 			kMin = (kMin < kernel[i][j]) ? kMin : kernel[i][j];
 		}
@@ -718,7 +721,7 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
 					jIndex = jIndex >= src->getHeight() ? (height - 1) : (jIndex < 0 ? 0 : jIndex);
                     
 					sum += src->pixels[iIndex][jIndex].luma * kernel[m + radius][n + radius];
-					//cout << m << " " << n << " " << src->pixels[i - m][j - n].r+0 <<  endl;
+					//std::cout << m << " " << n << " " << src->pixels[i - m][j - n].r+0 <<  std::endl;
 				}
 			}
 			sum = (sum + kMax * 255.0) / (kMax - kMin);
@@ -748,9 +751,9 @@ ImageData* filter::dilation(const ImageData* src, int radius)
 				kernel[i][j] = 0;
 			}
             
-			cout << kernel[i][j] << " ";
+			std::cout << kernel[i][j] << " ";
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
@@ -797,9 +800,9 @@ ImageData* filter::erosion(const ImageData* src, int radius)
 				kernel[i][j] = 0;
 			}
 
-			cout << kernel[i][j] << " ";
+			std::cout << kernel[i][j] << " ";
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
@@ -957,7 +960,7 @@ ImageData* filter::circlepix(const ImageData* src, int radius, Float para)
 	//int fNum = 0, bNum = 0;
 
 	// Create kernel
-	cout << "Circle kernel is:" << endl;
+	std::cout << "Circle kernel is:" << std::endl;
 	for (int i = 0; i < size; i++) {
 		kernel[i] = new int[size];
 		for (int j = 0; j < size; j++) {
@@ -969,11 +972,11 @@ ImageData* filter::circlepix(const ImageData* src, int radius, Float para)
 				//bNum++;
 			}
 			
-			cout << kernel[i][j] << " ";
+			std::cout << kernel[i][j] << " ";
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
-	//cout << fNum << "\t" << bNum << endl;
+	//std::cout << fNum << "\t" << bNum << std::endl;
 	for (int j = 0; j < src->getHeight(); j += size) {
 		for (int i = 0; i < src->getWidth(); i += size) {
 			int fSum[3] = {}, bSum[3] = {};
@@ -1129,7 +1132,7 @@ ImageData* filter::shear(const ImageData* src, Vector2D &shVec, int &winWid, int
 		winHgt = tmp.y > winHgt ? tmp.y : winHgt;
 	}
 	ret->resize(winWid, winHgt);
-	cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << endl;
+	std::cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << std::endl;
 	for (int i = 0; i < (int)winWid; i++)
 	{
 		for (int j = 0; j < (int)winHgt; j++)
@@ -1159,7 +1162,7 @@ ImageData* filter::reflect(const ImageData* src, Vector2D &rflVec, int &winWid, 
 		winHgt = tmp.y > winHgt ? tmp.y : winHgt;
 	}
 	ret->resize(winWid, winHgt);
-	//cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << endl;
+	//std::cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << std::endl;
 	for (int i = 0; i < (int)winWid; i++)
 	{
 		for (int j = 0; j < (int)winHgt; j++)
@@ -1187,7 +1190,7 @@ ImageData* filter::perspective(const ImageData* src, Vector2D &vPnt1, int &winWi
 		winHgt = tmp.y > winHgt ? tmp.y : winHgt;
 	}
 	ret->resize(winWid, winHgt);
-	cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << endl;
+	std::cout << "Window src->getWidth()" << winWid << "\t src->getHeight():" << winHgt << std::endl;
 	for (int i = 0; i < (int)winWid; i++)
 	{
 		for (int j = 0; j < (int)winHgt; j++)
@@ -1277,7 +1280,7 @@ ImageData* filter::inflateScale(const ImageData* src, Float radius, int &winWid,
 				Float sc = (radius - sqrt((radius - len) * radius)) / len;
 				//error 01
 				//Float sc = (radius - sqrt((radius - len / (lenV.x / len + 2)) * radius) * (lenV.x / len + 2)) / len;
-				//cout << sc << endl;
+				//std::cout << sc << std::endl;
 				//sMat.setScale(sin(sc * pi / 2)); //edge smooth inflate
 				sMat.setScale(sc);
 				mat = tMat2 * sMat * tMat1;
@@ -1326,7 +1329,7 @@ ImageData* filter::textureSynth(const ImageData* sample, int radius)
 					}
 					else
 					{
-						//cout << (radius + radius + 1) * n + m + neighSize << endl;
+						//std::cout << (radius + radius + 1) * n + m + neighSize << std::endl;
 						neighPixs[(radius + radius + 1) * n + m + neighSize] = Vector3D(src->pixels[i + m][j + n].r, src->pixels[i + m][j + n].g, src->pixels[i + m][j + n].b);
 					}
 				}
@@ -1339,7 +1342,7 @@ ImageData* filter::textureSynth(const ImageData* sample, int radius)
 			{
 				for (int u = 0; u < sample.width; u++)
 				{
-					//cout << u << ", " << v << endl;
+					//std::cout << u << ", " << v << std::endl;
 					vecSum = 0;
 					
 					for (int n = -radius; n <= 0; n++)
@@ -1355,15 +1358,15 @@ ImageData* filter::textureSynth(const ImageData* sample, int radius)
 								int uIndex = u + m < 0 ? 0 : (u + m >= src->getWidth() ? src->getWidth() : u + m);
 								int vIndex = v + n < 0 ? 0 : (v + n >= src->getHeight() ? src->getHeight() : v + n);
 								tmpVec = neighPixs[(radius * 2 + 1)*n + m + neighSize] - smpVec[vIndex * sample.width + uIndex];
-								//cout << tmpVec.getLength() << endl;
+								//std::cout << tmpVec.getLength() << std::endl;
 								vecSum += tmpVec.getLength() / neighSize;
 								//vecSum += (neighPixs[(radius * 2 + 1)*n + m + neighSize] ).getLength() / neighSize;
-								//cout << "\t" << (radius * 2 + 1)*n + m + neighSize << endl;
-								//cout << "\t" << m << "\t" << n << endl;
+								//std::cout << "\t" << (radius * 2 + 1)*n + m + neighSize << std::endl;
+								//std::cout << "\t" << m << "\t" << n << std::endl;
 							}
 						}
 					}
-					//cout << vecSum << endl;
+					//std::cout << vecSum << std::endl;
 					if (vecSum < minSum)
 					{
 						minSum = vecSum;
@@ -1371,17 +1374,19 @@ ImageData* filter::textureSynth(const ImageData* sample, int radius)
 					}
 				}
 			}
-			//cout << "\t" << minSum << endl;
+			//std::cout << "\t" << minSum << std::endl;
 			src->pixels[i][j] = ColorData(minVec.x, minVec.y, minVec.z);
 			//minSum = 442;
 			delete [] neighPixs;
 
 		}
 		lineE = clock();
-		std::cout << "Line " << j << " done in " << (lineE - lineS) / CLOCKS_PER_SEC << " sec." << endl;
+		std::cout << "Line " << j << " done in " << (lineE - lineS) / CLOCKS_PER_SEC << " sec." << std::endl;
 		//ret->pixels[radius][j].printData();
 	}
 	endT = clock();
-	std::cout << "Timer synthesis runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec." << endl;
+	std::cout << "Timer synthesis runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec." << std::endl;
 }
 */
+
+}

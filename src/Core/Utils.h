@@ -1,10 +1,13 @@
 #pragma once
 #include "Kaguya.h"
 
+namespace Kaguya
+{
+
 namespace Utils
 {
 
-bool endsWith(const string &src, const string &ext, bool isCaseSensitive = true)
+bool endsWith(const std::string &src, const std::string &ext, bool isCaseSensitive = true)
 {
     // true if both strings are empty
     if (src.length() == 0) return ext.length() == 0;
@@ -29,6 +32,8 @@ bool endsWith(const string &src, const string &ext, bool isCaseSensitive = true)
         }
     }
     return true;
+}
+
 }
 
 }

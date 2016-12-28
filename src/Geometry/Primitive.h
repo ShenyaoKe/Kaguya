@@ -17,22 +17,23 @@ const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon 
 /************************************************************************/
 /* Basic Shape Function Definition                                      */
 /************************************************************************/
+namespace Kaguya
+{
 
-class Shape
+class Primitive
 {
 public:
-	Shape(const Transform* o2w = nullptr,
-          const Transform* w2o = nullptr)
+	Primitive(const Transform* o2w = nullptr)
 		: shapeID(nextshapeID++)
-        , ObjectToWorld(o2w), WorldToObject(w2o)
+        , ObjectToWorld(o2w)
         , UV_Mapping(nullptr), normalMap(nullptr)
     {
 	}
-    virtual ~Shape() {}
+    virtual ~Primitive() {}
 
 	virtual void bounding() = 0;
     virtual Bounds3f getWorldBounding() const { return ObjBound; }
-	virtual void refine(vector<Shape*> &refined) {}
+	virtual void refine(vector<Primitive*> &refined) {}
 	virtual bool intersectP(const Ray &inRay) const;
 	virtual bool intersect(const Ray &inRay,
                            DifferentialGeometry* dg,
@@ -64,18 +65,10 @@ public:
     const uint32_t shapeID;
 
 	const Transform* ObjectToWorld;
-	const Transform* WorldToObject;
 	Bounds3f ObjBound;
 
 	TextureMapping* UV_Mapping;
 	Texture* normalMap;
 };
 
-struct BufferTrait
-{
-    const void* data   = nullptr;
-    uint32_t    count  = 0;
-    uint32_t    size   = 0;
-    uint32_t    offset = 0;
-    uint32_t    stride = 0;
-};
+}

@@ -4,9 +4,7 @@
 //  Created by Shenyao Ke on 10/11/14.
 //  Copyright (c) 2014 Shenyao. All rights reserved.
 //
-
-#ifndef __ImageData__
-#define __ImageData__
+#pragma once
 
 #include "Core/MemoryControl.h"
 #include "Math/Geometry.h"
@@ -17,6 +15,8 @@
 //read image files
 #include "FreeImage.h"
 
+namespace Kaguya
+{
 
 // 
 /************************************************************************/
@@ -26,46 +26,47 @@
 class ImageData
 {
 protected:
-	int width, height, bpp;
-	ColorRGBA **pixels;
+    int width, height, bpp;
+    ColorRGBA **pixels;
 public:
-	enum PixmapType
-	{
-		RGB,
-		RGBA,
-		ARGB,
-		BGR,
-		BGRA,
-		ABGR
-	};
-	//ImageData();
-	//ImageData(ppmImage &ppmData);
-	ImageData(int wd = default_resX, int ht = default_resY);
-	ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data
-	explicit ImageData(int wd, int ht, unsigned char* pixMap, int pixtype = RGB);//pixMap stores rgb data
-	ImageData(const string &filename);
-	ImageData(const ImageData &src);
-	virtual~ImageData();
-    
-	virtual const int getWidth() const { return width; }
-	virtual const int getHeight() const { return height; }
-	virtual const int getBPP() const { return bpp; }
-	virtual const ColorRGBA &getRGBA(int x, int y) const;
-	virtual const ColorRGBA &getRGBA(int idx) const;
-	virtual void setRGBA(int x, int y, const ColorRGBA &color);
-	virtual void getPixels(unsigned char* &pixMap) const;
-	virtual void getPixelsRGBA(unsigned char* &pixMap) const;
-	virtual int** genHist() const;//Generate histogram
-	virtual Float** getLuma() const;// Generate Luma
-	
-	virtual void printRGBA(int x, int y) const;
-	virtual void resize(int x, int y);
-	virtual ColorRGBA bilinearPixel(Float x, Float y) const;
-	//virtual const ColorRGBA &bicubicPixel(Float x, Float y) const;
-	virtual bool writeFile(const string &filename) const;
-	//ColorRGB bicubicPixel(Float x, Float y);
-	//void convert2PPM(ppmImage &ppmData);
+    enum PixmapType
+    {
+        RGB,
+        RGBA,
+        ARGB,
+        BGR,
+        BGRA,
+        ABGR
+    };
+    //ImageData();
+    //ImageData(ppmImage &ppmData);
+    ImageData(int wd = default_resX, int ht = default_resY);
+    ImageData(int wd, int ht, Float* &pixMap);//pixMap stores rgb data
+    explicit ImageData(int wd, int ht, unsigned char* pixMap, int pixtype = RGB);//pixMap stores rgb data
+    ImageData(const std::string &filename);
+    ImageData(const ImageData &src);
+    virtual~ImageData();
 
-	//friend const ImageData &downsampling(const ImageData &src);
+    virtual const int getWidth() const { return width; }
+    virtual const int getHeight() const { return height; }
+    virtual const int getBPP() const { return bpp; }
+    virtual const ColorRGBA &getRGBA(int x, int y) const;
+    virtual const ColorRGBA &getRGBA(int idx) const;
+    virtual void setRGBA(int x, int y, const ColorRGBA &color);
+    virtual void getPixels(unsigned char* &pixMap) const;
+    virtual void getPixelsRGBA(unsigned char* &pixMap) const;
+    virtual int** genHist() const;//Generate histogram
+    virtual Float** getLuma() const;// Generate Luma
+
+    virtual void printRGBA(int x, int y) const;
+    virtual void resize(int x, int y);
+    virtual ColorRGBA bilinearPixel(Float x, Float y) const;
+    //virtual const ColorRGBA &bicubicPixel(Float x, Float y) const;
+    virtual bool writeFile(const std::string &filename) const;
+    //ColorRGB bicubicPixel(Float x, Float y);
+    //void convert2PPM(ppmImage &ppmData);
+
+    //friend const ImageData &downsampling(const ImageData &src);
 };
-#endif /* defined(__ImageData__) */
+
+}

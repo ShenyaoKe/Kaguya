@@ -1,7 +1,10 @@
 #pragma once
 #include "Geometry/Mesh.h"
 
-enum class AttriType : uint8_t
+namespace Kaguya
+{
+
+enum class AttributeRate : uint8_t
 {
     CONSTANT,// all vertex the same
     UNIFORM,// each face has the same 
@@ -9,40 +12,66 @@ enum class AttriType : uint8_t
     FACE_VARYING,// varies in each face
 };
 
-enum class AttriTraitType : uint8_t
-{
-    TEXTURE_COORDS = 0,
-    SHADING_NORMAL = 1,
-};
-
-class AttributeTrait
+template <typename T>
+class PolygonAttribute
 {
 public:
-    AttributeTrait(AttriType attriType          = AttriType::CONSTANT,
-                   vector<Float> attriVals      = vector<Float>(),
-                   vector<int32_t> attriIndices = vector<int32_t>());
-	~AttributeTrait();
-protected:
+    // Constant & Uniform
+    PolygonAttribute(AttributeRate attriType = AttributeRate::UNIFORM)
+        : mType(attriType) {}
+    // Vertex Varying
+    PolygonAttribute(vector<T> attriVals)
+        : mValueBuffer(std::move(attriVals))
+        , mType(AttributeRate::VERTEX_VARYING) {}
+    // Face Varying
+    PolygonAttribute(vector<T> attriVals,
+                     vector<uint32_t> attriIndices)
+        : mValueBuffer(std::move(attriVals))
+        , mIndexBuffer(std::move(attriIndices))
+        , mType(AttributeRate::FACE_VARYING) {}
+    ~PolygonAttribute() {}
 
-    AttriType mType;
-    vector<Float>   mAttriVals;
-    vector<int32_t> mAttriIndices;
-private:
+    bool isConstant() const
+    {
+        return mType == AttributeRate::CONSTANT;
+    }
+    bool isUniform() const
+    {
+        return mType == AttributeRate::UNIFORM;
+    }
+    bool isVertexVarying() const
+    {
+        return mType == AttributeRate::VERTEX_VARYING;
+    }
+    bool isFaceVarying() const
+    {
+        return mType == AttributeRate::FACE_VARYING;
+    }
+
+    void getVertexVarying(uint32_t primID, size_t primSize,
+                          uint32_t* vIDs, T* targ) const
+    {
+        for (uint32_t i = 0; i < primSize; i++)
+        {
+            targ[i] = mValueBuffer[vIDs[i]];
+        }
+    }
+    void getFaceVarying(uint32_t primID, size_t primSize,
+                        T* targ) const
+    {
+        uint32_t id = primID * primSize;
+        for (uint32_t i = 0; i < primSize; i++)
+        {
+            targ[i] = mValueBuffer[mIndexBuffer[id + i]];
+        }
+    }
+
+    vector<T>        mValueBuffer;
+    vector<uint32_t> mIndexBuffer;
+    AttributeRate    mType;
 };
 
-class PolyAttributes
-{
-public:
-    PolyAttributes() : traits{} {}
-	~PolyAttributes() {}
+using TextureAttribute = PolygonAttribute<Point2f>;
+using NormalAttribute = PolygonAttribute<Normal3f>;
 
-    void addAttributeTrait(AttriTraitType traitType,
-                           AttributeTrait* trait);
-    /*void getConstTexCoord(Point2f &targ, int32_t primID);
-    void getUniformAttribute(int32_t primID, void* targ);*/
-
-    static const int sTraitsCount = 2;
-    AttributeTrait* traits[sTraitsCount];
-};
-
-
+}

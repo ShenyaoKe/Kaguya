@@ -105,9 +105,6 @@
     <ClInclude Include="..\src\Tracer\Ray.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\Shape.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Light\Light.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
@@ -176,9 +173,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Shading\Texture3D.h">
       <Filter>Header Files\material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Core\Primitive.h">
-      <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Shading\BxDF.h">
       <Filter>Header Files\material</Filter>
@@ -252,13 +246,19 @@
     <ClInclude Include="..\src\core\Utils.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\Scene.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Core\EmbreeUtils.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Primitive.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
       <Filter>Source Files\accel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\Shape.cpp">
-      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Light\EnvironmentMap.cpp">
       <Filter>Source Files\light</Filter>
@@ -307,9 +307,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
       <Filter>Source Files\geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Core\Primitive.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\BxDF.cpp">
       <Filter>Source Files\material</Filter>
@@ -376,6 +373,15 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp">
       <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\Scene.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\EmbreeUtils.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Primitive.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
