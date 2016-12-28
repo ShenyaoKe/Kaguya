@@ -24,7 +24,7 @@ KdTreeAccel::KdTreeAccel(const vector<Primitive*> &prims, int md, int mp,
     //Initialize bouding box for all primitives in stack
     for (int i = 0; i < np; ++i)
     {
-        treeBound.Union(prims[i]->ObjBound);
+        treeBound.Union(prims[i]->getWorldBounding());
     }
     //Allocate bound edge info
     BoundEdge* edges[3];
@@ -79,12 +79,12 @@ RETRY_SPLIT:
     for (int i = 0; i < np; ++i)
     {
         int prmIdx = prims[i];
-        const Bounds3f tmpBox = primitives[prmIdx]->ObjBound;
+        const Bounds3f &tmpBox = primitives[prmIdx]->getWorldBounding();
         edges[axis][i * 2] = BoundEdge(tmpBox.pMin[axis], prmIdx, true);
         edges[axis][i * 2 + 1] = BoundEdge(tmpBox.pMax[axis], prmIdx, false);
     }
 
-    sort(&edges[axis][0], &edges[axis][2 * np]);
+    std::sort(&edges[axis][0], &edges[axis][2 * np]);
     int nBelow(0), nAbove(np);
     for (int i = 0; i < 2 * np; ++i)
     {
@@ -324,7 +324,7 @@ void KdTreeAccel::update()
     treeBound = Bounds3f();
     for (int i = 0; i < np; ++i)
     {
-        treeBound.Union(primitives[i]->ObjBound);
+        treeBound.Union(primitives[i]->getWorldBounding());
     }
     //Allocate bound edge info
     BoundEdge* edges[3];

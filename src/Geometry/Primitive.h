@@ -11,6 +11,7 @@
 #include "Image/ColorData.h"
 #include "Math/Transform.h"
 #include "Geometry/DifferentialGeometry.h"
+#include "Shading/BxDF.h"
 
 const Float reCE = 5e-8;//ray epsilon coefficiency
 const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon coefficiency
@@ -25,14 +26,13 @@ class Primitive
 public:
 	Primitive(const Transform* o2w = nullptr)
 		: shapeID(nextshapeID++)
-        , ObjectToWorld(o2w)
-        , UV_Mapping(nullptr), normalMap(nullptr)
+        , mObjectToWorld(o2w)
     {
 	}
     virtual ~Primitive() {}
 
 	virtual void bounding() = 0;
-    virtual Bounds3f getWorldBounding() const { return ObjBound; }
+    const Bounds3f &getWorldBounding() const { return mObjBound; }
 	virtual void refine(vector<Primitive*> &refined) {}
 	virtual bool intersectP(const Ray &inRay) const;
 	virtual bool intersect(const Ray &inRay,
@@ -51,24 +51,44 @@ public:
                                     DifferentialGeometry* dg) const {}
 
     virtual bool isInside(const Point3f &pPos) const { return false; }
-    virtual void assignTextureMapping(TextureMapping* &mapping) {
-        UV_Mapping = mapping;
+
+    virtual void printInfo(const std::string &msg = "") const;
+
+    uint32_t getShapeID() const
+    {
+        return shapeID;
     }
-    virtual void assignNormalMap(Texture* nMap) {
-        normalMap = nMap;
+
+    void setName(const std::string &primName)
+    {
+        mPrimName = primName;
     }
 
-    virtual void printInfo() const;
+    void setTransform(const Transform* xform)
+    {
+        mObjectToWorld = xform;
+    }
 
-public:
-    static uint32_t nextshapeID;
-    const uint32_t shapeID;
+    const Matrix4x4 &objectToWorld() const
+    {
+        return mObjectToWorld->getMat();
+    }
 
-	const Transform* ObjectToWorld;
-	Bounds3f ObjBound;
+    const Matrix4x4 &worldToObject() const
+    {
+        return mObjectToWorld->getInvMat();
+    }
 
-	TextureMapping* UV_Mapping;
-	Texture* normalMap;
+protected:
+    static uint32_t         nextshapeID;
+    const uint32_t          shapeID;
+
+    std::string             mPrimName;
+
+	const Transform*        mObjectToWorld;
+	Bounds3f                mObjBound;
+
+    std::shared_ptr<BxDF>   bxdf;
 };
 
 }

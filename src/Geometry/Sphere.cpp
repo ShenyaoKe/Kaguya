@@ -20,8 +20,8 @@ geoSphere::geoSphere(const Transform* o2w,
 }
 void geoSphere::bounding()
 {
-    ObjBound = Bounds3f();
-    ObjBound.expand(r);
+    mObjBound = Bounds3f();
+    mObjBound.expand(r);
     //return false;
 }
 
@@ -36,7 +36,7 @@ bool geoSphere::intersect(const Ray &inRay,
 {
     Float phi, theta;
     Point3f pHit;
-    Ray ray = ObjectToWorld->getInvMat()(inRay);
+    Ray ray = mObjectToWorld->getInvMat()(inRay);
     // (ox + t*dx)^2 + (oy + t*dy)^2 + (oz + t*dz)^2 = r^2
     // A * t^2 + 2B * t + C = 0
     // A = dx^2 + dy^2 + dz^2
@@ -111,7 +111,7 @@ bool geoSphere::intersect(const Ray &inRay,
     *tHit = tHitLoc;
     *rayEpsilon = reCE * *tHit;
 
-    const Transform &o2w = *ObjectToWorld;
+    const Transform &o2w = *mObjectToWorld;
     *dg = DifferentialGeometry(o2w(pHit),
                                o2w(Normal3f()),
                                o2w(dpdu), o2w(dpdv),

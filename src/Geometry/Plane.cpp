@@ -52,7 +52,7 @@ bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit
 void geoPlane::bounding()
 {
     // TODO: Plane bouding method
-    ObjBound = Bounds3f(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
+    mObjBound = Bounds3f(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
 }
 
 }

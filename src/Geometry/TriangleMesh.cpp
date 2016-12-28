@@ -39,7 +39,7 @@ void TriangleMesh::bounding()
 {
     for (auto &v : mVertexBuffer)
     {
-        ObjBound.Union(v);
+        mObjBound.Union(v);
     }
 }
 void TriangleMesh::refine(vector<Primitive*> &refined)
@@ -295,7 +295,7 @@ Triangle::Triangle(TriangleMesh* inMesh, size_t fn)
 
 void Triangle::bounding()
 {
-    ObjBound = Union(Bounds3f(*p[0], *p[1]), *p[2]);
+    mObjBound = Union(Bounds3f(*p[0], *p[1]), *p[2]);
 }
 
 void Triangle::attachMesh(const TriangleMesh* inMesh)
@@ -453,7 +453,7 @@ void Triangle::postIntersect(const Ray &inRay,
 void Triangle::getNormal(DifferentialGeometry* queryPoint) const
 {
     // TODO: Triangle shading methods
-    if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
+    /*if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
     {
         ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
         tmpNormal.printInfo();
@@ -462,7 +462,7 @@ void Triangle::getNormal(DifferentialGeometry* queryPoint) const
             - Normal3f(queryPoint->dPdv) * tmpNormal.g
             + queryPoint->Ng * tmpNormal.b);
     }
-    else
+    else*/
     {
         Float du1 = uv[0]->x - uv[2]->x;
         Float du2 = uv[1]->x - uv[2]->x;

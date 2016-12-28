@@ -10,15 +10,16 @@
 namespace Kaguya
 {
 
-uint32_t Primitive::nextshapeID = 1;
+uint32_t Primitive::nextshapeID = 0;
 
 bool Primitive::intersectP(const Ray &inRay) const
 {
-    return ObjBound.intersectP(inRay);
+    return mObjBound.intersectP(inRay);
 }
 
-void Primitive::printInfo() const
+void Primitive::printInfo(const std::string &msg) const
 {
+    std::cout << msg << std::endl;
 }
 
 }

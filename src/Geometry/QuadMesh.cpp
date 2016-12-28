@@ -41,7 +41,7 @@ void QuadMesh::bounding()
 {
     for (auto &v : mVertexBuffer)
     {
-        ObjBound.Union(v);
+        mObjBound.Union(v);
     }
 }
 
