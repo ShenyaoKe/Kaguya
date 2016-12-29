@@ -57,7 +57,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;$(EMBREE_INSTALL_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -67,7 +67,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget);$(EMBREE_INSTALL_DIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
@@ -80,7 +80,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;$(EMBREE_INSTALL_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -92,7 +92,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget);$(EMBREE_INSTALL_DIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>xcopy /i /e /s /y /f "$(ProjectDir)..\src\*.h" "$(SolutionDir)..\include\Kaguya\*.h"</Command>
