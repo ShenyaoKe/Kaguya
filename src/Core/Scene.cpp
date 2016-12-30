@@ -11,26 +11,16 @@
 namespace Kaguya
 {
 
-Scene::Scene()
-    : mSceneContext(nullptr)
-{
-    mSceneContext = rtcDeviceNewScene(EmbreeUtils::getDevice(),
-                                      RTC_SCENE_STATIC,
-                                      RTC_INTERSECT1);
-}
-
-
-Scene::Scene(std::vector<std::shared_ptr<Primitive>> prims,
+Scene::Scene(std::shared_ptr<Camera> camera,
+             std::vector<std::shared_ptr<Primitive>> prims,
              std::vector<std::shared_ptr<Light>> lights)
-    : mSceneContext(nullptr)
+    : mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
+                                      RTC_SCENE_STATIC,
+                                      RTC_INTERSECT1))
+    , mCamera(camera)
     , mPrims(std::move(prims))
     , mLights(std::move(lights))
 {
-
-    mSceneContext = rtcDeviceNewScene(EmbreeUtils::getDevice(),
-                                      RTC_SCENE_STATIC,
-                                      RTC_INTERSECT1);
-
     for (int i = 0; i < mPrims.size(); i++)
     {
         buildGeometry(mPrims[i].get());
@@ -67,6 +57,10 @@ bool Scene::intersect(Ray &inRay,
 
 void Scene::buildGeometry(const Primitive* prim)
 {
+    if (prim == nullptr)
+    {
+        return;
+    }
     switch (prim->primitiveType())
     {
     case PrimitiveType::PARAMATRIC_SURFACE:

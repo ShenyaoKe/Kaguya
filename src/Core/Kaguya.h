@@ -137,9 +137,10 @@ class Texture;
 class TextureMapping;
 class Shader;
 
+class Camera;
 class ProjectiveCamera;
 class PerspectiveCamera;
-class AklemanCamera;
+class OrthographicCamera;
 
 class renderBuffer;
 

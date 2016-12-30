@@ -52,7 +52,7 @@ private:
 
     void renderpixels();
 protected:
-    std::unique_ptr<PerspectiveCamera> view_cam;
+    std::shared_ptr<PerspectiveCamera> view_cam;
     renderBuffer* pixmap;
 private:
     int lastMousePos[2];

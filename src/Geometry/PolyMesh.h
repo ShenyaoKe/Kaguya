@@ -63,7 +63,7 @@ public:
 protected:
     virtual void tessellate(std::vector<uint32_t> &indexBuffer,
                             std::vector<uint32_t> &faceSizeBuffer,
-                            size_t            tessellatedCount) = 0;
+                            size_t                 tessellatedCount) = 0;
 
     std::vector<Point3f>              mVertexBuffer;
     std::vector<uint32_t>             mIndexBuffer;

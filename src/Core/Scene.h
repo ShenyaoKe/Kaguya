@@ -10,9 +10,11 @@ namespace Kaguya
 class Scene
 {
 public:
-    Scene();
-    Scene(std::vector<std::shared_ptr<Primitive>> prims,
-          std::vector<std::shared_ptr<Light>> lights);
+    Scene(std::shared_ptr<Camera> camera,
+          std::vector<std::shared_ptr<Primitive>> prims
+                = std::vector<std::shared_ptr<Primitive>>(),
+          std::vector<std::shared_ptr<Light>> lights
+                = std::vector<std::shared_ptr<Light>>());
     ~Scene();
 
     void commitScene();
@@ -44,7 +46,7 @@ private:
 private:
     RTCScene                                mSceneContext;
 
-    //uint32_t                                mSceneID;
+    std::shared_ptr<Camera>                 mCamera;
     std::vector<std::shared_ptr<Primitive>> mPrims;
     std::vector<std::shared_ptr<Light>>     mLights;
 };

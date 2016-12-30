@@ -14,7 +14,7 @@ OGLViewer::OGLViewer(QWidget* parent)
                                      Vector3f(0, 1, 0),
                                      width() / Float(height())))
     , pixmap(new renderBuffer(default_resX, default_resY))
-    , mScene(new Scene)
+    , mScene(new Scene(view_cam))
     , resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
     // Set surface format for current widget
@@ -31,44 +31,6 @@ OGLViewer::OGLViewer(QWidget* parent)
     mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/cylinder.obj")));
     mScene->commitScene();
 
-    cout << sizeof(Ray) << ", " << sizeof(RTCRay) << endl;
-    
-
-    Ray traceRay;
-    cameraSampler camsmp;
-    Transform w2o;
-
-    DifferentialGeometry queryPoint;
-    QImage retImg(default_resX, default_resY, QImage::Format_ARGB32);
-
-    clock_t startT, endT;
-    startT = clock();
-    for (int j = 0; j < default_resY; j++)
-    {
-        for (int i = 0; i < default_resX; i++)
-        {
-            camsmp.imgX = i;
-            camsmp.imgY = j;
-
-            view_cam->generateRay(camsmp, &traceRay);
-            Float tHit(NUM_INFINITY), rayEp(0);
-
-            if (mScene->intersect(traceRay, &queryPoint, &tHit, &rayEp))
-            {
-                //cout << "hit" << endl;
-                traceRay.Ng.normalize();
-                int rgb[]{ (traceRay.Ng.x*0.5f + 0.5f)*255,
-                    (traceRay.Ng.y*0.5f + 0.5f) * 255,
-                    (traceRay.Ng.z*0.5f + 0.5f) * 255 };
-                retImg.setPixelColor(i, default_resY - j, QColor(rgb[0], rgb[1], rgb[2]));
-            }
-            
-        }
-        //if (j % 10 == 0) cout << j << endl;
-    }
-    retImg.save("result.png");
-    endT = clock();
-    cout << "Rendering Time:\t" << (Float)(endT - startT) / CLOCKS_PER_SEC << "s" << endl;//Timer
     getchar();
 }
 
