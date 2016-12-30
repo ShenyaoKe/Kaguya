@@ -137,17 +137,30 @@ void QuadMesh::tessellate(std::vector<uint32_t> &indexBuffer,
     indexBuffer.resize(nLastPosition);
 
     // TODO: take care of Embree Quad indexing order
-    /*for (int i = faceSizeBuffer.size() - 1; i >= 0; i--)
+    for (int i = faceSizeBuffer.size() - 1; i >= 0; i--)
     {
-        nCurrentPosition -= faceSizeBuffer[i];
-
-        for (int j = faceSizeBuffer[i] - 2; j > 0; j--)
+        uint32_t curFaceSize = faceSizeBuffer[i];
+        uint32_t lastIndex = indexBuffer[nCurrentPosition - 1];
+        nCurrentPosition -= curFaceSize;
+        if (curFaceSize == 3)
         {
-            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j + 1];
-            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j];
+            indexBuffer[--nLastPosition] = lastIndex;
+            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + 2];
+            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + 1];
             indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition];
+        } 
+        else
+        {
+            for (int j = curFaceSize; j > 0; j-=2)
+            {
+                indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j - 1];
+                indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j - 2];
+                indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j - 3];
+                indexBuffer[--nLastPosition] = lastIndex;
+            }
         }
-    }*/
+        
+    }
 }
 
 }
