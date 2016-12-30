@@ -118,24 +118,7 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
                                        buffer.nPrimtives, //!< number of quads
                                        buffer.nVertices,  //!< number of vertices
                                        buffer.nTimeStep); //!< number of motion blur time steps
-    /*uint32_t geomID;
-    if (prim->polyMeshType() == PolyMeshType::TRIANGLE)
-    {
-        geomID = rtcNewTriangleMesh(mSceneContext,
-                                    RTC_GEOMETRY_STATIC,
-                                    buffer.nPrimtives, //!< number of quads
-                                    buffer.nVertices,  //!< number of vertices
-                                    buffer.nTimeStep);
-    }
-    else
-    {
-        geomID = rtcNewQuadMesh(mSceneContext,
-                                RTC_GEOMETRY_STATIC,
-                                buffer.nPrimtives, //!< number of quads
-                                buffer.nVertices,  //!< number of vertices
-                                buffer.nTimeStep);
-    }*/
-
+    
     rtcSetBuffer(mSceneContext, geomID, RTC_VERTEX_BUFFER0,
                  buffer.vertTraits[0].data,
                  buffer.vertTraits[0].byteOffset,
