@@ -3,15 +3,13 @@
 namespace Kaguya
 {
 
-Ray::Ray() : d(1, 0, 0), time(0), dp(0)
-{
-}
-
 Ray::Ray(const Point3f &pos, const Vector3f &dir,
          Float minT, Float maxT)
     : o(pos), d(normalize(dir))
-    , time(0), dp(0)
     , tmin(minT), tmax(maxT)
+    , time(0), mask(-1)
+    , geomID(-1), primID(-1), instID(-1)
+    , dp(0)
 {
 }
 

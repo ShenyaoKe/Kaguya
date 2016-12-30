@@ -8,7 +8,12 @@ class SubdMesh : public Mesh
 {
 public:
     SubdMesh();
-    virtual ~SubdMesh();
+    ~SubdMesh();
+
+    PrimitiveType primitiveType() const override
+    {
+        return PrimitiveType::SUBDIVISION_MESH;
+    }
 };
 
 }

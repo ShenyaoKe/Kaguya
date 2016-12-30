@@ -1,9 +1,38 @@
+/*!
+ * \class PolyMesh
+ *
+ * \brief 
+ *
+ * \author Shenyao Ke
+ * \date December 2016
+ */
 #pragma once
 #include "Geometry/Mesh.h"
 #include "Geometry/PolygonAttributes.h"
 
 namespace Kaguya
 {
+
+enum class PolyMeshType
+{
+    TRIANGLE,
+    QUAD
+};
+struct TessTrait
+{
+    //size_t      num = 0;
+    size_t      byteOffset = 0;
+    size_t      byteStride = 0;
+    const void* data = nullptr;
+};
+struct TessBuffer
+{
+    std::vector<TessTrait> vertTraits;
+    TessTrait              indexTrait;
+    size_t                 nPrimtives;
+    size_t                 nVertices;
+    size_t                 nTimeStep;
+};
 
 class PolyMesh : public Mesh
 {
@@ -17,13 +46,14 @@ public:
              NormalAttribute*   normAttri);
     ~PolyMesh();
 
-    /*void bounding() override;
-    bool intersect(const Ray &inRay,
-                   DifferentialGeometry* dg,
-                   Float* tHit,
-                   Float* rayEpsilon) const override;
-    void postIntersect(const Ray &inRay,
-                       DifferentialGeometry* dg) const override;*/
+    PrimitiveType primitiveType() const override
+    {
+        return PrimitiveType::POLYGONAL_MESH;
+    }
+
+    virtual PolyMeshType polyMeshType() const = 0;
+
+    virtual void getTessellated(TessBuffer &trait) const = 0;
 
     static PolyMesh* createPolyMesh(vector<Point3f>   &vertexBuffer,
                                     vector<uint32_t>  &indexBuffer,
@@ -42,8 +72,6 @@ protected:
 
     std::unique_ptr<TextureAttribute> mTextureAttribute;
     std::unique_ptr<NormalAttribute>  mNormalAttibute;
-
-    //std::unique_ptr<Mesh> mImpl;
 };
 
 }

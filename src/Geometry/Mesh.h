@@ -13,45 +13,6 @@ struct BufferTrait
     uint32_t    stride = 0;
 };
 
-class Mesh : public Primitive
-{
-public:
-    Mesh();
-    virtual ~Mesh() = 0;
-private:
-};
-
-struct PolyIndex
-{
-    PolyIndex(size_t sz = 3) : size(sz)
-    {
-        v.reserve(sz);
-        uv.reserve(sz);
-        n.reserve(sz);
-    }
-    void push_back(uint32_t* ids)
-    {
-        v.push_back(ids[0]);
-        if (ids[1] > 0) uv.push_back(ids[1]);
-        if (ids[2] > 0) n.push_back(ids[2]);
-    }
-    void printInfo(const std::string &msg = "") const
-    {
-        if (!msg.empty())
-        {
-            std::cout << msg << std::endl;
-        }
-        for (int i = 0; i < size; i++)
-        {
-            std::cout << v[i] << "/" << uv[i] << "/" << n[i] << "\t";
-        }
-        std::cout << std::endl;
-    }
-
-    size_t size;
-    ui32s_t v, uv, n;
-};
-
 enum class MeshType
 {
     UNKNOWN,
@@ -59,16 +20,20 @@ enum class MeshType
     SUBDIVISION_MESH,
 };
 
+class Mesh : public Primitive
+{
+public:
+    Mesh();
+    virtual ~Mesh() = 0;
+
+private:
+};
+
 Mesh* createMesh(const std::string &filename,
-                 MeshType meshType = MeshType::UNKNOWN);
+                 MeshType meshType = MeshType::POLYGONAL_MESH);
 
 namespace objFileParser
 {
-bool parse(const char*          filename,
-           vector<Point3f>     &verts,
-           vector<Point2f>     &uvs,
-           vector<Normal3f>    &norms,
-           vector<PolyIndex>   &polys);
 bool parse(const char*       filename,
            vector<Point3f>  &verts,
            vector<Point2f>  &uvs,

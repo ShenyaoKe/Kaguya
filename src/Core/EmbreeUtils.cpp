@@ -7,9 +7,10 @@ namespace EmbreeUtils
 
 static RTCDevice sEmbreeDevice = nullptr;
 
-void createDevice(const char* cfg)
+RTCDevice createDevice(const char* cfg)
 {
     sEmbreeDevice = rtcNewDevice(cfg);
+    return sEmbreeDevice;
 }
 
 void deleteDevice()
@@ -20,6 +21,11 @@ void deleteDevice()
 
 RTCDevice getDevice()
 {
+    if (sEmbreeDevice == nullptr)
+    {
+        return createDevice();
+    }
+
     return sEmbreeDevice;
 }
 

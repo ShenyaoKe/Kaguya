@@ -12,6 +12,8 @@ public:
              vector<uint32_t> &indexBuffer,
              vector<uint32_t> &faceSizeBuffer,
              size_t            totalPrimCount,
+             TextureAttribute* texAttri,
+             NormalAttribute*  normAttri,
              bool              isTessellated = true);
     ~QuadMesh();
 
@@ -26,6 +28,7 @@ public:
     void postIntersect(const Ray &inRay,
                        DifferentialGeometry* dg) const override;
 
+    void getTessellated(TessBuffer &trait) const override;
     void getBufferObject(BufferTrait* vertTraits,
                          BufferTrait* vidTraits) const;
     void exportVBO(vector<float>* vtx_array = nullptr,
@@ -39,6 +42,11 @@ public:
 
     vector<Point3f>  vertices() const { return mVertexBuffer; }
     vector<uint32_t> faceids() const { return mIndexBuffer; }
+
+    PolyMeshType polyMeshType() const override
+    {
+        return PolyMeshType::QUAD;
+    }
 
 private:
     void tessellate(vector<uint32_t> &indexBuffer,

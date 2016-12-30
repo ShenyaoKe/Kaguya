@@ -1,6 +1,4 @@
 #pragma once
-#ifndef QTOGL_WINDOW_H
-#define QTOGL_WINDOW_H
 
 #include <QMainWindow>
 //#include <QtGui/QWindow>
@@ -11,29 +9,32 @@
 #include "ui_MainWindow.h"
 #include "ui_About.h"
 
+namespace Kaguya
+{
+
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = 0);
-	//~MainWindow();
+    MainWindow(QWidget *parent = 0);
+    //~MainWindow();
 
-public slots:
-	void on_actionAbout_triggered();
-	void connectimg();
-	//void aboutwindow();
+    public slots:
+    void on_actionAbout_triggered();
+    void connectimg();
+    //void aboutwindow();
 protected:
-	void closeEvent(QCloseEvent *e);
+    void closeEvent(QCloseEvent *e);
 private:
 
-	unique_ptr<OGLViewer> viewer;
-	unique_ptr<ImageViewer> imgViewer;
-	unique_ptr<QDialog> about;
-	Ui::MainWindowClass ui;
-	//Ui::Shelf tool_shelf;
-	//Ui::about_dialog about;
-	//Ui::img_viewer imgViewer;
+    unique_ptr<OGLViewer> viewer;
+    unique_ptr<ImageViewer> imgViewer;
+    unique_ptr<QDialog> about;
+    Ui::MainWindowClass ui;
+    //Ui::Shelf tool_shelf;
+    //Ui::about_dialog about;
+    //Ui::img_viewer imgViewer;
 };
 
-#endif // QTOGL_WINDOW_H
+}

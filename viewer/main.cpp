@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 		QString StyleSheet = QLatin1String(File.readAll());
 		qtApp.setStyleSheet(StyleSheet);
 	}
-	MainWindow w;
+	Kaguya::MainWindow w;
 	w.show();
 
 	return qtApp.exec();

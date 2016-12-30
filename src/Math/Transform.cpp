@@ -31,7 +31,7 @@ void Transform::operator()(const Ray &ray, Ray* ret) const
         ret->tmin = ray.tmin;
         ret->tmax = ray.tmax;
         ret->time = ray.time;
-        ret->dp = ray.dp;
+        //ret->dp = ray.dp;
     }
 }
 

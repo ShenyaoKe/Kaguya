@@ -11,8 +11,12 @@ public:
         : Primitive(o2w)
     {
     }
-    virtual ~ParametricGeomtry() {}
+    ~ParametricGeomtry() {}
 
+    PrimitiveType primitiveType() const override
+    {
+        return PrimitiveType::PARAMATRIC_SURFACE;
+    }
 };
 
 }

@@ -21,6 +21,23 @@ const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon 
 namespace Kaguya
 {
 
+class ParamatricGeometry;
+class Mesh;
+class PolyMesh;
+class SubdMesh;
+class Curve;
+
+enum class PrimitiveType
+{
+    PARAMATRIC_SURFACE,
+    POLYGONAL_MESH,
+    SUBDIVISION_MESH,
+    CURVE,
+    INSTANCE
+};
+
+static const uint32_t sInvalidGeom = (uint32_t)(-1);
+
 class Primitive
 {
 public:
@@ -53,6 +70,8 @@ public:
     virtual bool isInside(const Point3f &pPos) const { return false; }
 
     virtual void printInfo(const std::string &msg = "") const;
+
+    virtual PrimitiveType primitiveType() const = 0;
 
     uint32_t getShapeID() const
     {

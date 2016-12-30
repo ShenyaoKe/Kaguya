@@ -12,11 +12,16 @@ TriangleMesh::TriangleMesh(vector<Point3f>  &vertexBuffer,
                            vector<uint32_t> &indexBuffer,
                            vector<uint32_t> &faceSizeBuffer,
                            size_t            totalPrimCount,
+                           TextureAttribute* texAttri,
+                           NormalAttribute*  normAttri,
                            bool              isTessellated)
+    : PolyMesh(vertexBuffer, indexBuffer,
+               vertexBuffer.size(), totalPrimCount,
+               texAttri, normAttri)
 {
     if (!isTessellated)
     {
-        tessellate(indexBuffer, faceSizeBuffer, totalPrimCount);
+        tessellate(mIndexBuffer, faceSizeBuffer, totalPrimCount);
         if (mTextureAttribute->isFaceVarying())
         {
             tessellate(mTextureAttribute->mIndexBuffer,
@@ -121,6 +126,35 @@ void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) con
     // TODO: Implement post-intersection method
 }
 
+void TriangleMesh::getTessellated(TessBuffer &trait) const
+{
+    // TODO: Implementation check required
+    // Setup time step
+    size_t timestep = 1;
+    trait.nTimeStep = timestep;
+    
+    // Setup first vertex buffer
+    trait.nVertices = mVertexCount;
+    trait.vertTraits.resize(timestep);
+    trait.vertTraits[0].byteOffset = 0;
+    trait.vertTraits[0].byteStride = sizeof(Point3f);
+    trait.vertTraits[0].data = (void*)(mVertexBuffer.data());
+
+    // Setup buffers for Motion Blur
+    for (size_t i = 1; i < timestep; i++)
+    {
+        trait.vertTraits[i].byteOffset = 0;
+        trait.vertTraits[i].byteStride = sizeof(Point3f);
+    	trait.vertTraits[i].data = (void*)(mVertexBuffer.data());
+    }
+
+    // Setup index buffer
+    trait.nPrimtives = mFaceCount;
+    trait.indexTrait.byteOffset = 0;
+    trait.indexTrait.byteStride = sizeof(uint32_t) * sTriFaceSize;
+    trait.indexTrait.data = (void*)(mIndexBuffer.data());
+}
+
 void TriangleMesh::getBufferObject(BufferTrait* vertTraits,
                                    BufferTrait* vidTraits) const
 {
@@ -142,247 +176,88 @@ void TriangleMesh::getBufferObject(BufferTrait* vertTraits,
     }
 }
 
-void TriangleMesh::exportVBO(
-    vector<float>* vtx_array,
-    vector<float>* uv_array,
-    vector<float>* norm_array) const
-{
-    /*if (vtx_array != nullptr)
-    {
-        vtx_array->reserve(fids.size() * 9);
-        for (int i = 0; i < fids.size(); i++)
-        {
-            auto cur_fid = fids[i];
-            for (int j = 0; j < 3; j++)
-            {
-                auto &cur_vtx = mVertexBuffer[cur_fid.v[j] - 1];
-                vtx_array->push_back(static_cast<float>(cur_vtx.x));
-                vtx_array->push_back(static_cast<float>(cur_vtx.y));
-                vtx_array->push_back(static_cast<float>(cur_vtx.z));
-            }
-        }
-    }
-    if (uv_array != nullptr)
-    {
-        uv_array->reserve(fids.size() * 6);
-        for (int i = 0; i < fids.size(); i++)
-        {
-            auto cur_fid = this->fids[i];
-            for (int j = 0; j < 3; j++)
-            {
-                auto &cur_uv = uvs[cur_fid.uv[j] - 1];
-                uv_array->push_back(static_cast<float>(cur_uv.x));
-                uv_array->push_back(static_cast<float>(cur_uv.y));
-            }
-        }
-    }
-    if (norm_array != nullptr)
-    {
-        norm_array->reserve(fids.size() * 9);
-        for (int i = 0; i < fids.size(); i++)
-        {
-            auto cur_fid = this->fids[i];
-            for (int j = 0; j < 3; j++)
-            {
-                auto &cur_norm = norms[cur_fid.n[j] - 1];
-                norm_array->push_back(static_cast<float>(cur_norm.x));
-                norm_array->push_back(static_cast<float>(cur_norm.y));
-                norm_array->push_back(static_cast<float>(cur_norm.z));
-            }
-        }
-    }*/
-}
-
-void TriangleMesh::exportIndexedVBO(vector<float>* vtx_array,
-                                    vector<float>* uv_array,
-                                    vector<float>* norm_array,
-                                    vector<unsigned int>* idx_array) const
-{
-    bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
-
-    if (vtx_array != nullptr)
-    {
-        vtx_array->clear();
-        vtx_array->reserve(mVertexBuffer.size() * 3);
-        has_vert = true;
-    }
-    /*if (this->fids[0]->uv >= 0 && uv_array != nullptr)
-    {
-        *uv_array = new vbo_t[size * 6];
-        texcoord = *uv_array;
-        has_texcoord = true;
-    }
-    if (this->fids[0]->n >= 0 && norm_array != nullptr)
-    {
-        *norm_array = new vbo_t[size * 9];
-        nms = *norm_array;
-        has_normal = true;
-    }
-    if (idx_array != nullptr)
-    {
-        idx_array->clear();
-        idx_array->reserve(fids.size() * 3);
-        has_uid = true;
-    }
-
-    for (int i = 0; i < mVertexBuffer.size(); i++)
-    {
-        auto &point = mVertexBuffer[i];
-        vtx_array->push_back(static_cast<float>(point.x));
-        vtx_array->push_back(static_cast<float>(point.y));
-        vtx_array->push_back(static_cast<float>(point.z));
-    }
-    for (int i = 0; i < fids.size(); i++)
-    {
-        auto &fid = fids[i];
-        idx_array->push_back(static_cast<uint32_t>(fid.v[0] - 1));
-        idx_array->push_back(static_cast<uint32_t>(fid.v[1] - 1));
-        idx_array->push_back(static_cast<uint32_t>(fid.v[2] - 1));
-    }*/
-}
-
 void TriangleMesh::tessellate(vector<uint32_t> &indexBuffer,
                               vector<uint32_t> &faceSizeBuffer,
                               size_t            tessellatedCount)
 {
+    size_t nCurrentPosition = indexBuffer.size();
+    size_t nLastPosition = tessellatedCount * sTriFaceSize;
+    indexBuffer.resize(nLastPosition);
+
+    for (int i = faceSizeBuffer.size() - 1; i >= 0; i--)
+    {
+        nCurrentPosition -= faceSizeBuffer[i];
+
+        for (int j = faceSizeBuffer[i] - 2; j > 0; j--)
+        {
+            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j + 1];
+            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j];
+            indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition];
+        }
+    }
 }
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-Triangle::Triangle()
-    : mesh(nullptr), p{ nullptr }, uv{ nullptr }, n{ nullptr }
-{
-}
 
-Triangle::Triangle(TriangleMesh* inMesh, size_t fn)
-    : mesh(inMesh), p{ nullptr }, uv{ nullptr }, n{ nullptr }
-{
-
-    /*auto &faceIndex = inMesh->mIndexBuffer[fn];
-    if (faceIndex.v.size() > 0)
-    {
-        this->setPoint(&inMesh->mVertexBuffer[faceIndex.v[0] - 1],
-                       &inMesh->mVertexBuffer[faceIndex.v[1] - 1],
-                       &inMesh->mVertexBuffer[faceIndex.v[2] - 1]);
-    }*/
-    /************************************************************************/
-    /* UV                                                                   */
-    /************************************************************************/
-    /*if (faceIndex.uv.size() > 0)
-    {
-        this->setUV(&inMesh->uvs[faceIndex.uv[0] - 1],
-                    &inMesh->uvs[faceIndex.uv[1] - 1], &inMesh->uvs[faceIndex.uv[2] - 1]);
-    }*/
-    /************************************************************************/
-    /* Normals                                                              */
-    /************************************************************************/
-    /*if (faceIndex.n.size() > 0)
-    {
-        this->setNormal(&inMesh->norms[faceIndex.n[0] - 1],
-                        &inMesh->norms[faceIndex.n[1] - 1],
-                        &inMesh->norms[faceIndex.n[2] - 1]);
-    }
-    else
-    {
-        inMesh->norms.push_back(
-            Normal3f(cross(*p[2] - *p[1], *p[0] - *p[1])));
-        auto &n = inMesh->norms.back();
-        this->setNormal(&n, &n, &n);
-    }
-    this->bounding();*/
-}
-
-void Triangle::bounding()
-{
-    mObjBound = Union(Bounds3f(*p[0], *p[1]), *p[2]);
-}
-
-void Triangle::attachMesh(const TriangleMesh* inMesh)
-{
-    mesh = inMesh;
-}
-
-void Triangle::setPoint(Point3f* p0, Point3f* p1, Point3f* p2)
-{
-    p[0] = p0;
-    p[1] = p1;
-    p[2] = p2;
-}
-
-void Triangle::setUV(Point2f* uv0, Point2f* uv1, Point2f* uv2)
-{
-    uv[0] = uv0;
-    uv[1] = uv1;
-    uv[2] = uv2;
-}
-
-void Triangle::setNormal(Normal3f* n0, Normal3f* n1, Normal3f* n2)
-{
-    n[0] = n0;
-    n[0] = n1;
-    n[0] = n2;
-}
-
-bool Triangle::intersect(const Ray &inRay,
-                         DifferentialGeometry* dg,
-                         Float* tHit, Float* rayEpsilon) const
+bool TriangleUtils::intersect(const Point3f &p0,
+                              const Point3f &p1,
+                              const Point3f &p2,
+                              Ray &inRay,
+                              Float* tHit, Float* rayEpsilon)
 {
     // Moller¨CTrumbore Intersection Algorithm
-    Vector3f v1 = *p[1] - *p[0];
-    Vector3f v2 = *p[2] - *p[0];
+    Vector3f v1 = p1 - p0;
+    Vector3f v2 = p2 - p0;
     Vector3f areaVec = cross(v1, v2);
     Vector3f normal = normalize(areaVec);
 
     //ray triangle DifferentialGeometry length
-    Float rayt = dot(normal, (*p[0] - inRay.o))
+    Float rayt = dot(normal, (p0 - inRay.o))
         / dot(normal, inRay.d);
     if (rayt < inRay.tmin || rayt > inRay.tmax) return false;
 
     //inRay.tmin = rayT;
     Point3f ph = inRay(rayt);
-    Vector3f A2 = cross(*p[0] - ph, *p[1] - ph);
-    Vector3f A1 = cross(*p[2] - ph, *p[0] - ph);
+    Vector3f A2 = cross(p0 - ph, p1 - ph);
+    Vector3f A1 = cross(p2 - ph, p0 - ph);
 
     int maxIndex = std::abs(areaVec[0]) > std::abs(areaVec[1]) ? 0 : 1;
     maxIndex = std::abs(areaVec[maxIndex]) > std::abs(areaVec[2]) ? maxIndex : 2;
     // Barycentric coordinate
-    Float s = A1[maxIndex] / areaVec[maxIndex];
-    Float t = A2[maxIndex] / areaVec[maxIndex];
-    Float w = 1.0 - s - t;
-    if (!inUnitRange(s) || !inUnitRange(t) || !inUnitRange(w))
+    Float u = A1[maxIndex] / areaVec[maxIndex];
+    Float v = A2[maxIndex] / areaVec[maxIndex];
+    Float w = 1.0 - u - v;
+    if (!inUnitRange(u) || !inUnitRange(v) || !inUnitRange(w))
     {
         return false;
     }
 
-    *dg = DifferentialGeometry(ph, Normal3f(normal), Point2f(s, t), this);
-
-    inRay.u = s;
-    inRay.v = t;
+    inRay.u = u;
+    inRay.v = v;
     *tHit = rayt;
     *rayEpsilon = reCE * *tHit;
 
     return true;
 }
 
-bool Triangle::intersectWatertight(const Ray &inRay,
-                                   DifferentialGeometry* dg,
-                                   Float* tHit, Float* rayEpsilon) const
+bool TriangleUtils::intersectWatertight(const Point3f &p0,
+                                        const Point3f &p1,
+                                        const Point3f &p2,
+                                        Ray &inRay,
+                                        Float* tHit, Float* rayEpsilon)
 {
-
-    Vector3f rd = Vector3f(-10, -6, -11);
-    Point3f ro = Point3f(10, 6, 11);
-
-    Vector3f vro = Vector3f(ro);
-    Point3f v0 = *p[0] - vro;
-    Point3f v1 = *p[1] - vro;
-    Point3f v2 = *p[2] - vro;
+    Vector3f vro = Vector3f(inRay.o);
+    Point3f v0 = p0 - vro;
+    Point3f v1 = p1 - vro;
+    Point3f v2 = p2 - vro;
 
     // Permute Ray
-    int kz = maxDimension(abs(rd));
+    int kz = maxDimension(abs(inRay.d));
     int kx = kz + 1; if (kx == 3) kx = 0;
     int ky = kx + 1; if (ky == 3) ky = 0;
-    Vector3f pmDir = permute(rd, kx, ky, kz);
+    Vector3f pmDir = permute(inRay.d, kx, ky, kz);
 
     // Permute Points
     v0 = permute(v0, kx, ky, kz);
@@ -418,15 +293,22 @@ bool Triangle::intersectWatertight(const Ray &inRay,
     // Barycentric Coordinates
     Float u = e0 * invDet;
     Float v = e1 * invDet;
+
+    return true;
 }
 
-void Triangle::postIntersect(const Ray &inRay,
-                             DifferentialGeometry* dg) const
+void TriangleUtils::postIntersect(const Point3f &p0,
+                                  const Point3f &p1,
+                                  const Point3f &p2,
+                                  const Ray &inRay,
+                                  DifferentialGeometry* dg)
 {
-    Vector3f v1 = *p[1] - *p[0];
-    Vector3f v2 = *p[2] - *p[0];
+    Vector3f v1 = p1 - p0;
+    Vector3f v2 = p2 - p0;
 
     // Compute dpdu, dpdv
+    // 
+#if 0
     Vector3f dpdu, dpdv;
     Float du1 = uv[1]->x - uv[0]->x;
     Float dv1 = uv[1]->y - uv[0]->y;
@@ -448,39 +330,8 @@ void Triangle::postIntersect(const Ray &inRay,
     Float s = dg->UV.x;
     Float t = dg->UV.y;
     Float w = 1.0 - s - t;
-    dg->UV = *uv[0] * w + *uv[1] * s + *uv[2] * t;
-}
-void Triangle::getNormal(DifferentialGeometry* queryPoint) const
-{
-    // TODO: Triangle shading methods
-    /*if (mesh->normalMap != nullptr && mesh->UV_Mapping != nullptr)
-    {
-        ColorRGBA tmpNormal = mesh->normalMap->getColor(queryPoint) * 2 - ColorRGBA(1, 1, 1, 1);
-        tmpNormal.printInfo();
-        queryPoint->Ng = normalize(
-            -Normal3f(queryPoint->dPdu) * tmpNormal.r
-            - Normal3f(queryPoint->dPdv) * tmpNormal.g
-            + queryPoint->Ng * tmpNormal.b);
-    }
-    else*/
-    {
-        Float du1 = uv[0]->x - uv[2]->x;
-        Float du2 = uv[1]->x - uv[2]->x;
-        Float dv1 = uv[0]->y - uv[2]->y;
-        Float dv2 = uv[1]->y - uv[2]->y;
-        Vector3f dp1 = *p[0] - *p[2], dp2 = *p[1] - *p[2];
-        Float det = du1 * dv2 - dv1 * du2;//Determinant
-        if (det == 0)
-        {
-            //Do something
-        }
-        else
-        {
-            det = 1.0 / det;
-            queryPoint->dPdu = normalize((dp1 * dv2 - dp2 * dv1) * det);
-            queryPoint->dPdv = normalize((dp1 * -du2 + dp2 * du1) * det);
-        }
-    }
+    dg->shading.ST = *uv[0] * w + *uv[1] * s + *uv[2] * t;
+#endif
 }
 
 }

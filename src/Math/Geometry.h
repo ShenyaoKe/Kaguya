@@ -23,7 +23,7 @@ class Vector2
 public:
     Vector2() { x = y = 0; }
     Vector2(T _x, T _y) : x(_x), y(_y) {}
-    Vector2(T val[2]) : x(val[0]), y(val[1]) {}
+    Vector2(const T val[2]) : x(val[0]), y(val[1]) {}
     explicit Vector2(const Point2<T> &p);
 
     bool hasNaN() const { return isNaN(x) || isNaN(y); }
@@ -114,7 +114,7 @@ class Vector3
 public:
     Vector3() { x = y = z = 0; }
     Vector3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
-    Vector3(T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
+    Vector3(const T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
     explicit Vector3(const Point3<T> &p);
     explicit Vector3(const Normal3<T> &p);
 
@@ -216,7 +216,7 @@ class Point2
 public:
     Point2() { x = y = 0; }
     Point2(T _x, T _y) : x(_x), y(_y) {}
-    Point2(T val[2]) : x(val[0]), y(val[1]) {}
+    Point2(const T val[2]) : x(val[0]), y(val[1]) {}
 
     bool hasNaN() const { return isNaN(x) || isNaN(y); }
 
@@ -316,7 +316,7 @@ class Point3
 public:
     Point3() { x = y = z = 0; }
     Point3(T x, T y, T z) : x(x), y(y), z(z) {}
-    Point3(T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
+    Point3(const T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
 
     bool hasNaN() const { return isNaN(x) || isNaN(y) || isNaN(z); }
 
@@ -422,7 +422,7 @@ class Normal3
 public:
     Normal3() { x = y = z = 0; }
     Normal3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {}
-    Normal3(T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
+    Normal3(const T val[3]) : x(val[0]), y(val[1]), z(val[2]) {}
     explicit Normal3(const Vector3<T> &vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
     bool hasNaN() const { return isNaN(x) || isNaN(y) || isNaN(z); }

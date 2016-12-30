@@ -14,11 +14,9 @@ namespace Kaguya
 
 class Ray
 {
-private:
-
 public:
-    Ray();
-    Ray(const Point3f &pos, const Vector3f &dir,
+    Ray(const Point3f &pos = Point3f(0, 0, 0),
+        const Vector3f &dir = Vector3f(1, 0, 0),
         Float minT = 0, Float maxT = NUM_INFINITY);
 
     Point3f operator()(Float t) const;
@@ -26,15 +24,37 @@ public:
     Float getDifferenceT() const;
 
     void printInfo() const;
+
 public:
     Point3f o;// Origin point position
+    float   align0;
+
     Vector3f d;// Ray Direction
-    mutable Float u, v;
-    mutable Float tmin = 0.0, tmax = NUM_INFINITY;
+    float   align1;
+
+    mutable Float tmin = 0;
+    mutable Float tmax = NUM_INFINITY;
+
     Float time;
-    int dp;//ray depth count
-    int32_t geomID;
-    int32_t primID;
+    uint32_t mask;
+
+    // Unnormalized Geometry Normal
+    Normal3f Ng;
+    float align2;
+
+    // Barycentric coordinates of intersection
+    mutable Float u, v;
+
+    // Geometry ID
+    uint32_t geomID;
+    // Primitive ID
+    uint32_t primID;
+    // Instance ID
+    uint32_t instID;
+
+    uint32_t dp;//ray depth count
+
+    float align3[2];
 };
 
 }

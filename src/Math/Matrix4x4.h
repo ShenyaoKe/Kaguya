@@ -16,11 +16,10 @@ namespace Kaguya
 
 struct Matrix4x4
 {
-    Matrix4x4()
-        : mtx{ 1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1 }
+    Matrix4x4() : mtx{ 1, 0, 0, 0,
+                       0, 1, 0, 0,
+                       0, 0, 1, 0,
+                       0, 0, 0, 1 }
     {
     }
     Matrix4x4(Float val) : mtx{ val }
@@ -185,7 +184,7 @@ inline Ray Matrix4x4::operator()(const Ray & ray) const
 {
     Ray ret((*this)(ray.o), (*this)(ray.d), ray.tmin, ray.tmax);
     ret.time = ray.time;
-    ret.dp = ray.dp;
+    //ret.dp = ray.dp;
     return ret;
 }
 
@@ -356,13 +355,6 @@ inline void Matrix4x4::setToIdentity()
         mtx[1][0] = mtx[1][2] = mtx[1][3] =
         mtx[2][0] = mtx[2][1] = mtx[2][3] =
         mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0;
-
-    /**this = {
-        1.0, 0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0, 0.0,
-        0.0, 0.0, 0.0, 1.0
-    };*/
 }
 
 inline void Matrix4x4::printInfo(const std::string &msg) const

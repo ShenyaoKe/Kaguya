@@ -52,7 +52,7 @@ private:
 // b = A * x
 // where b is Vector2, A is Matrix2x2,
 // x is Vector2
-bool solveLinearSystem2x2(
-    const Float A[2][2], const Float b[2], Float* x0, Float* x1);
+bool solveLinearSystem2x2(const Float A[2][2], const Float b[2],
+                          Float* x0, Float* x1);
 
 }
