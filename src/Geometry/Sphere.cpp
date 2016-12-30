@@ -53,15 +53,15 @@ bool geoSphere::intersect(const Ray &inRay,
     if (!quadratic(coeA, coeB, coeC, t1, t2)) return false;
 
     // (tmin, tmax) doesn't overlap (t1, t2)
-    if (t1 > ray.tmax || t2 < ray.tmin) return false;
+    if (t1 > ray.tMax || t2 < ray.tMin) return false;
 
     // Test against ray length
     Float tHitLoc = t1;
-    if (tHitLoc < ray.tmin)
+    if (tHitLoc < ray.tMin)
     {
         tHitLoc = t2; // Always use the nearest intersection
         // (tmin, tmax) inside (t1, t2)
-        if (tHitLoc > ray.tmax) return false;
+        if (tHitLoc > ray.tMax) return false;
     }
 
     // Compute intersection position
@@ -79,7 +79,7 @@ bool geoSphere::intersect(const Ray &inRay,
         // Fail to intersect
         if (tHitLoc == t1) return false;
         // Farther intersection hits but out of ray range
-        if (t2 > ray.tmax) return false;
+        if (t2 > ray.tMax) return false;
 
         // Re-Compute new intersection point
         tHitLoc = t2;

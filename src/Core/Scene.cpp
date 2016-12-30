@@ -1,12 +1,12 @@
 #include "Scene.h"
 #include "Core/EmbreeUtils.h"
-#include "embree2/rtcore_geometry.h"
-#include "embree2/rtcore_ray.h"
-
 #include "Geometry/TriangleMesh.h"
 #include "Geometry/QuadMesh.h"
 #include "Geometry/SubdMesh.h"
 #include "Geometry/Curve.h"
+
+#include <embree2/rtcore_geometry.h>
+#include <embree2/rtcore_ray.h>
 
 namespace Kaguya
 {

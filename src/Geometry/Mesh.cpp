@@ -13,14 +13,14 @@ Mesh::~Mesh()
 {
 }
 
-bool objFileParser::parse(const char*       filename,
-                          vector<Point3f>  &verts,
-                          vector<Point2f>  &uvs,
-                          vector<Normal3f> &norms,
-                          vector<uint32_t> &faceId,
-                          vector<uint32_t> &texcoordId,
-                          vector<uint32_t> &normId,
-                          vector<uint32_t> &faceCount)
+bool objFileParser::parse(const char*            filename,
+                          std::vector<Point3f>  &verts,
+                          std::vector<Point2f>  &uvs,
+                          std::vector<Normal3f> &norms,
+                          std::vector<uint32_t> &faceId,
+                          std::vector<uint32_t> &texcoordId,
+                          std::vector<uint32_t> &normId,
+                          std::vector<uint32_t> &faceCount)
 {
     std::FILE* fp = std::fopen(filename, "r");
     if (fp == nullptr)
@@ -147,15 +147,15 @@ bool objFileParser::parse(const char*       filename,
 
 Mesh* createMesh(const std::string &filename, MeshType meshType)
 {
-    vector<Point3f>   vertexBuffer;
-    vector<Point2f>   textureCoords;
-    vector<Normal3f>  norms;
-    vector<uint32_t>  faceIndexBuffer;
-    vector<uint32_t>  texcoordsIndexBuffer;
-    vector<uint32_t>  normIndexBuffer;
-    vector<uint32_t>  faceCount;
-    TextureAttribute* texAttr;
-    NormalAttribute*  normAttr;
+    std::vector<Point3f>  vertexBuffer;
+    std::vector<Point2f>  textureCoords;
+    std::vector<Normal3f> norms;
+    std::vector<uint32_t> faceIndexBuffer;
+    std::vector<uint32_t> texcoordsIndexBuffer;
+    std::vector<uint32_t> normIndexBuffer;
+    std::vector<uint32_t> faceCount;
+    TextureAttribute*     texAttr;
+    NormalAttribute*      normAttr;
     if (Utils::endsWith(filename, "obj"))
     {
         if (!objFileParser::parse(filename.c_str(),

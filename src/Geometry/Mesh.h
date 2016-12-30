@@ -6,9 +6,9 @@ namespace Kaguya
 
 struct BufferTrait
 {
-    const void* data = nullptr;
-    uint32_t    count = 0;
-    uint32_t    size = 0;
+    const void* data   = nullptr;
+    uint32_t    count  = 0;
+    uint32_t    size   = 0;
     uint32_t    offset = 0;
     uint32_t    stride = 0;
 };
@@ -25,8 +25,6 @@ class Mesh : public Primitive
 public:
     Mesh();
     virtual ~Mesh() = 0;
-
-private:
 };
 
 Mesh* createMesh(const std::string &filename,
@@ -34,14 +32,6 @@ Mesh* createMesh(const std::string &filename,
 
 namespace objFileParser
 {
-bool parse(const char*       filename,
-           vector<Point3f>  &verts,
-           vector<Point2f>  &uvs,
-           vector<Normal3f> &norms,
-           vector<uint32_t> &faceId,
-           vector<uint32_t> &texcoordId,
-           vector<uint32_t> &normId,
-           vector<uint32_t> &faceCount);
 
 enum index_t : uint8_t
 {
@@ -52,6 +42,15 @@ enum index_t : uint8_t
     VN = V | NORM,
     VTN = V | UV | NORM
 };
+
+bool parse(const char*            filename,
+           std::vector<Point3f>  &verts,
+           std::vector<Point2f>  &uvs,
+           std::vector<Normal3f> &norms,
+           std::vector<uint32_t> &faceId,
+           std::vector<uint32_t> &texcoordId,
+           std::vector<uint32_t> &normId,
+           std::vector<uint32_t> &faceCount);
 
 inline index_t facetype(const char* str, uint32_t* val)
 {
@@ -68,12 +67,8 @@ inline index_t facetype(const char* str, uint32_t* val)
         {
             return VN;//101
         }
-        else// V
-        {
-            return V;//001
-        }
-    default:
-        return V;
+    default:// V
+        return V;;//001
     }
 }
 };

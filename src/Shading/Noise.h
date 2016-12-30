@@ -230,7 +230,9 @@ private:
 inline PerlinNoise3D::PerlinNoise3D()
 {
 }
-inline PerlinNoise3D::PerlinNoise3D(Float persistence, int octaves, int wd, int ht, int dp)
+inline PerlinNoise3D::PerlinNoise3D(Float persistence,
+                                    int octaves,
+                                    int wd, int ht, int dp)
 {
     p = persistence;
     oct = octaves;
@@ -241,7 +243,9 @@ inline PerlinNoise3D::PerlinNoise3D(Float persistence, int octaves, int wd, int 
 inline PerlinNoise3D::~PerlinNoise3D()
 {
 }
-inline void PerlinNoise3D::setData(Float persistence, int octaves, int wd, int ht, int dp)
+inline void PerlinNoise3D::setData(Float persistence,
+                                   int octaves,
+                                   int wd, int ht, int dp)
 {
     p = persistence;
     oct = octaves;
@@ -257,7 +261,8 @@ inline Float PerlinNoise3D::getValue(const Point3f &uv) const
     {
         Float freq = pow(2.0, i);
         Float amp = pow(p, i);
-        total += interpolateNoise(uv.x * width * freq, uv.y * height * freq,
+        total += interpolateNoise(uv.x * width * freq,
+                                  uv.y * height * freq,
                                   uv.z * depth * freq) * amp;
         //total += interpolateNoise(uv.x * freq, uv.y * freq) * amp;
     }

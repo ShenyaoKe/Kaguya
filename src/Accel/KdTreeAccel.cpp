@@ -4,9 +4,12 @@ namespace Kaguya
 {
 
 static int leafCount(0);
+
 char axisChar[4] = { 'X', 'Y', 'Z', 'L' };
-KdTreeAccel::KdTreeAccel(const vector<Primitive*> &prims, int md, int mp,
-                         Float eb) : maxDepth(md), maxPrims(mp), emptyBonus(eb)
+
+KdTreeAccel::KdTreeAccel(const std::vector<Primitive*> &prims,
+                         int md, int mp, Float eb)
+    : maxDepth(md), maxPrims(mp), emptyBonus(eb)
 {
     int np = prims.size();
     primitives = prims;
@@ -33,7 +36,7 @@ KdTreeAccel::KdTreeAccel(const vector<Primitive*> &prims, int md, int mp,
         edges[i] = new BoundEdge[np * 2];
     }
     //Create stack to record primitive indices
-    vector<int> primNum(np);
+    std::vector<int> primNum(np);
     for (int i = 0; i < np; ++i)
     {
         primNum[i] = i;
@@ -50,7 +53,9 @@ KdTreeAccel::KdTreeAccel(const vector<Primitive*> &prims, int md, int mp,
     }
 }
 
-void KdTreeAccel::buildTree(KdAccelNode* node, const Bounds3f &bound, vector<int> &prims,
+void KdTreeAccel::buildTree(KdAccelNode* node,
+                            const Bounds3f &bound,
+                            std::vector<int> &prims,
                             int depth, BoundEdge* edges[3])
 {
     node->bbox = bound;
@@ -139,8 +144,8 @@ RETRY_SPLIT:
     }
 
     //recursively build subtree
-    vector<int> primsBelow;
-    vector<int> primsAbove;
+    std::vector<int> primsBelow;
+    std::vector<int> primsAbove;
     //Store indices of below primitives
     for (int i = 0; i < bestOffest; ++i)
     {
@@ -185,12 +190,15 @@ RETRY_SPLIT:
     buildTree(node->aboveNode, aboveBound, primsAbove, depth - 1, edges);
 
 }
-bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint,
+bool KdTreeAccel::intersect(const Ray &inRay,
+                            DifferentialGeometry* queryPoint,
                             Float* tHit, Float* rayEpsilon) const
 {
     return intersect(inRay, queryPoint, root, tHit, rayEpsilon);
 }
-bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, const KdAccelNode* node,
+bool KdTreeAccel::intersect(const Ray &inRay,
+                            DifferentialGeometry* queryPoint,
+                            const KdAccelNode* node,
                             Float* tHit, Float* rayEpsilon) const
 {
     //Compute initial parametric range of ray inside kd-tree extent
@@ -208,7 +216,7 @@ bool KdTreeAccel::intersect(const Ray &inRay, DifferentialGeometry* queryPoint, 
     if (node != nullptr)
     {
         //if hit outside the box, think it's used for later use
-        if (inRay.tmax < tmin)
+        if (inRay.tMax < tmin)
         {
             return isHit;
         }
@@ -333,7 +341,7 @@ void KdTreeAccel::update()
         edges[i] = new BoundEdge[np * 2];
     }
     //Create stack to record primitive indices
-    vector<int> primNum(np);
+    std::vector<int> primNum(np);
     for (int i = 0; i < np; ++i)
     {
         primNum[i] = i;
@@ -381,7 +389,7 @@ bool KdTreeAccel::inLeaf(const Point3f &pos, const KdAccelNode* node) const
     return isInLeaf;
 }
 
-void KdAccelNode::initLeaf(vector<int> &prims)
+void KdAccelNode::initLeaf(std::vector<int> &prims)
 {
     //int np = prims.size();
     flags = 3;

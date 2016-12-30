@@ -1,4 +1,5 @@
 #include "Tracer/Ray.h"
+#include "Geometry/Primitive.h"
 
 namespace Kaguya
 {
@@ -6,9 +7,12 @@ namespace Kaguya
 Ray::Ray(const Point3f &pos, const Vector3f &dir,
          Float minT, Float maxT)
     : o(pos), d(normalize(dir))
-    , tmin(minT), tmax(maxT)
-    , time(0), mask(-1)
-    , geomID(-1), primID(-1), instID(-1)
+    , tMin(minT), tMax(maxT)
+    , time(0)
+    , mask(sInvalidGeomID)
+    , geomID(sInvalidGeomID)
+    , primID(sInvalidGeomID)
+    , instID(sInvalidGeomID)
     , dp(0)
 {
 }
@@ -20,13 +24,13 @@ Point3f Ray::operator()(Float t) const
 
 void Ray::setT(Float t1, Float t2) const
 {
-    tmin = t1;
-    tmax = t2;
+    tMin = t1;
+    tMax = t2;
 }
 
 Float Ray::getDifferenceT() const
 {
-    return tmax - tmin;
+    return tMax - tMin;
 }
 
 void Ray::printInfo() const

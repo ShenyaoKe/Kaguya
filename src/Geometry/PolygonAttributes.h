@@ -20,12 +20,12 @@ public:
     PolygonAttribute(AttributeRate attriType = AttributeRate::UNIFORM)
         : mType(attriType) {}
     // Vertex Varying
-    PolygonAttribute(vector<T> attriVals)
+    PolygonAttribute(std::vector<T> attriVals)
         : mValueBuffer(std::move(attriVals))
         , mType(AttributeRate::VERTEX_VARYING) {}
     // Face Varying
-    PolygonAttribute(vector<T> attriVals,
-                     vector<uint32_t> attriIndices)
+    PolygonAttribute(std::vector<T>        attriVals,
+                     std::vector<uint32_t> attriIndices)
         : mValueBuffer(std::move(attriVals))
         , mIndexBuffer(std::move(attriIndices))
         , mType(AttributeRate::FACE_VARYING) {}
@@ -66,9 +66,9 @@ public:
         }
     }
 
-    vector<T>        mValueBuffer;
-    vector<uint32_t> mIndexBuffer;
-    AttributeRate    mType;
+    std::vector<T>        mValueBuffer;
+    std::vector<uint32_t> mIndexBuffer;
+    AttributeRate         mType;
 };
 
 using TextureAttribute = PolygonAttribute<Point2f>;

@@ -31,8 +31,8 @@ inline RTCRay safeConvert(const Ray &src)
     ret.dir[1] = src.d.y;
     ret.dir[2] = src.d.z;
 
-    ret.tnear  = src.tmin;
-    ret.tfar   = src.tmax;
+    ret.tnear  = src.tMin;
+    ret.tfar   = src.tMax;
 
     ret.geomID = RTC_INVALID_GEOMETRY_ID;
     ret.primID = RTC_INVALID_GEOMETRY_ID;

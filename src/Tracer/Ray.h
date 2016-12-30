@@ -17,7 +17,7 @@ class Ray
 public:
     Ray(const Point3f &pos = Point3f(0, 0, 0),
         const Vector3f &dir = Vector3f(1, 0, 0),
-        Float minT = 0, Float maxT = NUM_INFINITY);
+        Float minT = NUM_ZERO, Float maxT = NUM_INFINITY);
 
     Point3f operator()(Float t) const;
     void setT(Float t1, Float t2) const;
@@ -27,23 +27,24 @@ public:
 
 public:
     Point3f o;// Origin point position
-    float   align0;
+    KAGUYA_PADDING_BYTE(4)
 
     Vector3f d;// Ray Direction
-    float   align1;
+    KAGUYA_PADDING_BYTE(4)
 
-    mutable Float tmin = 0;
-    mutable Float tmax = NUM_INFINITY;
+    mutable Float tMin;
+    mutable Float tMax;
 
     Float time;
     uint32_t mask;
 
     // Unnormalized Geometry Normal
     Normal3f Ng;
-    float align2;
+    KAGUYA_PADDING_BYTE(4)
 
     // Barycentric coordinates of intersection
-    mutable Float u, v;
+    mutable Float u;
+    mutable Float v;
 
     // Geometry ID
     uint32_t geomID;
@@ -53,8 +54,7 @@ public:
     uint32_t instID;
 
     uint32_t dp;//ray depth count
-
-    float align3[2];
+    KAGUYA_PADDING_BYTE(8)
 };
 
 }

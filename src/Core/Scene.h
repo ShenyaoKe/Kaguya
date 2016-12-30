@@ -1,7 +1,8 @@
 #pragma once
+#include <embree2/rtcore.h>
+
 #include "Core/Kaguya.h"
 #include "Geometry/Primitive.h"
-#include "embree2/rtcore.h"
 
 namespace Kaguya
 {

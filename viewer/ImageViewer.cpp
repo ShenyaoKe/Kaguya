@@ -129,9 +129,8 @@ void ImageViewerPanel::initializeGL()
     glGetIntegerv(GL_MAJOR_VERSION, &ogl_ver_major);
     glGetIntegerv(GL_MINOR_VERSION, &ogl_ver_minor);
 
-    shaderP = make_unique<GLSLProgram>(
-        "resources/shaders/img_vs.glsl",
-        "resources/shaders/img_fs.glsl");
+    shaderP = std::make_unique<GLSLProgram>("resources/shaders/img_vs.glsl",
+                                            "resources/shaders/img_fs.glsl");
 
     if (ogl_ver_major == 4 && ogl_ver_minor >= 5)
     {

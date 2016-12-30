@@ -13,7 +13,7 @@
 #include "Math/Matrix3x3.h"
 
 //read image files
-#include "FreeImage.h"
+#include <FreeImage.h>
 
 namespace Kaguya
 {

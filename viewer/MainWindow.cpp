@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     shelf->addTab(new QWidget, "1");
     shelf->addTab(new QWidget, "2");
     ui.shelf->addWidget(shelf);
-    //setWindowTitle(tr("OpenGL Qt Template"));
 
     viewer->setFocusPolicy(Qt::StrongFocus);
 
@@ -42,7 +41,7 @@ void MainWindow::connectimg()
     imgViewer->show();
 }
 
-void MainWindow::closeEvent(QCloseEvent *e)
+void MainWindow::closeEvent(QCloseEvent * e)
 {
     Q_UNUSED(e);
 

@@ -23,10 +23,10 @@ public:
     }
     Bounds2(const Point2<T> &p) : pMin(p), pMax(p) {}
     Bounds2(const Point2<T> &p1, const Point2<T> &p2)
-        : pMin(min(p1.x, p2.x), min(p1.y, p2.y))
-        , pMax(max(p1.x, p2.x), max(p1.y, p2.y))
+        : pMin(std::min(p1.x, p2.x), std::min(p1.y, p2.y))
+        , pMax(std::max(p1.x, p2.x), std::max(p1.y, p2.y))
     {}
-    Bounds2(const vector<Point2<T>*> &pts)
+    Bounds2(const std::vector<Point2<T>*> &pts)
     {
         T minval = std::numeric_limits<T>::lowest();
         T maxval = std::numeric_limits<T>::max();
@@ -79,16 +79,16 @@ public:
     {
         for (int i = 0; i < 2; i++)
         {
-            pMin[i] = min(pMin[i], p[i]);
-            pMax[i] = max(pMax[i], p[i]);
+            pMin[i] = std::min(pMin[i], p[i]);
+            pMax[i] = std::max(pMax[i], p[i]);
         }
     }
     void Union(const Bounds2<T> &box)
     {
         for (int i = 0; i < 2; i++)
         {
-            pMin[i] = min(pMin[i], box.pMin[i]);
-            pMax[i] = max(pMax[i], box.pMax[i]);
+            pMin[i] = std::min(pMin[i], box.pMin[i]);
+            pMax[i] = std::max(pMax[i], box.pMax[i]);
         }
     }
     friend Bounds2 Union(const Bounds2<T> &box, const Point2<T> &p);
@@ -125,10 +125,10 @@ public:
     }
     Bounds3(const Point3<T> &p) : pMin(p), pMax(p) {}
     Bounds3(const Point3<T> &p1, const Point3<T> &p2)
-        : pMin(min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z))
-        , pMax(max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z))
+        : pMin(std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z))
+        , pMax(std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z))
     {}
-    Bounds3(const vector<Point3<T>*> &pts)
+    Bounds3(const std::vector<Point3<T>*> &pts)
     {
         T minval = std::numeric_limits<T>::lowest();
         T maxval = std::numeric_limits<T>::max();
@@ -184,14 +184,14 @@ public:
     }
     bool intersectP(const Ray &inRay, Float* hitt0 = nullptr, Float* hitt1 = nullptr) const
     {
-        Float t0 = inRay.tmin, t1 = inRay.tmax;
+        Float t0 = inRay.tMin, t1 = inRay.tMax;
 
         for (int i = 0; i < 3; i++)
         {
             Float invRayDir = 1.0 / inRay.d[i];
             Float tNear = (pMin[i] - inRay.o[i]) * invRayDir;
             Float tFar = (pMax[i] - inRay.o[i]) * invRayDir;
-            if (tNear > tFar) swap(tNear, tFar);
+            if (tNear > tFar) std::swap(tNear, tFar);
 
             t0 = tNear > t0 ? tNear : t0;
             t1 = tFar < t1 ? tFar : t1;
@@ -223,16 +223,16 @@ public:
     {
         for (int i = 0; i < 3; i++)
         {
-            pMin[i] = min(pMin[i], p[i]);
-            pMax[i] = max(pMax[i], p[i]);
+            pMin[i] = std::min(pMin[i], p[i]);
+            pMax[i] = std::max(pMax[i], p[i]);
         }
     }
     void Union(const Bounds3<T> &box)
     {
         for (int i = 0; i < 3; i++)
         {
-            pMin[i] = min(pMin[i], box.pMin[i]);
-            pMax[i] = max(pMax[i], box.pMax[i]);
+            pMin[i] = std::min(pMin[i], box.pMin[i]);
+            pMax[i] = std::max(pMax[i], box.pMax[i]);
         }
     }
     /*friend Bounds3 Union(const Bounds3<T> &box, const Point3<T> &p);
@@ -262,8 +262,8 @@ inline Bounds2<T> Union(const Bounds2<T> &box, const Point2<T> &p)
     Bounds2<T> &ret = box;
     for (int i = 0; i < 2; i++)
     {
-        ret.pMin[i] = min(box.pMin[i], p[i]);
-        ret.pMax[i] = max(box.pMax[i], p[i]);
+        ret.pMin[i] = std::min(box.pMin[i], p[i]);
+        ret.pMax[i] = std::max(box.pMax[i], p[i]);
     }
     return ret;
 }
@@ -274,8 +274,8 @@ inline Bounds2<T> Union(const Bounds2<T> &box1, const Bounds2<T> &box2)
     Bounds2<T> ret;
     for (int i = 0; i < 2; i++)
     {
-        ret.pMin[i] = min(box1.pMin[i], box2.pMin[i]);
-        ret.pMax[i] = max(box1.pMax[i], box2.pMax[i]);
+        ret.pMin[i] = std::min(box1.pMin[i], box2.pMin[i]);
+        ret.pMax[i] = std::max(box1.pMax[i], box2.pMax[i]);
     }
     return ret;
 }
@@ -299,8 +299,8 @@ inline Bounds3<T> Union(const Bounds3<T> &box, const Point3<T> &p)
     Bounds3<T> ret = box;
     for (int i = 0; i < 3; i++)
     {
-        ret.pMin[i] = min(box.pMin[i], p[i]);
-        ret.pMax[i] = max(box.pMax[i], p[i]);
+        ret.pMin[i] = std::min(box.pMin[i], p[i]);
+        ret.pMax[i] = std::max(box.pMax[i], p[i]);
     }
     return ret;
 }
@@ -311,8 +311,8 @@ inline Bounds3<T> Union(const Bounds3<T> &box1, const Bounds3<T> &box2)
     Bounds3<T> ret;
     for (int i = 0; i < 3; i++)
     {
-        ret.pMin[i] = min(box1.pMin[i], box2.pMin[i]);
-        ret.pMax[i] = max(box1.pMax[i], box2.pMax[i]);
+        ret.pMin[i] = std::min(box1.pMin[i], box2.pMin[i]);
+        ret.pMax[i] = std::max(box1.pMax[i], box2.pMax[i]);
     }
     return ret;
 }

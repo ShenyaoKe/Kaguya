@@ -11,8 +11,8 @@ public:
     virtual ~Curve();
 
 protected:
-    vector<Point3f> verts;
-    uint8_t         degree;
+    std::vector<Point3f> verts;
+    uint8_t              degree;
 };
 
 }

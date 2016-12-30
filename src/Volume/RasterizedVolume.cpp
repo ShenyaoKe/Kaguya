@@ -26,12 +26,12 @@ Point3f RasterizedVolume::center() const
     return centroid;
 }
 
-vector<Point3f> RasterizedVolume::getGrids() const
+std::vector<Point3f> RasterizedVolume::getGrids() const
 {
     return grids;
 }
 
-void RasterizedVolume::exportVBO(vector<float>* vtx_array) const
+void RasterizedVolume::exportVBO(std::vector<float>* vtx_array) const
 {
     if (vtx_array == nullptr)
     {
@@ -72,7 +72,7 @@ void RasterizedVolume::rasterize()
     {
         while (rayPos[yaxis] < bound.pMax[yaxis])
         {
-            vector<Float> hitLen;
+            std::vector<Float> hitLen;
             rasterRay = Ray(rayPos, rayDir);
             while (kdtree->intersect(rasterRay, &queryPoint, &tHit, &rayEp))
             {

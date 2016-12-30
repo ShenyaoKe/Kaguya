@@ -21,15 +21,10 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
-using std::min;
-using std::max;
-using std::swap;
-using std::sort;
 
 // Containers
 #include <array>
 #include <vector>
-using std::vector;
 #include <list>
 #include <queue>
 #include <stack>
@@ -37,14 +32,14 @@ using std::vector;
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
-using floats_t = vector<float>;
-using doubles_t = vector<double>;
-using ui8s_t = vector<uint8_t>;
-using ui16s_t = vector<uint16_t>;
-using ui32s_t = vector<uint32_t>;
-using int8s_t = vector<int8_t>;
-using int16s_t = vector<int16_t>;
-using int32s_t = vector<int32_t>;
+using floats_t  = std::vector<float>;
+using doubles_t = std::vector<double>;
+using ui8s_t    = std::vector<uint8_t>;
+using ui16s_t   = std::vector<uint16_t>;
+using ui32s_t   = std::vector<uint32_t>;
+using int8s_t   = std::vector<int8_t>;
+using int16s_t  = std::vector<int16_t>;
+using int32s_t  = std::vector<int32_t>;
 
 #include <ctime>
 #include <string>
@@ -91,7 +86,16 @@ using Float = float;
                                #expr, __FILE__, __LINE__))
 #endif  // NDEBUG
 
-//using namespace std;
+// Add bytes to struct for memory alignment
+#define KAGUYA_UNIQUE_NAME_I(x, y) x##y
+#define KAGUYA_UNIQUE_NAME(x, y) KAGUYA_UNIQUE_NAME_I(x, y)
+#ifndef __COUNTER__
+#define KAGUYA_PADDING_BYTE(size) \
+        uint8_t KAGUYA_UNIQUE_NAME(Align, __LINE__)[size];
+#else
+#define KAGUYA_PADDING_BYTE(size) \
+        uint8_t KAGUYA_UNIQUE_NAME(Align, __COUNTER__)[size];
+#endif
 
 namespace Kaguya
 {

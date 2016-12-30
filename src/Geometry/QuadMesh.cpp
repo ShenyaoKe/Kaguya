@@ -9,13 +9,13 @@
 namespace Kaguya
 {
 
-QuadMesh::QuadMesh(vector<Point3f>  &vertexBuffer,
-                   vector<uint32_t> &indexBuffer,
-                   vector<uint32_t> &faceSizeBuffer,
-                   size_t            totalPrimCount,
-                   TextureAttribute* texAttri,
-                   NormalAttribute*  normAttri,
-                   bool              isTessellated)
+QuadMesh::QuadMesh(std::vector<Point3f>  &vertexBuffer,
+                   std::vector<uint32_t> &indexBuffer,
+                   std::vector<uint32_t> &faceSizeBuffer,
+                   size_t                 totalPrimCount,
+                   TextureAttribute*      texAttri,
+                   NormalAttribute*       normAttri,
+                   bool                   isTessellated)
     : PolyMesh(vertexBuffer, indexBuffer,
                vertexBuffer.size(), totalPrimCount,
                texAttri, normAttri)
@@ -48,10 +48,6 @@ void QuadMesh::bounding()
     {
         mObjBound.Union(v);
     }
-}
-
-void QuadMesh::refine(vector<Primitive*> &refined)
-{
 }
 
 void QuadMesh::printInfo(const std::string &msg) const
@@ -132,30 +128,9 @@ void QuadMesh::getBufferObject(BufferTrait* vertTraits,
     }
 }
 
-void QuadMesh::exportVBO(vector<float>* vtx_array,
-                         vector<float>* uv_array,
-                         vector<float>* norm_array) const
-{
-}
-
-void QuadMesh::exportIndexedVBO(vector<float>* vtx_array,
-                                vector<float>* uv_array,
-                                vector<float>* norm_array,
-                                vector<uint32_t>* idx_array) const
-{
-    bool has_vert(false), has_texcoord(false), has_normal(false), has_uid(false);
-
-    if (vtx_array != nullptr)
-    {
-        vtx_array->clear();
-        vtx_array->reserve(mVertexBuffer.size() * 3);
-        has_vert = true;
-    }
-}
-
-void QuadMesh::tessellate(vector<uint32_t> &indexBuffer,
-                          vector<uint32_t> &faceSizeBuffer,
-                          size_t            tessellatedCount)
+void QuadMesh::tessellate(std::vector<uint32_t> &indexBuffer,
+                          std::vector<uint32_t> &faceSizeBuffer,
+                          size_t                 tessellatedCount)
 {
     size_t nCurrentPosition = indexBuffer.size();
     size_t nLastPosition = tessellatedCount * sQuadFaceSize;

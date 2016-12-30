@@ -38,12 +38,12 @@ class PolyMesh : public Mesh
 {
 public:
     PolyMesh() {}
-    PolyMesh(vector<Point3f>   &vertexBuffer,
-             vector<uint32_t>  &indexBuffer,
-             size_t             vertexCount,
-             size_t             faceCount,
-             TextureAttribute*  texAttri,
-             NormalAttribute*   normAttri);
+    PolyMesh(std::vector<Point3f>   &vertexBuffer,
+             std::vector<uint32_t>  &indexBuffer,
+             size_t                  vertexCount,
+             size_t                  faceCount,
+             TextureAttribute*       texAttri,
+             NormalAttribute*        normAttri);
     ~PolyMesh();
 
     PrimitiveType primitiveType() const override
@@ -55,18 +55,18 @@ public:
 
     virtual void getTessellated(TessBuffer &trait) const = 0;
 
-    static PolyMesh* createPolyMesh(vector<Point3f>   &vertexBuffer,
-                                    vector<uint32_t>  &indexBuffer,
-                                    vector<uint32_t>  &faceSizeBuffer,
-                                    TextureAttribute*  texAttri,
-                                    NormalAttribute*   normAttri);
+    static PolyMesh* createPolyMesh(std::vector<Point3f>   &vertexBuffer,
+                                    std::vector<uint32_t>  &indexBuffer,
+                                    std::vector<uint32_t>  &faceSizeBuffer,
+                                    TextureAttribute*       texAttri,
+                                    NormalAttribute*        normAttri);
 protected:
-    virtual void tessellate(vector<uint32_t> &indexBuffer,
-                            vector<uint32_t> &faceSizeBuffer,
+    virtual void tessellate(std::vector<uint32_t> &indexBuffer,
+                            std::vector<uint32_t> &faceSizeBuffer,
                             size_t            tessellatedCount) = 0;
 
-    vector<Point3f>                   mVertexBuffer;
-    vector<uint32_t>                  mIndexBuffer;
+    std::vector<Point3f>              mVertexBuffer;
+    std::vector<uint32_t>             mIndexBuffer;
     size_t                            mVertexCount;
     size_t                            mFaceCount;
 

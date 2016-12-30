@@ -34,7 +34,7 @@ bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit
     else
     {
         t = dot(n, (p - inRay.o)) / t;
-        if (t > 0 && t > inRay.tmin && t < inRay.tmax)
+        if (t > 0 && t > inRay.tMin && t < inRay.tMax)
         {
 
             //inRay.setT(t, INFINITY);

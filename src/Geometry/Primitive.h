@@ -36,7 +36,7 @@ enum class PrimitiveType
     INSTANCE
 };
 
-static const uint32_t sInvalidGeom = (uint32_t)(-1);
+static const uint32_t sInvalidGeomID = (uint32_t)(-1);
 
 class Primitive
 {
@@ -49,20 +49,25 @@ public:
     virtual ~Primitive() {}
 
 	virtual void bounding() = 0;
+
     const Bounds3f &getWorldBounding() const { return mObjBound; }
-	virtual void refine(vector<Primitive*> &refined) {}
+
 	virtual bool intersectP(const Ray &inRay) const;
+
 	virtual bool intersect(const Ray &inRay,
                            DifferentialGeometry* dg,
 		                   Float* tHit,
                            Float* rayEpsilon) const = 0;
+
 	virtual void postIntersect(const Ray &inRay,
 		                       DifferentialGeometry* dg) const = 0;
 
 	// Surface Area
     virtual Float area() const { return 0; }
+
 	// Probability Density Function
     virtual Float pdf() const { return 1; }
+
 	// Shading
     virtual void getShadingGeometry(const Transform &obj2world,
                                     DifferentialGeometry* dg) const {}

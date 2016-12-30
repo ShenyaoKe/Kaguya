@@ -71,14 +71,16 @@ static void processError(const char* format, va_list args,
 	}
 }*/
 
-void Error(const char* format, ...) {
+void Error(const char* format, ...)
+{
 	va_list args;
 	va_start(args, format);
 	//processError(format, args, "Error", KAGUYA_ERROR_CONTINUE);
 	va_end(args);
 }
 
-void Severe(const char* format, ...) {
+void Severe(const char* format, ...)
+{
 	va_list args;
 	va_start(args, format);
 	//processError(format, args, "Fatal Error", KAGUYA_ERROR_ABORT);

@@ -28,10 +28,10 @@ void Transform::operator()(const Ray &ray, Ray* ret) const
     ret->o = m(ray.o);
     if (&ray != ret)
     {
-        ret->tmin = ray.tmin;
-        ret->tmax = ray.tmax;
+        ret->tMin = ray.tMin;
+        ret->tMax = ray.tMax;
         ret->time = ray.time;
-        //ret->dp = ray.dp;
+        ret->dp = ray.dp;
     }
 }
 

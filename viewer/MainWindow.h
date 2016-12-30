@@ -15,12 +15,10 @@ namespace Kaguya
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = 0);
     //~MainWindow();
 
-    public slots:
     void on_actionAbout_triggered();
     void connectimg();
     //void aboutwindow();
@@ -28,10 +26,10 @@ protected:
     void closeEvent(QCloseEvent *e);
 private:
 
-    unique_ptr<OGLViewer> viewer;
-    unique_ptr<ImageViewer> imgViewer;
-    unique_ptr<QDialog> about;
-    Ui::MainWindowClass ui;
+    std::unique_ptr<OGLViewer>   viewer;
+    std::unique_ptr<ImageViewer> imgViewer;
+    std::unique_ptr<QDialog>     about;
+    Ui::MainWindowClass          ui;
     //Ui::Shelf tool_shelf;
     //Ui::about_dialog about;
     //Ui::img_viewer imgViewer;

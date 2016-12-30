@@ -8,13 +8,13 @@
 namespace Kaguya
 {
 
-TriangleMesh::TriangleMesh(vector<Point3f>  &vertexBuffer,
-                           vector<uint32_t> &indexBuffer,
-                           vector<uint32_t> &faceSizeBuffer,
-                           size_t            totalPrimCount,
-                           TextureAttribute* texAttri,
-                           NormalAttribute*  normAttri,
-                           bool              isTessellated)
+TriangleMesh::TriangleMesh(std::vector<Point3f>  &vertexBuffer,
+                           std::vector<uint32_t> &indexBuffer,
+                           std::vector<uint32_t> &faceSizeBuffer,
+                           size_t                 totalPrimCount,
+                           TextureAttribute*      texAttri,
+                           NormalAttribute*       normAttri,
+                           bool                   isTessellated)
     : PolyMesh(vertexBuffer, indexBuffer,
                vertexBuffer.size(), totalPrimCount,
                texAttri, normAttri)
@@ -40,6 +40,7 @@ TriangleMesh::TriangleMesh(vector<Point3f>  &vertexBuffer,
 TriangleMesh::~TriangleMesh()
 {
 }
+
 void TriangleMesh::bounding()
 {
     for (auto &v : mVertexBuffer)
@@ -47,48 +48,6 @@ void TriangleMesh::bounding()
         mObjBound.Union(v);
     }
 }
-void TriangleMesh::refine(vector<Primitive*> &refined)
-{
-    /*for (int i = 0; i < fids.size(); i++)
-    {
-        Triangle* face = new Triangle(this, i);
-        //face->shapeId = shapeId + i;
-        refined.push_back(face);
-    }*/
-}
-
-/*
-bool TriangleMesh::loadOBJ(const char* filename)
-{
-    //vector<PolyIndex> fids;
-    if (objFileParser::parse(filename, mVertexBuffer, uvs, norms, fids))
-    {
-        // If triangulated
-        bool unitUV_needed = false, unitN_needed = false;
-        //size_t nsize = norms.size();
-        uint32_t uvsize = uvs.size();
-        //size_t nid[3] = { nsize, nsize + 1, nsize + 2 };
-        uint32_t uvid[] = { uvsize, uvsize + 1, uvsize + 2 };
-        for (auto &f : fids)
-        {
-            if (f.uv.size() == 0)
-            {
-                f.uv.insert(f.uv.end(), uvid, uvid + 3);
-                unitUV_needed = true;
-            }
-        }
-        if (unitUV_needed)
-        {
-            uvs.push_back(Point2f(0, 0));
-            uvs.push_back(Point2f(1, 0));
-            uvs.push_back(Point2f(1, 1));
-        }
-        // Triangulation required!
-        return true;
-    }
-
-    return false;
-}*/
 
 void TriangleMesh::printInfo(const std::string &msg) const
 {
@@ -176,8 +135,8 @@ void TriangleMesh::getBufferObject(BufferTrait* vertTraits,
     }
 }
 
-void TriangleMesh::tessellate(vector<uint32_t> &indexBuffer,
-                              vector<uint32_t> &faceSizeBuffer,
+void TriangleMesh::tessellate(std::vector<uint32_t> &indexBuffer,
+                              std::vector<uint32_t> &faceSizeBuffer,
                               size_t            tessellatedCount)
 {
     size_t nCurrentPosition = indexBuffer.size();
@@ -214,9 +173,8 @@ bool TriangleUtils::intersect(const Point3f &p0,
     Vector3f normal = normalize(areaVec);
 
     //ray triangle DifferentialGeometry length
-    Float rayt = dot(normal, (p0 - inRay.o))
-        / dot(normal, inRay.d);
-    if (rayt < inRay.tmin || rayt > inRay.tmax) return false;
+    Float rayt = dot(normal, (p0 - inRay.o)) / dot(normal, inRay.d);
+    if (rayt < inRay.tMin || rayt > inRay.tMax) return false;
 
     //inRay.tmin = rayT;
     Point3f ph = inRay(rayt);

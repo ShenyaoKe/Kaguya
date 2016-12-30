@@ -16,7 +16,9 @@ namespace Kaguya
 class ImageViewerPanel;
 
 static GLint ogl_ver_major;
+
 static GLint ogl_ver_minor;
+
 enum class DISPLAY_TYPE
 {
     BEAUTY = 0,
@@ -37,7 +39,7 @@ private:
     const Kaguya::renderBuffer* rbuf;
     //static ImageViewer* instance;
     Ui::img_viewer ui;
-    unique_ptr<ImageViewerPanel> img_panel;
+    std::unique_ptr<ImageViewerPanel> img_panel;
 
     friend class MainWindow;
 };
@@ -59,7 +61,7 @@ private:
     float frame[8];// { 0,0, w,0, w,h, 0,h }
     uint32_t imgsize[2];
 
-    unique_ptr<GLSLProgram> shaderP;
+    std::unique_ptr<GLSLProgram> shaderP;
     GLuint vao, vbo, ibo;
 
     GLuint tex;

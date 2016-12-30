@@ -5,12 +5,12 @@
 namespace Kaguya
 {
 
-PolyMesh::PolyMesh(vector<Point3f>   &vertexBuffer,
-                   vector<uint32_t>  &indexBuffer,
-                   size_t             vertexCount,
-                   size_t             faceCount,
-                   TextureAttribute*  texAttri,
-                   NormalAttribute*   normAttri)
+PolyMesh::PolyMesh(std::vector<Point3f>   &vertexBuffer,
+                   std::vector<uint32_t>  &indexBuffer,
+                   size_t                  vertexCount,
+                   size_t                  faceCount,
+                   TextureAttribute*       texAttri,
+                   NormalAttribute*        normAttri)
     : mVertexBuffer(std::move(vertexBuffer))
     , mIndexBuffer(std::move(indexBuffer))
     , mVertexCount(vertexCount)
@@ -24,11 +24,11 @@ PolyMesh::~PolyMesh()
 {
 }
 
-PolyMesh* PolyMesh::createPolyMesh(vector<Point3f>   &vertexBuffer,
-                                   vector<uint32_t>  &indexBuffer,
-                                   vector<uint32_t>  &faceSizeBuffer,
-                                   TextureAttribute*  texAttri,
-                                   NormalAttribute*   normAttri)
+PolyMesh* PolyMesh::createPolyMesh(std::vector<Point3f>   &vertexBuffer,
+                                   std::vector<uint32_t>  &indexBuffer,
+                                   std::vector<uint32_t>  &faceSizeBuffer,
+                                   TextureAttribute*       texAttri,
+                                   NormalAttribute*        normAttri)
 {
     uint32_t triCount = std::accumulate(
         faceSizeBuffer.begin(), faceSizeBuffer.end(), 0,
