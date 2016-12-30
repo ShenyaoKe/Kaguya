@@ -28,7 +28,7 @@ OGLViewer::OGLViewer(QWidget* parent)
 
     // Read obj file
     
-    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
+    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/cylinder.obj")));
     mScene->commitScene();
 
     cout << sizeof(Ray) << ", " << sizeof(RTCRay) << endl;
