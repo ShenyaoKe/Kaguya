@@ -195,6 +195,12 @@
     <None Include="..\resources\shaders\model_fs.glsl" />
     <None Include="..\resources\shaders\model_gs.glsl" />
     <None Include="..\resources\shaders\model_vs.glsl" />
+    <None Include="..\resources\shaders\QuadMesh_fs.glsl" />
+    <None Include="..\resources\shaders\QuadMesh_gs.glsl" />
+    <None Include="..\resources\shaders\QuadMesh_vs.glsl" />
+    <None Include="..\resources\shaders\TriangleMesh_fs.glsl" />
+    <None Include="..\resources\shaders\TriangleMesh_gs.glsl" />
+    <None Include="..\resources\shaders\TriangleMesh_vs.glsl" />
     <None Include="..\resources\stylesheets\dark.qss">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

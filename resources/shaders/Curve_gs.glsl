@@ -18,13 +18,10 @@ void main()
 
 	vec4 v1 = normalize(p1 - p0);
 	vec4 v2 = normalize(p2 - p0);
-
+	
+	// Geometric Normal
 	normal = normalize(cross(v1.xyz, v2.xyz));
 	
-	
-	
-	
-	// Send the triangle along with the edge distances
 	gl_Position = proj_matrix * p0;
 	pos = p0.xyz;
 	EmitVertex();
@@ -37,5 +34,3 @@ void main()
 	pos = p2.xyz;
 	EmitVertex();
 }
-
-

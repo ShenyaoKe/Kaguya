@@ -134,6 +134,24 @@
     <None Include="..\resources\shaders\img_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\resources\shaders\QuadMesh_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\QuadMesh_gs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\QuadMesh_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\TriangleMesh_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\TriangleMesh_gs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\TriangleMesh_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\resources\Kaguya.rc">
