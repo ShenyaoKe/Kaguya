@@ -114,27 +114,6 @@ void TriangleMesh::getTessellated(TessBuffer &trait) const
     trait.indexTrait.data = (void*)(mIndexBuffer.data());
 }
 
-void TriangleMesh::getBufferObject(BufferTrait* vertTraits,
-                                   BufferTrait* vidTraits) const
-{
-    if (vertTraits)
-    {
-        vertTraits->data = (void*)(mVertexBuffer.data());
-        vertTraits->count = mVertexBuffer.size();
-        vertTraits->size = sizeof(Point3f) * vertTraits->count;
-        vertTraits->offset = 0;
-        vertTraits->stride = sizeof(Point3f);
-    }
-    if (vidTraits)
-    {
-        vidTraits->data = (void*)(mIndexBuffer.data());
-        vidTraits->count = mIndexBuffer.size();
-        vidTraits->size = sizeof(uint32_t) * vidTraits->count;
-        vidTraits->offset = 0;
-        vidTraits->stride = sizeof(uint32_t);
-    }
-}
-
 void TriangleMesh::tessellate(std::vector<uint32_t> &indexBuffer,
                               std::vector<uint32_t> &faceSizeBuffer,
                               size_t            tessellatedCount)

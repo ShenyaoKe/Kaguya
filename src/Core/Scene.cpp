@@ -55,6 +55,13 @@ bool Scene::intersect(Ray &inRay,
 #endif
 }
 
+RenderBufferTrait Scene::getRenderBuffer(uint32_t geomID) const
+{
+    RenderBufferTrait ret;
+    mPrims.at(geomID)->getRenderBuffer(&ret);
+    return ret;
+}
+
 void Scene::buildGeometry(const Primitive* prim)
 {
     if (prim == nullptr)

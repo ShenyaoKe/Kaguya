@@ -119,7 +119,7 @@ public:
 /************************************************************************/
 /* Area Light                                                           */
 /************************************************************************/
-enum AREA_LIGHT_SHAPE
+enum class AREA_LIGHT_SHAPE
 {
     QUAD = 0,
     DISK = 1,
@@ -130,7 +130,7 @@ class areaLight :public Light
     Vector3f nx, ny, nz;
     //Point3f pos;
     Float size = 1;//radius
-    AREA_LIGHT_SHAPE shapeType = QUAD;
+    AREA_LIGHT_SHAPE shapeType = AREA_LIGHT_SHAPE::QUAD;
 public:
     areaLight();
     areaLight(const Point3f &p, Float shpSize);

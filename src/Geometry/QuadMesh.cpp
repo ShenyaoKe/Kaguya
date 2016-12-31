@@ -1,10 +1,11 @@
+#include "QuadMesh.h"
+
 #include "Geometry/PolyMesh.h"
 #include "Tracer/Ray.h"
 #include "Geometry/DifferentialGeometry.h"
 #include "Shading/Shader.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
-#include "QuadMesh.h"
 
 namespace Kaguya
 {
@@ -105,27 +106,6 @@ void QuadMesh::getTessellated(TessBuffer &trait) const
     trait.indexTrait.byteOffset = 0;
     trait.indexTrait.byteStride = sizeof(uint32_t) * sQuadFaceSize;
     trait.indexTrait.data = (void*)(mIndexBuffer.data());
-}
-
-void QuadMesh::getBufferObject(BufferTrait* vertTraits,
-                               BufferTrait* vidTraits) const
-{
-    if (vertTraits)
-    {
-        vertTraits->data = (void*)(mVertexBuffer.data());
-        vertTraits->count = mVertexBuffer.size();
-        vertTraits->size = sizeof(Point3f) * vertTraits->count;
-        vertTraits->offset = 0;
-        vertTraits->stride = sizeof(Point3f);
-    }
-    if (vidTraits)
-    {
-        vidTraits->data = (void*)(mIndexBuffer.data());
-        vidTraits->count = mIndexBuffer.size();
-        vidTraits->size = sizeof(uint32_t) * vidTraits->count;
-        vidTraits->offset = 0;
-        vidTraits->stride = sizeof(uint32_t);
-    }
 }
 
 void QuadMesh::tessellate(std::vector<uint32_t> &indexBuffer,

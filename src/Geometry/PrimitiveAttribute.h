@@ -1,11 +1,12 @@
 #pragma once
-#include "Geometry/Mesh.h"
+#include "Math/Geometry.h"
 
 namespace Kaguya
 {
 
-enum class AttributeRate : uint8_t
+enum class AttributeType : uint8_t
 {
+    UNDEFINED,
     CONSTANT,// all vertex the same
     UNIFORM,// each face has the same 
     VERTEX_VARYING,// varies in each vertex
@@ -13,39 +14,39 @@ enum class AttributeRate : uint8_t
 };
 
 template <typename T>
-class PolygonAttribute
+class AttributeRate
 {
 public:
     // Constant & Uniform
-    PolygonAttribute(AttributeRate attriType = AttributeRate::UNIFORM)
+    AttributeRate(AttributeType attriType = AttributeType::UNIFORM)
         : mType(attriType) {}
     // Vertex Varying
-    PolygonAttribute(std::vector<T> attriVals)
+    AttributeRate(std::vector<T> attriVals)
         : mValueBuffer(std::move(attriVals))
-        , mType(AttributeRate::VERTEX_VARYING) {}
+        , mType(AttributeType::VERTEX_VARYING) {}
     // Face Varying
-    PolygonAttribute(std::vector<T>        attriVals,
+    AttributeRate(std::vector<T>        attriVals,
                      std::vector<uint32_t> attriIndices)
         : mValueBuffer(std::move(attriVals))
         , mIndexBuffer(std::move(attriIndices))
-        , mType(AttributeRate::FACE_VARYING) {}
-    ~PolygonAttribute() {}
+        , mType(AttributeType::FACE_VARYING) {}
+    ~AttributeRate() {}
 
     bool isConstant() const
     {
-        return mType == AttributeRate::CONSTANT;
+        return mType == AttributeType::CONSTANT;
     }
     bool isUniform() const
     {
-        return mType == AttributeRate::UNIFORM;
+        return mType == AttributeType::UNIFORM;
     }
     bool isVertexVarying() const
     {
-        return mType == AttributeRate::VERTEX_VARYING;
+        return mType == AttributeType::VERTEX_VARYING;
     }
     bool isFaceVarying() const
     {
-        return mType == AttributeRate::FACE_VARYING;
+        return mType == AttributeType::FACE_VARYING;
     }
 
     void getVertexVarying(uint32_t primID, size_t primSize,
@@ -66,12 +67,39 @@ public:
         }
     }
 
+    void* getValuePtr() const
+    {
+        return (void*)mValueBuffer.data();
+    }
+    size_t getValueCount() const
+    {
+        return mValueBuffer.size();
+    }
+    // Size in bytes
+    size_t getValueByteSize() const
+    {
+        return sizeof(T) * getValueCount();
+    }
+    void* getIndexPtr() const
+    {
+        return (void*)mIndexBuffer.data();
+    }
+    size_t getIndexCount() const
+    {
+        return mIndexBuffer.size();
+    }
+    // Size in bytes
+    size_t getIndexByteSize() const
+    {
+        return sizeof(uint32_t) * getIndexCount();
+    }
+
     std::vector<T>        mValueBuffer;
     std::vector<uint32_t> mIndexBuffer;
-    AttributeRate         mType;
+    AttributeType         mType;
 };
 
-using TextureAttribute = PolygonAttribute<Point2f>;
-using NormalAttribute = PolygonAttribute<Normal3f>;
+using TextureAttribute = AttributeRate<Point2f>;
+using NormalAttribute  = AttributeRate<Normal3f>;
 
 }

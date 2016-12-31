@@ -28,9 +28,6 @@ public:
 
     void getTessellated(TessBuffer &trait) const override;
 
-    void getBufferObject(BufferTrait* vertTraits,
-                         BufferTrait* vidTraits) const;
-
     PolyMeshType polyMeshType() const override
     {
         return PolyMeshType::TRIANGLE;

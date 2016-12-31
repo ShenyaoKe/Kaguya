@@ -118,7 +118,7 @@
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
     <ClInclude Include="..\src\Geometry\Mesh.h" />
     <ClInclude Include="..\src\Geometry\ParametricGeomtry.h" />
-    <ClInclude Include="..\src\Geometry\PolygonAttributes.h" />
+    <ClInclude Include="..\src\Geometry\PrimitiveAttribute.h" />
     <ClInclude Include="..\src\Geometry\PolyMesh.h" />
     <ClInclude Include="..\src\Geometry\QuadMesh.h" />
     <ClInclude Include="..\src\Geometry\SubdMesh.h" />
@@ -168,7 +168,7 @@
     <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\ParametricGeomtry.cpp" />
-    <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp" />
+    <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp" />
     <ClCompile Include="..\src\Geometry\PolyMesh.cpp" />
     <ClCompile Include="..\src\Geometry\QuadMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Primitive.cpp" />

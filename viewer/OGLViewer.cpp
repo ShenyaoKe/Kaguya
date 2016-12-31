@@ -28,10 +28,9 @@ OGLViewer::OGLViewer(QWidget* parent)
 
     // Read obj file
     
-    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/cylinder.obj")));
+    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/CornellBox-Empty.obj")));
+    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
     mScene->commitScene();
-
-    getchar();
 }
 
 OGLViewer::~OGLViewer()
@@ -63,9 +62,15 @@ void OGLViewer::initializeGL()
 
     // Create model_shader files
 //#ifdef _DEBUG
-    model_shader.reset(new GLSLProgram("resources/shaders/model_vs.glsl",
-                                       "resources/shaders/model_fs.glsl",
-                                       "resources/shaders/model_gs.glsl"));
+    triShader.reset(new GLSLProgram("resources/shaders/TriangleMesh_vs.glsl",
+                                    "resources/shaders/TriangleMesh_fs.glsl",
+                                    "resources/shaders/TriangleMesh_gs.glsl"));
+    quadShader.reset(new GLSLProgram("resources/shaders/QuadMesh_vs.glsl",
+                                     "resources/shaders/QuadMesh_fs.glsl",
+                                     "resources/shaders/QuadMesh_gs.glsl"));
+    curveShader.reset(new GLSLProgram("resources/shaders/Curve_vs.glsl",
+                                      "resources/shaders/Curve_fs.glsl",
+                                      "resources/shaders/Curve_gs.glsl"));
     gate_shader.reset(new GLSLProgram("resources/shaders/gate_vs.glsl",
                                       "resources/shaders/gate_fs.glsl"));
     /*
@@ -74,45 +79,62 @@ void OGLViewer::initializeGL()
         gate_shader.reset(new GLSLProgram(":shaders/gate_vs.glsl", ":shaders/gate_fs.glsl"));
     #endif*/
 
-    // Export vbo for shaders
-    // TODO: export buffer to object
-
-    //bindBox();
-    bindMesh();
-    bindReslotionGate();
+    for (size_t i = 0; i < mScene->getPrimitiveCount(); i++)
+    {
+        mRBOs.emplace_back(createRenderObject(mScene->getRenderBuffer(i)));
+    }
 
     gate_shader->add_uniformv("transform");
 }
 
-void OGLViewer::bindMesh()
+RenderBufferObject OGLViewer::createRenderObject(const RenderBufferTrait &trait)
 {
-    glDeleteBuffers(1, &model_vert_vbo);
-    glDeleteBuffers(1, &model_ibo);
-    glDeleteVertexArrays(1, &model_vao);
-
+    RenderBufferObject ret;
+    
     // VBO
-    glCreateBuffers(1, &model_vert_vbo);
-    //glNamedBufferData(model_vert_vbo, sizeof(GLfloat) * model_verts.size(), &model_verts[0], GL_STATIC_DRAW);
+    glCreateBuffers(1, &ret.vbo);
+    glNamedBufferData(ret.vbo, trait.vertex.size, trait.vertex.data, GL_STATIC_DRAW);
     // IBO
-    glCreateBuffers(1, &model_ibo);
-    //glNamedBufferData(model_ibo, sizeof(GLuint) * model_ids.size(), &model_ids[0], GL_STATIC_DRAW);
-
+    glCreateBuffers(1, &ret.ibo);
+    glNamedBufferData(ret.ibo, trait.index.size, trait.index.data, GL_STATIC_DRAW);
+    ret.indexCount = trait.index.count;
+    
     // Bind VAO
-    glCreateVertexArrays(1, &model_vao);
-    glEnableVertexArrayAttrib(model_vao, 0);
+    glCreateVertexArrays(1, &ret.vao);
+    glEnableVertexArrayAttrib(ret.vao, 0);
 
-    glVertexArrayAttribFormat(model_vao, 0, 3, GL_FLOAT, GL_FALSE, 0);
-    glVertexArrayVertexBuffer(model_vao, 0, model_vert_vbo, 0, sizeof(GLfloat) * 3);
-    glVertexArrayAttribBinding(model_vao, 0, 0);
-    glVertexArrayElementBuffer(model_vao, model_ibo);
+    // Attach VBO and IBO to VAO
+    glVertexArrayAttribFormat(ret.vao, 0, 3, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayVertexBuffer(ret.vao, 0, ret.vbo, trait.vertex.offset, trait.vertex.stride);
+    glVertexArrayAttribBinding(ret.vao, 0, 0);
+    glVertexArrayElementBuffer(ret.vao, ret.ibo);
 
-    // Bind normal value as color
+    switch (trait.renderType)
+    {
+    case GPURenderType::CURVE:
+    {
+        ret.primMode = GL_PATCHES;
+        break;
+    }
+    case GPURenderType::TRIANGLE:
+    {
+        ret.primMode = GL_TRIANGLES;
+        ret.shader = triShader;
+        ret.patchSize = 3;
+        break;
+    }
+    case GPURenderType::QUAD:
+    {
+        ret.primMode = GL_LINES_ADJACENCY;
+        ret.shader = quadShader;
+        ret.patchSize = 4;
+        break;
+    }
+    default:
+        break;
+    }
 
-    // Bind UV values
-
-    /*glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
+    return ret;
 }
 
 void OGLViewer::bindReslotionGate()
@@ -150,20 +172,22 @@ void OGLViewer::paintGL()
 
     //////////////////////////////////////////////////////////////////////////
     // Model
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK); // cull back face
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK); // cull back face
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glBindVertexArray(model_vao);
-    model_shader->use_program();
-
-    // Apply uniform matrix
-    glUniformMatrix4fv((*model_shader)["view_matrix"], 1, GL_FALSE,
-                       view_cam->world_to_cam());// View Matrix
-    glUniformMatrix4fv((*model_shader)["proj_matrix"], 1, GL_FALSE,
-                       view_cam->cam_to_screen());// Projection
-
-    //glDrawElements(GL_TRIANGLES, model_ids.size(), GL_UNSIGNED_INT, 0);
+    for (auto &rbo : mRBOs)
+    {
+        glBindVertexArray(rbo.vao);
+        rbo.shader->use_program();
+        // Apply uniform matrix
+        glUniformMatrix4fv((*rbo.shader)["view_matrix"], 1, GL_FALSE,
+                           view_cam->world_to_cam());// View Matrix
+        glUniformMatrix4fv((*rbo.shader)["proj_matrix"], 1, GL_FALSE,
+                           view_cam->cam_to_screen());// Projection
+        glDrawElements(rbo.primMode, rbo.indexCount, GL_UNSIGNED_INT, 0);
+    }
+    
     ////////////////////////////////////////////
     glBindVertexArray(resgate_vao);
     gate_shader->use_program();

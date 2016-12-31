@@ -119,15 +119,6 @@
     <None Include="..\resources\shaders\gate_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\resources\shaders\model_fs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\resources\shaders\model_vs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\resources\shaders\model_gs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\resources\shaders\img_fs.glsl">
       <Filter>Shaders</Filter>
     </None>
@@ -150,6 +141,15 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\resources\shaders\TriangleMesh_vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\Curve_fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\Curve_gs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\resources\shaders\Curve_vs.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

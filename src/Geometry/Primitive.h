@@ -12,6 +12,7 @@
 #include "Math/Transform.h"
 #include "Geometry/DifferentialGeometry.h"
 #include "Shading/BxDF.h"
+#include "PrimitiveAttribute.h"
 
 const Float reCE = 5e-8;//ray epsilon coefficiency
 const Float FloatEps = std::numeric_limits<Float>::epsilon();//Distance epsilon coefficiency
@@ -26,6 +27,40 @@ class Mesh;
 class PolyMesh;
 class SubdMesh;
 class Curve;
+
+struct VertexBufferTrait
+{
+    const void* data = nullptr;
+    uint32_t    count = 0;// element count
+    uint32_t    size = 0;// data size in bytes
+    uint32_t    offset = 0;// actual data offset in bytes
+    uint32_t    stride = 0;// element size in bytes
+};
+struct AttributeTextureTrait
+{
+    const void*     attriData = nullptr;
+    const void*     attriIndex = nullptr;
+    uint32_t        dataSize = 0; // size of data in bytes
+    uint32_t        indexSize = 0;
+};
+
+enum class GPURenderType : uint8_t
+{
+    CURVE,
+    TRIANGLE,
+    QUAD,
+};
+// Used for GPU render
+struct RenderBufferTrait
+{
+    VertexBufferTrait       vertex;
+    VertexBufferTrait       index;
+    AttributeTextureTrait   texcoords;
+    AttributeTextureTrait   normal;
+    AttributeType           texAttriType = AttributeType::UNDEFINED;
+    AttributeType           normAttriType = AttributeType::UNDEFINED;
+    GPURenderType           renderType;
+};
 
 enum class PrimitiveType
 {
@@ -77,6 +112,8 @@ public:
     virtual void printInfo(const std::string &msg = "") const;
 
     virtual PrimitiveType primitiveType() const = 0;
+
+    virtual void getRenderBuffer(RenderBufferTrait* trait) const = 0;
 
     uint32_t getShapeID() const
     {

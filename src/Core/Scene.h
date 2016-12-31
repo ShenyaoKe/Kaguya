@@ -34,6 +34,17 @@ public:
                    DifferentialGeometry* dg,
                    Float* tHit,
                    Float* rayEpsilon) const;
+
+    RenderBufferTrait getRenderBuffer(uint32_t geomID) const;
+    size_t getPrimitiveCount() const
+    {
+        return mPrims.size();
+    }
+    size_t getLightCount() const
+    {
+        return mLights.size();
+    }
+
 private:
     void buildGeometry(const Primitive* prim);
 

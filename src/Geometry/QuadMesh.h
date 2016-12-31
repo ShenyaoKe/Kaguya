@@ -28,8 +28,6 @@ public:
                        DifferentialGeometry* dg) const override;
 
     void getTessellated(TessBuffer &trait) const override;
-    void getBufferObject(BufferTrait* vertTraits,
-                         BufferTrait* vidTraits) const;
     
     PolyMeshType polyMeshType() const override
     {

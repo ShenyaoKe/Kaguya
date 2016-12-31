@@ -8,7 +8,7 @@
  */
 #pragma once
 #include "Geometry/Mesh.h"
-#include "Geometry/PolygonAttributes.h"
+#include "Geometry/PrimitiveAttribute.h"
 
 namespace Kaguya
 {
@@ -18,13 +18,15 @@ enum class PolyMeshType
     TRIANGLE,
     QUAD
 };
+
+// Used for Embree
 struct TessTrait
 {
-    //size_t      num = 0;
     size_t      byteOffset = 0;
     size_t      byteStride = 0;
     const void* data = nullptr;
 };
+
 struct TessBuffer
 {
     std::vector<TessTrait> vertTraits;
@@ -55,11 +57,14 @@ public:
 
     virtual void getTessellated(TessBuffer &trait) const = 0;
 
+    void getRenderBuffer(RenderBufferTrait* trait) const override;
+
     static PolyMesh* createPolyMesh(std::vector<Point3f>   &vertexBuffer,
                                     std::vector<uint32_t>  &indexBuffer,
                                     std::vector<uint32_t>  &faceSizeBuffer,
                                     TextureAttribute*       texAttri,
                                     NormalAttribute*        normAttri);
+
 protected:
     virtual void tessellate(std::vector<uint32_t> &indexBuffer,
                             std::vector<uint32_t> &faceSizeBuffer,

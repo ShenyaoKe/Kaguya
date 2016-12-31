@@ -22,6 +22,28 @@
 namespace Kaguya
 {
 
+struct RenderBufferObject
+{
+    std::shared_ptr<GLSLProgram>  shader;
+
+    GLuint vbo, ibo, vao;
+    uint32_t indexCount, patchSize;
+    // Texture buffer object 
+    union
+    {
+        GLuint tbo[2]{};
+        struct { GLuint texTBO, normTBO; };
+    };
+    // Texture handle for texture coordinates and shading normal
+    union
+    {
+        GLuint tex[2]{};
+        struct { GLuint texTEX, normTEX; };
+    };
+    AttributeType   texAttriType = AttributeType::UNDEFINED;
+    AttributeType   normAttriType = AttributeType::UNDEFINED;
+    GLenum          primMode;
+};
 class OGLViewer : public QOpenGLWidget
 {
     Q_OBJECT
@@ -46,7 +68,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent *e) Q_DECL_OVERRIDE;
 private:
-    void bindMesh();
+    RenderBufferObject createRenderObject(const RenderBufferTrait &trait);
+
     void bindReslotionGate();
     void saveFrameBuffer();
 
@@ -61,14 +84,12 @@ private: // OpenGL variables
     int display_mode = 0;
 
     std::unique_ptr<Scene> mScene;
-    std::vector<Primitive*> objlist;
 
-    GLuint model_vert_vbo, model_ibo, model_vao;
-
+    std::vector<RenderBufferObject>    mRBOs;
     std::vector<GLfloat> filmgate, resgate;
     GLuint resgate_vbo, resgate_vao;
 
-    std::unique_ptr<GLSLProgram> model_shader;
+    std::shared_ptr<GLSLProgram> triShader, quadShader, curveShader;
     std::unique_ptr<GLSLProgram> gate_shader;// OpenGL model_shader program
 
     friend class MainWindow;

@@ -240,9 +240,6 @@
     <ClInclude Include="..\src\Camera\OrthographicCamera.h">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\PolygonAttributes.h">
-      <Filter>Header Files\geometry\polygonal</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\core\Utils.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
@@ -254,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Geometry\Primitive.h">
       <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\PrimitiveAttribute.h">
+      <Filter>Header Files\geometry\polygonal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -371,9 +371,6 @@
     <ClCompile Include="..\src\Camera\OrthographicCamera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Geometry\PolygonAttributes.cpp">
-      <Filter>Source Files\geometry\polygonal</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Core\Scene.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -382,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Primitive.cpp">
       <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp">
+      <Filter>Source Files\geometry\polygonal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,15 +4,6 @@
 namespace Kaguya
 {
 
-struct BufferTrait
-{
-    const void* data   = nullptr;
-    uint32_t    count  = 0;
-    uint32_t    size   = 0;
-    uint32_t    offset = 0;
-    uint32_t    stride = 0;
-};
-
 enum class MeshType
 {
     UNKNOWN,
