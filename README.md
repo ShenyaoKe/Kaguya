@@ -8,3 +8,5 @@ http://freeimage.sourceforge.net/download.html
 https://github.com/nigels-com/glew/releases
 ### Embree 2.13.0
 https://github.com/embree/embree/releases
+### Qt 5.7.1
+https://www.qt.io/download-open-source/
