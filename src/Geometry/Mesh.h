@@ -43,7 +43,7 @@ bool parse(const char*            filename,
            std::vector<uint32_t> &normId,
            std::vector<uint32_t> &faceCount);
 
-inline index_t facetype(const char* str, uint32_t* val)
+inline index_t facetype(const char* str, int32_t* val)
 {
     int argv = sscanf(str, "%d/%d/%d", val, val + 1, val + 2);
     switch (argv)

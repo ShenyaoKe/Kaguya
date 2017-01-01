@@ -91,6 +91,12 @@
     <Filter Include="Source Files\geometry\polygonal">
       <UniqueIdentifier>{8b1d9007-d961-45cd-92b6-aa8e292dbe57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{c421b2ab-268a-41be-af3c-e06a3105c9b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\io">
+      <UniqueIdentifier>{f60feaea-7c3f-4169-88c9-cbb9b8bac3c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Shading\Noise.h">
@@ -255,6 +261,9 @@
     <ClInclude Include="..\src\Geometry\PrimitiveAttribute.h">
       <Filter>Header Files\geometry\polygonal</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\IO\ObjLoader.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -382,6 +391,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp">
       <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IO\ObjLoader.cpp">
+      <Filter>Source Files\io</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

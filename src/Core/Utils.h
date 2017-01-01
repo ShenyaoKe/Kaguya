@@ -7,7 +7,8 @@ namespace Kaguya
 namespace Utils
 {
 
-bool endsWith(const std::string &src, const std::string &ext, bool isCaseSensitive = true)
+inline bool endsWith(const std::string &src, const std::string &ext,
+                     bool isCaseSensitive = true)
 {
     // true if both strings are empty
     if (src.length() == 0) return ext.length() == 0;
@@ -32,6 +33,34 @@ bool endsWith(const std::string &src, const std::string &ext, bool isCaseSensiti
         }
     }
     return true;
+}
+
+inline bool startsWith(const char* src, const char* prefix,
+                       bool isCaseSensitive = true)
+{
+
+    if (isCaseSensitive)
+    {
+        do
+        {
+            if (*src != *prefix)
+            {
+                return false;
+            }
+        } while (*++src && *++prefix);
+    }
+    else
+    {
+        do
+        {
+            if (tolower(*src) != tolower(*prefix))
+            {
+                return false;
+            }
+        } while (*++src && *++prefix);
+    }
+    
+    return *prefix == '\0';
 }
 
 }

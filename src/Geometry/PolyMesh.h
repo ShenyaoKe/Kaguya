@@ -40,12 +40,12 @@ class PolyMesh : public Mesh
 {
 public:
     PolyMesh() {}
-    PolyMesh(std::vector<Point3f>   &vertexBuffer,
-             std::vector<uint32_t>  &indexBuffer,
-             size_t                  vertexCount,
-             size_t                  faceCount,
-             TextureAttribute*       texAttri,
-             NormalAttribute*        normAttri);
+    PolyMesh(std::vector<Point3f>             &vertexBuffer,
+             std::vector<uint32_t>            &indexBuffer,
+             size_t                            vertexCount,
+             size_t                            faceCount,
+             std::shared_ptr<TextureAttribute> texAttri,
+             std::shared_ptr<NormalAttribute>  normAttri);
     ~PolyMesh();
 
     PrimitiveType primitiveType() const override
@@ -59,11 +59,11 @@ public:
 
     void getRenderBuffer(RenderBufferTrait* trait) const override;
 
-    static PolyMesh* createPolyMesh(std::vector<Point3f>   &vertexBuffer,
-                                    std::vector<uint32_t>  &indexBuffer,
-                                    std::vector<uint32_t>  &faceSizeBuffer,
-                                    TextureAttribute*       texAttri,
-                                    NormalAttribute*        normAttri);
+    static PolyMesh* createPolyMesh(std::vector<Point3f>             &vertexBuffer,
+                                    std::vector<uint32_t>            &indexBuffer,
+                                    std::vector<uint32_t>            &faceSizeBuffer,
+                                    std::shared_ptr<TextureAttribute> texAttri,
+                                    std::shared_ptr<NormalAttribute>  normAttri);
 
 protected:
     virtual void tessellate(std::vector<uint32_t> &indexBuffer,
@@ -75,8 +75,8 @@ protected:
     size_t                            mVertexCount;
     size_t                            mFaceCount;
 
-    std::unique_ptr<TextureAttribute> mTextureAttribute;
-    std::unique_ptr<NormalAttribute>  mNormalAttibute;
+    std::shared_ptr<TextureAttribute> mTextureAttribute;
+    std::shared_ptr<NormalAttribute>  mNormalAttibute;
 };
 
 }

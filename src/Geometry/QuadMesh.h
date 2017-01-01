@@ -8,13 +8,13 @@ namespace Kaguya
 class QuadMesh : public PolyMesh
 {
 public:
-    QuadMesh(std::vector<Point3f>  &vertexBuffer,
-             std::vector<uint32_t> &indexBuffer,
-             std::vector<uint32_t> &faceSizeBuffer,
-             size_t                 totalPrimCount,
-             TextureAttribute*      texAttri,
-             NormalAttribute*       normAttri,
-             bool                   isTessellated = true);
+    QuadMesh(std::vector<Point3f>             &vertexBuffer,
+             std::vector<uint32_t>            &indexBuffer,
+             std::vector<uint32_t>            &faceSizeBuffer,
+             size_t                            totalPrimCount,
+             std::shared_ptr<TextureAttribute> texAttri,
+             std::shared_ptr<NormalAttribute>  normAttri,
+             bool                              isTessellated = true);
     ~QuadMesh();
 
     void bounding() override;

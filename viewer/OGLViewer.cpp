@@ -28,7 +28,7 @@ OGLViewer::OGLViewer(QWidget* parent)
 
     // Read obj file
     
-    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/CornellBox-Empty.obj")));
+    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("D:/Learning/cornell-box/CornellBox-Empty-CO.obj")));
     mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
     mScene->commitScene();
 }

@@ -7,13 +7,13 @@ namespace Kaguya
 class TriangleMesh : public PolyMesh
 {
 public:
-    TriangleMesh(std::vector<Point3f>  &vertexBuffer,
-                 std::vector<uint32_t> &indexBuffer,
-                 std::vector<uint32_t> &faceSizeBuffer,
-                 size_t                 totalPrimCount,
-                 TextureAttribute*      texAttri,
-                 NormalAttribute*       normAttri,
-                 bool                   isTessellated = true);
+    TriangleMesh(std::vector<Point3f>             &vertexBuffer,
+                 std::vector<uint32_t>            &indexBuffer,
+                 std::vector<uint32_t>            &faceSizeBuffer,
+                 size_t                            totalPrimCount,
+                 std::shared_ptr<TextureAttribute> texAttri,
+                 std::shared_ptr<NormalAttribute>  normAttri,
+                 bool                              isTessellated = true);
     ~TriangleMesh();
 
     void bounding() override;

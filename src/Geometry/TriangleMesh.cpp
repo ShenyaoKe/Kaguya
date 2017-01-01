@@ -8,13 +8,13 @@
 namespace Kaguya
 {
 
-TriangleMesh::TriangleMesh(std::vector<Point3f>  &vertexBuffer,
-                           std::vector<uint32_t> &indexBuffer,
-                           std::vector<uint32_t> &faceSizeBuffer,
-                           size_t                 totalPrimCount,
-                           TextureAttribute*      texAttri,
-                           NormalAttribute*       normAttri,
-                           bool                   isTessellated)
+TriangleMesh::TriangleMesh(std::vector<Point3f>             &vertexBuffer,
+                           std::vector<uint32_t>            &indexBuffer,
+                           std::vector<uint32_t>            &faceSizeBuffer,
+                           size_t                            totalPrimCount,
+                           std::shared_ptr<TextureAttribute> texAttri,
+                           std::shared_ptr<NormalAttribute>  normAttri,
+                           bool                              isTessellated)
     : PolyMesh(vertexBuffer, indexBuffer,
                vertexBuffer.size(), totalPrimCount,
                texAttri, normAttri)
@@ -116,7 +116,7 @@ void TriangleMesh::getTessellated(TessBuffer &trait) const
 
 void TriangleMesh::tessellate(std::vector<uint32_t> &indexBuffer,
                               std::vector<uint32_t> &faceSizeBuffer,
-                              size_t            tessellatedCount)
+                              size_t                 tessellatedCount)
 {
     size_t nCurrentPosition = indexBuffer.size();
     size_t nLastPosition = tessellatedCount * sTriFaceSize;

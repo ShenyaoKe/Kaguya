@@ -10,13 +10,13 @@
 namespace Kaguya
 {
 
-QuadMesh::QuadMesh(std::vector<Point3f>  &vertexBuffer,
-                   std::vector<uint32_t> &indexBuffer,
-                   std::vector<uint32_t> &faceSizeBuffer,
-                   size_t                 totalPrimCount,
-                   TextureAttribute*      texAttri,
-                   NormalAttribute*       normAttri,
-                   bool                   isTessellated)
+QuadMesh::QuadMesh(std::vector<Point3f>             &vertexBuffer,
+                   std::vector<uint32_t>            &indexBuffer,
+                   std::vector<uint32_t>            &faceSizeBuffer,
+                   size_t                            totalPrimCount,
+                   std::shared_ptr<TextureAttribute> texAttri,
+                   std::shared_ptr<NormalAttribute>  normAttri,
+                   bool                              isTessellated)
     : PolyMesh(vertexBuffer, indexBuffer,
                vertexBuffer.size(), totalPrimCount,
                texAttri, normAttri)

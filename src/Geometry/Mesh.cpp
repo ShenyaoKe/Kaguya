@@ -31,8 +31,11 @@ bool objFileParser::parse(const char*            filename,
     char buff[256] = {};
     char lineHeader[3] = {};
     Float val[3] = {};
-    uint32_t indices[3];
+    int32_t indices[3];
     char endflg;
+    size_t vertCount = 0;
+    size_t texcoordCount = 0;
+    size_t normCount = 0;
 
     while (true)
     {
@@ -47,12 +50,14 @@ bool objFileParser::parse(const char*            filename,
         {
             fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
             verts.emplace_back(val);
+            vertCount++;
         }
         // Texture Coordinate
         else if (strcmp(lineHeader, "vt") == 0)
         {
             fscanf(fp, "%f %f\n", val, val + 1);
             uvs.emplace_back(val);
+            texcoordCount++;
         }
         // Vertex Normal
         else if (strcmp(lineHeader, "vn") == 0)
@@ -60,6 +65,7 @@ bool objFileParser::parse(const char*            filename,
             //float val[3];
             fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
             norms.emplace_back(val);
+            normCount++;
         }
         // Face Index
         else if (strcmp(lineHeader, "f") == 0)
@@ -68,21 +74,27 @@ bool objFileParser::parse(const char*            filename,
             err = fscanf(fp, "%s", &buff);
             indices[1] = indices[2] = 0;
             index_t ft = facetype(buff, indices);
-            faceId.push_back(indices[0] - 1);
+            auto addIndex = [](std::vector<uint32_t> &indices,
+                               size_t bufferSize, int32_t id)
+            {
+                indices.push_back(id > 0 ? id - 1 : bufferSize + id);
+            };
+
+            addIndex(faceId, vertCount, indices[0]);
             int count = 1;
             endflg = fgetc(fp);
             switch (ft)
             {
             case VTN://111
-                texcoordId.push_back(indices[1] - 1);
-                normId.push_back(indices[2] - 1);
+                addIndex(texcoordId, texcoordCount, indices[1]);
+                addIndex(normId, normCount, indices[2]);
                 while (endflg != '\n' && endflg != '\r' && endflg != '\0')
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d/%d/%d", indices, indices + 1, indices + 2);
-                    faceId.push_back(indices[0] - 1);
-                    texcoordId.push_back(indices[1] - 1);
-                    normId.push_back(indices[2] - 1);
+                    addIndex(faceId, vertCount, indices[0]);
+                    addIndex(texcoordId, texcoordCount, indices[1]);
+                    addIndex(normId, normCount, indices[2]);
                     count++;
                     endflg = fgetc(fp);
                 }
@@ -94,8 +106,8 @@ bool objFileParser::parse(const char*            filename,
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d/%d", indices, indices + 1);
-                    faceId.push_back(indices[0] - 1);
-                    texcoordId.push_back(indices[1] - 1);
+                    addIndex(faceId, vertCount, indices[0]);
+                    addIndex(texcoordId, texcoordCount, indices[1]);
                     count++;
                     endflg = fgetc(fp);
                 }
@@ -107,8 +119,8 @@ bool objFileParser::parse(const char*            filename,
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d//%d", indices, indices + 2);
-                    faceId.push_back(indices[0] - 1);
-                    normId.push_back(indices[2] - 1);
+                    addIndex(faceId, vertCount, indices[0]);
+                    addIndex(normId, normCount, indices[2]);
                     count++;
                     endflg = fgetc(fp);
                 }
@@ -119,7 +131,7 @@ bool objFileParser::parse(const char*            filename,
                 {
                     ungetc(endflg, fp);
                     fscanf(fp, "%d", indices);
-                    faceId.push_back(indices[0] - 1);
+                    addIndex(faceId, vertCount, indices[0]);
                     count++;
                     endflg = fgetc(fp);
                 }
@@ -184,8 +196,8 @@ Mesh* createMesh(const std::string &filename, MeshType meshType)
         return PolyMesh::createPolyMesh(vertexBuffer,
                                         faceIndexBuffer,
                                         faceCount,
-                                        texAttr,
-                                        normAttr);
+                                        std::shared_ptr<TextureAttribute>(texAttr),
+                                        std::shared_ptr<NormalAttribute>(normAttr));
     }
     else if (meshType == MeshType::SUBDIVISION_MESH)
     {
