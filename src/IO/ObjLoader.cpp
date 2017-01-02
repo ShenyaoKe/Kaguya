@@ -8,6 +8,9 @@ namespace Kaguya
 
 ObjLoader::ObjLoader(const std::string &filename)
     : fp(std::fopen(filename.c_str(), "r"))
+    , vertCount(0), vertRange{}
+    , uvCount(0), uvRange{}
+    , normCount(0), normRange{}
     , mFilename(filename)
 {
     if (fp != nullptr)
@@ -18,11 +21,11 @@ ObjLoader::ObjLoader(const std::string &filename)
     {
         mPrims.emplace_back(finalizeMesh());
     }
+    fclose(fp);
 }
 
 ObjLoader::~ObjLoader()
 {
-
 }
 
 ObjLoader::index_t ObjLoader::facetype(const char* str, int32_t* val)
@@ -49,7 +52,7 @@ void ObjLoader::parse(std::FILE* fp)
 {
     int err;
     char buff[256] = {};
-    char lineHeader[3] = {};
+    char lineHeader[16] = {};
     Float val[3] = {};
 
     while (true)
@@ -61,41 +64,37 @@ void ObjLoader::parse(std::FILE* fp)
             break;
         }
 
-        bool isMeshBoundary = Utils::startsWith(lineHeader, "g")
+        if (Utils::startsWith(lineHeader, "g")
             || Utils::startsWith(lineHeader, "o")
             || Utils::startsWith(lineHeader, "s")
-            || Utils::startsWith(lineHeader, "usemtl");
-        if (isMeshBoundary && !faceIndexBuffer.empty())
+            || Utils::startsWith(lineHeader, "usemtl"))
         {
-            mPrims.emplace_back(finalizeMesh());
-            clearMeshBuffers();
             swapBuffers();
-            //get new filename
-            fscanf(fp, "%s\n", buff);
-            mFilename = std::string(buff);
+            if (!faceIndexBuffer.empty())
+            {
+                mPrims.emplace_back(finalizeMesh());
+                clearMeshBuffers();
+            }
         }
+
 
         // Vertex
         if (Utils::startsWith(lineHeader, "v"))
         {
-            fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
+            fscanf(fp, "%f %f %f", val, val + 1, val + 2);
             vertexBuffer.emplace_back(val);
-            vertCount++;
         }
         // Texture Coordinate
         else if (Utils::startsWith(lineHeader, "vt"))
         {
-            fscanf(fp, "%f %f\n", val, val + 1);
+            fscanf(fp, "%f %f", val, val + 1);
             uvBuffer.emplace_back(val);
-            uvCount++;
         }
         // Vertex Normal
         else if (Utils::startsWith(lineHeader, "vn"))
         {
-            //float val[3];
-            fscanf(fp, "%f %f %f\n", val, val + 1, val + 2);
+            fscanf(fp, "%f %f %f", val, val + 1, val + 2);
             normBuffer.emplace_back(val);
-            normCount++;
         }
         // Face Index
         else if (Utils::startsWith(lineHeader, "f"))
@@ -107,6 +106,11 @@ void ObjLoader::parse(std::FILE* fp)
         {
             // Skip comments
             fscanf(fp, "%[^\r\n]", &buff);
+        }
+        else if (Utils::startsWith(lineHeader, "g"))
+        {
+            fscanf(fp, "%s", buff);
+            mFilename = std::string(buff);
         }
         // Others
         else
@@ -132,50 +136,50 @@ void ObjLoader::parseFace(std::FILE* fp)
                        size_t bufferSize, size_t bufferOffset)
     {
         indices.push_back(id > 0 ? id - bufferOffset - 1
-                                 : bufferSize + id);
+                          : bufferSize + id);
     };
 
-    addIndex(faceIndexBuffer, indices[0], vertCount, vertOffest);
+    addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
     int count = 1;
     endflg = fgetc(fp);
     switch (ft)
     {
     case VTN://111
-        addIndex(uvIndexBuffer, indices[1], uvCount, uvOffest);
-        addIndex(normIndexBuffer, indices[2], normCount, normOffest);
+        addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
+        addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
         while (endflg != '\n' && endflg != '\r' && endflg != '\0')
         {
             ungetc(endflg, fp);
             fscanf(fp, "%d/%d/%d", indices, indices + 1, indices + 2);
-            addIndex(faceIndexBuffer, indices[0], vertCount, vertOffest);
-            addIndex(uvIndexBuffer, indices[1], uvCount, uvOffest);
-            addIndex(normIndexBuffer, indices[2], normCount, normOffest);
+            addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
+            addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
+            addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
             count++;
             endflg = fgetc(fp);
         }
         faceSizeBuffer.push_back(count);
         break;
     case VT://011
-        uvIndexBuffer.push_back(indices[1] - 1);
+        addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
         while (endflg != '\n' && endflg != '\r' && endflg != '\0')
         {
             ungetc(endflg, fp);
             fscanf(fp, "%d/%d", indices, indices + 1);
-            addIndex(faceIndexBuffer, indices[0], vertCount, vertOffest);
-            addIndex(uvIndexBuffer, indices[1], uvCount, uvOffest);
+            addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
+            addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
             count++;
             endflg = fgetc(fp);
         }
         faceSizeBuffer.push_back(count);
         break;
     case VN://101
-        normIndexBuffer.push_back(indices[2] - 1);
+        addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
         while (endflg != '\n' && endflg != '\r' && endflg != '\0')
         {
             ungetc(endflg, fp);
             fscanf(fp, "%d//%d", indices, indices + 2);
-            addIndex(faceIndexBuffer, indices[0], vertCount, vertOffest);
-            addIndex(normIndexBuffer, indices[2], normCount, normOffest);
+            addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
+            addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
             count++;
             endflg = fgetc(fp);
         }
@@ -186,7 +190,7 @@ void ObjLoader::parseFace(std::FILE* fp)
         {
             ungetc(endflg, fp);
             fscanf(fp, "%d", indices);
-            addIndex(faceIndexBuffer, indices[0], vertCount, vertOffest);
+            addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
             count++;
             endflg = fgetc(fp);
         }
@@ -199,27 +203,32 @@ void ObjLoader::parseFace(std::FILE* fp)
 
 void ObjLoader::swapBuffers()
 {
-    std::swap(vertexBuffer, vertexBufferFinal);
-    std::swap(uvBuffer, uvBufferFinal);
-    std::swap(normBuffer, normBufferFinal);
+    if (vertRange[1] < vertexBuffer.size())
+    {
+        vertRange[0] = vertRange[1];
+        vertRange[1] = vertexBuffer.size();
+        vertCount = vertRange[1] - vertRange[0];
+    }
+    if (uvRange[1] < uvBuffer.size())
+    {
+        uvRange[0] = uvRange[1];
+        uvRange[1] = uvBuffer.size();
+        uvCount = uvRange[1] - uvRange[0];
+    }
+    if (normRange[1] < normBuffer.size())
+    {
+        normRange[0] = normRange[1];
+        normRange[1] = normBuffer.size();
+        normCount = normRange[1] - normRange[0];
+    }
 }
 
 void ObjLoader::clearMeshBuffers()
 {
-    vertexBufferFinal.clear();
-    uvBufferFinal.clear();
-    normBufferFinal.clear();
-
     faceIndexBuffer.clear();
     uvIndexBuffer.clear();
     normIndexBuffer.clear();
     faceSizeBuffer.clear();
-
-    vertOffest += vertCount;
-    uvOffest += uvCount;
-    normOffest += normCount;
-
-    vertCount = uvCount = normCount = 0;
 
     texAttr.reset();
     texAttr.reset();
@@ -229,22 +238,31 @@ Primitive* ObjLoader::finalizeMesh()
 {
     // use vertexBufferFinal, fid
     texAttr.reset(uvIndexBuffer.size() == faceIndexBuffer.size()
-        ? new TextureAttribute(uvBufferFinal, uvIndexBuffer)
-        : new TextureAttribute);
+                  ? new TextureAttribute(
+                      std::vector<Point2f>(uvBuffer.begin() + uvRange[0],
+                                           uvBuffer.begin() + uvRange[1]),
+                      uvIndexBuffer)
+                  : new TextureAttribute);
     normAttr.reset(normIndexBuffer.size() == faceIndexBuffer.size()
-        ? new NormalAttribute(normBufferFinal, normIndexBuffer)
+                   ? new NormalAttribute(
+                       std::vector<Normal3f>(normBuffer.begin() + normRange[0],
+                                             normBuffer.begin() + normRange[1]),
+                       normIndexBuffer)
         : new NormalAttribute);
 
-    return PolyMesh::createPolyMesh(vertexBufferFinal,
+    return PolyMesh::createPolyMesh(std::vector<Point3f>(vertexBuffer.begin() + vertRange[0],
+                                                         vertexBuffer.begin() + vertRange[1]),
                                     faceIndexBuffer,
                                     faceSizeBuffer,
                                     texAttr,
                                     normAttr);
 }
 
-Primitive* ObjLoader::load(const std::string &filename)
+std::vector<std::shared_ptr<Primitive>> ObjLoader::load(const std::string &filename)
 {
-    return nullptr;
+    ObjLoader loader(filename);
+
+    return loader.mPrims;
 }
 
 }

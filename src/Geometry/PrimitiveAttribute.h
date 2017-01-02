@@ -26,7 +26,7 @@ public:
         , mType(AttributeType::VERTEX_VARYING) {}
     // Face Varying
     AttributeRate(std::vector<T>        attriVals,
-                     std::vector<uint32_t> attriIndices)
+                  std::vector<uint32_t> attriIndices)
         : mValueBuffer(std::move(attriVals))
         , mIndexBuffer(std::move(attriIndices))
         , mType(AttributeType::FACE_VARYING) {}

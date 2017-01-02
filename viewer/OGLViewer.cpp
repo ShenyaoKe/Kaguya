@@ -1,5 +1,6 @@
 #include "OGLViewer.h"
 #include "Geometry/Mesh.h"
+#include "IO/ObjLoader.h"
 #include <embree2/rtcore_ray.h>
 #include <QImage>
 
@@ -14,7 +15,7 @@ OGLViewer::OGLViewer(QWidget* parent)
                                      Vector3f(0, 1, 0),
                                      width() / Float(height())))
     , pixmap(new renderBuffer(default_resX, default_resY))
-    , mScene(new Scene(view_cam))
+    , mScene(new Scene(view_cam, ObjLoader::load("scene/obj/CornellBox-Empty-CO.obj")))
     , resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
     // Set surface format for current widget
@@ -27,9 +28,8 @@ OGLViewer::OGLViewer(QWidget* parent)
     this->setFormat(format);
 
     // Read obj file
-    
-    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("D:/Learning/cornell-box/CornellBox-Empty-CO.obj")));
-    mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
+    //mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("D:/Learning/cornell-box/CornellBox-Empty-CO.obj")));
+    //mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
     mScene->commitScene();
 }
 
@@ -174,7 +174,7 @@ void OGLViewer::paintGL()
     // Model
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK); // cull back face
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     for (auto &rbo : mRBOs)
     {

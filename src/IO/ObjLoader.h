@@ -8,7 +8,7 @@ namespace Kaguya
 
 class ObjLoader
 {
-
+public:
     ObjLoader(const std::string &filename);
     ~ObjLoader();
 
@@ -32,29 +32,27 @@ class ObjLoader
 
     Primitive* finalizeMesh();
 public:
-    static Primitive* load(const std::string &filename);
+    static std::vector<std::shared_ptr<Primitive>> load(const std::string &filename);
 
-private:
+public:
     std::FILE*                              fp;
     std::vector<Point3f>                    vertexBuffer;
-    std::vector<Point3f>                    vertexBufferFinal;
     std::vector<Point2f>                    uvBuffer;
-    std::vector<Point2f>                    uvBufferFinal;
     std::vector<Normal3f>                   normBuffer;
-    std::vector<Normal3f>                   normBufferFinal;
     // Index Buffers
     std::vector<uint32_t>                   faceIndexBuffer;
     std::vector<uint32_t>                   uvIndexBuffer;
     std::vector<uint32_t>                   normIndexBuffer;
     // Face Sides
     std::vector<uint32_t>                   faceSizeBuffer;
+    // Face
+    uint32_t                                vertRange[2];
+    uint32_t                                uvRange[2];
+    uint32_t                                normRange[2];
     // Size & Offset
     size_t                                  vertCount;
-    size_t                                  vertOffest;
     size_t                                  uvCount;
-    size_t                                  uvOffest;
     size_t                                  normCount;
-    size_t                                  normOffest;
 
     // Attribute
     std::shared_ptr<TextureAttribute>       texAttr;
@@ -63,7 +61,7 @@ private:
     bool                                    hasObject;
     bool                                    hasGroup;
     bool                                    hasMaterial;
-    
+
     std::vector<std::shared_ptr<Primitive>> mPrims;
 
     std::string                             mFilename;

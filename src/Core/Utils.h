@@ -39,7 +39,7 @@ inline bool startsWith(const char* src, const char* prefix,
                        bool isCaseSensitive = true)
 {
 
-    if (isCaseSensitive)
+    /*if (isCaseSensitive)
     {
         do
         {
@@ -60,7 +60,8 @@ inline bool startsWith(const char* src, const char* prefix,
         } while (*++src && *++prefix);
     }
     
-    return *prefix == '\0';
+    return *prefix == '\0';*/
+    return strcmp(src, prefix) == 0;
 }
 
 }
