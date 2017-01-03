@@ -264,6 +264,9 @@
     <ClInclude Include="..\src\IO\ObjLoader.h">
       <Filter>Header Files\io</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\IO\SceneLoader.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -393,6 +396,9 @@
       <Filter>Source Files\geometry\polygonal</Filter>
     </ClCompile>
     <ClCompile Include="..\src\IO\ObjLoader.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IO\SceneLoader.cpp">
       <Filter>Source Files\io</Filter>
     </ClCompile>
   </ItemGroup>

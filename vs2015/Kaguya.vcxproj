@@ -134,6 +134,7 @@
     <ClInclude Include="..\src\Image\ImagePyramid.h" />
     <ClInclude Include="..\src\Image\TextureSynthesis.h" />
     <ClInclude Include="..\src\IO\ObjLoader.h" />
+    <ClInclude Include="..\src\IO\SceneLoader.h" />
     <ClInclude Include="..\src\Light\EnvironmentMap.h" />
     <ClInclude Include="..\src\Light\Light.h" />
     <ClInclude Include="..\src\Light\Spectrum.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="..\src\Geometry\Sphere.cpp" />
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\IO\ObjLoader.cpp" />
+    <ClCompile Include="..\src\IO\SceneLoader.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Shading\BxDF.cpp" />
     <ClCompile Include="..\src\Shading\Material.cpp" />
