@@ -31,7 +31,7 @@ ObjLoader::~ObjLoader()
 
 ObjLoader::index_t ObjLoader::facetype(const char* str, int32_t* val)
 {
-    int argv = sscanf(str, "%d/%d/%d", val, val + 1, val + 2);
+    int argv = sscanf(str, "%d/%d/%d%*[ \t]", val, val + 1, val + 2);
     switch (argv)
     {
     case 3:// V/T/N
@@ -39,7 +39,7 @@ ObjLoader::index_t ObjLoader::facetype(const char* str, int32_t* val)
     case 2:// V/T
         return VT;//011
     case 1:
-        argv = sscanf(str, "%d//%d", val, val + 2);
+        argv = sscanf(str, "%d//%d%*[ \t]", val, val + 2);
         if (argv == 2)// V//N
         {
             return VN;//101
@@ -153,7 +153,7 @@ void ObjLoader::parseFace(std::FILE* fp)
         while (endflg != '\n' && endflg != '\r' && endflg != EOF)
         {
             ungetc(endflg, fp);
-            fscanf(fp, "%d/%d/%d%[ \t]s", indices, indices + 1, indices + 2, buff);
+            fscanf(fp, "%d/%d/%d%*[ \t]", indices, indices + 1, indices + 2);
             addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
             addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
             addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
@@ -167,7 +167,7 @@ void ObjLoader::parseFace(std::FILE* fp)
         while (endflg != '\n' && endflg != '\r' && endflg != EOF)
         {
             ungetc(endflg, fp);
-            fscanf(fp, "%d/%d%[ \t]s", indices, indices + 1, buff);
+            fscanf(fp, "%d/%d%*[ \t]", indices, indices + 1);
             addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
             addIndex(uvIndexBuffer, indices[1], uvCount, uvRange[0]);
             count++;
@@ -180,7 +180,7 @@ void ObjLoader::parseFace(std::FILE* fp)
         while (endflg != '\n' && endflg != '\r' && endflg != EOF)
         {
             ungetc(endflg, fp);
-            fscanf(fp, "%d//%d%[ \t]s", indices, indices + 2, buff);
+            fscanf(fp, "%d//%d%*[ \t]", indices, indices + 2);
             addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
             addIndex(normIndexBuffer, indices[2], normCount, normRange[0]);
             count++;
@@ -192,7 +192,7 @@ void ObjLoader::parseFace(std::FILE* fp)
         while (endflg != '\n' && endflg != '\r' && endflg != EOF)
         {
             ungetc(endflg, fp);
-            fscanf(fp, "%d%[ \t]s", indices, buff);
+            fscanf(fp, "%d%*[ \t]", indices);
             addIndex(faceIndexBuffer, indices[0], vertCount, vertRange[0]);
             count++;
             endflg = fgetc(fp);

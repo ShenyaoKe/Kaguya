@@ -15,7 +15,7 @@ OGLViewer::OGLViewer(QWidget* parent)
                                      Vector3f(0, 1, 0),
                                      width() / Float(height())))
     , pixmap(new renderBuffer(default_resX, default_resY))
-    , mScene(new Scene(view_cam, ObjLoader::load("scene/obj/buddha.obj")))
+    , mScene(new Scene(view_cam, ObjLoader::load("scene/obj/dragon.obj")))
     , resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
     // Set surface format for current widget
