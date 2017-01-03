@@ -66,7 +66,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;embree.lib;lua53.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
@@ -91,7 +91,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;embree.lib;lua53.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
