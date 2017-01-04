@@ -10,3 +10,5 @@ https://github.com/nigels-com/glew/releases
 https://github.com/embree/embree/releases
 ### Qt 5.7.1
 https://www.qt.io/download-open-source/
+### Lua 5.3
+http://lua-users.org/wiki/LuaBinaries
