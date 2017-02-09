@@ -1,5 +1,5 @@
 // ======================================================================== //
-// Copyright 2009-2016 Intel Corporation                                    //
+// Copyright 2009-2017 Intel Corporation                                    //
 //                                                                          //
 // Licensed under the Apache License, Version 2.0 (the "License");          //
 // you may not use this file except in compliance with the License.         //
@@ -58,9 +58,9 @@ typedef int ssize_t;
 
 /*! Embree API version */
 #define RTCORE_VERSION_MAJOR 2
-#define RTCORE_VERSION_MINOR 13
+#define RTCORE_VERSION_MINOR 14
 #define RTCORE_VERSION_PATCH 0
-#define RTCORE_VERSION       21300
+#define RTCORE_VERSION       21400
 
 /*! \file rtcore.h Defines the Embree Ray Tracing Kernel API for C and C++ 
 
@@ -168,6 +168,9 @@ enum RTCParameter {
   RTC_CONFIG_HAIR_GEOMETRY = 20,              //!< checks if hair geometries are supported
   RTC_CONFIG_SUBDIV_GEOMETRY = 21,           //!< checks if subdiv geometries are supported
   RTC_CONFIG_USER_GEOMETRY = 22,             //!< checks if user geometries are supported
+
+  RTC_CONFIG_COMMIT_JOIN = 23,               //!< checks if rtcCommit can be used to join build operation (not supported when compiled with some older TBB versions)
+  RTC_CONFIG_COMMIT_THREAD = 24,             //!< checks if rtcCommitThread is available (not supported when compiled with some older TBB versions)
 };
 
 /*! \brief Configures some parameters. 
