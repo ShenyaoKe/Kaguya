@@ -30,9 +30,9 @@ ImageData* hsvOffset(const ImageData* src, Float hue = 0.0, Float saturation = 0
 ImageData* hueSwitch(const ImageData* src, Float oriHue = 0.0, Float range = 0.0, Float newHue = 0.0);
 ImageData* equalize(const ImageData* src);
 ImageData* equalizeLuma(const ImageData* src);
-ImageData* posterize(const ImageData* src, int level = 8);
+ImageData* posterize(const ImageData* src, uint32_t level = 8);
 ImageData* threshold(const ImageData* src, Float th = 0.5);
-ImageData* edgeDetect(const ImageData* src, Float** lumaImg = nullptr, EdgeOperator opType = EdgeOperator::SOBEL);
+ImageData* edgeDetect(const ImageData* src, AlignedArray2D<Float>* lumaImg = nullptr, EdgeOperator opType = EdgeOperator::SOBEL);
 
 ImageData* boxBlur(const ImageData* src, int radius = 3);
 ImageData* gaussianBlur(const ImageData* src, int radius = 3);

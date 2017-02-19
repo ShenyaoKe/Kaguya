@@ -64,9 +64,6 @@
     <Filter Include="Source Files\volume">
       <UniqueIdentifier>{9874e442-0919-413a-81d9-429e232a3ae9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Core">
-      <UniqueIdentifier>{02694521-e195-4b0c-a565-16081d5eab40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\material">
       <UniqueIdentifier>{5aa73dc3-808b-4e34-97b5-9ddbd15471cf}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,9 @@
     </Filter>
     <Filter Include="Source Files\geometry\polygonal">
       <UniqueIdentifier>{8b1d9007-d961-45cd-92b6-aa8e292dbe57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{02694521-e195-4b0c-a565-16081d5eab40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -321,7 +321,7 @@
       <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Core\error.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Torus.cpp">
       <Filter>Source Files\geometry\parametric</Filter>
@@ -372,16 +372,19 @@
       <Filter>Source Files\camera</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Core\Scene.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Core\EmbreeUtils.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Primitive.cpp">
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp">
       <Filter>Source Files\geometry\polygonal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\MemoryControl.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

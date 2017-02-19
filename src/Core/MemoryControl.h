@@ -12,59 +12,109 @@ a[0]  a[1]  a[2]
 1     4     7
 2     5     8
 */
-enum MatrixMajor
-{
-    COL_STORAGE,
-    ROW_STORAGE
-};
+
 template <typename T>
-void Aligned_2DArray(T** &twod_array, size_t wdt = 3, size_t hgt = 3,
-                     MatrixMajor matrix_major = COL_STORAGE)
+class AlignedArray2D
 {
-
-    // size of the matrix
-    size_t major, secondary;
-
-    // if column major storage
-    // Major direction length is width
-    if (matrix_major == COL_STORAGE)
+public:
+    AlignedArray2D() : mRows(0), mCols(0), mRawPtr(nullptr) {}
+    AlignedArray2D(size_t rows, size_t cols, bool runConstructor = false);
+    ~AlignedArray2D()
     {
-        /*
-        0 3 6
-        1 4 7
-        2 5 8
-        */
-        major = wdt;
-        secondary = hgt;
+        release();
     }
-    else
+
+    T* operator[](size_t i)
     {
-        /*
-        0 1 2
-        3 4 5
-        6 7 8
-        */
-        major = hgt;
-        secondary = wdt;
+        return mDataPtr[i];
     }
-    // To access data in 2D array, use A[y][x]
-    // To access data in 1D array, use A[0][i]
-    // Row Matrix
-    T* oned_array = new T[major * secondary];
-
-    twod_array = new T*[major];
-
-    for (size_t i = 0; i < major; i++)
+    const T* operator[](size_t i) const
     {
-        twod_array[i] = &oned_array[i * secondary];
+        return mDataPtr[i];
+    }
+
+    T &operator()(size_t xpos, size_t ypos)
+    {
+        return mDataPtr[ypos][xpos];
+    }
+
+    const T &operator()(size_t xpos, size_t ypos) const
+    {
+        return mDataPtr[ypos][xpos];
+    }
+
+    void release();
+    void allocate(size_t rows, size_t cols);
+    bool cloneData(const AlignedArray2D<T> &other);
+
+private:
+    size_t mRows, mCols;
+    union
+    {
+        char* mRawPtr;
+        T** mDataPtr;
+    };
+};
+
+
+template <typename T>
+AlignedArray2D<T>::AlignedArray2D(size_t rows, size_t cols, bool runConstructor)
+{
+    // Allocate data
+    allocate(rows, cols);
+
+    if (runConstructor)
+    {
+        for (size_t i = 0; i < mRows * mCols; i++)
+        {
+            mDataPtr[0][i] = T();
+        }
     }
 }
+
 template <typename T>
-void delete_2DArray(T** &twod_array)
+void Kaguya::AlignedArray2D<T>::release()
 {
-    delete[] twod_array[0];
-    delete[] twod_array;
-    twod_array = nullptr;
+    if (!mRawPtr)
+    {
+        delete [] mRawPtr;
+        mRows = mCols = 0;
+    }
+}
+
+template<typename T>
+inline void AlignedArray2D<T>::allocate(size_t rows, size_t cols)
+{
+    if (rows == mRows && cols == mCols)
+    {
+        return;
+    }
+    // Reset allocation
+    delete[] mRawPtr;
+    mRows = rows;
+    mCols = cols;
+
+    size_t ptr_offset = mRows * sizeof(void*);
+    size_t data_length = mRows * mCols * sizeof(T);
+    mRawPtr = new char[ptr_offset + data_length];
+
+    // Assign 2D pointer to data address
+    *mDataPtr = (T*)(mRawPtr + ptr_offset);
+    for (size_t i = 1; i < mRows; i++)
+    {
+        mDataPtr[i] = mDataPtr[i - 1] + mCols;
+    }
+}
+
+template <typename T>
+bool Kaguya::AlignedArray2D<T>::cloneData(const AlignedArray2D<T> &other)
+{
+    if (mRows != other.mRows || mCols != other.mCols)
+    {
+        return false;
+    }
+    memcpy(mDataPtr[0], other.mDataPtr[0], mRows * mCols * sizeof(T));
+    return true;
 }
 
 }

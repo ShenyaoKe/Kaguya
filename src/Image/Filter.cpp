@@ -188,13 +188,13 @@ ImageData* filter::equalize(const ImageData* src)
 {
 	int wdt = src->getWidth(), hgt = src->getHeight();
 	ImageData* ret = new ImageData(wdt, hgt);
-	int bitlen = 1 << src->getBPP();
+	/*int bitlen = 1 << src->getBPP();
 	Float avgStep = hgt * wdt / bitlen;
 	Float eqArry[256];// euqalized src->data
 	Float sumArray[256];// original src->data
 	unsigned char *offsets[3];// original src->data shift to what color
     
-	/*for (int i = 1; i < 4; i++)
+	for (int i = 1; i < 4; i++)
 	{
 		eqArry[0] = avgStep;
 		sumArray[0] = static_cast<Float>(histRGB[i][0]);
@@ -276,7 +276,7 @@ ImageData* filter::equalizeLuma(const ImageData* src)
 	}
 	return ret;
 }*/
-ImageData* filter::posterize(const ImageData* src, int level)
+Kaguya::ImageData* filter::posterize(const ImageData* src, uint32_t level)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
 	if (level == 1)
@@ -287,20 +287,20 @@ ImageData* filter::posterize(const ImageData* src, int level)
 	Float color_div = 1.0 / static_cast<Float>(level - 1.0);
 	Float* post_val = new Float[level];
 	*post_val = 0;
-	for (int i = 1; i < level; i++)
+	for (size_t i = 1; i < level; i++)
 	{
 		post_val[i] = post_val[i - 1] + color_div;
 	}
 
 	//int rRange, gRange, bRange;
-	for (int i = 0; i < src->getWidth(); i++)
+	for (size_t i = 0; i < src->getWidth(); i++)
 	{
-		for (int j = 0; j < src->getHeight(); j++)
+		for (size_t j = 0; j < src->getHeight(); j++)
 		{
 			ColorRGBA colorRange = src->getRGBA(i, j) * (level - 1);
-			int rIdx = static_cast<int>(colorRange.r + 0.5);
-			int gIdx = static_cast<int>(colorRange.g + 0.5);
-			int bIdx = static_cast<int>(colorRange.b + 0.5);
+            size_t rIdx = static_cast<size_t>(colorRange.r + 0.5);
+            size_t gIdx = static_cast<size_t>(colorRange.g + 0.5);
+            size_t bIdx = static_cast<size_t>(colorRange.b + 0.5);
             
 			ret->setRGBA(i, j, ColorRGBA(post_val[rIdx], post_val[gIdx], post_val[bIdx]));
 		}
@@ -314,9 +314,9 @@ ImageData* filter::posterize(const ImageData* src, int level)
 ImageData* filter::threshold(const ImageData* src, Float th)
 {
 	ImageData* ret = new ImageData(src->getWidth(), src->getHeight());
-	for (int i = 0; i < src->getWidth(); i++)
+	for (size_t i = 0; i < src->getWidth(); i++)
 	{
-		for (int j = 0; j < src->getHeight(); j++)
+		for (size_t j = 0; j < src->getHeight(); j++)
 		{
 			ColorRGBA pix_val = src->getRGBA(i, j);
 			pix_val.r = pix_val.r > th ? 1 : 0;
@@ -328,7 +328,8 @@ ImageData* filter::threshold(const ImageData* src, Float th)
 	return ret;
 }
 
-ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
+ImageData* filter::edgeDetect(const ImageData* src,
+                              AlignedArray2D<Float>* lumaImg,
                               EdgeOperator opType)
 {
 	int width = src->getWidth();
@@ -338,11 +339,10 @@ ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
 	// Gradiance X and Y are stored in green and blue channel
 	ImageData* ret = new ImageData(width, height);
 
-	// horizontal and vertical derivative kernels
-    int** gX;
-    int** gY;
-	Aligned_2DArray(gX, 3, 3);
-	Aligned_2DArray(gY, 3, 3);
+    // horizontal and vertical derivative kernels
+    AlignedArray2D<int> gX(3, 3);
+    AlignedArray2D<int> gY(3, 3);
+
 	Float gMax(0), gMin(0);
 	/*Float** res;
 	Aligned_2DArray(res, width, height);*/
@@ -382,10 +382,10 @@ ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
 	if (lumaImg == nullptr)
 	{
 		lumaImg = src->getLuma();
-	}
-	for (int i = 0; i < width; i++)
-	{
-		for (int j = 0; j < height; j++)
+    }
+    for (int j = 0; j < height; j++)
+    {
+        for (int i = 0; i < width; i++)
 		{
 			Float sumX = 0, sumY = 0;
 			//unsigned char newColor;
@@ -397,8 +397,8 @@ ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
 					int iIndex = clamp(i - m, 0, width - 1);
 					int jIndex = clamp(j - n, 0, height - 1);
                     
-					sumX += lumaImg[iIndex][jIndex] * gX[m + 1][n + 1];
-					sumY += lumaImg[iIndex][jIndex] * gY[m + 1][n + 1];
+					sumX += *lumaImg[jIndex][iIndex] * gX[m + 1][n + 1];
+					sumY += *lumaImg[jIndex][iIndex] * gY[m + 1][n + 1];
 				}
 			}
 
@@ -407,9 +407,6 @@ ImageData* filter::edgeDetect(const ImageData* src, Float** lumaImg,
 			ret->setRGBA(i, j, ColorRGBA(gs_val, sumX, sumY));
 		}
 	}
-    
-	delete_2DArray(gX);
-	delete_2DArray(gY);
 
 	return ret;
 }
@@ -425,10 +422,8 @@ ImageData* filter::boxBlur(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
     
-    ColorRGBA** tmpImgX;
-    ColorRGBA** tmpImgY;
-	Aligned_2DArray(tmpImgX, width, height);
-	Aligned_2DArray(tmpImgY, width, height);
+	AlignedArray2D<ColorRGBA> tmpImgX(width, height);
+    AlignedArray2D<ColorRGBA> tmpImgY(width, height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -456,9 +451,6 @@ ImageData* filter::boxBlur(const ImageData* src, int radius)
 
 	endT = clock();
 	std::cout << "Box blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
-
-	delete_2DArray(tmpImgX);
-	delete_2DArray(tmpImgY);
 	
 	return ret;
 }
@@ -492,10 +484,8 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
     
-    ColorRGBA** tmpImgX;
-    ColorRGBA** tmpImgY;
-	Aligned_2DArray(tmpImgX, width, height);
-	Aligned_2DArray(tmpImgY, width, height);
+    AlignedArray2D<ColorRGBA> tmpImgX(width, height);
+    AlignedArray2D<ColorRGBA> tmpImgY(width, height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -525,8 +515,6 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	std::cout << "Gaussian blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
     
 	delete [] kernel;
-	delete_2DArray(tmpImgX);
-	delete_2DArray(tmpImgY);
 	
 	return ret;
 }
@@ -539,33 +527,30 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	//int radius = 3;
 	int size = (radius << 1) + 1;
 	int kSize = sqr(size);
-	Float** gKernel;//Spatial Weight
-	Float** sKernel;//Similarity Weight
+	AlignedArray2D<Float> gKernel(size, size);//Spatial Weight
+    AlignedArray2D<Float> sKernel(size, size);//Similarity Weight
 	Float sigmaD = radius / 3.0;// Sigma for gaussian, Can be adjusted
 	Float sqSigmaD = sigmaD * sigmaD;// SigmaD^2
 	Float sigmaR = 0.1;// Can be adjusted
 	Float sqSigmaR = sqr(sigmaR);// SigmaR^2
 	Float kSum = 0.0;
 
-
-	// Initialize box blur kernel
-	Aligned_2DArray(gKernel, size, size);
-	Aligned_2DArray(sKernel, size, size);
 	//
 	for (int i = -radius; i <= radius; i++)
 	{
 		for (int j = -radius; j <= radius; j++)
 		{
-			gKernel[i + radius][j + radius] = exp(-(sqr(i) + sqr(j)) / (2 * sqSigmaD)) / (2 * M_PI * sqSigmaD);
-			kSum += gKernel[i + radius][j + radius];
+			gKernel(j + radius, i + radius) = exp(-(sqr(i) + sqr(j)) / (2 * sqSigmaD)) / (2 * M_PI * sqSigmaD);
+			kSum += gKernel(j + radius, i + radius);
 		}
 
 	}
+    Float invKSum = 1.0 / kSum;
 	for (int j = 0; j < size; j++)
 	{
 		for (int i = 0; i < size; i++)
 		{
-			gKernel[i][j] /= kSum;
+			gKernel(j, i) *= invKSum;
 		}
 	}
 
@@ -573,7 +558,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
 
-	Float** lumaImg = src->getLuma();
+    AlignedArray2D<Float>* lumaImg = src->getLuma();
 	//std::cout << kSize << std::endl;
 	for (int i = 0; i < width; i++)
 	{
@@ -595,11 +580,12 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 						continue;
 					}
 					tmpDist = std::abs(lumaImg[j + n][i + m] - lumaImg[i][j]);
-					sKernel[m + radius][n + radius] = exp(-tmpDist * tmpDist / sqSigmaR / 2.0) * gKernel[m + radius][n + radius];
+					sKernel(n + radius, m + radius) = exp(-tmpDist * tmpDist / sqSigmaR / 2.0)
+                                                    * gKernel(n + radius, m + radius);
 					//std::cout << sKernel[m + radius][n + radius] << std::endl;
-					kSum += sKernel[m + radius][n + radius];
+					kSum += sKernel(n + radius, m + radius);
 					
-					tmpColor += src->getRGBA(i + m, j + n) * sKernel[m + radius][n + radius];
+					tmpColor += src->getRGBA(i + m, j + n) * sKernel(n + radius, m + radius);
 					//obradius+=0.1;
 				}
 			}
@@ -609,11 +595,11 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 			ret->setRGBA(i, j, tmpColor / kSum);
 		}
 	}
-	endT = clock();
-	std::cout << "Bilateral blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
+    delete lumaImg;
 
-	delete_2DArray(sKernel);
-	delete_2DArray(gKernel);
+	endT = clock();
+	std::cout << "Bilateral blur (radius of " << size << ") "
+        "runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
 
 	return ret;
 }
