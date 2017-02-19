@@ -1,23 +1,24 @@
 #include "SceneLoader.h"
-#include <Lua5.3/lua.hpp>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/document.h>
 
 namespace Kaguya
 {
 
 SceneLoader::SceneLoader(const std::string &filename)
 {
-    lua_State* state = luaL_newstate();
-    luaL_openlibs(state);
-    if (luaL_loadfile(state, filename.c_str()) != LUA_OK)
+    if (filename.empty())
     {
-        std::cout << "fail to load lua file\n";
         return;
     }
+    FILE* fp = fopen(filename.c_str(), "rb");
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document d;
+    d.ParseStream(is);
+    fclose(fp);
 
-    if (lua_pcall(state, 0, LUA_MULTRET, 0) != LUA_OK) {
-        std::cout << "fail to call lua function\n";
-        return;
-    }
+    d.FindMember("hello");
 }
 
 
