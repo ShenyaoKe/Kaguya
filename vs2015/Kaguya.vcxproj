@@ -164,6 +164,7 @@
     <ClCompile Include="..\src\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="..\src\Core\EmbreeUtils.cpp" />
     <ClCompile Include="..\src\Core\error.cpp" />
+    <ClCompile Include="..\src\Core\MemoryControl.cpp" />
     <ClCompile Include="..\src\Core\Scene.cpp" />
     <ClCompile Include="..\src\Geometry\BezierCurve.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />

@@ -3,58 +3,57 @@
 namespace Kaguya
 {
 
-ImageData::ImageData(int wd, int ht)
+ImageData::ImageData(uint32_t wd, uint32_t ht)
+    : mWidth(wd), mHeight(ht), mBPP(24)
+    , mPixels(mWidth, mHeight)
 {
-    width = wd;
-    height = ht;
-    bpp = 24;
-
-    Aligned_2DArray(pixels, width, height, ROW_STORAGE);
 }
-ImageData::ImageData(int wd, int ht, Float* &pixMap)
+ImageData::ImageData(uint32_t wd, uint32_t ht, Float* &pixMap)
+    : mWidth(wd), mHeight(ht), mBPP(24)
+    , mPixels(mWidth, mHeight)
 {
     // Declare width and height
-    width = wd;
-    height = ht;
-    bpp = 24;
+    mWidth = wd;
+    mHeight = ht;
+    mBPP = 24;
 
-    Aligned_2DArray(pixels, width, height, ROW_STORAGE);
-
-    for (int i = 0; i < width * height; ++i)
+    for (size_t i = 0; i < mWidth * mHeight; ++i)
     {
-        pixels[0][i] = ColorRGBA(pixMap[i * 3], pixMap[i * 3 + 1], pixMap[i * 3 + 2]);
+        mPixels[0][i] = ColorRGBA(pixMap[i * 3], pixMap[i * 3 + 1], pixMap[i * 3 + 2]);
     }
 }
-ImageData::ImageData(int wd, int ht, unsigned char* pixMap, int pixtype)
+ImageData::ImageData(uint32_t wd, uint32_t ht, unsigned char* pixMap, uint8_t pixtype)
+    : mWidth(wd), mHeight(ht), mBPP(24)
+    , mPixels(mWidth, mHeight)
 {
-    // Declare width and height
-    width = wd;
-    height = ht;
-    bpp = 24;
-
-    Aligned_2DArray(pixels, width, height, ROW_STORAGE);
-
-    for (int i = 0; i < width * height; ++i)
+    Float inv255 = 1.0 / 255.0f;
+    for (uint32_t i = 0; i < mWidth * mHeight; ++i)
     {
         switch (pixtype)
         {
         case RGB:
-            pixels[0][i] = ColorRGBA(
-                static_cast<Float>(pixMap[i * 3]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f);
+        {
+            mPixels[0][i] = ColorRGBA(pixMap[i * 3] * inv255,
+                                      pixMap[i * 3 + 1] * inv255,
+                                      pixMap[i * 3 + 2] * inv255);
+            break;
+        }
         case RGBA:
-            pixels[0][i] = ColorRGBA(
-                static_cast<Float>(pixMap[i * 3]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 3]) / 255.0);
+        {
+            mPixels[0][i] = ColorRGBA(pixMap[i * 3] * inv255,
+                                      pixMap[i * 3 + 1] * inv255,
+                                      pixMap[i * 3 + 2] * inv255,
+                                      pixMap[i * 3 + 3] * inv255);
+            break;
+        }
         case BGRA:
-            pixels[0][i] = ColorRGBA(
-                static_cast<Float>(pixMap[i * 3 + 2]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 1]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3]) / 255.0f,
-                static_cast<Float>(pixMap[i * 3 + 3]) / 255.0f);
+        {
+            mPixels[0][i] = ColorRGBA(pixMap[i * 3 + 2] * inv255,
+                                      pixMap[i * 3 + 1] * inv255,
+                                      pixMap[i * 3] * inv255,
+                                      pixMap[i * 3 + 3] * inv255);
+            break;
+        }
         default:
             break;
         }
@@ -97,13 +96,13 @@ ImageData::ImageData(const std::string &filename)
 
     //get image data from dib
     bits = FreeImage_GetBits(dib);
-    width = FreeImage_GetWidth(dib);
-    height = FreeImage_GetHeight(dib);
+    mWidth = FreeImage_GetWidth(dib);
+    mHeight = FreeImage_GetHeight(dib);
     imgType = FreeImage_GetImageType(dib);
-    bpp = FreeImage_GetBPP(dib);
+    mBPP = FreeImage_GetBPP(dib);
 
     //if color data exists, initialize image
-    if (bits == 0 || width == 0 || height == 0)
+    if (bits == 0 || mWidth == 0 || mHeight == 0)
     {
         std::cout << "ERROR: Image file contains no available image data!" << std::endl;
         abort();
@@ -111,10 +110,12 @@ ImageData::ImageData(const std::string &filename)
     }
     else
     {
-        Aligned_2DArray(pixels, width, height, ROW_STORAGE);
+        mPixels.allocate(mHeight, mWidth);
     }
 
     // color order is BGR
+    Float inv255 = 1.0 / 255.0;
+    Float inv65535 = 1.0 / 65535.0;
     switch (imgType)
     {
     case FIT_UNKNOWN:// unknown type
@@ -125,20 +126,20 @@ ImageData::ImageData(const std::string &filename)
     case FIT_BITMAP:// standard image			: 1-, 4-, 8-, 16-, 24-, 32-bit
     {
         BYTE* pixels = bits;
-        switch (bpp)
+        switch (mBPP)
         {
         case 1:
         {
-            for (int j = 0; j < height; j++)
+            for (size_t j = 0; j < mHeight; j++)
             {
-                for (int i = 0; i < width; i++)
+                for (size_t i = 0; i < mWidth; i++)
                 {
-                    int idx = (i + width * j) * 3;
+                    size_t idx = (i + mWidth * j) * 3;
 
                     //std::cout << idx << ":" << pixels[idx] + 0 << std::endl;
-                    this->setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 255.0f,
-                                                  pixels[idx + 1] / 255.0f,
-                                                  pixels[idx] / 255.0f));
+                    setRGBA(i, j, ColorRGBA(pixels[idx + 2] * inv255,
+                                            pixels[idx + 1] * inv255,
+                                            pixels[idx] * inv255));
                 }
             }
             break;
@@ -148,31 +149,31 @@ ImageData::ImageData(const std::string &filename)
         case 16:
         case 24:// 8bit RGB image
         {
-            for (int j = 0; j < height; j++)
+            for (size_t j = 0; j < mHeight; j++)
             {
-                for (int i = 0; i < width; i++)
+                for (size_t i = 0; i < mWidth; i++)
                 {
-                    int idx = (i + width * j) * 3;
+                    size_t idx = (i + mWidth * j) * 3;
 
                     //std::cout << idx << ":" << pixels[idx] + 0 << std::endl;
-                    this->setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 255.0f,
-                                                  pixels[idx + 1] / 255.0f,
-                                                  pixels[idx] / 255.0f));
+                    setRGBA(i, j, ColorRGBA(pixels[idx + 2] * inv255,
+                                            pixels[idx + 1] * inv255,
+                                            pixels[idx] * inv255));
                 }
             }
             break;
         }
         case 32:// 8bit RGBA image
         {
-            for (int j = 0; j < height; j++)
+            for (size_t j = 0; j < mHeight; j++)
             {
-                for (int i = 0; i < width; i++)
+                for (size_t i = 0; i < mWidth; i++)
                 {
-                    int idx = (i + width * j) * 4;
-                    this->setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 255.0,
-                                                  pixels[idx + 1] / 255.0,
-                                                  pixels[idx] / 255.0,
-                                                  pixels[idx + 3] / 255.0));
+                    size_t idx = (i + mWidth * j) * 4;
+                    setRGBA(i, j, ColorRGBA(pixels[idx + 2] * inv255,
+                                            pixels[idx + 1] * inv255,
+                                            pixels[idx] * inv255,
+                                            pixels[idx + 3] * inv255));
                 }
             }
             break;
@@ -214,14 +215,14 @@ ImageData::ImageData(const std::string &filename)
     {
         WORD* pixels = (WORD*)bits;
 
-        for (int j = 0; j < height; j++)
+        for (size_t j = 0; j < mHeight; j++)
         {
-            for (int i = 0; i < width; i++)
+            for (size_t i = 0; i < mWidth; i++)
             {
-                int idx = (i + width * j) * 3;
-                setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 65535.0f,
-                                        pixels[idx + 1] / 65535.0f,
-                                        pixels[idx] / 65535.0f));
+                size_t idx = (i + mWidth * j) * 3;
+                setRGBA(i, j, ColorRGBA(pixels[idx + 2] * inv65535,
+                                        pixels[idx + 1] * inv65535,
+                                        pixels[idx] * inv65535));
             }
             std::cout << std::endl;
         }
@@ -231,15 +232,15 @@ ImageData::ImageData(const std::string &filename)
     {
         WORD* pixels = (WORD*)bits;
         //std::cout << "num: " << depth / sizeof(pixels[0]) / 8 << std::endl;
-        for (int j = 0; j < height; j++)
+        for (size_t j = 0; j < mHeight; j++)
         {
-            for (int i = 0; i < width; i++)
+            for (size_t i = 0; i < mWidth; i++)
             {
-                int idx = (i + width * j) * 3;
-                setRGBA(i, j, ColorRGBA(pixels[idx + 2] / 65535.0,
-                                        pixels[idx + 1] / 65535.0,
-                                        pixels[idx] / 65535.0,
-                                        pixels[idx + 3] / 65535.0));
+                size_t idx = (i + mWidth * j) * 3;
+                setRGBA(i, j, ColorRGBA(pixels[idx + 2] * inv65535,
+                                        pixels[idx + 1] * inv65535,
+                                        pixels[idx] * inv65535,
+                                        pixels[idx + 3] * inv65535));
             }
         }
         break;
@@ -257,45 +258,43 @@ ImageData::ImageData(const std::string &filename)
 ImageData::ImageData(const ImageData &src)
 {
     // Declare width and height
-    width = src.getWidth();
-    height = src.getHeight();
+    mWidth = src.getWidth();
+    mHeight = src.getHeight();
 
-    Aligned_2DArray(pixels, width, height, ROW_STORAGE);
+    mPixels.allocate(mHeight, mWidth);
 
-    memcpy(pixels[0], src.pixels[0], width * height * sizeof(ColorRGBA));
+    mPixels.cloneData(src.mPixels);
 }
 
 ImageData::~ImageData()
 {
-    // Free data
-    delete_2DArray(pixels);
 }
-void ImageData::setRGBA(int x, int y, const ColorRGBA &color)
+void ImageData::setRGBA(uint32_t x, uint32_t y, const ColorRGBA &color)
 {
-    pixels[y][x] = color;
+    mPixels[y][x] = color;
 }
-const ColorRGBA &ImageData::getRGBA(int x, int y) const
+const ColorRGBA &ImageData::getRGBA(uint32_t x, uint32_t y) const
 {
-    return pixels[y][x];
+    return mPixels[y][x];
 }
 
-const ColorRGBA &ImageData::getRGBA(int idx) const
+const ColorRGBA &ImageData::getRGBA(uint32_t idx) const
 {
-    return pixels[0][idx];
+    return mPixels[0][idx];
 }
 // RGB
 void ImageData::getPixels(unsigned char* &pixMap) const
 {
     delete[] pixMap;
 
-    pixMap = new unsigned char[width * height * 3];
+    pixMap = new unsigned char[mWidth * mHeight * 3];
 
-    for (int i = 0; i < width * height; ++i)
+    for (size_t i = 0; i < mWidth * mHeight; ++i)
     {
-        int index = i * 3;//(i % height * width + (i / height)) * 3;
-        pixMap[index++] = static_cast<unsigned char>(pixels[0][i].r * 255);
-        pixMap[index++] = static_cast<unsigned char>(pixels[0][i].g * 255);
-        pixMap[index] = static_cast<unsigned char>(pixels[0][i].b * 255);
+        size_t index = i * 3;//(i % height * width + (i / height)) * 3;
+        pixMap[index++] = static_cast<uint8_t>(mPixels[0][i].r * 255);
+        pixMap[index++] = static_cast<uint8_t>(mPixels[0][i].g * 255);
+        pixMap[index] = static_cast<uint8_t>(mPixels[0][i].b * 255);
     }
 }
 
@@ -303,57 +302,55 @@ void ImageData::getPixelsRGBA(unsigned char* &pixMap) const
 {
     delete[] pixMap;
 
-    pixMap = new unsigned char[width * height * 4];
+    pixMap = new unsigned char[mWidth * mHeight * 4];
 
-    for (int i = 0; i < width * height; ++i)
+    for (size_t i = 0; i < mWidth * mHeight; ++i)
     {
-        int index = i << 2;// (i % height * width + (i / height)) * 4;
-        pixMap[index++] = static_cast<unsigned char>(pixels[0][i].r * 255);
-        pixMap[index++] = static_cast<unsigned char>(pixels[0][i].g * 255);
-        pixMap[index++] = static_cast<unsigned char>(pixels[0][i].b * 255);
-        pixMap[index] = static_cast<unsigned char>(pixels[0][i].a * 255);
+        size_t index = i << 2;// (i % height * width + (i / height)) * 4;
+        pixMap[index++] = static_cast<uint8_t>(mPixels[0][i].r * 255);
+        pixMap[index++] = static_cast<uint8_t>(mPixels[0][i].g * 255);
+        pixMap[index++] = static_cast<uint8_t>(mPixels[0][i].b * 255);
+        pixMap[index] = static_cast<uint8_t>(mPixels[0][i].a * 255);
     }
 }
 
-void ImageData::printRGBA(int x, int y) const
+void ImageData::printRGBA(uint32_t x, uint32_t y) const
 {
-    std::cout << pixels[y][x] << std::endl;
+    std::cout << mPixels[y][x] << std::endl;
 }
-void ImageData::resize(int x, int y)
+void ImageData::resize(uint32_t x, uint32_t y)
 {
-    delete pixels;
-    width = x;
-    height = y;
+    mWidth = x;
+    mHeight = y;
 
-    Aligned_2DArray(pixels, width, height);
-    //pixels = new ColorRGBA[width * height];
+    mPixels.allocate(mHeight, mWidth);
 }
 ColorRGBA ImageData::bilinearPixel(Float x, Float y) const
 {
     while (x < 0)
     {
-        x += width;
+        x += mWidth;
     }
-    while (x >= width)
+    while (x >= mWidth)
     {
-        x -= width;
+        x -= mWidth;
     }
     while (y < 0)
     {
-        y += height;
+        y += mHeight;
     }
-    while (y >= height)
+    while (y >= mHeight)
     {
-        y -= height;
+        y -= mHeight;
     }
     ColorRGBA pixC[4];
     //std::cout << "x:" << x << "\ty:" << y << std::endl;
-    int floorX = floorToInt(x), floorY = floorToInt(y);
+    size_t floorX = floorToInt(x), floorY = floorToInt(y);
     Float tX = x - floorX, tY = y - floorY;
     //int ceilX = (tX == 0 || floorX == width - 1) ? floorX : (floorX + 1);
     //int ceilY = (tY == 0 || floorY == height - 1) ? floorY : (floorY + 1);
-    int ceilX = (floorX == width - 1) ? 0 : (floorX + 1);
-    int ceilY = (floorY == height - 1) ? 0 : (floorY + 1);
+    size_t ceilX = (floorX == mWidth - 1) ? 0 : (floorX + 1);
+    size_t ceilY = (floorY == mHeight - 1) ? 0 : (floorY + 1);
     pixC[0] = getRGBA(floorX, floorY);
     pixC[2] = getRGBA(floorX, ceilY);
     pixC[1] = getRGBA(ceilX, floorY);
@@ -365,7 +362,7 @@ ColorRGBA ImageData::bilinearPixel(Float x, Float y) const
 bool ImageData::writeFile(const std::string &filename) const
 {
     int BBP = 24;
-    FIBITMAP* bitmap = FreeImage_Allocate(width, height, BBP);
+    FIBITMAP* bitmap = FreeImage_Allocate(mWidth, mHeight, BBP);
     RGBQUAD color;
 
     if (!bitmap)
@@ -375,9 +372,9 @@ bool ImageData::writeFile(const std::string &filename) const
     }
 
 
-    for (int j = 0; j < height; j++)
+    for (size_t j = 0; j < mHeight; j++)
     {
-        for (int i = 0; i < width; i++)
+        for (size_t i = 0; i < mWidth; i++)
         {
             //Set color from image data.
             //......
@@ -397,16 +394,16 @@ bool ImageData::writeFile(const std::string &filename) const
     return false;
 }
 
-int** ImageData::genHist() const
+AlignedArray2D<uint32_t>* ImageData::genHist() const
 {
     /*int** histRGB = new int*[4];
     int bitlen = 1 << bpp;
-    for (int i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         histRGB[i] = new int[bitlen];
     }
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {
+    for (size_t j = 0; j < height; j++) {
+        for (size_t i = 0; i < width; i++) {
             histRGB[0][static_cast<int>(pixels[i][j]->r)]++;
             histRGB[1][static_cast<int>(pixels[i][j]->r)]++;
             histRGB[2][static_cast<int>(pixels[i][j]->r)]++;
@@ -416,16 +413,16 @@ int** ImageData::genHist() const
     return nullptr;
 }
 
-Float** ImageData::getLuma() const
+AlignedArray2D<Float>* ImageData::getLuma() const
 {
-    Float** ret;
-    Aligned_2DArray(ret, this->getWidth(), this->getHeight(), COL_STORAGE);
-    for (int i = 0; i < width; i++)
+    AlignedArray2D<Float>* ret = new AlignedArray2D<Float>(mHeight, mWidth);
+
+    for (size_t j = 0; j < mHeight; j++)
     {
-        for (int j = 0; j < height; j++)
+        for (size_t i = 0; i < mWidth; i++)
         {
-            ColorRGBA curColor = this->getRGBA(i, j);
-            ret[i][j] = curColor.r * 0.2126 + curColor.g * 0.7152 + curColor.b * 0.0722;
+            const ColorRGBA &curColor = mPixels[j][i];
+            *ret[j][i] = curColor.r * 0.2126 + curColor.g * 0.7152 + curColor.b * 0.0722;
         }
     }
 

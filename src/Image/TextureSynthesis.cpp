@@ -13,8 +13,7 @@ ImageData* TextureSynthesis::synth(const ImageData * sample,
     int neighSize = 2 * (sqr(nr) + nr);
 
     // Create vector map for sample image
-    Vector3f** smpVec;
-    Aligned_2DArray(smpVec, srcW, srcH);
+    AlignedArray2D<Vector3f> smpVec(srcW, srcH);
     for (int v = 0; v < srcH; v++)
     {
         for (int u = 0; u < srcW; u++)
