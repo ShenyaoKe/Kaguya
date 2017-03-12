@@ -37,14 +37,14 @@
     <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)../bin/$(Configuration)/$(PlatformTarget)/</OutDir>
-    <IntDir>$(SolutionDir)../tmp/$(Configuration)/$(ProjectName)/</IntDir>
+    <OutDir>$(SolutionDir)..\bin\$(PlatformTarget)\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)..\tmp\$(Configuration)\$(ProjectName)</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
     <TargetName>KaguyaViewer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)../bin/$(Configuration)/$(PlatformTarget)/</OutDir>
-    <IntDir>$(SolutionDir)../tmp/$(Configuration)/$(ProjectName)/</IntDir>
+    <OutDir>$(SolutionDir)..\bin\$(PlatformTarget)\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)..\tmp\$(Configuration)\$(ProjectName)</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
     <TargetName>KaguyaViewer</TargetName>
   </PropertyGroup>

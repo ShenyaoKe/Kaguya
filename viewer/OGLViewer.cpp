@@ -339,7 +339,7 @@ void OGLViewer::renderpixels()
             if (mScene->intersect(traceRay, &queryPoint, &tHit, &rayEp))
             {
                 //cout << "hit something\n" << endl;
-                cosVal = tHit;
+                /*cosVal = tHit;
                 queryPoint.shape->postIntersect(traceRay, &queryPoint);
                 cosVal = (dot(normalize(lightpos - queryPoint.P), queryPoint.Ng) + 1) * 0.5;
                 pixmap->setBuffer(uint32_t(i), uint32_t(j), queryPoint, tHit);
@@ -347,7 +347,11 @@ void OGLViewer::renderpixels()
                 pixmap->beauty[index++] = cosVal;
                 pixmap->beauty[index++] = cosVal;
                 pixmap->beauty[index++] = cosVal;
-                pixmap->beauty[index++] = cosVal;
+                pixmap->beauty[index++] = cosVal;*/
+                pixmap->beauty[index++] = queryPoint.Ng.x * 255;
+                pixmap->beauty[index++] = queryPoint.Ng.y * 255;
+                pixmap->beauty[index++] = queryPoint.Ng.z * 255;
+                pixmap->beauty[index++] = 255;
 
                 //pixmap->setBuffer()
                 //pixmap->empty();
