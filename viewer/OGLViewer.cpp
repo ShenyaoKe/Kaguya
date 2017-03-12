@@ -27,7 +27,6 @@ OGLViewer::OGLViewer(QWidget* parent)
     this->setFormat(format);
 
     // Read obj file
-    
     mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/CornellBox-Empty.obj")));
     mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
     mScene->commitScene();
@@ -36,6 +35,7 @@ OGLViewer::OGLViewer(QWidget* parent)
 OGLViewer::~OGLViewer()
 {
 }
+
 /************************************************************************/
 /* OpenGL Rendering Modules                                             */
 /************************************************************************/
@@ -73,11 +73,6 @@ void OGLViewer::initializeGL()
                                       "resources/shaders/Curve_gs.glsl"));
     gate_shader.reset(new GLSLProgram("resources/shaders/gate_vs.glsl",
                                       "resources/shaders/gate_fs.glsl"));
-    /*
-    #else
-        model_shader.reset(new GLSLProgram(":shaders/model_vs.glsl", ":shaders/model_fs.glsl", ":shaders/model_gs.glsl"));
-        gate_shader.reset(new GLSLProgram(":shaders/gate_vs.glsl", ":shaders/gate_fs.glsl"));
-    #endif*/
 
     for (size_t i = 0; i < mScene->getPrimitiveCount(); i++)
     {
@@ -320,6 +315,8 @@ void OGLViewer::renderpixels()
     cameraSampler camsmp;
     Transform w2o;
 
+    QImage retImg(default_resX, default_resY, QImage::Format_ARGB32);
+
     Point3f lightpos(3, 10, 1);
     Float cosVal;
     DifferentialGeometry queryPoint;
@@ -335,10 +332,8 @@ void OGLViewer::renderpixels()
 
             cosVal = 0;
             Point2f n(0, 0);
-            //if (sphere.intersect(traceRay, queryPoint, &tHit, &rayEp))
             if (mScene->intersect(traceRay, &queryPoint, &tHit, &rayEp))
             {
-                //cout << "hit something\n" << endl;
                 /*cosVal = tHit;
                 queryPoint.shape->postIntersect(traceRay, &queryPoint);
                 cosVal = (dot(normalize(lightpos - queryPoint.P), queryPoint.Ng) + 1) * 0.5;
@@ -347,19 +342,24 @@ void OGLViewer::renderpixels()
                 pixmap->beauty[index++] = cosVal;
                 pixmap->beauty[index++] = cosVal;
                 pixmap->beauty[index++] = cosVal;
-                pixmap->beauty[index++] = cosVal;*/
-                pixmap->beauty[index++] = queryPoint.Ng.x * 255;
-                pixmap->beauty[index++] = queryPoint.Ng.y * 255;
-                pixmap->beauty[index++] = queryPoint.Ng.z * 255;
-                pixmap->beauty[index++] = 255;
+                pixmap->beauty[index++] = cosVal;
 
-                //pixmap->setBuffer()
-                //pixmap->empty();
-                //pixmap->setBuffer(0);
-                //pixmap->doSomething();
+                pixmap->setBuffer()
+                pixmap->empty();
+                pixmap->setBuffer(0);
+                pixmap->doSomething();
+                */
+                traceRay.Ng.normalize();
+                int rgb[]{ static_cast<int>((traceRay.Ng.x*0.5f + 0.5f) * 255),
+                    static_cast<int>((traceRay.Ng.y*0.5f + 0.5f) * 255),
+                    static_cast<int>((traceRay.Ng.z*0.5f + 0.5f) * 255) };
+                retImg.setPixelColor(i, default_resY - j-1,
+                                     QColor(rgb[0], rgb[1], rgb[2]));
             }
         }
     }
+
+    retImg.save("result.png");
 
     endT = clock();
     cout << "Rendering Time:\t" << (Float)(endT - startT) / CLOCKS_PER_SEC << "s" << endl;//Timer
