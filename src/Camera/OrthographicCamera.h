@@ -22,7 +22,7 @@ public:
 
     //void setUpVec(Vector3D &upVec);
 protected:
-    Float nearPlane = -1.0, farPlane = 1.0;
+    Float mNearPlane = -1.0, mFarPlane = 1.0;
 };
 
 }

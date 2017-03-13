@@ -18,7 +18,9 @@
 #include <assert.h>
 #include <type_traits>
 #include <limits>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <numeric>
 

@@ -75,7 +75,7 @@ private:
 
     void renderpixels();
 protected:
-    std::shared_ptr<PerspectiveCamera> view_cam;
+    std::shared_ptr<ProjectiveCamera> view_cam;
     renderBuffer* pixmap;
 private:
     int lastMousePos[2];

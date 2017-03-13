@@ -48,11 +48,15 @@ bool Scene::intersect(Ray &inRay,
     {
         return true;
     }
-    return false;
 #else
     rtcIntersect(mSceneContext, *(static_cast<RTCRay*>((void*)&inRay)));
-    return inRay.geomID != RTC_INVALID_GEOMETRY_ID;
+    if (inRay.geomID != RTC_INVALID_GEOMETRY_ID)
+    {
+        dg->shape = mPrims[inRay.geomID].get();
+        return true;
+    }
 #endif
+    return false;
 }
 
 RenderBufferTrait Scene::getRenderBuffer(uint32_t geomID) const

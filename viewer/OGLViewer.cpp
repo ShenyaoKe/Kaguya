@@ -1,6 +1,7 @@
 #include "OGLViewer.h"
 #include "Geometry/Mesh.h"
 #include "IO/ObjLoader.h"
+#include "IO/SceneLoader.h"
 #include <embree2/rtcore_ray.h>
 #include <QImage>
 
@@ -10,12 +11,8 @@ namespace Kaguya
 OGLViewer::OGLViewer(QWidget* parent)
     : QOpenGLWidget(parent)
     , selectMode(OBJECT_SELECT)
-    , view_cam(new PerspectiveCamera(Point3f(10, 6, 10),
-                                     Point3f(0, 0, 0),
-                                     Vector3f(0, 1, 0),
-                                     width() / Float(height())))
     , pixmap(new renderBuffer(default_resX, default_resY))
-    , mScene(new Scene(view_cam, ObjLoader::load("scene/obj/monkey.obj")))
+    , mScene(SceneLoader::load("scene/unitest_scene.json"))
     , resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
     // Set surface format for current widget
@@ -27,9 +24,9 @@ OGLViewer::OGLViewer(QWidget* parent)
     //format.setProfile(QSurfaceFormat::CoreProfile);
     this->setFormat(format);
 
-    // Read obj file
-    //mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("D:/Learning/cornell-box/CornellBox-Empty-CO.obj")));
-    //mScene->addPrimitive(std::shared_ptr<Primitive>(createMesh("scene/obj/monkey.obj")));
+    // Get projective camera
+    view_cam = std::static_pointer_cast<ProjectiveCamera>(mScene->getCamera());
+    // Commit scene
     mScene->commitScene();
 }
 

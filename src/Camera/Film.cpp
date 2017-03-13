@@ -18,6 +18,12 @@ Film::~Film()
 {
 }
 
+void Film::setResolution(uint32_t resX, uint32_t resY)
+{
+    width = resX;
+    height = resY;
+}
+
 void Film::setFilmType(FILM_TYPE filmType)
 {
     switch (filmType)
@@ -166,22 +172,18 @@ Matrix4x4 Film::rasterToFilm() const
     case FRG_HORIZONTAL_FIT:
     {
         Float m00 = horiApect / static_cast<Float>(width);
-        return Matrix4x4(
-            m00, 0., 0., 0.,
-            0, m00, 0., 0.,
-            0, 0., 1., 0.,
-            -0.5 * horiApect, -0.5 * m00 * height, 0., 1.
-        );
+        return Matrix4x4(m00, 0, 0, 0,
+                         0, m00, 0, 0,
+                         0, 0, 1, 0,
+                         -0.5 * horiApect, -0.5 * m00 * height, 0, 1);
     }
     case FRG_VERTICAL_FIT:
     {
         Float m00 = vertApect / static_cast<Float>(height);
-        return Matrix4x4(
-            m00, 0., 0., 0.,
-            0, m00, 0., 0.,
-            0, 0., 1., 0.,
-            -0.5 * m00 * width, -0.5 * vertApect, 0., 1.
-        );
+        return Matrix4x4(m00, 0, 0, 0,
+                         0, m00, 0, 0,
+                         0, 0, 1, 0,
+                         -0.5 * m00 * width, -0.5 * vertApect, 0, 1);
     }
     /*
     case FRG_FILL_FIT:

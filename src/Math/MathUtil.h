@@ -14,11 +14,11 @@ static const Float M_PI = 3.14159265358979323846;
 static const Float M_HALFPI = M_PI * 0.5;
 static const Float M_TWOPI = M_PI * 2.0;
 static const Float INV_PI = 1.0 / M_PI;
-static const Float INV_TWOPI = INV_PI / 2.0;
-static const Float INV_FOURPI = INV_PI / 4.0;
+static const Float INV_TWOPI = INV_PI * 0.5;
+static const Float INV_FOURPI = INV_PI * 0.25;
 static const Float NUM_ZERO = 0;
-static const Float NUM_INFINITY = std::numeric_limits<Float>::infinity();
-static const Float NUM_NAN = std::numeric_limits<Float>::quiet_NaN();
+static const Float sNumInfinity = std::numeric_limits<Float>::infinity();
+static const Float sNumNAN = std::numeric_limits<Float>::quiet_NaN();
 /************************************************************************/
 /* Functions                                                            */
 /************************************************************************/

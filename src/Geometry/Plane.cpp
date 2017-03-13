@@ -11,7 +11,7 @@ namespace Kaguya
 /* Plane Function Definition                                            */
 /************************************************************************/
 geoPlane::geoPlane()
-    : n(0., 1., 0.)
+    : n(0, 1, 0)
 {
     bounding();
 }
@@ -52,7 +52,8 @@ bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit
 void geoPlane::bounding()
 {
     // TODO: Plane bouding method
-    mObjBound = Bounds3f(Point3f(-INFINITY, -INFINITY, -INFINITY), Point3f(INFINITY, INFINITY, INFINITY));
+    mObjBound = Bounds3f(Point3f(-sNumInfinity, -sNumInfinity, -sNumInfinity),
+                         Point3f(sNumInfinity, sNumInfinity, sNumInfinity));
 }
 
 }

@@ -17,7 +17,7 @@ class Ray
 public:
     Ray(const Point3f &pos = Point3f(0, 0, 0),
         const Vector3f &dir = Vector3f(1, 0, 0),
-        Float minT = NUM_ZERO, Float maxT = NUM_INFINITY);
+        Float minT = NUM_ZERO, Float maxT = sNumInfinity);
 
     Point3f operator()(Float t) const;
     void setT(Float t1, Float t2) const;

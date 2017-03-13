@@ -1,0 +1,44 @@
+{
+  "media": [],
+  "bsdfs": [
+    {
+      "name": "leftWall",
+      "albedo": [
+        0.63,
+        0.065,
+        0.05
+      ],
+      "type": "lambert"
+    }
+  ],
+  "primitives": [
+    {
+      "name": "monkey",
+      "transform": {
+        "position": [ 0, 9.4, 0 ],
+        "scale": [ 0.1, 0.133, 0.1 ],
+        "rotation": [ 0, 0, -180 ]
+      },
+      "type": "mesh",
+      "file": "obj/monkey.obj",
+      "curve_thickness": 0.004,
+      "curve_taper": false,
+      "subsample": 0.5,
+      "mode": "bcsdf_cylinder",
+      "bsdf": "hair"
+    }
+  ],
+  "camera": {
+    "resolution": [ 640, 480 ],
+    "transform": {
+      "position": [ 10, 6, 10 ],
+      "target": [ 0, 0, 0 ],
+      "up": [ 0, 1, 0 ]
+    },
+    "type": "perspective"
+  },
+  "renderer": {
+    "output_file": "unitest_scene.png",
+    "spp": 64
+  }
+}

@@ -45,6 +45,15 @@ public:
         return mLights.size();
     }
 
+    std::shared_ptr<Camera> getCamera()
+    {
+        return mCamera;
+    }
+    const std::shared_ptr<Camera> getCamera() const
+    {
+        return mCamera;
+    }
+
 private:
     void buildGeometry(const Primitive* prim);
 

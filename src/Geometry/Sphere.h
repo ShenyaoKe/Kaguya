@@ -12,7 +12,7 @@ class geoSphere : public ParametricGeomtry
 {
 public:
     geoSphere(const Transform* o2w,
-              Float radius = 1., Float phi = M_TWOPI,
+              Float radius = 1, Float phi = M_TWOPI,
               Float th0 = 0, Float th1 = M_PI);
 
     void bounding();

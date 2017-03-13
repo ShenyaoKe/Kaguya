@@ -37,6 +37,7 @@ public:
          FIT_RESOLUTION_GATE fitType = FRG_HORIZONTAL_FIT);
     ~Film();
 
+    void setResolution(uint32_t resX, uint32_t resY);
     void setFilmType(FILM_TYPE filmType);
     void setFitType(FIT_RESOLUTION_GATE fitType);
 
