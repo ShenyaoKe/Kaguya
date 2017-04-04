@@ -6,9 +6,9 @@ Currently used libraries are:
 http://freeimage.sourceforge.net/download.html
 ### GLEW 2.0.0
 https://github.com/nigels-com/glew/releases
-### Embree 2.14.0
+### Embree 2.15.0
 https://github.com/embree/embree/releases
-### Qt 5.7.1
+### Qt 5.8.0
 https://www.qt.io/download-open-source
 ### RapidJSON
 https://github.com/miloyip/rapidjson
