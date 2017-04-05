@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = 0);
-    //~MainWindow();
+    ~MainWindow();
 
     void on_actionAbout_triggered();
     void connectimg();
@@ -26,10 +26,10 @@ protected:
     void closeEvent(QCloseEvent *e);
 private:
 
-    std::unique_ptr<OGLViewer>   viewer;
-    std::unique_ptr<ImageViewer> imgViewer;
-    std::unique_ptr<QDialog>     about;
-    Ui::MainWindowClass          ui;
+    std::unique_ptr<OGLViewer>   mViewer;
+    std::unique_ptr<ImageViewer> mImageViewer;
+    std::unique_ptr<QDialog>     mAbout;
+    Ui::MainWindowClass          mUi;
     //Ui::Shelf tool_shelf;
     //Ui::about_dialog about;
     //Ui::img_viewer imgViewer;

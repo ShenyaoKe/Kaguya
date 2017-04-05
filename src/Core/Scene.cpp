@@ -53,6 +53,7 @@ bool Scene::intersect(Ray &inRay,
     if (inRay.geomID != RTC_INVALID_GEOMETRY_ID)
     {
         dg->shape = mPrims[inRay.geomID].get();
+        dg->shape->postIntersect(inRay, dg);
         return true;
     }
 #endif

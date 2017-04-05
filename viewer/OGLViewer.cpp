@@ -11,7 +11,7 @@ namespace Kaguya
 OGLViewer::OGLViewer(QWidget* parent)
     : QOpenGLWidget(parent)
     , selectMode(OBJECT_SELECT)
-    , pixmap(new renderBuffer(default_resX, default_resY))
+    , mRenderBuffer(new RenderBuffer(default_resX, default_resY))
     , mScene(SceneLoader::load("scene/unitest_scene.json"))
     , resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
@@ -347,12 +347,14 @@ void OGLViewer::renderpixels()
                 pixmap->setBuffer(0);
                 pixmap->doSomething();
                 */
+                mRenderBuffer->setBuffer(i, j, queryPoint, tHit);
                 traceRay.Ng.normalize();
                 int rgb[]{ static_cast<int>((traceRay.Ng.x*0.5f + 0.5f) * 255),
                     static_cast<int>((traceRay.Ng.y*0.5f + 0.5f) * 255),
                     static_cast<int>((traceRay.Ng.z*0.5f + 0.5f) * 255) };
                 retImg.setPixelColor(i, default_resY - j-1,
                                      QColor(rgb[0], rgb[1], rgb[2]));
+                
             }
         }
     }

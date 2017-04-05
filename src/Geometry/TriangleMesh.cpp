@@ -83,6 +83,19 @@ bool TriangleMesh::intersect(const Ray &inRay, DifferentialGeometry* dg,
 void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) const
 {
     // TODO: Implement post-intersection method
+    uint32_t primID = inRay.primID;
+    uint32_t id1 = mIndexBuffer[primID * sTriFaceSize];
+    uint32_t id2 = mIndexBuffer[primID * sTriFaceSize + 1];
+    uint32_t id3 = mIndexBuffer[primID * sTriFaceSize + 2];
+
+    dg->Ng = inRay.Ng;
+    dg->UV = { inRay.u, inRay.v };
+    Float s = dg->UV.x;
+    Float t = dg->UV.y;
+    Float w = 1.0 - s - t;
+    dg->P = mVertexBuffer[id1] * w
+          + mVertexBuffer[id2] * s
+          + mVertexBuffer[id3] * t;
 }
 
 void TriangleMesh::getTessellated(TessBuffer &trait) const

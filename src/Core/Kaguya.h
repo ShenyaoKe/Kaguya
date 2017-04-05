@@ -144,7 +144,7 @@ class ProjectiveCamera;
 class PerspectiveCamera;
 class OrthographicCamera;
 
-class renderBuffer;
+class RenderBuffer;
 
 const int default_resX = 640;
 const int default_resY = 480;

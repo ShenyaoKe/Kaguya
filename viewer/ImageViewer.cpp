@@ -6,11 +6,11 @@ namespace Kaguya
 
 ImageViewer::ImageViewer(QWidget* parent)
     : QMainWindow(parent)
-    , img_panel(new ImageViewerPanel(this))
+    , mImagePanel(new ImageViewerPanel(this))
 {
     ui.setupUi(this);
-    ui.img_panel->addWidget(img_panel.get());
-    img_panel->setFocusPolicy(Qt::StrongFocus);
+    ui.img_panel->addWidget(mImagePanel.get());
+    mImagePanel->setFocusPolicy(Qt::StrongFocus);
 
     ui.display_t->addItem("Beauty");
     ui.display_t->addItem("P");
@@ -23,7 +23,7 @@ ImageViewer::ImageViewer(QWidget* parent)
             this, &ImageViewer::switchTexture);
 }
 
-void ImageViewer::setpixmap(const Kaguya::renderBuffer* pixmap)
+void ImageViewer::setpixmap(const Kaguya::RenderBuffer* pixmap)
 {
     rbuf = pixmap;
     switchTexture();
@@ -34,30 +34,30 @@ void ImageViewer::switchTexture()
     switch (ui.display_t->currentIndex())
     {
     case 0:
-        img_panel->texType = DISPLAY_TYPE::BEAUTY;
-        img_panel->textures = static_cast<const void*>(rbuf->beauty.data());
+        mImagePanel->texType = DISPLAY_TYPE::BEAUTY;
+        mImagePanel->textures = static_cast<const void*>(rbuf->beauty.data());
         break;
     case 1:
-        img_panel->texType = DISPLAY_TYPE::P;
-        img_panel->textures = static_cast<const void*>(rbuf->p.data());
+        mImagePanel->texType = DISPLAY_TYPE::P;
+        mImagePanel->textures = static_cast<const void*>(rbuf->p.data());
         break;
     case 2:
-        img_panel->texType = DISPLAY_TYPE::N;
-        img_panel->textures = static_cast<const void*>(rbuf->n.data());
+        mImagePanel->texType = DISPLAY_TYPE::N;
+        mImagePanel->textures = static_cast<const void*>(rbuf->n.data());
         break;
     case 3:
-        img_panel->texType = DISPLAY_TYPE::DPDU;
-        img_panel->textures = static_cast<const void*>(rbuf->dpdu.data());
+        mImagePanel->texType = DISPLAY_TYPE::DPDU;
+        mImagePanel->textures = static_cast<const void*>(rbuf->dpdu.data());
         break;
     case 4:
-        img_panel->texType = DISPLAY_TYPE::DPDV;
-        img_panel->textures = static_cast<const void*>(rbuf->dpdv.data());
+        mImagePanel->texType = DISPLAY_TYPE::DPDV;
+        mImagePanel->textures = static_cast<const void*>(rbuf->dpdv.data());
         break;
     default:
         break;
     }
-    img_panel->updateTexture();
-    img_panel->update();
+    mImagePanel->updateTexture();
+    mImagePanel->update();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -99,16 +99,27 @@ void ImageViewerPanel::updateTexture()
         switch (texType)
         {
         case DISPLAY_TYPE::BEAUTY:
+        {
+            for (size_t i = 0; i < imgsize[0]*imgsize[1]; i++)
+            {
+            	if (((Float*)textures)[i] > 0)
+            	{
+                    cout << ((Float*)textures)[i] << endl;
+            	}
+            }
             glTextureStorage2D(tex, 1, GL_RGBA32F, imgsize[0], imgsize[1]);
             glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGBA, GL_FLOAT, textures);
             break;
+        }
         case DISPLAY_TYPE::P:
         case DISPLAY_TYPE::N:
         case DISPLAY_TYPE::DPDU:
         case DISPLAY_TYPE::DPDV:
+        {
             glTextureStorage2D(tex, 1, GL_RGB32F, imgsize[0], imgsize[1]);
             glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, textures);
             break;
+        }
         default:
             break;
         }

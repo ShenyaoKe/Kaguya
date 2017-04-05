@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 #include "OpenGL_Utils/GLSLProgram.h"
 #include "Core/Kaguya.h"
-#include "Tracer/renderBuffer.h"
+#include "Tracer/RenderBuffer.h"
 #include <QMainWindow>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
@@ -25,6 +25,7 @@ enum class DISPLAY_TYPE
     P, N, DPDU, DPDV
 
 };
+
 class ImageViewer : public QMainWindow
 {
     Q_OBJECT
@@ -32,14 +33,14 @@ public:
     ImageViewer(QWidget* parent = nullptr);
     //~ImageViewer();
     //ImageViewer* getInstance();
-    void setpixmap(const Kaguya::renderBuffer* pixmap);
+    void setpixmap(const Kaguya::RenderBuffer* pixmap);
 private:
     void switchTexture();
 private:
-    const Kaguya::renderBuffer* rbuf;
+    const Kaguya::RenderBuffer* rbuf;
     //static ImageViewer* instance;
     Ui::img_viewer ui;
-    std::unique_ptr<ImageViewerPanel> img_panel;
+    std::unique_ptr<ImageViewerPanel> mImagePanel;
 
     friend class MainWindow;
 };

@@ -151,7 +151,7 @@
     <ClInclude Include="..\src\Shading\Texture3D.h" />
     <ClInclude Include="..\src\Shading\TextureMapping.h" />
     <ClInclude Include="..\src\Tracer\Ray.h" />
-    <ClInclude Include="..\src\Tracer\renderBuffer.h" />
+    <ClInclude Include="..\src\Tracer\RenderBuffer.h" />
     <ClInclude Include="..\src\Tracer\Tracer.h" />
     <ClInclude Include="..\src\Core\Kaguya.h" />
     <ClInclude Include="..\src\Volume\RasterizedVolume.h" />
@@ -201,7 +201,7 @@
     <ClCompile Include="..\src\Shading\Texture.cpp" />
     <ClCompile Include="..\src\Shading\TextureMapping.cpp" />
     <ClCompile Include="..\src\Tracer\Ray.cpp" />
-    <ClCompile Include="..\src\Tracer\renderBuffer.cpp" />
+    <ClCompile Include="..\src\Tracer\RenderBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

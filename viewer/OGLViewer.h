@@ -16,7 +16,7 @@
 #include "Geometry/DifferentialGeometry.h"
 
 #include "Camera/PerspectiveCamera.h"
-#include "Tracer/renderBuffer.h"
+#include "Tracer/RenderBuffer.h"
 
 // OpenGL Window in Qt
 namespace Kaguya
@@ -76,7 +76,7 @@ private:
     void renderpixels();
 protected:
     std::shared_ptr<ProjectiveCamera> view_cam;
-    renderBuffer* pixmap;
+    RenderBuffer* mRenderBuffer;
 private:
     int lastMousePos[2];
     int selectMode;
