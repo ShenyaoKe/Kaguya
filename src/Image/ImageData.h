@@ -26,47 +26,47 @@ namespace Kaguya
 class ImageData
 {
 protected:
-    uint32_t mWidth, mHeight, mBPP;
-    AlignedArray2D<ColorRGBA> mPixels;
+	uint32_t mWidth, mHeight, mBPP;
+	AlignedArray2D<ColorRGBA> mPixels;
 public:
-    enum PixmapType : uint8_t
-    {
-        RGB,
-        RGBA,
-        ARGB,
-        BGR,
-        BGRA,
-        ABGR
-    };
-    //ImageData();
-    //ImageData(ppmImage &ppmData);
-    ImageData(uint32_t wd = default_resX, uint32_t ht = default_resY);
-    ImageData(uint32_t wd, uint32_t ht, Float* &pixMap);//pixMap stores rgb data
-    explicit ImageData(uint32_t wd, uint32_t ht, unsigned char* pixMap, uint8_t pixtype = RGB);//pixMap stores rgb data
-    ImageData(const std::string &filename);
-    ImageData(const ImageData &src);
-    virtual~ImageData();
+	enum PixmapType : uint8_t
+	{
+		RGB,
+		RGBA,
+		ARGB,
+		BGR,
+		BGRA,
+		ABGR
+	};
+	//ImageData();
+	//ImageData(ppmImage &ppmData);
+	ImageData(uint32_t wd = default_resX, uint32_t ht = default_resY);
+	ImageData(uint32_t wd, uint32_t ht, Float* &pixMap);//pixMap stores rgb data
+	explicit ImageData(uint32_t wd, uint32_t ht, unsigned char* pixMap, uint8_t pixtype = RGB);//pixMap stores rgb data
+	ImageData(const std::string &filename);
+	ImageData(const ImageData &src);
+	virtual~ImageData();
 
-    const uint32_t getWidth() const { return mWidth; }
-    const uint32_t getHeight() const { return mHeight; }
-    const uint32_t getBPP() const { return mBPP; }
-    const ColorRGBA &getRGBA(uint32_t x, uint32_t y) const;
-    const ColorRGBA &getRGBA(uint32_t idx) const;
-    void setRGBA(uint32_t x, uint32_t y, const ColorRGBA &color);
-    void getPixels(unsigned char* &pixMap) const;
-    void getPixelsRGBA(unsigned char* &pixMap) const;
-    AlignedArray2D<uint32_t>* genHist() const;//Generate histogram
-    AlignedArray2D<Float>* getLuma() const;// Generate Luma
+	const uint32_t getWidth() const { return mWidth; }
+	const uint32_t getHeight() const { return mHeight; }
+	const uint32_t getBPP() const { return mBPP; }
+	const ColorRGBA &getRGBA(uint32_t x, uint32_t y) const;
+	const ColorRGBA &getRGBA(uint32_t idx) const;
+	void setRGBA(uint32_t x, uint32_t y, const ColorRGBA &color);
+	void getPixels(unsigned char* &pixMap) const;
+	void getPixelsRGBA(unsigned char* &pixMap) const;
+	AlignedArray2D<uint32_t>* genHist() const;//Generate histogram
+	AlignedArray2D<Float>* getLuma() const;// Generate Luma
 
-    void printRGBA(uint32_t x, uint32_t y) const;
-    void resize(uint32_t x, uint32_t y);
-    ColorRGBA bilinearPixel(Float x, Float y) const;
-    //virtual const ColorRGBA &bicubicPixel(Float x, Float y) const;
-    bool writeFile(const std::string &filename) const;
-    //ColorRGB bicubicPixel(Float x, Float y);
-    //void convert2PPM(ppmImage &ppmData);
+	void printRGBA(uint32_t x, uint32_t y) const;
+	void resize(uint32_t x, uint32_t y);
+	ColorRGBA bilinearPixel(Float x, Float y) const;
+	//virtual const ColorRGBA &bicubicPixel(Float x, Float y) const;
+	bool writeFile(const std::string &filename) const;
+	//ColorRGB bicubicPixel(Float x, Float y);
+	//void convert2PPM(ppmImage &ppmData);
 
-    //friend const ImageData &downsampling(const ImageData &src);
+	//friend const ImageData &downsampling(const ImageData &src);
 };
 
 }

@@ -7,22 +7,21 @@ namespace Kaguya
 class OrthographicCamera : public ProjectiveCamera
 {
 public:
-    OrthographicCamera();
-    OrthographicCamera(const Transform &cam2wo, const Transform &projection);
-    ~OrthographicCamera();
-    //Vector3D getPos() { return pos; }
-    //void setResolution(int resX, int resY);
-    //void setSample(int aaSample);
+	OrthographicCamera();
+	OrthographicCamera(const Transform &cam2wo, const Transform &projection);
+	~OrthographicCamera();
 
-    //Ray generateRay(Float imgX, Float imgY) const;
+	void updateCamToScreen() override;
+	Float generateRay(const cameraSampler &sample, Ray* ray) const override;
 
-    //void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
-    //void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
-    //void resizeViewport(Float aspr = 1.0);
+	void setScalor(Float scalor) { mScalor = scalor; }
+	//void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);
+	//void rotate(Float x_rot = 0, Float y_rot = 0, Float z_rot = 0);
+	void resizeViewport(Float aspr) override;
 
-    //void setUpVec(Vector3D &upVec);
-protected:
-    Float mNearPlane = -1.0, mFarPlane = 1.0;
+	//void setUpVec(Vector3D &upVec);
+private:
+	Float mScalor = 1;
 };
 
 }

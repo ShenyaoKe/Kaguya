@@ -9,24 +9,24 @@ static RTCDevice sEmbreeDevice = nullptr;
 
 RTCDevice createDevice(const char* cfg)
 {
-    sEmbreeDevice = rtcNewDevice(cfg);
-    return sEmbreeDevice;
+	sEmbreeDevice = rtcNewDevice(cfg);
+	return sEmbreeDevice;
 }
 
 void deleteDevice()
 {
-    rtcDeleteDevice(sEmbreeDevice);
-    sEmbreeDevice = nullptr;
+	rtcDeleteDevice(sEmbreeDevice);
+	sEmbreeDevice = nullptr;
 }
 
 RTCDevice getDevice()
 {
-    if (sEmbreeDevice == nullptr)
-    {
-        return createDevice();
-    }
+	if (sEmbreeDevice == nullptr)
+	{
+		return createDevice();
+	}
 
-    return sEmbreeDevice;
+	return sEmbreeDevice;
 }
 
 }

@@ -14,12 +14,12 @@ uint32_t Primitive::nextshapeID = 0;
 
 bool Primitive::intersectP(const Ray &inRay) const
 {
-    return mObjBound.intersectP(inRay);
+	return mObjBound.intersectP(inRay);
 }
 
 void Primitive::printInfo(const std::string &msg) const
 {
-    std::cout << msg << std::endl;
+	std::cout << msg << std::endl;
 }
 
 }

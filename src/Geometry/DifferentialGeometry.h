@@ -20,15 +20,17 @@ class DifferentialGeometry
 public:
 	DifferentialGeometry() : shape(nullptr) {}
 	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
-                         const Point2f &_uv, const Primitive* shp)
-        : P(_p), Ng(_n), UV(_uv), shape(shp) {}
+						 const Point2f &_uv, const Primitive* shp)
+		: P(_p), Ng(_n), UV(_uv), shape(shp)
+	{
+	}
 	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
-                         const Vector3f &_dpdu, const Vector3f &_dpdv,
-                         const Normal3f &_dndu, const Normal3f &_dndv,
-                         const Point2f &_uv, const Primitive* shp);
+						 const Vector3f &_dpdu, const Vector3f &_dpdv,
+						 const Normal3f &_dndu, const Normal3f &_dndv,
+						 const Point2f &_uv, const Primitive* shp);
 
- 	void calculateDir(const Vector3f &inDir, const Normal3f &nVec);
- 	void calculateDir(const Vector3f &inDir);
+	void calculateDir(const Vector3f &inDir, const Normal3f &nVec);
+	void calculateDir(const Vector3f &inDir);
 
 
 	const Primitive* shape;
@@ -42,10 +44,10 @@ public:
 	struct // Shading Geometry
 	{
 		Normal3f     N;
-        Point2f      ST;
+		Point2f      ST;
 		Vector3f     dPds, dPdt;
 		Normal3f     dNds, dNdt;
-    } shading;
+	} shading;
 };
 
 }

@@ -17,9 +17,9 @@ namespace filter
 
 enum EdgeOperator
 {
-    SOBEL,
-    PREWITT,
-    ROBERT
+	SOBEL,
+	PREWITT,
+	ROBERT
 };
 
 ImageData* curveAdj(const ImageData* cvImg, const ImageData* src);

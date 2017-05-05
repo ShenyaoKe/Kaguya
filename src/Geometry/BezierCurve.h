@@ -7,8 +7,8 @@ namespace Kaguya
 class BezierCurve : public Curve
 {
 public:
-    BezierCurve();
-    ~BezierCurve();
+	BezierCurve();
+	~BezierCurve();
 protected:
 
 private:

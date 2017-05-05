@@ -132,7 +132,9 @@ class KdTreeAccel;
 class Primitive;
 class Ray;
 class DifferentialGeometry;
+class PolyMesh;
 class TriangleMesh;
+class QuadMesh;
 class Triangle;
 
 class Texture;

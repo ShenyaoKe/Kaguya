@@ -8,13 +8,13 @@ namespace Kaguya
 
 class ImagePyramid
 {
-    int levels;
-    std::vector<ImageData*> layers;
+	int levels;
+	std::vector<ImageData*> layers;
 public:
-    ImagePyramid(const ImageData &src, int lv = 3);
-    ~ImagePyramid();
+	ImagePyramid(const ImageData &src, int lv = 3);
+	~ImagePyramid();
 
-    void getPixels(int &wdt, int &hgt, unsigned char* &pixMap) const;
+	void getPixels(int &wdt, int &hgt, unsigned char* &pixMap) const;
 };
 
 }

@@ -7,7 +7,7 @@ namespace Kaguya
 ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 {
 	unsigned char histCv[255] = {};
-    
+
 	// Posterize input image
 	const int lv = 6;
 	int step = 255 / (lv - 1);
@@ -15,11 +15,11 @@ ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 	Vector2D cvP[lv];
 	cvImg.posterize(postImg, lv);
 	postImg.updateHist();
-    
+
 	for (int i = 0; i < lv; i++) {
 		cvP[i].x = step * i;
 	}
-    
+
 	for (int j = 0; j < postImg.height; j++) {
 		for (int i = 0; i < postImg.width; i++) {
 			int index = postImg.pixels[i][j].r / step;
@@ -31,7 +31,7 @@ ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 	}
 	histCv[0] = static_cast<unsigned char>(cvP[0].y);
 	// End of posterization and get histogram adjust point from RGB.
-    
+
 	// Catmull-Rom curve
 	// Create CR curve using points created by posterized image.
 	for (int i = 0; i < lv - 1; i++) {
@@ -45,7 +45,7 @@ ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 		Float t1 = 0 - p[0] + p[2];
 		Float t0 = 2 * p[1];
 		Float tmp;
-        
+
 		for (int j = 1; j <= step; j++) {
 			Float t = j / static_cast<Float>(step);
 			tmp = round((t3 * t * t * t + t2 * t * t + t1 * t + t0) * 0.5);
@@ -53,7 +53,7 @@ ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 		}
 	}
 	// End of curve generation.
-    
+
 	// Adjust histogram
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
@@ -62,7 +62,7 @@ ImageData* filter::curveAdj(const ImageData* cvImg, const ImageData* src)
 			ret->pixels[i][j].b = histCv[static_cast<int>(src->pixels[i][j].b)];
 		}
 	}
-    
+
 }*/
 ImageData* filter::reverse(const ImageData* src)
 {
@@ -136,7 +136,7 @@ ImageData* filter::hsvOffset(const ImageData* src, Float hue, Float saturation, 
 	if (value > 1.0 || value < -1.0) {
 		std::cout << "Error: Value offset is beyond control!" << std::endl;
 	}
-    
+
 	for (int i = 0; i < wdt; i++)
 	{
 		for (int j = 0; j < hgt; j++)
@@ -193,34 +193,34 @@ ImageData* filter::equalize(const ImageData* src)
 	Float eqArry[256];// euqalized src->data
 	Float sumArray[256];// original src->data
 	unsigned char *offsets[3];// original src->data shift to what color
-    
+
 	for (int i = 1; i < 4; i++)
 	{
 		eqArry[0] = avgStep;
 		sumArray[0] = static_cast<Float>(histRGB[i][0]);
 		offsets[i - 1] = new unsigned char[256];
-        
+
 		for (int j = 1; j < 256; j++)
 		{
 			eqArry[j] = eqArry[j - 1] + avgStep;
 			sumArray[j] = sumArray[j - 1] + static_cast<Float>(histRGB[i][j]);
 		}
-        
+
 		unsigned char offsetData = 0x00;
 		for (int j = 0; j < 256; j++)
 		{
-            
+
 			for (int k = offsetData; k < 255; k++, offsetData++)
 			{
 				if (abs(sumArray[j] - eqArry[k]) <= abs(sumArray[j] - eqArry[k + 1])) {
-                    
+
 					break;
 				}
 			}
 			offsets[i-1][j] = offsetData;
 		}
 	}
-    
+
 	for (int j = 0; j < hgt; j++)
 	{
 		for (int i = 0; i < wdt; i++)
@@ -244,15 +244,15 @@ ImageData* filter::equalizeLuma(const ImageData* src)
 	Float eqArry[256];// euqalized src->data
 	Float sumArray[256];// original src->data
 	unsigned char offset[256];// original src->data shift to what color
-    
+
 	eqArry[0] = avgStep;
 	sumArray[0] = static_cast<Float>(histRGB[0][0]);
-    
+
 	for (int j = 1; j < 256; j++) {
 		eqArry[j] = eqArry[j - 1] + avgStep;
 		sumArray[j] = sumArray[j - 1] + static_cast<Float>(histRGB[0][j]);
 	}
-    
+
 	//////////////
 	int cdfMin, index = 0;
 	do {
@@ -260,13 +260,13 @@ ImageData* filter::equalizeLuma(const ImageData* src)
 		index++;
 	} while (cdfMin==0);
 	//////////////
-    
+
 	for (int j = 0; j < 256; j++) {
 		if (sumArray[j]) {
 			offset[j] = static_cast<int>(round((sumArray[j] - cdfMin) * 255.0 / (width * src->getHeight() - cdfMin)));
 		}
 	}
-    
+
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
 			ret->pixels[i][j].r = offsets[0][static_cast<int>(src->pixels[i][j].r * 255)];
@@ -298,10 +298,10 @@ Kaguya::ImageData* filter::posterize(const ImageData* src, uint32_t level)
 		for (size_t j = 0; j < src->getHeight(); j++)
 		{
 			ColorRGBA colorRange = src->getRGBA(i, j) * (level - 1);
-            size_t rIdx = static_cast<size_t>(colorRange.r + 0.5);
-            size_t gIdx = static_cast<size_t>(colorRange.g + 0.5);
-            size_t bIdx = static_cast<size_t>(colorRange.b + 0.5);
-            
+			size_t rIdx = static_cast<size_t>(colorRange.r + 0.5);
+			size_t gIdx = static_cast<size_t>(colorRange.g + 0.5);
+			size_t bIdx = static_cast<size_t>(colorRange.b + 0.5);
+
 			ret->setRGBA(i, j, ColorRGBA(post_val[rIdx], post_val[gIdx], post_val[bIdx]));
 		}
 	}
@@ -329,8 +329,8 @@ ImageData* filter::threshold(const ImageData* src, Float th)
 }
 
 ImageData* filter::edgeDetect(const ImageData* src,
-                              AlignedArray2D<Float>* lumaImg,
-                              EdgeOperator opType)
+							  AlignedArray2D<Float>* lumaImg,
+							  EdgeOperator opType)
 {
 	int width = src->getWidth();
 	int height = src->getHeight();
@@ -339,9 +339,9 @@ ImageData* filter::edgeDetect(const ImageData* src,
 	// Gradiance X and Y are stored in green and blue channel
 	ImageData* ret = new ImageData(width, height);
 
-    // horizontal and vertical derivative kernels
-    AlignedArray2D<int> gX(3, 3);
-    AlignedArray2D<int> gY(3, 3);
+	// horizontal and vertical derivative kernels
+	AlignedArray2D<int> gX(3, 3);
+	AlignedArray2D<int> gY(3, 3);
 
 	Float gMax(0), gMin(0);
 	/*Float** res;
@@ -377,26 +377,26 @@ ImageData* filter::edgeDetect(const ImageData* src,
 	default:
 		break;
 	}
-    
+
 	// if Luma image is not offered, generate it
 	if (lumaImg == nullptr)
 	{
 		lumaImg = src->getLuma();
-    }
-    for (int j = 0; j < height; j++)
-    {
-        for (int i = 0; i < width; i++)
+	}
+	for (int j = 0; j < height; j++)
+	{
+		for (int i = 0; i < width; i++)
 		{
 			Float sumX = 0, sumY = 0;
 			//unsigned char newColor;
-            
+
 			for (int m = -1; m < 2; m++)
 			{
 				for (int n = -1; n < 2; n++)
 				{
 					int iIndex = clamp(i - m, 0, width - 1);
 					int jIndex = clamp(j - n, 0, height - 1);
-                    
+
 					sumX += *lumaImg[jIndex][iIndex] * gX[m + 1][n + 1];
 					sumY += *lumaImg[jIndex][iIndex] * gY[m + 1][n + 1];
 				}
@@ -421,9 +421,9 @@ ImageData* filter::boxBlur(const ImageData* src, int radius)
 
 	clock_t startT, endT;
 	startT = clock();
-    
+
 	AlignedArray2D<ColorRGBA> tmpImgX(width, height);
-    AlignedArray2D<ColorRGBA> tmpImgY(width, height);
+	AlignedArray2D<ColorRGBA> tmpImgY(width, height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -467,11 +467,11 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	Float sqSigma = sigma * sigma;
 	Float sqrt2pi = sqrt(2 * M_PI);
 	Float kSum = 0.0;
-    
+
 	// Initialize Kernel
 	for (int i = -radius; i <= radius; i++)
 	{
-		kernel[i + radius] = exp( - sqr(i) / (2 * sqSigma)) / (sigma * sqrt2pi);
+		kernel[i + radius] = exp(-sqr(i) / (2 * sqSigma)) / (sigma * sqrt2pi);
 		kSum += kernel[i + radius];
 	}
 	for (int i = 0; i < size; i++)
@@ -483,9 +483,9 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 	// Start Blur
 	clock_t startT, endT;
 	startT = clock();
-    
-    AlignedArray2D<ColorRGBA> tmpImgX(width, height);
-    AlignedArray2D<ColorRGBA> tmpImgY(width, height);
+
+	AlignedArray2D<ColorRGBA> tmpImgX(width, height);
+	AlignedArray2D<ColorRGBA> tmpImgY(width, height);
 
 	for (int i = 0; i < width; i++)
 	{
@@ -510,12 +510,12 @@ ImageData* filter::gaussianBlur(const ImageData* src, int radius)
 			ret->setRGBA(i, j, tmpImgY[i][j]);
 		}
 	}
-    
+
 	endT = clock();
 	std::cout << "Gaussian blur (radius of " << size << ")runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
-    
-	delete [] kernel;
-	
+
+	delete[] kernel;
+
 	return ret;
 }
 
@@ -528,7 +528,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	int size = (radius << 1) + 1;
 	int kSize = sqr(size);
 	AlignedArray2D<Float> gKernel(size, size);//Spatial Weight
-    AlignedArray2D<Float> sKernel(size, size);//Similarity Weight
+	AlignedArray2D<Float> sKernel(size, size);//Similarity Weight
 	Float sigmaD = radius / 3.0;// Sigma for gaussian, Can be adjusted
 	Float sqSigmaD = sigmaD * sigmaD;// SigmaD^2
 	Float sigmaR = 0.1;// Can be adjusted
@@ -545,7 +545,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 		}
 
 	}
-    Float invKSum = 1.0 / kSum;
+	Float invKSum = 1.0 / kSum;
 	for (int j = 0; j < size; j++)
 	{
 		for (int i = 0; i < size; i++)
@@ -558,7 +558,7 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	clock_t startT, endT;
 	startT = clock();
 
-    AlignedArray2D<Float>* lumaImg = src->getLuma();
+	AlignedArray2D<Float>* lumaImg = src->getLuma();
 	//std::cout << kSize << std::endl;
 	for (int i = 0; i < width; i++)
 	{
@@ -581,10 +581,10 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 					}
 					tmpDist = std::abs(lumaImg[j + n][i + m] - lumaImg[i][j]);
 					sKernel(n + radius, m + radius) = exp(-tmpDist * tmpDist / sqSigmaR / 2.0)
-                                                    * gKernel(n + radius, m + radius);
+						* gKernel(n + radius, m + radius);
 					//std::cout << sKernel[m + radius][n + radius] << std::endl;
 					kSum += sKernel(n + radius, m + radius);
-					
+
 					tmpColor += src->getRGBA(i + m, j + n) * sKernel(n + radius, m + radius);
 					//obradius+=0.1;
 				}
@@ -595,11 +595,11 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 			ret->setRGBA(i, j, tmpColor / kSum);
 		}
 	}
-    delete lumaImg;
+	delete lumaImg;
 
 	endT = clock();
 	std::cout << "Bilateral blur (radius of " << size << ") "
-        "runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
+		"runtime :" << (endT - startT) / CLOCKS_PER_SEC << " sec" << std::endl;
 
 	return ret;
 }
@@ -617,12 +617,12 @@ ImageData* filter::motionBlur(const ImageData* src, const ImageData* mvImg, int 
 	Float sqSigmaY = sigmaY * sigmaY;
 	Float sqrt2pi = sqrt(2 * M_PI);
 	Float kSum = 0.0;
-    
+
 	// Define blur kernel
 	for (int i = 0; i < 2 * radius + 1; i++) {
 		kernel[i] = new Float[2 * radius + 1];
 	}
-    
+
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
 			Vector2D dir(mvImg.pixels[i][j].r / 255.0 - 0.5, mvImg.pixels[i][j].g / 255.0 - 0.5);
@@ -634,7 +634,7 @@ ImageData* filter::motionBlur(const ImageData* src, const ImageData* mvImg, int 
 				for (int n = -radius; n <= radius; n++) {
 					Float kX = dir.dotMul(Vector2D(m, n));
 					Float kY = normalDir.dotMul(Vector2D(m, n));
-                    
+
 					kernel[m + radius][n + radius] = exp( - (kX * kX) / (2 * sqSigmaX) - (kY * kY) / (2 * sqSigmaY));
 					kSum += kernel[m + radius][n + radius];
 				}
@@ -652,7 +652,7 @@ ImageData* filter::motionBlur(const ImageData* src, const ImageData* mvImg, int 
 				for (int n = -radius; n <= radius; n++) {
 					int x = (i + m) < 0 ? i : ((i + m) >= src->getWidth() ? (width - 1) : (i + m));
 					int y = (j + n) < 0 ? j : ((j + n) >= src->getHeight() ? (height - 1) : (j + n));
-                    
+
 					tmpRGB[0] += kernel[m + radius][n + radius] * src->pixels[x][y].r;
 					tmpRGB[1] += kernel[m + radius][n + radius] * src->pixels[x][y].g;
 					tmpRGB[2] += kernel[m + radius][n + radius] * src->pixels[x][y].b;
@@ -673,7 +673,7 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
 	//Float* yTmp = new Float[width * src->getHeight()];
 	Vector2D dir(cos(theta), sin(theta));
 	dir.normalize();
-    
+
 	//int* kernel[5];
 	for (int i = 0; i < size; i++) {
 		kernel[i] = new Float[size];
@@ -691,21 +691,21 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
 			//kernel[i][j] /= kMax;
 		}
 	}
-    
+
 	for (int j = 0; j < src->getHeight(); j++) {
 		for (int i = 0; i < src->getWidth(); i++) {
 			ret->pixels[i][j] = ColorData(0xFF, 0xFF, 0xFF);
 			//ret->pixels[i][j] = ColorData(0x00, 0x00, 0x00);
 			Float sum = 0;
 			//unsigned char newColor;
-            
+
 			for (int m = -radius; m < radius + 1; m++) {
 				for (int n = -radius; n < radius + 1; n++) {
 					int iIndex = i - m;
 					int jIndex = j - n;
 					iIndex = iIndex >= src->getWidth() ? (width - 1) : (iIndex < 0 ? 0 : iIndex);
 					jIndex = jIndex >= src->getHeight() ? (height - 1) : (jIndex < 0 ? 0 : jIndex);
-                    
+
 					sum += src->pixels[iIndex][jIndex].luma * kernel[m + radius][n + radius];
 					//std::cout << m << " " << n << " " << src->pixels[i - m][j - n].r+0 <<  std::endl;
 				}
@@ -716,7 +716,7 @@ ImageData* filter::emboss(const ImageData* src, Float theta, int radius)
 			ret->pixels[i][j].updateLuma();
 		}
 	}
-    
+
 	for (int i = 0; i < size; i++) {
 		delete [] kernel[i];
 		kernel[i] = nullptr;
@@ -736,7 +736,7 @@ ImageData* filter::dilation(const ImageData* src, int radius)
 			} else {
 				kernel[i][j] = 0;
 			}
-            
+
 			std::cout << kernel[i][j] << " ";
 		}
 		std::cout << std::endl;

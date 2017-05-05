@@ -9,9 +9,9 @@ namespace Kaguya
 
 struct cameraSampler
 {
-    int32_t imgX, imgY;
-    Float lensU, lensV;
-    Float time;
+	int32_t imgX, imgY;
+	Float lensU, lensV;
+	Float time;
 };
 
 }

@@ -1,6 +1,7 @@
 #include "ObjLoader.h"
 #include "Geometry/Primitive.h"
 #include "Geometry/PolyMesh.h"
+#include "Geometry/TriangleMesh.h"
 #include "Core/Utils.h"
 
 namespace Kaguya
@@ -16,13 +17,9 @@ ObjLoader::ObjLoader(const std::string &filename)
     if (fp != nullptr)
     {
         parse(fp);
+        fclose(fp);
     }
-    if (!faceIndexBuffer.empty())
-    {
-        //updateBufferRange();
-        mPrims.emplace_back(finalizeMesh());
-    }
-    fclose(fp);
+    
 }
 
 ObjLoader::~ObjLoader()
@@ -237,22 +234,25 @@ void ObjLoader::clearMeshBuffers()
     texAttr.reset();
 }
 
-Primitive* ObjLoader::finalizeMesh()
+void ObjLoader::finalizeAttributes()
 {
     // use vertexBufferFinal, fid
     texAttr.reset(uvIndexBuffer.size() == faceIndexBuffer.size()
-                  ? new TextureAttribute(
-                      std::vector<Point2f>(uvBuffer.begin() + uvRange[0],
-                                           uvBuffer.begin() + uvRange[1]),
-                      uvIndexBuffer)
-                  : new TextureAttribute);
+        ? new TextureAttribute(
+            std::vector<Point2f>(uvBuffer.begin() + uvRange[0],
+                uvBuffer.begin() + uvRange[1]),
+            uvIndexBuffer)
+        : new TextureAttribute);
     normAttr.reset(normIndexBuffer.size() == faceIndexBuffer.size()
-                   ? new NormalAttribute(
-                       std::vector<Normal3f>(normBuffer.begin() + normRange[0],
-                                             normBuffer.begin() + normRange[1]),
-                       normIndexBuffer)
-                   : new NormalAttribute);
+        ? new NormalAttribute(
+            std::vector<Normal3f>(normBuffer.begin() + normRange[0],
+                normBuffer.begin() + normRange[1]),
+            normIndexBuffer)
+        : new NormalAttribute);
+}
 
+Primitive* ObjLoader::finalizeMesh()
+{
     return PolyMesh::createPolyMesh(std::vector<Point3f>(vertexBuffer.begin() + vertRange[0],
                                                          vertexBuffer.begin() + vertRange[1]),
                                     faceIndexBuffer,
@@ -261,11 +261,37 @@ Primitive* ObjLoader::finalizeMesh()
                                     normAttr);
 }
 
+TriangleMesh* ObjLoader::finalizeTriangeMesh()
+{
+    return PolyMesh::createTriMesh(std::vector<Point3f>(vertexBuffer.begin() + vertRange[0],
+                                                         vertexBuffer.begin() + vertRange[1]),
+                                   faceIndexBuffer,
+                                   faceSizeBuffer,
+                                   texAttr,
+                                   normAttr);
+}
+
 std::vector<std::shared_ptr<Primitive>> ObjLoader::load(const std::string &filename)
 {
     ObjLoader loader(filename);
-
+    if (!loader.faceIndexBuffer.empty())
+    {
+        loader.finalizeAttributes();
+        loader.mPrims.emplace_back(loader.finalizeMesh());
+    }
     return loader.mPrims;
 }
 
+std::shared_ptr<TriangleMesh> ObjLoader::loadTriangleMesh(const std::string &filename)
+{
+    ObjLoader loader(filename);
+    if (!loader.faceIndexBuffer.empty())
+    {
+        //updateBufferRange();
+        loader.finalizeAttributes();
+        return std::shared_ptr<TriangleMesh>(loader.finalizeTriangeMesh());
+    }
+
+    return nullptr;
+}
 }

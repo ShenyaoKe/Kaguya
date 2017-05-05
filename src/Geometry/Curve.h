@@ -7,12 +7,12 @@ namespace Kaguya
 class Curve : public Primitive
 {
 public:
-    Curve();
-    virtual ~Curve();
+	Curve();
+	virtual ~Curve();
 
 protected:
-    std::vector<Point3f> verts;
-    uint8_t              degree;
+	std::vector<Point3f> verts;
+	uint8_t              degree;
 };
 
 }

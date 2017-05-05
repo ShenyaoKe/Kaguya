@@ -11,17 +11,17 @@ namespace Kaguya
 class Spectrum
 {
 public:
-    ColorRGBA color;
-    Float intensity;
+	ColorRGBA color;
+	Float intensity;
 
-    Spectrum();
-    Spectrum(Float its, ColorRGBA spc);
-    Spectrum(ColorRGBA spc);
-    ~Spectrum();
+	Spectrum();
+	Spectrum(Float its, ColorRGBA spc);
+	Spectrum(ColorRGBA spc);
+	~Spectrum();
 
-    ColorRGBA operator*(const ColorRGBA &color2) const;
-    friend ColorRGBA operator*(const ColorRGBA &color, const Spectrum &spec);
-    void printInfo() const;
+	ColorRGBA operator*(const ColorRGBA &color2) const;
+	friend ColorRGBA operator*(const ColorRGBA &color, const Spectrum &spec);
+	void printInfo() const;
 protected:
 
 private:

@@ -10,8 +10,8 @@ namespace Kaguya
 class MonteCarlo
 {
 public:
-    MonteCarlo();
-    ~MonteCarlo();
+	MonteCarlo();
+	~MonteCarlo();
 };
 Point3f SampleHemisphere(Float u, Float v);
 Point3f SampleSphere(Float u, Float v);

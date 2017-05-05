@@ -16,46 +16,46 @@ namespace Kaguya
 class RenderBuffer
 {
 public:
-    RenderBuffer(uint32_t w, uint32_t h);
-    ~RenderBuffer() {}
+	RenderBuffer(uint32_t w, uint32_t h);
+	~RenderBuffer() {}
 
-    void resize(uint32_t w, uint32_t h);
-    void clear();
-    bool empty() const;
-    void setBuffer(uint32_t x, uint32_t y,
-                   const DifferentialGeometry &geom, Float zdepth);
+	void resize(uint32_t w, uint32_t h);
+	void clear();
+	bool empty() const;
+	void setBuffer(uint32_t x, uint32_t y,
+				   const DifferentialGeometry &geom, Float zdepth);
 
 private:
-    template<typename T>
-    void Vec3ToFloats(const T &n, floats_t &buffer, size_t id)
-    {
-        buffer[id] = static_cast<float>(n.x);
-        buffer[id + 1] = static_cast<float>(n.y);
-        buffer[id + 2] = static_cast<float>(n.z);
-    };
-    template<typename T>
-    void Vec2ToFloats(const T &n, floats_t &buffer, size_t id)
-    {
-        buffer[id] = static_cast<float>(n.x);
-        buffer[id + 1] = static_cast<float>(n.y);
-    };
+	template<typename T>
+	void Vec3ToFloats(const T &n, floats_t &buffer, size_t id)
+	{
+		buffer[id] = static_cast<float>(n.x);
+		buffer[id + 1] = static_cast<float>(n.y);
+		buffer[id + 2] = static_cast<float>(n.z);
+	};
+	template<typename T>
+	void Vec2ToFloats(const T &n, floats_t &buffer, size_t id)
+	{
+		buffer[id] = static_cast<float>(n.x);
+		buffer[id + 1] = static_cast<float>(n.y);
+	};
 
 public:
-    uint32_t width;
-    uint32_t height;
-    size_t size;
+	uint32_t width;
+	uint32_t height;
+	size_t size;
 
-    floats_t beauty;
-    floats_t diff, spec;
-    //floats_t fl, fr, sss;
+	floats_t beauty;
+	floats_t diff, spec;
+	//floats_t fl, fr, sss;
 
-    floats_t p, n;// 3 * n
-    floats_t dpdu, dpdv, dndu, dndv; // 3 * n
+	floats_t p, n;// 3 * n
+	floats_t dpdu, dpdv, dndu, dndv; // 3 * n
 
-    floats_t uv;// 2 * n
+	floats_t uv;// 2 * n
 
-    floats_t z;// 1 * n
-    ui32s_t id;// 1 * n
+	floats_t z;// 1 * n
+	ui32s_t id;// 1 * n
 
 };
 

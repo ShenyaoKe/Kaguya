@@ -9,21 +9,21 @@ namespace Kaguya
 class RasterizedVolume
 {
 public:
-    RasterizedVolume(const TriangleMesh* src,
-                     const KdTreeAccel* tree, Float div);
-    ~RasterizedVolume();
+	RasterizedVolume(const TriangleMesh* src,
+					 const KdTreeAccel* tree, Float div);
+	~RasterizedVolume();
 
-    Point3f center() const;
-    std::vector<Point3f> getGrids() const;
-    void exportVBO(std::vector<float>* vtx_array = nullptr) const;
+	Point3f center() const;
+	std::vector<Point3f> getGrids() const;
+	void exportVBO(std::vector<float>* vtx_array = nullptr) const;
 
 private:
-    void rasterize();
+	void rasterize();
 private:
-    const KdTreeAccel*   kdtree;
-    const TriangleMesh*  mesh;
-    std::vector<Point3f> grids;
-    Float                division;
+	const KdTreeAccel*   kdtree;
+	const TriangleMesh*  mesh;
+	std::vector<Point3f> grids;
+	Float                division;
 };
 
 }
