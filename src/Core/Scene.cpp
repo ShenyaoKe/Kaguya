@@ -118,8 +118,8 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
 	TessBuffer buffer;
 	prim->getTessellated(buffer);
 	uint32_t geomID = (prim->polyMeshType() == PolyMeshType::TRIANGLE
-					   ? &rtcNewTriangleMesh
-					   : &rtcNewQuadMesh)(mSceneContext,
+					   ? &rtcNewTriangleMesh2
+					   : &rtcNewQuadMesh2)(mSceneContext,
 										  RTC_GEOMETRY_STATIC,
 										  buffer.nPrimtives, //!< number of quads
 										  buffer.nVertices,  //!< number of vertices

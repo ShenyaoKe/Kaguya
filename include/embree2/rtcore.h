@@ -20,6 +20,8 @@
 #include <stddef.h>
 #include <sys/types.h>
 
+#include "rtcore_version.h"
+
 #if defined(_WIN32)
 #if defined(_M_X64)
 typedef long long ssize_t;
@@ -57,12 +59,6 @@ typedef int ssize_t;
 #else
 #  define RTCORE_FORCEINLINE inline __attribute__((always_inline))
 #endif
-
-/*! Embree API version */
-#define RTCORE_VERSION_MAJOR 2
-#define RTCORE_VERSION_MINOR 15
-#define RTCORE_VERSION_PATCH 0
-#define RTCORE_VERSION       21500
 
 /*! \file rtcore.h Defines the Embree Ray Tracing Kernel API for C and C++ 
 
