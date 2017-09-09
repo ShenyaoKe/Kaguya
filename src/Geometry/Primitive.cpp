@@ -2,7 +2,7 @@
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 /************************************************************************/
 /* Basic Shape Function Definition                                      */

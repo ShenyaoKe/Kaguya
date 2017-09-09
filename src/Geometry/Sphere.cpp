@@ -1,5 +1,5 @@
 #include "Sphere.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 #include "Shading/Texture.h"
 #include "Shading/TextureMapping.h"
 
@@ -32,7 +32,7 @@ Bounds3f geoSphere::getWorldBounding() const
 	return ret;
 }
 bool geoSphere::intersect(const Ray &inRay,
-						  DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
+						  Intersection* isec, Float* tHit, Float* rayEpsilon) const
 {
 	Float phi, theta;
 	Point3f pHit;
@@ -112,16 +112,16 @@ bool geoSphere::intersect(const Ray &inRay,
 	*rayEpsilon = reCE * *tHit;
 
 	const Transform &o2w = *mObjectToWorld;
-	*dg = DifferentialGeometry(o2w(pHit),
-							   o2w(Normal3f()),
-							   o2w(dpdu), o2w(dpdv),
-							   o2w(Normal3f()), o2w(Normal3f()),
-							   uv, this);
+	*isec = Intersection(o2w(pHit),
+						 o2w(Normal3f()),
+						 o2w(dpdu), o2w(dpdv),
+						 o2w(Normal3f()), o2w(Normal3f()),
+						 uv, this);
 	return true;
 }
 
 void geoSphere::postIntersect(const Ray &inRay,
-							  DifferentialGeometry* dg) const
+							  Intersection* isec) const
 {
 	// TODO: Move post intersection from intersect
 }

@@ -13,9 +13,9 @@ ColorRGBA Texture::getColor(const Point2f &uv) const
 {
 	return ColorRGBA();
 }
-ColorRGBA Texture::getColor(const DifferentialGeometry* queryPoint) const
+ColorRGBA Texture::getColor(const Intersection* isec) const
 {
-	ColorRGBA ret;// = getColor(queryPoint->UV);
+	ColorRGBA ret;// = getColor(isec->UV);
 	return ret;
 }
 /************************************************************************/

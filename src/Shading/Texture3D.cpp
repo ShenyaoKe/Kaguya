@@ -39,7 +39,7 @@ void PerlinNoiseTexture3D::setRange(Float max_value, Float min_value)
 ColorRGBA PerlinNoiseTexture3D::getColor(const Point3f &pos) const
 {
 	Float pValue = clampFromZeroToOne((noise.getValue(pos) - vmin) / (vmax - vmin));
-	//std::cout << noise.getValue(queryPoint->UV) << std::endl;
+	//std::cout << noise.getValue(isec->UV) << std::endl;
 	return pValue * brightColor + (1 - pValue)*darkColor;
 }
 /************************************************************************/
@@ -63,7 +63,7 @@ ColorRGBA WoodTexture3D::getColor(const Point3f &pos) const
 	pValue -= static_cast<int>(pValue);
 	pValue += detailNoise.getValue(pos) * 0.5;
 	clampFromZeroToOne(pValue);
-	//std::cout << noise.getValue(queryPoint->UV) << std::endl;
+	//std::cout << noise.getValue(isec->UV) << std::endl;
 	return pValue * brightColor + (1 - pValue)*darkColor;
 }
 

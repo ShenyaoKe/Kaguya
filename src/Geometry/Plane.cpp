@@ -2,7 +2,7 @@
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -23,7 +23,7 @@ geoPlane::geoPlane(const Point3f &pos, const Normal3f &norm,
 	bounding();
 }
 
-bool geoPlane::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
+bool geoPlane::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
 {
 	Float t = dot(this->n, inRay.d);
 	if (t >= 0)

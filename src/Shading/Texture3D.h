@@ -4,7 +4,7 @@
 #include "Image/ImageData.h"
 #include "Geometry/Primitive.h"
 #include "Shading/Noise.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {

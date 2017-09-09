@@ -4,7 +4,7 @@
 #include "Image/ImageData.h"
 #include "Geometry/Primitive.h"
 #include "Shading/Noise.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -17,7 +17,7 @@ public:
 	virtual ~Texture();
 
 	virtual ColorRGBA getColor(const Point2f &uv) const;
-	virtual ColorRGBA getColor(const DifferentialGeometry* queryPoint) const;
+	virtual ColorRGBA getColor(const Intersection* isec) const;
 };
 
 /************************************************************************/

@@ -10,7 +10,7 @@
 #include "Accel/Bounds.h"
 #include "Image/ColorData.h"
 #include "Math/Transform.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 #include "Shading/BxDF.h"
 #include "PrimitiveAttribute.h"
 
@@ -93,12 +93,12 @@ public:
 	virtual bool intersectP(const Ray &inRay) const;
 
 	virtual bool intersect(const Ray &inRay,
-						   DifferentialGeometry* dg,
+						   Intersection* isec,
 						   Float* tHit,
 						   Float* rayEpsilon) const = 0;
 
 	virtual void postIntersect(const Ray &inRay,
-							   DifferentialGeometry* dg) const = 0;
+							   Intersection* isec) const = 0;
 
 	// Surface Area
 	virtual Float area() const { return 0; }
@@ -108,7 +108,7 @@ public:
 
 	// Shading
 	virtual void getShadingGeometry(const Transform &obj2world,
-									DifferentialGeometry* dg) const
+									Intersection* isec) const
 	{
 	}
 

@@ -64,7 +64,7 @@ void RasterizedVolume::rasterize()
 	rayDir[zaxis] = 1.0;
 
 
-	DifferentialGeometry queryPoint;
+	Intersection isec;
 	Float tHit = INFINITY, rayEp;
 	//vector<Point3f> grid;
 	Ray rasterRay;
@@ -74,7 +74,7 @@ void RasterizedVolume::rasterize()
 		{
 			std::vector<Float> hitLen;
 			rasterRay = Ray(rayPos, rayDir);
-			while (kdtree->intersect(rasterRay, &queryPoint, &tHit, &rayEp))
+			while (kdtree->intersect(rasterRay, &isec, &tHit, &rayEp))
 			{
 				hitLen.push_back(tHit);
 				rasterRay.o[zaxis] += tHit + rayEp;

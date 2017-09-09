@@ -2,7 +2,7 @@
 
 #include "Accel/Bounds.h"
 #include "Geometry/Primitive.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -34,6 +34,7 @@ struct BoundEdge
 		}
 	}
 };
+
 struct KdAccelNode//Node class
 {
 	Bounds3f bbox;
@@ -44,7 +45,6 @@ struct KdAccelNode//Node class
 	KdAccelNode* aboveNode;//only for interior
 	Float split;//split position only for interior
 
-
 				//void initLeaf(int* prims, int np);//primitive indices array
 	void initLeaf(std::vector<int> &prims);//primitive indices array
 	void initInterior(int axis, Float s);
@@ -54,7 +54,7 @@ struct KdAccelNode//Node class
 	~KdAccelNode();
 	//KdAccelNode* build(std::vector<Shape*> &tris, int depth) const;
 	// 	bool hit(KdAccelNode* node, const Ray &inRay,
-	// 		Float &t, Float &tmin, DifferentialGeometry* queryPoint) const;
+	// 		Float &t, Float &tmin, Intersection* isec) const;
 
 	void printInfo() const;
 };
@@ -66,10 +66,10 @@ public:
 	~KdTreeAccel();
 	bool intersectP(const Ray &inRay) const;
 	bool intersect(const Ray &inRay,
-				   DifferentialGeometry* queryPoint,
+				   Intersection* isec,
 				   Float* tHit, Float* rayEpsilon) const;
 	bool intersect(const Ray &inRay,
-				   DifferentialGeometry* queryPoint,
+				   Intersection* isec,
 				   const KdAccelNode* node,
 				   Float* tHit, Float* rayEpsilon) const;
 	bool inLeaf(const Point3f &pos) const;
@@ -82,18 +82,19 @@ public:
 	void printNode(KdAccelNode* node) const;
 
 private:
-	friend class RasterizedVolume;
+	void buildTree(KdAccelNode* node, const Bounds3f &bound,
+				   std::vector<int> &prims,
+				   int depth, BoundEdge* edges[3]);
+
 private:
-	//int isectCost, traversalCost, 
+	//int isectCost, traversalCost,
 	int maxDepth, maxPrims;
 	Float emptyBonus;
 	std::vector<Primitive*> primitives;
 	KdAccelNode* root;
 	Bounds3f treeBound;
 
-	void buildTree(KdAccelNode* node, const Bounds3f &bound,
-				   std::vector<int> &prims,
-				   int depth, BoundEdge* edges[3]);
+	friend class RasterizedVolume;
 
 };
 

@@ -2,7 +2,7 @@
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -17,7 +17,7 @@ geoTorus::geoTorus(const Point3f &pos, Float radius, Float secRadius)
 	sr = secRadius;
 }
 
-bool geoTorus::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
+bool geoTorus::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
 {
 	//Float coeA = inRay.d * inRay.d;//len == 1
 	Float coeB = dot(inRay.d, (inRay.o - c));
@@ -26,7 +26,7 @@ bool geoTorus::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit
 	Float delta = coeB * coeB - coeC;
 	if (delta < 0)
 	{
-		//std::cout << "No DifferentialGeometry!" << std::endl;
+		//std::cout << "No Intersection!" << std::endl;
 		return false;
 	}
 	else if (delta == 0)

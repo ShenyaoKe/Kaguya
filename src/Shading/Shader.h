@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Core/Kaguya.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 #include "Shading/Texture.h"
 #include "Light/Light.h"
 //#include <vector>
@@ -39,12 +39,12 @@ public:
     virtual void attachSpecularTexture(Texture* &sTex);
 
     virtual bool getOpacity() const;
-    virtual ColorRGBA getAmbient(const DifferentialGeometry* queryPoint) const;
-    virtual ColorRGBA getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const;
-    virtual ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
+    virtual ColorRGBA getAmbient(const Intersection* queryPoint) const;
+    virtual ColorRGBA getDiffuseAt(const Intersection* queryPoint, const Light* light) const;
+    virtual ColorRGBA getSpecularAt(const Intersection* queryPoint, const Light* light) const;
     //virtual ColorRGB getColorAt(const Float& cosTheta) const{ return ColorRGB(); };
     //virtual ColorRGBA getColor(const Vector3D &intersectPoint, const Vector3D &reflectDir, const Vector3D &normalVec, const Light* light) const;
-    virtual ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
+    virtual ColorRGBA getColor(const Intersection* queryPoint, const Light* light) const;
 
 protected:
     ColorRGBA diffuse = COLOR_WHITE;
@@ -78,8 +78,8 @@ public:
 
     //void setLambert(const ColorRGB &diff, const ColorRGB &amb, const Float& dmin, const Float& dmax);
     //void setDiffuseRange(const Float& dmin, const Float& dmax);
-    ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
-    ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
+    ColorRGBA getSpecularAt(const Intersection* queryPoint, const Light* light) const;
+    ColorRGBA getColor(const Intersection* queryPoint, const Light* light) const;
 protected:
 private:
 };
@@ -98,7 +98,7 @@ public:
     void setSpecularRange(const Float& smin, const Float& smax);
     void setCosinePower(const Float& power);
     //ColorRGB getColor(const Float& cosTheta);
-    ColorRGBA getSpecularAt(const DifferentialGeometry* queryPoint, const Light* light) const;
+    ColorRGBA getSpecularAt(const Intersection* queryPoint, const Light* light) const;
 protected:
 
 private:
@@ -119,10 +119,10 @@ public:
     ~Gooch();
 
     void setDiffuseRange(const Float& dmin, const Float& dmax);
-    ColorRGBA getDiffuseAt(const DifferentialGeometry* queryPoint, const Light* light) const;
+    ColorRGBA getDiffuseAt(const Intersection* queryPoint, const Light* light) const;
     ColorRGBA getDiffuseWithEdgeAt(const Float& cosTheta, const Light* light) const;
     //ColorRGB getSpecularAt(const Float& cosTheta, const ColorRGB &diffColor, const Light* light) const;
-    ColorRGBA getColor(const DifferentialGeometry* queryPoint, const Light* light) const;
+    ColorRGBA getColor(const Intersection* queryPoint, const Light* light) const;
 protected:
 
 private:
@@ -143,7 +143,7 @@ ShapedSpecShader(const ColorRGB &diff, const ColorRGB &spec);
 ~ShapedSpecShader(){};
 
 
-ColorRGBA getSpecularAt(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const;
+ColorRGBA getSpecularAt(const Vector3D &Intersection, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const;
 ColorRGBA getColor(const Vector3D &intersectPoint, const Vector3D &reflectDir, const Vector3D &normalVec, const Light* light) const;
 protected:
 
@@ -154,12 +154,12 @@ ShapedSpecShader::ShapedSpecShader(const ColorRGB &diff, const ColorRGB &spec)
 diffuse = diff;
 specular = spec;
 }
-ColorRGBA ShapedSpecShader::getSpecularAt(const Vector3D &DifferentialGeometry, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const
+ColorRGBA ShapedSpecShader::getSpecularAt(const Vector3D &Intersection, const Vector3D &reflectDir, const ColorRGBA& diffColor, const Light* light) const
 {
-Float s = light->getSpecAmout(DifferentialGeometry, reflectDir);
+Float s = light->getSpecAmout(Intersection, reflectDir);
 //s = (s - spec_min) / (spec_max - spec_min);
 //cout << s << endl;
-if ((light->getDirFromPoint(DifferentialGeometry))*reflectDir < 0)
+if ((light->getDirFromPoint(Intersection))*reflectDir < 0)
 {
 return diffColor;
 }

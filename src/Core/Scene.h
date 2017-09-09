@@ -31,7 +31,7 @@ public:
 	}
 
 	bool intersect(Ray &inRay,
-				   DifferentialGeometry* dg,
+				   Intersection* isec,
 				   Float* tHit,
 				   Float* rayEpsilon) const;
 

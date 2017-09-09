@@ -8,7 +8,7 @@
 #include "Core/Kaguya.h"
 #include "Math/Geometry.h"
 #include "Geometry/Primitive.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -23,7 +23,7 @@ public:
 	void clear();
 	bool empty() const;
 	void setBuffer(uint32_t x, uint32_t y,
-				   const DifferentialGeometry &geom, Float zdepth);
+				   const Intersection &isec, Float zdepth);
 
 private:
 	template<typename T>

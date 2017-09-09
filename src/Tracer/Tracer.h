@@ -41,7 +41,7 @@ public:
 /*
 ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 							Ray &inRay,
-							DifferentialGeometry* queryPoint,
+							Intersection* isec,
 							Float &tHit,
 							Float &rayEp)
 {
@@ -53,8 +53,8 @@ ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 			inRay.dp++;
 
 		Float tr_dir, tr_norm, tr_theta;
-		//eta = queryPoint.object->getAmbient(queryPoint).r * 2.0;
-		tr_theta = -inRay.dir * queryPoint->normal;
+		//eta = isec.object->getAmbient(isec).r * 2.0;
+		tr_theta = -inRay.dir * isec->normal;
 		Float eta2 = tr_theta > 0 ? eta : 1.0 / eta;
 		tr_dir = 1.0 / eta2;
 		tr_norm = sqr(tr_theta) + sqr(eta2) - 1;
@@ -65,16 +65,16 @@ ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 		tr_theta = abs(tr_theta);
 		tr_norm = (tr_theta - sqrt(tr_norm)) / eta2;
 
-		inRay.dir = inRay.dir * tr_dir + queryPoint->normal * tr_norm;
+		inRay.dir = inRay.dir * tr_dir + isec->normal * tr_norm;
 		if (translucency != 1.0)
 		{
 			inRay.dir += Vector3D(unitRandom(20) - 0.5, unitRandom(20) - 0.5, unitRandom(20) - 0.5) * sqr(translucency);
 		}
 		inRay.dir.normalize();
-		inRay.pos = queryPoint->pos + rayEp * inRay.dir;
+		inRay.pos = isec->pos + rayEp * inRay.dir;
 
 		Float tHit = INFINITY;
-		if (!sceneTree->hit(inRay, queryPoint, &tHit, &rayEp))
+		if (!sceneTree->hit(inRay, isec, &tHit, &rayEp))
 		{
 			break;
 		}
@@ -86,7 +86,7 @@ ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 }
 ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 							Ray &inRay,
-							DifferentialGeometry* queryPoint,
+							Intersection* isec,
 							Float &tHit,
 							Float &rayEp)
 {
@@ -98,8 +98,8 @@ ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 			inRay.dp++;
 
 		Float tr_dir, tr_norm, tr_theta;
-		//eta = queryPoint.object->getAmbient(queryPoint).r * 2.0;
-		tr_theta = -inRay.dir * queryPoint->normal;
+		//eta = isec.object->getAmbient(isec).r * 2.0;
+		tr_theta = -inRay.dir * isec->normal;
 		Float eta2 = tr_theta > 0 ? eta : 1.0 / eta;
 		tr_dir = 1.0 / eta2;
 		tr_norm = sqr(tr_theta) + sqr(eta2) - 1;
@@ -110,16 +110,16 @@ ColorRGBA render_refraction(const KdTreeAccel* sceneTree,
 		tr_theta = abs(tr_theta);
 		tr_norm = (tr_theta - sqrt(tr_norm)) / eta2;
 
-		inRay.dir = inRay.dir * tr_dir + queryPoint->normal * tr_norm;
+		inRay.dir = inRay.dir * tr_dir + isec->normal * tr_norm;
 		if (translucency != 1.0)
 		{
 			inRay.dir += Vector3D(unitRandom(20) - 0.5, unitRandom(20) - 0.5, unitRandom(20) - 0.5) * sqr(translucency);
 		}
 		inRay.dir.normalize();
-		inRay.pos = queryPoint->pos + rayEp * inRay.dir;
+		inRay.pos = isec->pos + rayEp * inRay.dir;
 
 		Float tHit = INFINITY;
-		if (!sceneTree->hit(inRay, queryPoint, &tHit, &rayEp))
+		if (!sceneTree->hit(inRay, isec, &tHit, &rayEp))
 		{
 			break;
 		}

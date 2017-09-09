@@ -22,10 +22,10 @@ public:
 	void printInfo(const std::string &msg) const override;
 
 	bool intersect(const Ray &inRay,
-				   DifferentialGeometry* dg,
+				   Intersection* isec,
 				   Float* tHit, Float* rayEpsilon) const override;
 	void postIntersect(const Ray &inRay,
-					   DifferentialGeometry* dg) const override;
+					   Intersection* isec) const override;
 
 	static size_t getFaceSize() { return sQuadFaceSize; }
 	void getTessellated(TessBuffer &trait) const override;

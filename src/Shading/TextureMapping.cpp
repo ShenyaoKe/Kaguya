@@ -1,5 +1,5 @@
 #include "Shading/TextureMapping.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -96,22 +96,22 @@ Point2f SphericalMapping2D::posToUV(const Point3f &pos) const
 	}
 	return Point2f(u, v);
 }
-/*void SphericalMapping2D::getUVDir(const DifferentialGeometry* queryPoint) const
+/*void SphericalMapping2D::getUVDir(const Intersection* isec) const
 {
 Float threshold = 0.005;
 Vector3f uPos, vPos;
-uPos.x = sin(M_PI * queryPoint->UV.y) * sin(2 * M_PI * (queryPoint->UV.x + threshold));
-uPos.y = sin(M_PI * queryPoint->UV.y) * cos(2 * M_PI * (queryPoint->UV.x + threshold));
-uPos.z = cos(M_PI * queryPoint->UV.y);
-uPos = c + nx * uPos.x + ny * uPos.y + nz * uPos.z - queryPoint->pos;
+uPos.x = sin(M_PI * isec->UV.y) * sin(2 * M_PI * (isec->UV.x + threshold));
+uPos.y = sin(M_PI * isec->UV.y) * cos(2 * M_PI * (isec->UV.x + threshold));
+uPos.z = cos(M_PI * isec->UV.y);
+uPos = c + nx * uPos.x + ny * uPos.y + nz * uPos.z - isec->pos;
 
-vPos.x = sin(M_PI * queryPoint->UV.y + threshold) * sin(2 * M_PI*(queryPoint->UV.x));
-vPos.y = sin(M_PI * queryPoint->UV.y + threshold) * cos(2 * M_PI*(queryPoint->UV.x));
-vPos.z = cos(M_PI * queryPoint->UV.y + threshold);
-vPos = c + nx * vPos.x + ny * vPos.y + nz * vPos.z - queryPoint->pos;
+vPos.x = sin(M_PI * isec->UV.y + threshold) * sin(2 * M_PI*(isec->UV.x));
+vPos.y = sin(M_PI * isec->UV.y + threshold) * cos(2 * M_PI*(isec->UV.x));
+vPos.z = cos(M_PI * isec->UV.y + threshold);
+vPos = c + nx * vPos.x + ny * vPos.y + nz * vPos.z - isec->pos;
 
-queryPoint->dpdu = Normalize(uPos - uPos * Dot(uPos, queryPoint->normal));
-queryPoint->dpdv = Normalize(vPos - vPos * Dot(vPos, queryPoint->normal));
+isec->dpdu = Normalize(uPos - uPos * Dot(uPos, isec->normal));
+isec->dpdv = Normalize(vPos - vPos * Dot(vPos, isec->normal));
 }
 */
 /************************************************************************/
@@ -150,15 +150,15 @@ void PlanarMapping2D::setSize(Float us, Float vs)
 	vSize = vs;
 }
 /*
-void PlanarMapping2D::mapToUV(const DifferentialGeometry* queryPoint) const
+void PlanarMapping2D::mapToUV(const Intersection* isec) const
 {
 //std::cout << uSize << std::endl;
-Vector3f np = queryPoint->pos - c;
+Vector3f np = isec->pos - c;
 //c.printInfo();
 Float x = Dot(nx, np) / uSize + 0.5;
 Float y = Dot(ny, np) / vSize + 0.5;
 
-queryPoint->UV = Point3f(x, y, 0);
+isec->UV = Point3f(x, y, 0);
 }
 */
 

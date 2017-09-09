@@ -49,8 +49,8 @@ public:
 	virtual void setRadius(Float rd);
 
 	virtual LIGHT_TYPE getLightType() const;
-	virtual Spectrum getSpectrum(const Intersection* queryPoint) const;
-	virtual Float getDistance(const Intersection* queryPoint) const;
+	virtual Spectrum getSpectrum(const Intersection* isec) const;
+	virtual Float getDistance(const Intersection* isec) const;
 	virtual void printInfo() const;
 };
 /************************************************************************/
@@ -66,7 +66,7 @@ public:
 	~directionalLight();
 
 	void printInfo() const;
-	Float getDistance(const Intersection* queryPoint) const;
+	Float getDistance(const Intersection* isec) const;
 protected:
 
 private:
@@ -114,7 +114,7 @@ public:
 	void updateCosAngle();
 	void setDropOff(Float dpo);
 
-	Float getIntensity(const Intersection* queryPoint) const;
+	Float getIntensity(const Intersection* isec) const;
 };
 /************************************************************************/
 /* Area Light                                                           */
@@ -138,7 +138,7 @@ public:
 	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt);
 	~areaLight();
 
-	Float getIntensity(const Intersection* queryPoint) const;
+	Float getIntensity(const Intersection* isec) const;
 protected:
 
 private:

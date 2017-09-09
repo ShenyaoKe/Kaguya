@@ -37,7 +37,7 @@ void Scene::commitScene()
 }
 
 bool Scene::intersect(Ray &inRay,
-					  DifferentialGeometry* dg,
+					  Intersection* isec,
 					  Float* tHit,
 					  Float* rayEpsilon) const
 {
@@ -52,8 +52,8 @@ bool Scene::intersect(Ray &inRay,
 	rtcIntersect(mSceneContext, *(static_cast<RTCRay*>((void*)&inRay)));
 	if (inRay.geomID != RTC_INVALID_GEOMETRY_ID)
 	{
-		dg->shape = mPrims[inRay.geomID].get();
-		dg->shape->postIntersect(inRay, dg);
+		isec->shape = mPrims[inRay.geomID].get();
+		isec->shape->postIntersect(inRay, isec);
 		return true;
 	}
 #endif

@@ -70,23 +70,23 @@ bool RenderBuffer::empty() const
 	return p.size() == 0;
 }
 void RenderBuffer::setBuffer(uint32_t x, uint32_t y,
-							 const DifferentialGeometry &geom, Float zdepth)
+							 const Intersection &isec, Float zdepth)
 {
 	size_t index = y * width + x;
 	if (index >= size) return;
 
 	size_t id3 = index * 3, id2 = index << 1;
 
-	Vec3ToFloats(geom.P, p, id3);
-	Vec3ToFloats(geom.Ng, n, id3);
-	Vec3ToFloats(geom.dPdu, dpdu, id3);
-	Vec3ToFloats(geom.dPdv, dpdv, id3);
-	Vec3ToFloats(geom.dNdu, dndu, id3);
-	Vec3ToFloats(geom.dNdv, dndv, id3);
+	Vec3ToFloats(isec.P, p, id3);
+	Vec3ToFloats(isec.Ng, n, id3);
+	Vec3ToFloats(isec.dPdu, dpdu, id3);
+	Vec3ToFloats(isec.dPdv, dpdv, id3);
+	Vec3ToFloats(isec.dNdu, dndu, id3);
+	Vec3ToFloats(isec.dNdv, dndv, id3);
 
-	Vec2ToFloats(geom.UV, uv, id2);
+	Vec2ToFloats(isec.UV, uv, id2);
 	z[index] = static_cast<float>(zdepth);
-	id[index] = geom.shape->getShapeID();
+	id[index] = isec.shape->getShapeID();
 }
 
 }

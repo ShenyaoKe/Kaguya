@@ -131,7 +131,7 @@ struct KdAccelNode;
 class KdTreeAccel;
 class Primitive;
 class Ray;
-class DifferentialGeometry;
+class Intersection;
 class PolyMesh;
 class TriangleMesh;
 class QuadMesh;

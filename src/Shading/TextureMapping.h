@@ -29,8 +29,8 @@ public:
 	virtual void setPos(const Point3f &pos);
 	virtual void setDir(const Vector3f &view, const Vector3f &upVec);
 	virtual Point2f posToUV(const Point3f &pos) const;
-	//virtual void mapToUV(const DifferentialGeometry* queryPoint) const = 0;
-	//virtual void getUVDir(const DifferentialGeometry* queryPoint) const = 0;
+	//virtual void mapToUV(const Intersection* isec) const = 0;
+	//virtual void getUVDir(const Intersection* isec) const = 0;
 	//virtual Point2f mapToXY(Float x, Float y) const;
 };
 /************************************************************************/
@@ -46,8 +46,8 @@ public:
 	~SphericalMapping2D();
 
 	Point2f posToUV(const Point3f &pos) const;
-	//void mapToUV(const DifferentialGeometry* queryPoint) const;
-	//void getUVDir(const DifferentialGeometry* queryPoint) const;
+	//void mapToUV(const Intersection* isec) const;
+	//void getUVDir(const Intersection* isec) const;
 protected:
 private:
 };
@@ -67,7 +67,7 @@ public:
 	~PlanarMapping2D();
 
 	void setSize(Float us, Float vs);
-	//void mapToUV(const DifferentialGeometry* queryPoint) const;
+	//void mapToUV(const Intersection* isec) const;
 protected:
 
 private:

@@ -191,18 +191,18 @@ RETRY_SPLIT:
 
 }
 bool KdTreeAccel::intersect(const Ray &inRay,
-							DifferentialGeometry* queryPoint,
+							Intersection* isec,
 							Float* tHit, Float* rayEpsilon) const
 {
-	return intersect(inRay, queryPoint, root, tHit, rayEpsilon);
+	return intersect(inRay, isec, root, tHit, rayEpsilon);
 }
 bool KdTreeAccel::intersect(const Ray &inRay,
-							DifferentialGeometry* queryPoint,
+							Intersection* isec,
 							const KdAccelNode* node,
 							Float* tHit, Float* rayEpsilon) const
 {
 	//Compute initial parametric range of ray inside kd-tree extent
-	Float tmin, tmax, rayEp;//temprary DifferentialGeometry result
+	Float tmin, tmax, rayEp;//temprary Intersection result
 	if (!node->bbox.intersectP(inRay, &tmin, &tmax))
 	{
 		return false;
@@ -222,7 +222,7 @@ bool KdTreeAccel::intersect(const Ray &inRay,
 		}
 		if (node->isLeaf())
 		{
-			DifferentialGeometry* tmpQuery = new DifferentialGeometry();
+			Intersection* tmpQuery = new Intersection();
 			Float hitDist;
 			for (int i = 0; i < node->primIndex.size(); ++i)
 			{
@@ -234,10 +234,10 @@ bool KdTreeAccel::intersect(const Ray &inRay,
 					{
 						if (hitDist < *tHit && inRange(hitDist, tmin, tmax))
 						{
-							*queryPoint = *tmpQuery;
+							*isec = *tmpQuery;
 							*tHit = hitDist;
 							*rayEpsilon = rayEp;
-							queryPoint->shape = primitives[idx];
+							isec->shape = primitives[idx];
 							isHit = true;
 						}
 					}
@@ -269,18 +269,18 @@ bool KdTreeAccel::intersect(const Ray &inRay,
 			}
 			if (tsplit > tmax || tsplit <= 0)
 			{
-				isHit = intersect(inRay, queryPoint, nearChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, isec, nearChild, tHit, rayEpsilon);
 			}
 			else if (tsplit < tmin)
 			{
-				isHit = intersect(inRay, queryPoint, farChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, isec, farChild, tHit, rayEpsilon);
 			}
 			else
 			{
-				isHit = intersect(inRay, queryPoint, nearChild, tHit, rayEpsilon);
+				isHit = intersect(inRay, isec, nearChild, tHit, rayEpsilon);
 				if (!isHit)
 				{
-					isHit = intersect(inRay, queryPoint, farChild, tHit, rayEpsilon);
+					isHit = intersect(inRay, isec, farChild, tHit, rayEpsilon);
 				}
 			}
 			// 			nearChild = nullptr;

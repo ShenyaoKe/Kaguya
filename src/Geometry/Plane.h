@@ -16,7 +16,7 @@ public:
 
 	void bounding();
 
-	bool intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const;
+	bool intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const;
 
 	//bool isInside(const Point3f &pPos) const;
 

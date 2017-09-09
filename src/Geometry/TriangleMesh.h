@@ -21,10 +21,10 @@ public:
 	void printInfo(const std::string &msg) const override;
 
 	bool intersect(const Ray &inRay,
-				   DifferentialGeometry* dg,
+				   Intersection* isec,
 				   Float* tHit, Float* rayEpsilon) const override;
 	void postIntersect(const Ray &inRay,
-					   DifferentialGeometry* dg) const override;
+					   Intersection* isec) const override;
 
 	static size_t getFaceSize() { return sTriFaceSize; }
 	void getTessellated(TessBuffer &trait) const override;
@@ -59,7 +59,7 @@ bool intersectWatertight(const Point3f &p0,
 void postIntersect(const Point3f &p0,
 				   const Point3f &p1,
 				   const Point3f &p2,
-				   const Ray &inRay, DifferentialGeometry* dg);
+				   const Ray &inRay, Intersection* isec);
 
 }
 

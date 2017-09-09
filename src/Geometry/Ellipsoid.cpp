@@ -2,7 +2,7 @@
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 namespace Kaguya
 {
@@ -29,7 +29,7 @@ void geoEllipsoid::setSemiAxes(Float semiA, Float semiB, Float semiC)
 	sb = semiB;
 	sc = semiC;
 }
-bool geoEllipsoid::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* tHit, Float* rayEpsilon) const
+bool geoEllipsoid::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
 {
 	Point3f rp = inRay.o;
 	Vector3f rd = inRay.d;// Ray postion and ray direction.
@@ -39,7 +39,7 @@ bool geoEllipsoid::intersect(const Ray &inRay, DifferentialGeometry* dg, Float* 
 	Float delta = coeB * coeB - coeA * coeC;
 	if (delta < 0)
 	{
-		//std::cout << "No DifferentialGeometry!" << std::endl;
+		//std::cout << "No Intersection!" << std::endl;
 		return false;
 	}
 	else//delta > 0

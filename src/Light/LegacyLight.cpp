@@ -34,14 +34,14 @@ LIGHT_TYPE Light::getLightType() const
 {
 	return type;
 }
-Spectrum Light::getSpectrum(const Intersection* queryPoint) const
+Spectrum Light::getSpectrum(const Intersection* isec) const
 {
-	//Spectrum ret;// = Spectrum(getIntensity(queryPoint), lightSpectrum.color);
+	//Spectrum ret;// = Spectrum(getIntensity(isec), lightSpectrum.color);
 	return Spectrum();
 }
-Float Light::getDistance(const Intersection* queryPoint) const
+Float Light::getDistance(const Intersection* isec) const
 {
-	return (pos - queryPoint->P).length();
+	return (pos - isec->P).length();
 }
 void Light::printInfo() const
 {
@@ -74,7 +74,7 @@ void directionalLight::printInfo() const
 	lightSpectrum.printInfo();
 	//color.printInfo();
 }
-Float directionalLight::getDistance(const Intersection* queryPoint) const
+Float directionalLight::getDistance(const Intersection* isec) const
 {
 	return INFINITY;
 }
@@ -153,10 +153,10 @@ void spotLight::setDropOff(Float dpo)
 {
 	dropoff = dpo;
 }
-Float spotLight::getIntensity(const Intersection* queryPoint) const
+Float spotLight::getIntensity(const Intersection* isec) const
 {
-	Float dist = getDistance(queryPoint);
-	Float tmpIts = dot(queryPoint->P - pos, dir);
+	Float dist = getDistance(isec);
+	Float tmpIts = dot(isec->P - pos, dir);
 
 	if (penumbraAngle != 0)
 	{
@@ -219,9 +219,9 @@ areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, 
 areaLight::~areaLight()
 {
 }
-Float areaLight::getIntensity(const Intersection* queryPoint) const
+Float areaLight::getIntensity(const Intersection* isec) const
 {
-	/*if (queryPoint->lightDir * nz > 0)//If on the other side
+	/*if (isec->lightDir * nz > 0)//If on the other side
 	{
 	return 0;
 	}*/
@@ -237,7 +237,7 @@ Float areaLight::getIntensity(const Intersection* queryPoint) const
 	}
 	else
 	{
-		Float dist = getDistance(queryPoint);
+		Float dist = getDistance(isec);
 		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
 	}
 }

@@ -1,5 +1,5 @@
 //
-//  DifferentialGeometry.h
+//  Intersection.h
 //
 //  Created by Shenyao Ke on 3/1/15.
 //  Copyright (c) 2015 AKIKA. All rights reserved.
@@ -13,18 +13,18 @@ namespace Kaguya
 {
 
 /************************************************************************/
-/* DifferentialGeometry                                                 */
+/* Intersection                                                 */
 /************************************************************************/
-class DifferentialGeometry
+class Intersection
 {
 public:
-	DifferentialGeometry() : shape(nullptr) {}
-	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
+	Intersection() : shape(nullptr) {}
+	Intersection(const Point3f &_p, const Normal3f &_n,
 						 const Point2f &_uv, const Primitive* shp)
 		: P(_p), Ng(_n), UV(_uv), shape(shp)
 	{
 	}
-	DifferentialGeometry(const Point3f &_p, const Normal3f &_n,
+	Intersection(const Point3f &_p, const Normal3f &_n,
 						 const Vector3f &_dpdu, const Vector3f &_dpdv,
 						 const Normal3f &_dndu, const Normal3f &_dndv,
 						 const Point2f &_uv, const Primitive* shp);
