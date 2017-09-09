@@ -14,7 +14,7 @@
     <ProjectGuid>{E26467AF-7A85-484E-A54D-0488CA2D9F07}</ProjectGuid>
     <RootNamespace>cgClasses</RootNamespace>
     <ProjectName>Kaguya</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -60,6 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -83,6 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RIGHT_HAND_ORDER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -92,7 +94,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib;embree.lib;lua53.lib</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
@@ -114,7 +116,7 @@
     <ClInclude Include="..\src\Core\Sampler.h" />
     <ClInclude Include="..\src\Geometry\BezierCurve.h" />
     <ClInclude Include="..\src\Geometry\Curve.h" />
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.h" />
+    <ClInclude Include="..\src\Geometry\Intersection.h" />
     <ClInclude Include="..\src\Geometry\Ellipsoid.h" />
     <ClInclude Include="..\src\Geometry\Hyperboloid.h" />
     <ClInclude Include="..\src\Geometry\Mesh.h" />
@@ -137,6 +139,7 @@
     <ClInclude Include="..\src\IO\ObjLoader.h" />
     <ClInclude Include="..\src\IO\SceneLoader.h" />
     <ClInclude Include="..\src\Light\EnvironmentMap.h" />
+    <ClInclude Include="..\src\Light\LegacyLight.h" />
     <ClInclude Include="..\src\Light\Light.h" />
     <ClInclude Include="..\src\Light\Spectrum.h" />
     <ClInclude Include="..\src\Math\Geometry.h" />
@@ -169,7 +172,7 @@
     <ClCompile Include="..\src\Core\Scene.cpp" />
     <ClCompile Include="..\src\Geometry\BezierCurve.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />
-    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp" />
+    <ClCompile Include="..\src\Geometry\Intersection.cpp" />
     <ClCompile Include="..\src\Geometry\Mesh.cpp" />
     <ClCompile Include="..\src\Geometry\ParametricGeomtry.cpp" />
     <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\IO\ObjLoader.cpp" />
     <ClCompile Include="..\src\IO\SceneLoader.cpp" />
+    <ClCompile Include="..\src\Light\Light.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Shading\BxDF.cpp" />
     <ClCompile Include="..\src\Shading\Material.cpp" />
@@ -196,7 +200,7 @@
     <ClCompile Include="..\src\Image\ImagePyramid.cpp" />
     <ClCompile Include="..\src\Image\TextureSynthesis.cpp" />
     <ClCompile Include="..\src\Light\EnvironmentMap.cpp" />
-    <ClCompile Include="..\src\Light\Light.cpp" />
+    <ClCompile Include="..\src\Light\LegacyLight.cpp" />
     <ClCompile Include="..\src\Light\Spectrum.cpp" />
     <ClCompile Include="..\src\Math\MonteCarlo.cpp" />
     <ClCompile Include="..\src\Shading\Texture.cpp" />

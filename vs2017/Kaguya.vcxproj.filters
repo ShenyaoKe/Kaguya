@@ -111,9 +111,6 @@
     <ClInclude Include="..\src\Tracer\Ray.h">
       <Filter>Header Files\tracer</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Light\Light.h">
-      <Filter>Header Files\light</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Light\Spectrum.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
@@ -122,9 +119,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Accel\KdTreeAccel.h">
       <Filter>Header Files\accel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Geometry\DifferentialGeometry.h">
-      <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Tracer\Tracer.h">
       <Filter>Header Files\tracer</Filter>
@@ -267,15 +261,21 @@
     <ClInclude Include="..\src\IO\SceneLoader.h">
       <Filter>Header Files\io</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Geometry\Intersection.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\LegacyLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\Light.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
       <Filter>Source Files\accel</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Light\EnvironmentMap.cpp">
-      <Filter>Source Files\light</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Light\Light.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Light\Spectrum.cpp">
@@ -316,9 +316,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Shading\Texture3D.cpp">
       <Filter>Source Files\material</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Geometry\DifferentialGeometry.cpp">
-      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Shading\BxDF.cpp">
       <Filter>Source Files\material</Filter>
@@ -403,6 +400,15 @@
     </ClCompile>
     <ClCompile Include="..\src\IO\SceneLoader.cpp">
       <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Intersection.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\LegacyLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\Light.cpp">
+      <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
