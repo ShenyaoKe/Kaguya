@@ -1,8 +1,9 @@
-#include "Light/Light.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Light/LegacyLight.h"
+
+#include "Geometry/Intersection.h"
 #include "Shading/Texture.h"
 
-namespace Kaguya
+namespace Kaguya::Legacy
 {
 /************************************************************************/
 /* Basic Light                                                          */
@@ -33,12 +34,12 @@ LIGHT_TYPE Light::getLightType() const
 {
 	return type;
 }
-Spectrum Light::getSpectrum(const DifferentialGeometry* queryPoint) const
+Spectrum Light::getSpectrum(const Intersection* queryPoint) const
 {
 	//Spectrum ret;// = Spectrum(getIntensity(queryPoint), lightSpectrum.color);
 	return Spectrum();
 }
-Float Light::getDistance(const DifferentialGeometry* queryPoint) const
+Float Light::getDistance(const Intersection* queryPoint) const
 {
 	return (pos - queryPoint->P).length();
 }
@@ -73,7 +74,7 @@ void directionalLight::printInfo() const
 	lightSpectrum.printInfo();
 	//color.printInfo();
 }
-Float directionalLight::getDistance(const DifferentialGeometry* queryPoint) const
+Float directionalLight::getDistance(const Intersection* queryPoint) const
 {
 	return INFINITY;
 }
@@ -152,7 +153,7 @@ void spotLight::setDropOff(Float dpo)
 {
 	dropoff = dpo;
 }
-Float spotLight::getIntensity(const DifferentialGeometry* queryPoint) const
+Float spotLight::getIntensity(const Intersection* queryPoint) const
 {
 	Float dist = getDistance(queryPoint);
 	Float tmpIts = dot(queryPoint->P - pos, dir);
@@ -218,7 +219,7 @@ areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, 
 areaLight::~areaLight()
 {
 }
-Float areaLight::getIntensity(const DifferentialGeometry* queryPoint) const
+Float areaLight::getIntensity(const Intersection* queryPoint) const
 {
 	/*if (queryPoint->lightDir * nz > 0)//If on the other side
 	{
