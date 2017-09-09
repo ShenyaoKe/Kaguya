@@ -13,7 +13,7 @@
 #include "Math/MathUtil.h"
 #include "Image/ImageData.h"
 #include "Core/Scene.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 
 #include "Camera/PerspectiveCamera.h"
 #include "Tracer/RenderBuffer.h"

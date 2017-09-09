@@ -60,17 +60,17 @@ void OGLViewer::initializeGL()
 
 						 // Create model_shader files
 						 //#ifdef _DEBUG
-	triShader.reset(new GLSLProgram("resources/shaders/TriangleMesh_vs.glsl",
-					"resources/shaders/TriangleMesh_fs.glsl",
-					"resources/shaders/TriangleMesh_gs.glsl"));
-	quadShader.reset(new GLSLProgram("resources/shaders/QuadMesh_vs.glsl",
-					 "resources/shaders/QuadMesh_fs.glsl",
-					 "resources/shaders/QuadMesh_gs.glsl"));
-	curveShader.reset(new GLSLProgram("resources/shaders/Curve_vs.glsl",
-					  "resources/shaders/Curve_fs.glsl",
-					  "resources/shaders/Curve_gs.glsl"));
-	gate_shader.reset(new GLSLProgram("resources/shaders/gate_vs.glsl",
-					  "resources/shaders/gate_fs.glsl"));
+	triShader = std::make_shared<GLSLProgram>("resources/shaders/TriangleMesh_vs.glsl",
+											  "resources/shaders/TriangleMesh_fs.glsl",
+											  "resources/shaders/TriangleMesh_gs.glsl");
+	quadShader = std::make_shared<GLSLProgram>("resources/shaders/QuadMesh_vs.glsl",
+											   "resources/shaders/QuadMesh_fs.glsl",
+											   "resources/shaders/QuadMesh_gs.glsl");
+	curveShader = std::make_shared<GLSLProgram>("resources/shaders/Curve_vs.glsl",
+												"resources/shaders/Curve_fs.glsl",
+												"resources/shaders/Curve_gs.glsl");
+	gate_shader = std::make_unique<GLSLProgram>("resources/shaders/gate_vs.glsl",
+												"resources/shaders/gate_fs.glsl");
 
 	for (size_t i = 0; i < mScene->getPrimitiveCount(); i++)
 	{
@@ -317,7 +317,7 @@ void OGLViewer::renderpixels()
 
 	Point3f lightpos(3, 10, 1);
 	Float cosVal;
-	DifferentialGeometry queryPoint;
+	Intersection isec;
 	for (int j = 0; j < default_resY; j++)
 	{
 		for (int i = 0; i < default_resX; i++)
@@ -330,12 +330,12 @@ void OGLViewer::renderpixels()
 
 			cosVal = 0;
 			Point2f n(0, 0);
-			if (mScene->intersect(traceRay, &queryPoint, &tHit, &rayEp))
+			if (mScene->intersect(traceRay, &isec, &tHit, &rayEp))
 			{
 				/*cosVal = tHit;
-				queryPoint.shape->postIntersect(traceRay, &queryPoint);
-				cosVal = (dot(normalize(lightpos - queryPoint.P), queryPoint.Ng) + 1) * 0.5;
-				pixmap->setBuffer(uint32_t(i), uint32_t(j), queryPoint, tHit);
+				isec.shape->postIntersect(traceRay, &isec);
+				cosVal = (dot(normalize(lightpos - isec.P), isec.Ng) + 1) * 0.5;
+				pixmap->setBuffer(uint32_t(i), uint32_t(j), isec, tHit);
 				size_t index = (j * width() + i) << 2;
 				pixmap->beauty[index++] = cosVal;
 				pixmap->beauty[index++] = cosVal;
@@ -347,7 +347,7 @@ void OGLViewer::renderpixels()
 				pixmap->setBuffer(0);
 				pixmap->doSomething();
 				*/
-				mRenderBuffer->setBuffer(i, j, queryPoint, tHit);
+				mRenderBuffer->setBuffer(i, j, isec, tHit);
 				traceRay.Ng.normalize();
 				int rgb[]{ static_cast<int>((traceRay.Ng.x*0.5f + 0.5f) * 255),
 					static_cast<int>((traceRay.Ng.y*0.5f + 0.5f) * 255),

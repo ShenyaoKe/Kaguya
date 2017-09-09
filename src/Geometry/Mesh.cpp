@@ -157,7 +157,7 @@ bool objFileParser::parse(const char*            filename,
 	return true;
 }
 
-Mesh* createMesh(const std::string &filename, MeshType meshType)
+std::shared_ptr<Mesh> createMesh(const std::string &filename, MeshType meshType)
 {
 	std::vector<Point3f>  vertexBuffer;
 	std::vector<Point2f>  textureCoords;

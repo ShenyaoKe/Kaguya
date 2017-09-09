@@ -10,7 +10,6 @@ namespace Kaguya
 class Transform
 {
 public:
-
 	Transform()
 	{
 	}

@@ -6,6 +6,20 @@
 namespace Kaguya
 {
 
+struct ObjBuffers
+{
+	// Vertex Buffers
+	std::vector<Point3f>  vertexBuffer;
+	std::vector<Point2f>  uvBuffer;
+	std::vector<Normal3f> normBuffer;
+	// Index Buffers
+	std::vector<uint32_t> faceIndexBuffer;
+	std::vector<uint32_t> uvIndexBuffer;
+	std::vector<uint32_t> normIndexBuffer;
+	// Face Sides
+	std::vector<uint32_t> faceSizeBuffer;
+};
+
 class ObjLoader
 {
 private:
@@ -26,6 +40,8 @@ public:
 	static std::vector<std::shared_ptr<Primitive>> load(const std::string &filename);
 	static std::shared_ptr<TriangleMesh> loadTriangleMesh(const std::string &filename);
 
+	static bool loadRawBuffers(ObjBuffers &outBuffers, const std::string &filename);
+
 private:
 	index_t facetype(const char* str, int32_t* val);
 
@@ -37,11 +53,12 @@ private:
 
 	void finalizeAttributes();
 
-	Primitive* finalizeMesh();
-	TriangleMesh* finalizeTriangeMesh();
+	std::shared_ptr<Primitive> finalizeMesh();
+	std::shared_ptr<TriangleMesh> finalizeTriangeMesh();
 
 private:
 	std::FILE*                              fp;
+	// Vertex Buffers
 	std::vector<Point3f>                    vertexBuffer;
 	std::vector<Point2f>                    uvBuffer;
 	std::vector<Normal3f>                   normBuffer;

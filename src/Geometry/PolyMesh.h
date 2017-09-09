@@ -34,6 +34,7 @@ struct TessBuffer
 	size_t                 nPrimtives;
 	size_t                 nVertices;
 	size_t                 nTimeStep;
+	uint32_t               nGeomId;
 };
 
 class PolyMesh : public Mesh
@@ -61,17 +62,17 @@ public:
 
 	static size_t tessellatedCount(std::vector<uint32_t> &faceSizeBuffer, size_t faceSize);
 
-	static PolyMesh* createPolyMesh(std::vector<Point3f>             &vertexBuffer,
-									std::vector<uint32_t>            &indexBuffer,
-									std::vector<uint32_t>            &faceSizeBuffer,
-									std::shared_ptr<TextureAttribute> texAttri,
-									std::shared_ptr<NormalAttribute>  normAttri);
+	static std::shared_ptr<PolyMesh> createPolyMesh(std::vector<Point3f>             &vertexBuffer,
+													std::vector<uint32_t>            &indexBuffer,
+													std::vector<uint32_t>            &faceSizeBuffer,
+													std::shared_ptr<TextureAttribute> texAttri,
+													std::shared_ptr<NormalAttribute>  normAttri);
 
-	static TriangleMesh* createTriMesh(std::vector<Point3f>             &vertexBuffer,
-									   std::vector<uint32_t>            &indexBuffer,
-									   std::vector<uint32_t>            &faceSizeBuffer,
-									   std::shared_ptr<TextureAttribute> texAttri,
-									   std::shared_ptr<NormalAttribute>  normAttri);
+	static std::shared_ptr<TriangleMesh> createTriMesh(std::vector<Point3f>             &vertexBuffer,
+													   std::vector<uint32_t>            &indexBuffer,
+													   std::vector<uint32_t>            &faceSizeBuffer,
+													   std::shared_ptr<TextureAttribute> texAttri,
+													   std::shared_ptr<NormalAttribute>  normAttri);
 
 protected:
 	virtual void tessellate(std::vector<uint32_t> &indexBuffer,

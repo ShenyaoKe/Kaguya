@@ -1,6 +1,6 @@
 #include "Geometry/TriangleMesh.h"
 #include "Tracer/Ray.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 #include "Shading/Shader.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
@@ -74,13 +74,13 @@ void TriangleMesh::printInfo(const std::string &msg) const
 	}*/
 }
 
-bool TriangleMesh::intersect(const Ray &inRay, DifferentialGeometry* dg,
+bool TriangleMesh::intersect(const Ray &inRay, Intersection* isec,
 							 Float* tHit, Float* rayEpsilon) const
 {
 	return false;
 }
 
-void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) const
+void TriangleMesh::postIntersect(const Ray &inRay, Intersection* isec) const
 {
 	// TODO: Implement post-intersection method
 	uint32_t primID = inRay.primID;
@@ -88,12 +88,12 @@ void TriangleMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) con
 	uint32_t id2 = mIndexBuffer[primID * sTriFaceSize + 1];
 	uint32_t id3 = mIndexBuffer[primID * sTriFaceSize + 2];
 
-	dg->Ng = inRay.Ng;
-	dg->UV = { inRay.u, inRay.v };
-	Float s = dg->UV.x;
-	Float t = dg->UV.y;
+	isec->Ng = inRay.Ng;
+	isec->UV = { inRay.u, inRay.v };
+	Float s = isec->UV.x;
+	Float t = isec->UV.y;
 	Float w = 1.0 - s - t;
-	dg->P = mVertexBuffer[id1] * w
+	isec->P = mVertexBuffer[id1] * w
 		+ mVertexBuffer[id2] * s
 		+ mVertexBuffer[id3] * t;
 }
@@ -104,6 +104,7 @@ void TriangleMesh::getTessellated(TessBuffer &trait) const
 	// Setup time step
 	size_t timestep = 1;
 	trait.nTimeStep = timestep;
+	trait.nGeomId = getShapeID();
 
 	// Setup first vertex buffer
 	trait.nVertices = mVertexCount;
@@ -164,7 +165,7 @@ bool TriangleUtils::intersect(const Point3f &p0,
 	Vector3f areaVec = cross(v1, v2);
 	Vector3f normal = normalize(areaVec);
 
-	//ray triangle DifferentialGeometry length
+	//ray triangle Intersection length
 	Float rayt = dot(normal, (p0 - inRay.o)) / dot(normal, inRay.d);
 	if (rayt < inRay.tMin || rayt > inRay.tMax) return false;
 
@@ -251,13 +252,13 @@ void TriangleUtils::postIntersect(const Point3f &p0,
 								  const Point3f &p1,
 								  const Point3f &p2,
 								  const Ray &inRay,
-								  DifferentialGeometry* dg)
+								  Intersection* isec)
 {
 	Vector3f v1 = p1 - p0;
 	Vector3f v2 = p2 - p0;
 
 	// Compute dpdu, dpdv
-	// 
+	//
 #if 0
 	Vector3f dpdu, dpdv;
 	Float du1 = uv[1]->x - uv[0]->x;
@@ -267,20 +268,20 @@ void TriangleUtils::postIntersect(const Point3f &p0,
 	Float detUV = du1 * dv2 - dv1 * du2;
 	if (detUV == 0.0)
 	{
-		coordinateSystem(Vector3f(dg->Ng), &dg->dPdu, &dg->dPdv);
+		coordinateSystem(Vector3f(isec->Ng), &isec->dPdu, &isec->dPdv);
 	}
 	else
 	{
 		Float invDetUV = 1. / detUV;
-		dg->dPdu = (v1 * dv2 - v2 * dv1) * invDetUV;
-		dg->dPdv = (v2 * du1 - v1 * du2) * invDetUV;
+		isec->dPdu = (v1 * dv2 - v2 * dv1) * invDetUV;
+		isec->dPdv = (v2 * du1 - v1 * du2) * invDetUV;
 	}
 
 	// Interpolate Texture Coordinates
-	Float s = dg->UV.x;
-	Float t = dg->UV.y;
+	Float s = isec->UV.x;
+	Float t = isec->UV.y;
 	Float w = 1.0 - s - t;
-	dg->shading.ST = *uv[0] * w + *uv[1] * s + *uv[2] * t;
+	isec->shading.ST = *uv[0] * w + *uv[1] * s + *uv[2] * t;
 #endif
 }
 

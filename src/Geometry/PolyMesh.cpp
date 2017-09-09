@@ -122,51 +122,51 @@ size_t PolyMesh::tessellatedCount(std::vector<uint32_t> &faceSizeBuffer, size_t 
 	}
 }
 
-PolyMesh* PolyMesh::createPolyMesh(std::vector<Point3f>             &vertexBuffer,
-								   std::vector<uint32_t>            &indexBuffer,
-								   std::vector<uint32_t>            &faceSizeBuffer,
-								   std::shared_ptr<TextureAttribute> texAttri,
-								   std::shared_ptr<NormalAttribute>  normAttri)
+std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>             &vertexBuffer,
+												   std::vector<uint32_t>            &indexBuffer,
+												   std::vector<uint32_t>            &faceSizeBuffer,
+												   std::shared_ptr<TextureAttribute> texAttri,
+												   std::shared_ptr<NormalAttribute>  normAttri)
 {
 	size_t triCount = tessellatedCount(faceSizeBuffer, TriangleMesh::getFaceSize());
 	size_t quadCount = tessellatedCount(faceSizeBuffer, QuadMesh::getFaceSize());
 
 	if (triCount * 3 < quadCount * 4)
 	{
-		return new TriangleMesh(vertexBuffer,
-								indexBuffer,
-								faceSizeBuffer,
-								triCount,
-								texAttri,
-								normAttri,
-								triCount == faceSizeBuffer.size());
+		return std::make_shared<TriangleMesh>(vertexBuffer,
+											  indexBuffer,
+											  faceSizeBuffer,
+											  triCount,
+											  texAttri,
+											  normAttri,
+											  triCount == faceSizeBuffer.size());
 	}
 	else
 	{
-		return new QuadMesh(vertexBuffer,
-							indexBuffer,
-							faceSizeBuffer,
-							quadCount,
-							texAttri,
-							normAttri,
-							quadCount == faceSizeBuffer.size());
+		return std::make_shared<QuadMesh>(vertexBuffer,
+										  indexBuffer,
+										  faceSizeBuffer,
+										  quadCount,
+										  texAttri,
+										  normAttri,
+										  quadCount == faceSizeBuffer.size());
 	}
 }
 
-TriangleMesh* PolyMesh::createTriMesh(std::vector<Point3f>             &vertexBuffer,
-									  std::vector<uint32_t>            &indexBuffer,
-									  std::vector<uint32_t>            &faceSizeBuffer,
-									  std::shared_ptr<TextureAttribute> texAttri,
-									  std::shared_ptr<NormalAttribute>  normAttri)
+std::shared_ptr<TriangleMesh> PolyMesh::createTriMesh(std::vector<Point3f>             &vertexBuffer,
+													  std::vector<uint32_t>            &indexBuffer,
+													  std::vector<uint32_t>            &faceSizeBuffer,
+													  std::shared_ptr<TextureAttribute> texAttri,
+													  std::shared_ptr<NormalAttribute>  normAttri)
 {
 	size_t triCount = tessellatedCount(faceSizeBuffer, TriangleMesh::getFaceSize());
 
-	return new TriangleMesh(vertexBuffer,
-							indexBuffer,
-							faceSizeBuffer,
-							triCount,
-							texAttri,
-							normAttri,
-							triCount == faceSizeBuffer.size());
+	return std::make_shared<TriangleMesh>(vertexBuffer,
+										  indexBuffer,
+										  faceSizeBuffer,
+										  triCount,
+										  texAttri,
+										  normAttri,
+										  triCount == faceSizeBuffer.size());
 }
 }

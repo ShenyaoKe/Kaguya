@@ -2,7 +2,7 @@
 
 #include "Geometry/PolyMesh.h"
 #include "Tracer/Ray.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
 #include "Shading/Shader.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Texture.h"
@@ -68,13 +68,13 @@ void QuadMesh::printInfo(const std::string &msg) const
 	}
 }
 
-bool QuadMesh::intersect(const Ray &inRay, DifferentialGeometry* dg,
+bool QuadMesh::intersect(const Ray &inRay, Intersection* isec,
 						 Float* tHit, Float* rayEpsilon) const
 {
 	return false;
 }
 
-void QuadMesh::postIntersect(const Ray &inRay, DifferentialGeometry* dg) const
+void QuadMesh::postIntersect(const Ray &inRay, Intersection* isec) const
 {
 	// TODO: Implement post-intersection method
 }
@@ -85,6 +85,7 @@ void QuadMesh::getTessellated(TessBuffer &trait) const
 	// Setup time step
 	size_t timestep = 1;
 	trait.nTimeStep = timestep;
+	trait.nGeomId = getShapeID();
 
 	// Setup first vertex buffer
 	trait.nVertices = mVertexBuffer.size();

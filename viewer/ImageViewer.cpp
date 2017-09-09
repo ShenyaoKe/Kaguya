@@ -93,7 +93,6 @@ ImageViewerPanel::ImageViewerPanel(QWidget *parent)
 
 ImageViewerPanel::~ImageViewerPanel()
 {
-
 }
 
 void ImageViewerPanel::setImageResolution(uint32_t w, uint32_t h)
@@ -135,13 +134,13 @@ void ImageViewerPanel::updateTexture()
 		default:
 			break;
 		}
-
 	}
 	else
 	{
 		glTextureStorage2D(tex, 1, GL_RGBA32F, 0, 0);
 		glTextureSubImage2D(tex, 0, 0, 0, 0, 0, GL_RGBA, GL_FLOAT, 0);
 	}
+
 	doneCurrent();
 }
 
@@ -163,7 +162,7 @@ void ImageViewerPanel::initializeGL()
 		glNamedBufferData(vbo, sizeof(frame), frame, GL_STATIC_DRAW);
 
 		// IBO
-		GLuint indices[] = { 0,1,2,2,3,0 };
+		GLuint indices[] = { 0, 1, 2, 2, 3, 0 };
 		glCreateBuffers(1, &ibo);
 		glNamedBufferData(ibo, sizeof(indices), indices, GL_STATIC_DRAW);
 
@@ -193,8 +192,6 @@ void ImageViewerPanel::initializeGL()
 		}
 		texHandle = glGetTextureHandleARB(tex);
 		glMakeTextureHandleResidentARB(texHandle);
-
-
 	}
 	else
 	{
@@ -212,13 +209,12 @@ void ImageViewerPanel::initializeGL()
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	glClearColor(0.2, 0.2, 0.2, 1.0);
 }
 
 void ImageViewerPanel::paintGL()
 {
 	makeCurrent();
-
-	glClearColor(0.2, 0.2, 0.2, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

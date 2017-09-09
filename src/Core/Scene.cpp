@@ -123,7 +123,8 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
 										  RTC_GEOMETRY_STATIC,
 										  buffer.nPrimtives, //!< number of quads
 										  buffer.nVertices,  //!< number of vertices
-										  buffer.nTimeStep); //!< number of motion blur time steps
+										  buffer.nTimeStep,  //!< number of motion blur time steps
+										  buffer.nGeomId);
 
 	rtcSetBuffer(mSceneContext, geomID, RTC_VERTEX_BUFFER0,
 				 buffer.vertTraits[0].data,

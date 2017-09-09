@@ -67,7 +67,11 @@ Scene* SceneLoader::load(const std::string &filename)
 	{
 		for (auto &prim : loader.mDocument["primitives"].GetArray())
 		{
-			primArray.push_back(loader.loadPrimitive(prim));
+			std::shared_ptr<Primitive> retPrim = loader.loadPrimitive(prim);
+			if (retPrim != nullptr)
+			{
+				primArray.emplace_back(retPrim);
+			}
 		}
 	}
 	return new Scene(camPtr, primArray);
@@ -81,11 +85,11 @@ std::shared_ptr<Camera> SceneLoader::loadCamera(const rapidjson::Value &jsonCame
 		auto typeStr = jsonCamera["type"].GetString();
 		if (!strcmp(typeStr, "perspective"))
 		{
-			retCamPtr.reset(new PerspectiveCamera);
+			retCamPtr = std::make_shared<PerspectiveCamera>();
 		}
 		else if (!strcmp(typeStr, "orthographic"))
 		{
-			retCamPtr.reset(new OrthographicCamera);
+			retCamPtr = std::make_shared<OrthographicCamera>();
 			if (jsonCamera.HasMember("ortho_scalor"))
 			{
 				std::static_pointer_cast<OrthographicCamera>(retCamPtr)->setScalor(
@@ -157,7 +161,7 @@ std::shared_ptr<Primitive> SceneLoader::loadPrimitive(const rapidjson::Value &js
 	std::shared_ptr<Primitive> retPrimPtr;
 	if (jsonCamera.HasMember("type"))
 	{
-		auto typeStr = jsonCamera["type"].GetString();
+		const char* typeStr = jsonCamera["type"].GetString();
 		if (!strcmp(typeStr, "mesh"))
 		{
 			MeshType meshType = MeshType::POLYGONAL_MESH;
@@ -175,8 +179,8 @@ std::shared_ptr<Primitive> SceneLoader::loadPrimitive(const rapidjson::Value &js
 			}
 			if (jsonCamera.HasMember("file"))
 			{
-				retPrimPtr.reset(createMesh(mFilePath + jsonCamera["file"].GetString(),
-								 meshType));
+				retPrimPtr = createMesh(mFilePath + jsonCamera["file"].GetString(),
+										meshType);
 			}
 		}
 		if (!strcmp(typeStr, "curves"))

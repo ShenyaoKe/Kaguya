@@ -18,8 +18,8 @@ public:
 	virtual ~Mesh() = 0;
 };
 
-Mesh* createMesh(const std::string &filename,
-				 MeshType meshType = MeshType::POLYGONAL_MESH);
+std::shared_ptr<Mesh> createMesh(const std::string &filename,
+								 MeshType meshType = MeshType::POLYGONAL_MESH);
 
 namespace objFileParser
 {
