@@ -111,6 +111,7 @@
     <ClInclude Include="..\src\Core\EmbreeUtils.h" />
     <ClInclude Include="..\src\Core\error.h" />
     <ClInclude Include="..\src\Core\ProgressBar.h" />
+    <ClInclude Include="..\src\Core\RenderPrimitive.h" />
     <ClInclude Include="..\src\Core\Scene.h" />
     <ClInclude Include="..\src\core\Utils.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="..\src\Core\EmbreeUtils.cpp" />
     <ClCompile Include="..\src\Core\error.cpp" />
     <ClCompile Include="..\src\Core\MemoryControl.cpp" />
+    <ClCompile Include="..\src\Core\RenderPrimitive.cpp" />
     <ClCompile Include="..\src\Core\Scene.cpp" />
     <ClCompile Include="..\src\Geometry\BezierCurve.cpp" />
     <ClCompile Include="..\src\Geometry\Curve.cpp" />

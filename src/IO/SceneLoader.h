@@ -13,12 +13,11 @@ public:
 	SceneLoader(const std::string &filename);
 	~SceneLoader();
 
-public:
 	static Scene* load(const std::string &filename);
 
 private:
 	std::shared_ptr<Camera> loadCamera(const rapidjson::Value &jsonCamera) const;
-	std::shared_ptr<Geometry> loadPrimitive(const rapidjson::Value &jsonCamera) const;
+	std::shared_ptr<Geometry> loadGeometry(const rapidjson::Value &jsonCamera) const;
 
 private:
 	rapidjson::Document mDocument;

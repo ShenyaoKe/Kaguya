@@ -1,8 +1,7 @@
 #pragma once
 #include <embree2/rtcore.h>
 
-#include "Core/Kaguya.h"
-#include "Geometry/Geometry.h"
+#include "Core/RenderPrimitive.h"
 
 namespace Kaguya
 {
@@ -10,20 +9,19 @@ namespace Kaguya
 class Scene
 {
 public:
+	Scene();
 	Scene(std::shared_ptr<Camera> camera,
-		  std::vector<std::shared_ptr<Geometry>> prims
-		  = std::vector<std::shared_ptr<Geometry>>(),
-		  std::vector<std::shared_ptr<Light>> lights
-		  = std::vector<std::shared_ptr<Light>>());
+		  std::vector<std::shared_ptr<RenderPrimitive>> prims,
+		  std::vector<std::shared_ptr<Light>> lights);
 	~Scene();
 
 	void commitScene();
 
-	void addPrimitive(std::shared_ptr<Geometry> &prim)
+	/*void addPrimitive(std::shared_ptr<Geometry> &prim)
 	{
 		mPrims.push_back(prim);
 		buildGeometry(prim.get());
-	}
+	}*/
 
 	void addLight(std::shared_ptr<Light> &light)
 	{
@@ -64,11 +62,11 @@ private:
 	void buildInstance(const Geometry* prim);
 
 private:
-	RTCScene                                mSceneContext;
+	RTCScene                                       mSceneContext;
 
-	std::shared_ptr<Camera>                 mCamera;
-	std::vector<std::shared_ptr<Geometry>>  mPrims;
-	std::vector<std::shared_ptr<Light>>     mLights;
+	std::shared_ptr<Camera>                        mCamera;
+	std::vector<std::shared_ptr<RenderPrimitive>>  mPrims;
+	std::vector<std::shared_ptr<Light>>            mLights;
 };
 
 }

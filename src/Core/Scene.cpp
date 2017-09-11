@@ -11,8 +11,15 @@
 namespace Kaguya
 {
 
+Scene::Scene()
+	: mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
+									  RTC_SCENE_STATIC,
+									  RTC_INTERSECT1))
+{
+}
+
 Scene::Scene(std::shared_ptr<Camera> camera,
-			 std::vector<std::shared_ptr<Geometry>> prims,
+			 std::vector<std::shared_ptr<RenderPrimitive>> prims,
 			 std::vector<std::shared_ptr<Light>> lights)
 	: mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
 					RTC_SCENE_STATIC,
@@ -21,9 +28,9 @@ Scene::Scene(std::shared_ptr<Camera> camera,
 	, mPrims(std::move(prims))
 	, mLights(std::move(lights))
 {
-	for (int i = 0; i < mPrims.size(); i++)
+	for (auto& prim : mPrims)
 	{
-		buildGeometry(mPrims[i].get());
+		buildGeometry(prim->getGeometry());
 	}
 }
 
@@ -52,7 +59,7 @@ bool Scene::intersect(Ray &inRay,
 	rtcIntersect(mSceneContext, *(static_cast<RTCRay*>((void*)&inRay)));
 	if (inRay.geomID != RTC_INVALID_GEOMETRY_ID)
 	{
-		isec->shape = mPrims[inRay.geomID].get();
+		isec->shape = mPrims[inRay.geomID]->getGeometry();
 		isec->shape->postIntersect(inRay, isec);
 		return true;
 	}
@@ -63,7 +70,7 @@ bool Scene::intersect(Ray &inRay,
 RenderBufferTrait Scene::getRenderBuffer(uint32_t geomID) const
 {
 	RenderBufferTrait ret;
-	mPrims.at(geomID)->getRenderBuffer(&ret);
+	mPrims.at(geomID)->getGeometry()->getRenderBuffer(&ret);
 	return ret;
 }
 

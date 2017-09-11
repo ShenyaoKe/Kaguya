@@ -273,6 +273,9 @@
     <ClInclude Include="..\src\Geometry\Geometry.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\RenderPrimitive.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -412,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Geometry\Geometry.cpp">
       <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Core\RenderPrimitive.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -28,11 +28,8 @@ SceneLoader::SceneLoader(const std::string &filename)
 	for (size_t i = 0; i < filename.size(); i++)
 	{
 		char curChar = *(filename.end() - i - 1);
-#ifdef _WIN32// || _WIN64
+
 		if (curChar == '/' || curChar == '\\')
-#else
-		if (curChar == '/')
-#endif
 		{
 			mFilePath = std::string(filename.begin(), filename.end() - i);
 			break;
@@ -50,7 +47,8 @@ Scene* SceneLoader::load(const std::string &filename)
 {
 	SceneLoader loader(filename);
 	std::shared_ptr<Camera> camPtr;
-	std::vector<std::shared_ptr<Geometry>> primArray;
+	std::vector<std::shared_ptr<RenderPrimitive>> primArray;
+	std::vector<std::shared_ptr<Light>> lightArray;
 	if (loader.mDocument.HasMember("camera"))
 	{
 		auto &jsonCamera = loader.mDocument.FindMember("camera")->value;
@@ -63,18 +61,22 @@ Scene* SceneLoader::load(const std::string &filename)
 			// get all cameras
 		}
 	}
+
 	if (loader.mDocument.HasMember("primitives"))
 	{
 		for (auto &prim : loader.mDocument["primitives"].GetArray())
 		{
-			std::shared_ptr<Geometry> retPrim = loader.loadPrimitive(prim);
+			std::shared_ptr<Geometry> retPrim = loader.loadGeometry(prim);
+			std::shared_ptr<Light> geomEmission;
 			if (retPrim != nullptr)
 			{
-				primArray.emplace_back(retPrim);
+				primArray.emplace_back(std::make_shared<RenderPrimitive>(retPrim,
+																		 geomEmission));
 			}
 		}
 	}
-	return new Scene(camPtr, primArray);
+
+	return new Scene(camPtr, primArray, lightArray);
 }
 
 std::shared_ptr<Camera> SceneLoader::loadCamera(const rapidjson::Value &jsonCamera) const
@@ -156,7 +158,7 @@ std::shared_ptr<Camera> SceneLoader::loadCamera(const rapidjson::Value &jsonCame
 	return retCamPtr;
 }
 
-std::shared_ptr<Geometry> SceneLoader::loadPrimitive(const rapidjson::Value &jsonCamera) const
+std::shared_ptr<Geometry> SceneLoader::loadGeometry(const rapidjson::Value &jsonCamera) const
 {
 	std::shared_ptr<Geometry> retPrimPtr;
 	if (jsonCamera.HasMember("type"))
@@ -185,6 +187,7 @@ std::shared_ptr<Geometry> SceneLoader::loadPrimitive(const rapidjson::Value &jso
 		}
 		if (!strcmp(typeStr, "curves"))
 		{
+			// TODO
 		}
 	}
 	return retPrimPtr;

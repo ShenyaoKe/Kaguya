@@ -1,4 +1,5 @@
 #include "OGLViewer.h"
+
 #include "Geometry/Mesh.h"
 #include "IO/ObjLoader.h"
 #include "IO/SceneLoader.h"
