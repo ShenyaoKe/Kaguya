@@ -86,7 +86,7 @@ void RenderBuffer::setBuffer(uint32_t x, uint32_t y,
 
 	Vec2ToFloats(isec.UV, uv, id2);
 	z[index] = static_cast<float>(zdepth);
-	id[index] = isec.shape->getShapeID();
+	id[index] = isec.shape->getGeomID();
 }
 
 }

@@ -121,14 +121,14 @@ public:
 
 	virtual void getRenderBuffer(RenderBufferTrait* trait) const = 0;
 
-	uint32_t getShapeID() const
+	uint32_t getGeomID() const
 	{
 		return mGeomID;
 	}
 
-	void setName(const std::string &primName)
+	void setName(const std::string &geomName)
 	{
-		mPrimName = primName;
+		mGeomName = geomName;
 	}
 
 	void setTransform(const Transform* xform)
@@ -150,7 +150,7 @@ protected:
 	static uint32_t         sNextGeomID;
 	const uint32_t          mGeomID;
 
-	std::string             mPrimName;
+	std::string             mGeomName;
 
 	const Transform*        mObjectToWorld;
 	Bounds3f                mObjBound;

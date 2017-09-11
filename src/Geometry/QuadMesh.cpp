@@ -85,7 +85,7 @@ void QuadMesh::getTessellated(TessBuffer &trait) const
 	// Setup time step
 	size_t timestep = 1;
 	trait.nTimeStep = timestep;
-	trait.nGeomId = getShapeID();
+	trait.nGeomId = getGeomID();
 
 	// Setup first vertex buffer
 	trait.nVertices = mVertexBuffer.size();
