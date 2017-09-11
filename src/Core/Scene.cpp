@@ -12,7 +12,7 @@ namespace Kaguya
 {
 
 Scene::Scene(std::shared_ptr<Camera> camera,
-			 std::vector<std::shared_ptr<Primitive>> prims,
+			 std::vector<std::shared_ptr<Geometry>> prims,
 			 std::vector<std::shared_ptr<Light>> lights)
 	: mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
 					RTC_SCENE_STATIC,
@@ -67,7 +67,7 @@ RenderBufferTrait Scene::getRenderBuffer(uint32_t geomID) const
 	return ret;
 }
 
-void Scene::buildGeometry(const Primitive* prim)
+void Scene::buildGeometry(const Geometry* prim)
 {
 	if (prim == nullptr)
 	{
@@ -75,27 +75,27 @@ void Scene::buildGeometry(const Primitive* prim)
 	}
 	switch (prim->primitiveType())
 	{
-	case PrimitiveType::PARAMATRIC_SURFACE:
+	case GeometryType::PARAMATRIC_SURFACE:
 	{
 		buildUserGeomtry(prim);
 		break;
 	}
-	case PrimitiveType::POLYGONAL_MESH:
+	case GeometryType::POLYGONAL_MESH:
 	{
 		buildPolygonalMesh(static_cast<const PolyMesh*>(prim));
 		break;
 	}
-	case PrimitiveType::SUBDIVISION_MESH:
+	case GeometryType::SUBDIVISION_MESH:
 	{
 		buildSubdivisionMesh(static_cast<const SubdMesh*>(prim));
 		break;
 	}
-	case PrimitiveType::CURVE:
+	case GeometryType::CURVE:
 	{
 		buildCurve(static_cast<const Curve*>(prim));
 		break;
 	}
-	case PrimitiveType::INSTANCE:
+	case GeometryType::INSTANCE:
 	{
 		buildInstance(prim);
 		break;
@@ -108,7 +108,7 @@ void Scene::buildGeometry(const Primitive* prim)
 	}
 }
 
-void Scene::buildUserGeomtry(const Primitive* prim)
+void Scene::buildUserGeomtry(const Geometry* prim)
 {
 	// TODO
 }
@@ -153,7 +153,7 @@ void Scene::buildCurve(const Curve* prim)
 	// TODO
 }
 
-void Scene::buildInstance(const Primitive* prim)
+void Scene::buildInstance(const Geometry* prim)
 {
 	// TODO
 }

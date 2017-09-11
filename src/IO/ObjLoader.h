@@ -37,7 +37,7 @@ private:
 	~ObjLoader();
 
 public:
-	static std::vector<std::shared_ptr<Primitive>> load(const std::string &filename);
+	static std::vector<std::shared_ptr<Geometry>> load(const std::string &filename);
 	static std::shared_ptr<TriangleMesh> loadTriangleMesh(const std::string &filename);
 
 	static bool loadRawBuffers(ObjBuffers &outBuffers, const std::string &filename);
@@ -53,7 +53,7 @@ private:
 
 	void finalizeAttributes();
 
-	std::shared_ptr<Primitive> finalizeMesh();
+	std::shared_ptr<Geometry> finalizeMesh();
 	std::shared_ptr<TriangleMesh> finalizeTriangeMesh();
 
 private:
@@ -81,7 +81,7 @@ private:
 	std::shared_ptr<TextureAttribute>       texAttr;
 	std::shared_ptr<NormalAttribute>        normAttr;
 
-	std::vector<std::shared_ptr<Primitive>> mPrims;
+	std::vector<std::shared_ptr<Geometry>> mPrims;
 
 	std::string                             mFilename;
 };

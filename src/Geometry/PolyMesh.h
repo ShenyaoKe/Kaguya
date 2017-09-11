@@ -49,9 +49,9 @@ public:
 			 std::shared_ptr<NormalAttribute>  normAttri);
 	~PolyMesh();
 
-	PrimitiveType primitiveType() const override
+	GeometryType primitiveType() const override
 	{
-		return PrimitiveType::POLYGONAL_MESH;
+		return GeometryType::POLYGONAL_MESH;
 	}
 
 	virtual PolyMeshType polyMeshType() const = 0;

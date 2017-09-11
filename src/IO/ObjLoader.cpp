@@ -1,5 +1,5 @@
 #include "ObjLoader.h"
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 #include "Geometry/PolyMesh.h"
 #include "Geometry/TriangleMesh.h"
 #include "Core/Utils.h"
@@ -250,7 +250,7 @@ void ObjLoader::finalizeAttributes()
 		std::make_shared<NormalAttribute>();
 }
 
-std::shared_ptr<Primitive> ObjLoader::finalizeMesh()
+std::shared_ptr<Geometry> ObjLoader::finalizeMesh()
 {
 	return PolyMesh::createPolyMesh(std::vector<Point3f>(vertexBuffer.begin() + vertRange[0],
 														 vertexBuffer.begin() + vertRange[1]),
@@ -270,7 +270,7 @@ std::shared_ptr<TriangleMesh> ObjLoader::finalizeTriangeMesh()
 								   normAttr);
 }
 
-std::vector<std::shared_ptr<Primitive>> ObjLoader::load(const std::string &filename)
+std::vector<std::shared_ptr<Geometry>> ObjLoader::load(const std::string &filename)
 {
 	ObjLoader loader(filename);
 	if (!loader.faceIndexBuffer.empty())

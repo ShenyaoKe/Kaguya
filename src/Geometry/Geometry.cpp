@@ -1,4 +1,4 @@
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 #include "Tracer/Ray.h"
 #include "Shading/TextureMapping.h"
 #include "Shading/Shader.h"
@@ -10,14 +10,14 @@
 namespace Kaguya
 {
 
-uint32_t Primitive::nextshapeID = 0;
+uint32_t Geometry::sNextGeomID = 0;
 
-bool Primitive::intersectP(const Ray &inRay) const
+bool Geometry::intersectP(const Ray &inRay) const
 {
 	return mObjBound.intersectP(inRay);
 }
 
-void Primitive::printInfo(const std::string &msg) const
+void Geometry::printInfo(const std::string &msg) const
 {
 	std::cout << msg << std::endl;
 }

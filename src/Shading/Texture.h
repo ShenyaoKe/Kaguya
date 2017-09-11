@@ -2,7 +2,7 @@
 
 //#include "Core/rtdef.h"
 #include "Image/ImageData.h"
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 #include "Shading/Noise.h"
 #include "Geometry/Intersection.h"
 

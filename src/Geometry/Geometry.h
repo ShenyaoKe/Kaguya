@@ -20,7 +20,7 @@ const Float reCE = 5e-8;//ray epsilon coefficient
 const Float FloatEps = std::numeric_limits<Float>::epsilon();
 
 /************************************************************************/
-/* Basic Shape Function Definition                                      */
+/* Basic Geometry Class Definition                                      */
 /************************************************************************/
 namespace Kaguya
 {
@@ -53,6 +53,7 @@ enum class GPURenderType : uint8_t
 	TRIANGLE,
 	QUAD,
 };
+
 // Used for GPU render
 struct RenderBufferTrait
 {
@@ -65,7 +66,7 @@ struct RenderBufferTrait
 	GPURenderType           renderType;
 };
 
-enum class PrimitiveType
+enum class GeometryType
 {
 	PARAMATRIC_SURFACE,
 	POLYGONAL_MESH,
@@ -76,15 +77,15 @@ enum class PrimitiveType
 
 static const uint32_t sInvalidGeomID = (uint32_t)(-1);
 
-class Primitive
+class Geometry
 {
 public:
-	Primitive(const Transform* o2w = nullptr)
-		: shapeID(nextshapeID++)
+	Geometry(const Transform* o2w = nullptr)
+		: mGeomID(sNextGeomID++)
 		, mObjectToWorld(o2w)
 	{
 	}
-	virtual ~Primitive() {}
+	virtual ~Geometry() {}
 
 	virtual void bounding() = 0;
 
@@ -116,13 +117,13 @@ public:
 
 	virtual void printInfo(const std::string &msg = "") const;
 
-	virtual PrimitiveType primitiveType() const = 0;
+	virtual GeometryType primitiveType() const = 0;
 
 	virtual void getRenderBuffer(RenderBufferTrait* trait) const = 0;
 
 	uint32_t getShapeID() const
 	{
-		return shapeID;
+		return mGeomID;
 	}
 
 	void setName(const std::string &primName)
@@ -146,8 +147,8 @@ public:
 	}
 
 protected:
-	static uint32_t         nextshapeID;
-	const uint32_t          shapeID;
+	static uint32_t         sNextGeomID;
+	const uint32_t          mGeomID;
 
 	std::string             mPrimName;
 

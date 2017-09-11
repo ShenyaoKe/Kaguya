@@ -130,7 +130,7 @@ class Light;
 
 struct KdAccelNode;
 class KdTreeAccel;
-class Primitive;
+class Geometry;
 class Ray;
 class Intersection;
 class PolyMesh;

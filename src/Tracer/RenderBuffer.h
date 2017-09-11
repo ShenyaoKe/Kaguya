@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Kaguya.h"
 #include "Math/Vector.h"
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 #include "Geometry/Intersection.h"
 
 namespace Kaguya

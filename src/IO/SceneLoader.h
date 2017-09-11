@@ -18,7 +18,7 @@ public:
 
 private:
 	std::shared_ptr<Camera> loadCamera(const rapidjson::Value &jsonCamera) const;
-	std::shared_ptr<Primitive> loadPrimitive(const rapidjson::Value &jsonCamera) const;
+	std::shared_ptr<Geometry> loadPrimitive(const rapidjson::Value &jsonCamera) const;
 
 private:
 	rapidjson::Document mDocument;

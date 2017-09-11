@@ -10,9 +10,9 @@ public:
 	SubdMesh();
 	~SubdMesh();
 
-	PrimitiveType primitiveType() const override
+	GeometryType primitiveType() const override
 	{
-		return PrimitiveType::SUBDIVISION_MESH;
+		return GeometryType::SUBDIVISION_MESH;
 	}
 };
 

@@ -1,5 +1,5 @@
 #include "Tracer/Ray.h"
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 
 namespace Kaguya
 {

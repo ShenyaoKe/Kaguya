@@ -1,5 +1,5 @@
 #pragma once
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 
 namespace Kaguya
 {
@@ -11,7 +11,7 @@ enum class MeshType
 	SUBDIVISION_MESH,
 };
 
-class Mesh : public Primitive
+class Mesh : public Geometry
 {
 public:
 	Mesh();

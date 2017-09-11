@@ -7,7 +7,7 @@ static int leafCount(0);
 
 char axisChar[4] = { 'X', 'Y', 'Z', 'L' };
 
-KdTreeAccel::KdTreeAccel(const std::vector<Primitive*> &prims,
+KdTreeAccel::KdTreeAccel(const std::vector<Geometry*> &prims,
 						 int md, int mp, Float eb)
 	: maxDepth(md), maxPrims(mp), emptyBonus(eb)
 {

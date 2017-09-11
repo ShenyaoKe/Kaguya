@@ -50,7 +50,7 @@ Scene* SceneLoader::load(const std::string &filename)
 {
 	SceneLoader loader(filename);
 	std::shared_ptr<Camera> camPtr;
-	std::vector<std::shared_ptr<Primitive>> primArray;
+	std::vector<std::shared_ptr<Geometry>> primArray;
 	if (loader.mDocument.HasMember("camera"))
 	{
 		auto &jsonCamera = loader.mDocument.FindMember("camera")->value;
@@ -67,7 +67,7 @@ Scene* SceneLoader::load(const std::string &filename)
 	{
 		for (auto &prim : loader.mDocument["primitives"].GetArray())
 		{
-			std::shared_ptr<Primitive> retPrim = loader.loadPrimitive(prim);
+			std::shared_ptr<Geometry> retPrim = loader.loadPrimitive(prim);
 			if (retPrim != nullptr)
 			{
 				primArray.emplace_back(retPrim);
@@ -156,9 +156,9 @@ std::shared_ptr<Camera> SceneLoader::loadCamera(const rapidjson::Value &jsonCame
 	return retCamPtr;
 }
 
-std::shared_ptr<Primitive> SceneLoader::loadPrimitive(const rapidjson::Value &jsonCamera) const
+std::shared_ptr<Geometry> SceneLoader::loadPrimitive(const rapidjson::Value &jsonCamera) const
 {
-	std::shared_ptr<Primitive> retPrimPtr;
+	std::shared_ptr<Geometry> retPrimPtr;
 	if (jsonCamera.HasMember("type"))
 	{
 		const char* typeStr = jsonCamera["type"].GetString();

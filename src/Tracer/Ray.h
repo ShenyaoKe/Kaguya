@@ -29,10 +29,10 @@ public:
 	Point3f o;// Origin point position
 	KAGUYA_PADDING_BYTE(4)
 
-		Vector3f d;// Ray Direction
+	Vector3f d;// Ray Direction
 	KAGUYA_PADDING_BYTE(4)
 
-		mutable Float tMin;
+	mutable Float tMin;
 	mutable Float tMax;
 
 	Float time;
@@ -42,8 +42,8 @@ public:
 	Normal3f Ng;
 	KAGUYA_PADDING_BYTE(4)
 
-		// Barycentric coordinates of intersection
-		mutable Float u;
+	// Barycentric coordinates of intersection
+	mutable Float u;
 	mutable Float v;
 
 	// Geometry ID

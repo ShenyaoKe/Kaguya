@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Accel/Bounds.h"
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 #include "Geometry/Intersection.h"
 
 namespace Kaguya
@@ -58,10 +58,11 @@ struct KdAccelNode//Node class
 
 	void printInfo() const;
 };
+
 class KdTreeAccel//Tree class
 {
 public:
-	KdTreeAccel(const std::vector<Primitive*> &prims,
+	KdTreeAccel(const std::vector<Geometry*> &prims,
 				int md = -1, int mp = 3, Float eb = 0.5);
 	~KdTreeAccel();
 	bool intersectP(const Ray &inRay) const;
@@ -90,7 +91,7 @@ private:
 	//int isectCost, traversalCost,
 	int maxDepth, maxPrims;
 	Float emptyBonus;
-	std::vector<Primitive*> primitives;
+	std::vector<Geometry*> primitives;
 	KdAccelNode* root;
 	Bounds3f treeBound;
 

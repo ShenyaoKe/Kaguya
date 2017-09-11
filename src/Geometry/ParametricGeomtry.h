@@ -1,21 +1,21 @@
 #pragma once
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 
 namespace Kaguya
 {
 
-class ParametricGeomtry : public Primitive
+class ParametricGeomtry : public Geometry
 {
 public:
 	ParametricGeomtry(const Transform* o2w = nullptr)
-		: Primitive(o2w)
+		: Geometry(o2w)
 	{
 	}
 	~ParametricGeomtry() {}
 
-	PrimitiveType primitiveType() const override
+	GeometryType primitiveType() const override
 	{
-		return PrimitiveType::PARAMATRIC_SURFACE;
+		return GeometryType::PARAMATRIC_SURFACE;
 	}
 
 	void getRenderBuffer(RenderBufferTrait* trait) const override;

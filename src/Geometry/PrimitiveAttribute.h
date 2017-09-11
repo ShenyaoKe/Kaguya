@@ -8,7 +8,7 @@ enum class AttributeType : uint8_t
 {
 	UNDEFINED,
 	CONSTANT,// all vertex the same
-	UNIFORM,// each face has the same 
+	UNIFORM,// each face has the same
 	VERTEX_VARYING,// varies in each vertex
 	FACE_VARYING,// varies in each face
 };

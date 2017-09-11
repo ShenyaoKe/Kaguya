@@ -246,9 +246,6 @@
     <ClInclude Include="..\src\Core\EmbreeUtils.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Geometry\Primitive.h">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Geometry\PrimitiveAttribute.h">
       <Filter>Header Files\geometry\polygonal</Filter>
     </ClInclude>
@@ -272,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Core\ProgressBar.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Geometry\Geometry.h">
+      <Filter>Header Files\geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -389,9 +389,6 @@
     <ClCompile Include="..\src\Core\EmbreeUtils.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Geometry\Primitive.cpp">
-      <Filter>Source Files\geometry</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp">
       <Filter>Source Files\geometry\polygonal</Filter>
     </ClCompile>
@@ -412,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Light\Light.cpp">
       <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Geometry\Geometry.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

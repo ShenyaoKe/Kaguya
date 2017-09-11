@@ -129,7 +129,7 @@
     <ClInclude Include="..\src\Geometry\TriangleMesh.h" />
     <ClInclude Include="..\src\Geometry\Paraboloid.h" />
     <ClInclude Include="..\src\Geometry\Plane.h" />
-    <ClInclude Include="..\src\Geometry\Primitive.h" />
+    <ClInclude Include="..\src\Geometry\Geometry.h" />
     <ClInclude Include="..\src\Geometry\Sphere.h" />
     <ClInclude Include="..\src\Geometry\Torus.h" />
     <ClInclude Include="..\src\Image\ColorData.h" />
@@ -179,7 +179,7 @@
     <ClCompile Include="..\src\Geometry\PrimitiveAttribute.cpp" />
     <ClCompile Include="..\src\Geometry\PolyMesh.cpp" />
     <ClCompile Include="..\src\Geometry\QuadMesh.cpp" />
-    <ClCompile Include="..\src\Geometry\Primitive.cpp" />
+    <ClCompile Include="..\src\Geometry\Geometry.cpp" />
     <ClCompile Include="..\src\Geometry\SubdMesh.cpp" />
     <ClCompile Include="..\src\Geometry\TriangleMesh.cpp" />
     <ClCompile Include="..\src\Geometry\Ellipsoid.cpp" />

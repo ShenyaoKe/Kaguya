@@ -1,10 +1,10 @@
 #pragma once
-#include "Geometry/Primitive.h"
+#include "Geometry/Geometry.h"
 
 namespace Kaguya
 {
 
-class Curve : public Primitive
+class Curve : public Geometry
 {
 public:
 	Curve();
