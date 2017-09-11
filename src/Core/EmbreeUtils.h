@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Kaguya.h"
 #include "Tracer/Ray.h"
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 
 #include <embree2/rtcore.h>
 #include <embree2/rtcore_ray.h>

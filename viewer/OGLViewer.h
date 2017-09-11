@@ -28,7 +28,7 @@ struct RenderBufferObject
 
 	GLuint vbo, ibo, vao;
 	uint32_t indexCount, patchSize;
-	// Texture buffer object 
+	// Texture buffer object
 	union
 	{
 		GLuint tbo[2]{};

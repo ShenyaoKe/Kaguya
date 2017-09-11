@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math/MathUtil.h"
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 
 namespace Kaguya
 {

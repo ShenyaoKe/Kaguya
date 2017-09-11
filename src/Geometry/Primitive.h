@@ -6,7 +6,7 @@
 //
 #pragma once
 
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Accel/Bounds.h"
 #include "Image/ColorData.h"
 #include "Math/Transform.h"

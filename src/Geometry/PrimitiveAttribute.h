@@ -1,5 +1,5 @@
 #pragma once
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 
 namespace Kaguya
 {

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Core/MemoryControl.h"
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Image/ColorData.h"
 //#include "ppmImage.h"
 #include "Math/Matrix3x3.h"

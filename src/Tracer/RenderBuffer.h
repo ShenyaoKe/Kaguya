@@ -6,7 +6,7 @@
 //
 #pragma once
 #include "Core/Kaguya.h"
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Geometry/Primitive.h"
 #include "Geometry/Intersection.h"
 

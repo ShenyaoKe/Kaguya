@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Kaguya.h"
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Math/Matrix4x4.h"
 #include "Tracer/Ray.h"
 

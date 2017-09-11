@@ -6,7 +6,7 @@
 //
 #pragma once
 
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Image/ImageData.h"
 
 namespace Kaguya

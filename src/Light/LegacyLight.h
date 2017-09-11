@@ -5,7 +5,7 @@
 //  Copyright (c) 2015 AKIKA. All rights reserved.
 //
 #pragma once
-#include "Math/Geometry.h"
+#include "Math/Vector.h"
 #include "Light/Spectrum.h"
 
 namespace Kaguya::Legacy

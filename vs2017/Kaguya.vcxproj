@@ -142,7 +142,7 @@
     <ClInclude Include="..\src\Light\LegacyLight.h" />
     <ClInclude Include="..\src\Light\Light.h" />
     <ClInclude Include="..\src\Light\Spectrum.h" />
-    <ClInclude Include="..\src\Math\Geometry.h" />
+    <ClInclude Include="..\src\Math\Vector.h" />
     <ClInclude Include="..\src\Math\MathUtil.h" />
     <ClInclude Include="..\src\Math\Matrix3x3.h" />
     <ClInclude Include="..\src\Math\Matrix4x4.h" />
