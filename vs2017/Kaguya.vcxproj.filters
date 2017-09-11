@@ -270,6 +270,9 @@
     <ClInclude Include="..\src\Math\Vector.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Core\ProgressBar.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">

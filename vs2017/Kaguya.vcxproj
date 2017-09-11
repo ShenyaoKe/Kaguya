@@ -110,6 +110,7 @@
     <ClInclude Include="..\src\Camera\PerspectiveCamera.h" />
     <ClInclude Include="..\src\Core\EmbreeUtils.h" />
     <ClInclude Include="..\src\Core\error.h" />
+    <ClInclude Include="..\src\Core\ProgressBar.h" />
     <ClInclude Include="..\src\Core\Scene.h" />
     <ClInclude Include="..\src\core\Utils.h" />
     <ClInclude Include="..\src\Core\MemoryControl.h" />
