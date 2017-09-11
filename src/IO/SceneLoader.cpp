@@ -181,11 +181,12 @@ std::shared_ptr<Geometry> SceneLoader::loadGeometry(const rapidjson::Value &json
 			}
 			if (jsonCamera.HasMember("file"))
 			{
-				retPrimPtr = createMesh(mFilePath + jsonCamera["file"].GetString(),
-										meshType);
+				const char* filename = jsonCamera["file"].GetString();
+				retPrimPtr = createMesh(mFilePath + filename, meshType);
+				retPrimPtr->setName(filename);
 			}
 		}
-		if (!strcmp(typeStr, "curves"))
+		else if (!strcmp(typeStr, "curves"))
 		{
 			// TODO
 		}
