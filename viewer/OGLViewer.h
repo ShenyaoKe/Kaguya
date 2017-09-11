@@ -74,7 +74,7 @@ private:
 	void bindReslotionGate();
 	void saveFrameBuffer();
 
-	void renderpixels();
+	void renderPixels();
 protected:
 	std::shared_ptr<ProjectiveCamera> view_cam;
 	RenderBuffer* mRenderBuffer;

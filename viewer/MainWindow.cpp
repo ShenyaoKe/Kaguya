@@ -37,7 +37,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::connectimg()
 {
-	mViewer->renderpixels();
+	mViewer->renderPixels();
 	mImageViewer->setpixmap(mViewer->mRenderBuffer);
 	mImageViewer->mImagePanel->setImageResolution(640, 480);
 	mImageViewer->adjustSize();

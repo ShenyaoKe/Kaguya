@@ -1,5 +1,6 @@
 #include "OGLViewer.h"
 
+#include "Core/ProgressBar.h"
 #include "Geometry/Mesh.h"
 #include "IO/ObjLoader.h"
 #include "IO/SceneLoader.h"
@@ -221,7 +222,7 @@ void OGLViewer::keyPressEvent(QKeyEvent* e)
 	else if (e->key() == Qt::Key_R &&
 			 e->modifiers() == Qt::ControlModifier)
 	{
-		this->renderpixels();
+		this->renderPixels();
 	}
 	else
 	{
@@ -304,11 +305,13 @@ void OGLViewer::saveFrameBuffer()
 	this->grab().save(filename);
 }
 
-void OGLViewer::renderpixels()
+void OGLViewer::renderPixels()
 {
 	makeCurrent();
 	clock_t startT, endT;
 	startT = clock();
+	ConsoleProgressBar progBar;
+
 	int index = 0;
 	Ray traceRay;
 	cameraSampler camsmp;
@@ -358,7 +361,9 @@ void OGLViewer::renderpixels()
 
 			}
 		}
+		progBar.print(j / float(default_resY));
 	}
+	progBar.complete();
 
 	retImg.save("result.png");
 

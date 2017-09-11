@@ -6,9 +6,10 @@ class ConsoleProgressBar
 public:
 	ConsoleProgressBar() : mBarStr(cBarSize, ' '), mCursorIdx(0) {}
 
-	void reset()
+	void reset(const char token = ' ')
 	{
-		mBarStr.assign(cBarSize, ' ');
+		mBarStr.assign(cBarSize, token);
+		mCursorIdx = 0;
 	}
 
 	void print(float percent)
@@ -32,6 +33,15 @@ public:
 		std::cout << "\r" "[" << mBarStr << "] ";
 		std::cout.width(6);
 		std::cout << std::fixed << std::setprecision(2) << percent * 100 << "%    " << std::flush;
+	}
+
+	void complete()
+	{
+		reset('=');
+		std::cout << "\r" "[" << mBarStr << "] Completed!    "
+			<< std::flush << std::endl;
+
+		reset();
 	}
 
 private:
