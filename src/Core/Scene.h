@@ -1,5 +1,5 @@
 #pragma once
-#include <embree2/rtcore.h>
+#include <embree3/rtcore.h>
 
 #include "Core/RenderPrimitive.h"
 

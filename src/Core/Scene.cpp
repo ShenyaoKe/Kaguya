@@ -5,25 +5,21 @@
 #include "Geometry/SubdMesh.h"
 #include "Geometry/Curve.h"
 
-#include <embree2/rtcore_geometry.h>
-#include <embree2/rtcore_ray.h>
+#include <embree3/rtcore_geometry.h>
+#include <embree3/rtcore_ray.h>
 
 namespace Kaguya
 {
 
 Scene::Scene()
-	: mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
-									  RTC_SCENE_STATIC,
-									  RTC_INTERSECT1))
+	: mSceneContext(rtcNewScene(EmbreeUtils::getDevice()))
 {
 }
 
 Scene::Scene(std::shared_ptr<Camera> camera,
 			 std::vector<std::shared_ptr<RenderPrimitive>> prims,
 			 std::vector<std::shared_ptr<Light>> lights)
-	: mSceneContext(rtcDeviceNewScene(EmbreeUtils::getDevice(),
-					RTC_SCENE_STATIC,
-					RTC_INTERSECT1))
+	: mSceneContext(rtcNewScene(EmbreeUtils::getDevice()))
 	, mCamera(camera)
 	, mPrims(std::move(prims))
 	, mLights(std::move(lights))
@@ -36,31 +32,44 @@ Scene::Scene(std::shared_ptr<Camera> camera,
 
 Scene::~Scene()
 {
+	rtcReleaseScene(mSceneContext);
 }
 
 void Scene::commitScene()
 {
-	rtcCommit(mSceneContext);
+	rtcCommitScene(mSceneContext);
 }
 
 bool Scene::intersect(Ray &inRay,
 					  Intersection* isec,
-					  Float* tHit,
-					  Float* rayEpsilon) const
+					  Float* /*tHit*/,
+					  Float* /*rayEpsilon*/) const
 {
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 	RTCRay ray = EmbreeUtils::safeConvert(inRay);
-	rtcIntersect(mSceneContext, ray);
+	{
+		RTCIntersectContext context;
+		rtcInitIntersectContext(&context);
+		rtcIntersect1(mSceneContext, &context, &ray);
+		ray.hit.Ng_x = -ray.hit.Ng_x; // EMBREE_FIXME: only correct for triangles,quads, and subdivision surfaces
+		ray.hit.Ng_y = -ray.hit.Ng_y;
+		ray.hit.Ng_z = -ray.hit.Ng_z;
+	}
 	if (ray.geomID != RTC_INVALID_GEOMETRY_ID)
 	{
 		return true;
 	}
 #else
-	rtcIntersect(mSceneContext, *(static_cast<RTCRay*>((void*)&inRay)));
+	{
+		RTCIntersectContext context;
+		rtcInitIntersectContext(&context);
+		rtcIntersect1(mSceneContext, &context,
+					  static_cast<RTCRayHit*>((void*)&inRay));
+	}
 	if (inRay.geomID != RTC_INVALID_GEOMETRY_ID)
 	{
-		isec->shape = mPrims[inRay.geomID]->getGeometry();
-		isec->shape->postIntersect(inRay, isec);
+		isec->mShape = mPrims[inRay.primID]->getGeometry();
+		isec->mShape->postIntersect(inRay, isec);
 		return true;
 	}
 #endif
@@ -115,7 +124,7 @@ void Scene::buildGeometry(const Geometry* prim)
 	}
 }
 
-void Scene::buildUserGeomtry(const Geometry* prim)
+void Scene::buildUserGeomtry(const Geometry* /*prim*/)
 {
 	// TODO
 }
@@ -124,43 +133,68 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
 {
 	TessBuffer buffer;
 	prim->getTessellated(buffer);
-	uint32_t geomID = (prim->polyMeshType() == PolyMeshType::TRIANGLE
-					   ? &rtcNewTriangleMesh2
-					   : &rtcNewQuadMesh2)(mSceneContext,
-										  RTC_GEOMETRY_STATIC,
-										  buffer.nPrimtives, //!< number of quads
-										  buffer.nVertices,  //!< number of vertices
-										  buffer.nTimeStep,  //!< number of motion blur time steps
-										  buffer.nGeomId);
+	RTCGeometryType geomType;
+	RTCFormat indexType;
+	switch (prim->polyMeshType())
+	{
+	case PolyMeshType::TRIANGLE:
+		geomType = RTC_GEOMETRY_TYPE_TRIANGLE;
+		indexType = RTC_FORMAT_UINT3;
+		break;
+	case PolyMeshType::QUAD:
+		geomType = RTC_GEOMETRY_TYPE_QUAD;
+		indexType = RTC_FORMAT_UINT4;
+		break;
+	default:
+		break;
+	}
 
-	rtcSetBuffer(mSceneContext, geomID, RTC_VERTEX_BUFFER0,
-				 buffer.vertTraits[0].data,
-				 buffer.vertTraits[0].byteOffset,
-				 buffer.vertTraits[0].byteStride);
+	RTCGeometry embreeMesh = rtcNewGeometry(EmbreeUtils::getDevice(), geomType);
+
+	rtcSetSharedGeometryBuffer(embreeMesh,
+							   RTC_BUFFER_TYPE_VERTEX,
+							   0,
+							   RTC_FORMAT_FLOAT3,
+							   buffer.vertTraits[0].data,
+							   buffer.vertTraits[0].byteOffset,
+							   buffer.vertTraits[0].byteStride,
+							   buffer.nVertices);
 	if (buffer.nTimeStep > 1)
 	{
-		rtcSetBuffer(mSceneContext, geomID, RTC_VERTEX_BUFFER1,
-					 buffer.vertTraits[1].data,
-					 buffer.vertTraits[1].byteOffset,
-					 buffer.vertTraits[1].byteStride);
+		rtcSetSharedGeometryBuffer(embreeMesh,
+								   RTC_BUFFER_TYPE_VERTEX,
+								   1,
+								   RTC_FORMAT_FLOAT3,
+								   buffer.vertTraits[1].data,
+								   buffer.vertTraits[1].byteOffset,
+								   buffer.vertTraits[1].byteStride,
+								   buffer.nVertices);
 	}
-	rtcSetBuffer(mSceneContext, geomID, RTC_INDEX_BUFFER,
-				 buffer.indexTrait.data,
-				 buffer.indexTrait.byteOffset,
-				 buffer.indexTrait.byteStride);
+	rtcSetSharedGeometryBuffer(embreeMesh,
+							   RTC_BUFFER_TYPE_INDEX,
+							   0,
+							   indexType,
+							   buffer.indexTrait.data,
+							   buffer.indexTrait.byteOffset,
+							   buffer.indexTrait.byteStride,
+							   buffer.nPrimtives);
+
+	rtcCommitGeometry(embreeMesh);
+	unsigned int geomID = rtcAttachGeometry(mSceneContext, embreeMesh);
+	rtcReleaseGeometry(embreeMesh);
 }
 
-void Scene::buildSubdivisionMesh(const SubdMesh* prim)
+void Scene::buildSubdivisionMesh(const SubdMesh* /*prim*/)
 {
 	// TODO
 }
 
-void Scene::buildCurve(const Curve* prim)
+void Scene::buildCurve(const Curve* /*prim*/)
 {
 	// TODO
 }
 
-void Scene::buildInstance(const Geometry* prim)
+void Scene::buildInstance(const Geometry* /*prim*/)
 {
 	// TODO
 }
