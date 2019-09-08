@@ -26,7 +26,14 @@ public:
 	Normal3f operator () (const Normal3f &n) const;
 	Bounds3f operator () (const Bounds3f &bbox) const;
 	Ray operator () (const Ray &ray) const;
-	void operator () (const Ray &ray, Ray* ret) const;
+	void operator () (Ray &retRay, const Ray &ray) const;
+
+	Point3f invXform(const Point3f &p) const;
+	Vector3f invXform(const Vector3f &v) const;
+	Normal3f invXform(const Normal3f &n) const;
+	Bounds3f invXform(const Bounds3f &bbox) const;
+	Ray invXform(const Ray &ray) const;
+	void invXform(Ray &retRay, const Ray &ray) const;
 
 	//Transform operator * (const Matrix4x4 &mat);
 

@@ -5,8 +5,8 @@
 namespace Kaguya
 {
 
-PolyMesh::PolyMesh(std::vector<Point3f>             &vertexBuffer,
-				   std::vector<uint32_t>            &indexBuffer,
+PolyMesh::PolyMesh(std::vector<Point3f>              vertexBuffer,
+				   std::vector<uint32_t>             indexBuffer,
 				   size_t                            vertexCount,
 				   size_t                            faceCount,
 				   std::shared_ptr<TextureAttribute> texAttri,
@@ -97,7 +97,7 @@ void PolyMesh::getRenderBuffer(RenderBufferTrait* trait) const
 	}
 }
 
-size_t PolyMesh::tessellatedCount(std::vector<uint32_t> &faceSizeBuffer, size_t faceSize)
+size_t PolyMesh::tessellatedCount(const std::vector<uint32_t> &faceSizeBuffer, size_t faceSize)
 {
 	switch (faceSize)
 	{
@@ -122,9 +122,9 @@ size_t PolyMesh::tessellatedCount(std::vector<uint32_t> &faceSizeBuffer, size_t 
 	}
 }
 
-std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>             &vertexBuffer,
-												   std::vector<uint32_t>            &indexBuffer,
-												   std::vector<uint32_t>            &faceSizeBuffer,
+std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>              vertexBuffer,
+												   std::vector<uint32_t>             indexBuffer,
+												   const std::vector<uint32_t>      &faceSizeBuffer,
 												   std::shared_ptr<TextureAttribute> texAttri,
 												   std::shared_ptr<NormalAttribute>  normAttri)
 {
@@ -133,8 +133,8 @@ std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>         
 
 	if (triCount * 3 < quadCount * 4)
 	{
-		return std::make_shared<TriangleMesh>(vertexBuffer,
-											  indexBuffer,
+		return std::make_shared<TriangleMesh>(std::move(vertexBuffer),
+											  std::move(indexBuffer),
 											  faceSizeBuffer,
 											  triCount,
 											  texAttri,
@@ -143,8 +143,8 @@ std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>         
 	}
 	else
 	{
-		return std::make_shared<QuadMesh>(vertexBuffer,
-										  indexBuffer,
+		return std::make_shared<QuadMesh>(std::move(vertexBuffer),
+										  std::move(indexBuffer),
 										  faceSizeBuffer,
 										  quadCount,
 										  texAttri,
@@ -153,16 +153,16 @@ std::shared_ptr<PolyMesh> PolyMesh::createPolyMesh(std::vector<Point3f>         
 	}
 }
 
-std::shared_ptr<TriangleMesh> PolyMesh::createTriMesh(std::vector<Point3f>             &vertexBuffer,
-													  std::vector<uint32_t>            &indexBuffer,
-													  std::vector<uint32_t>            &faceSizeBuffer,
+std::shared_ptr<TriangleMesh> PolyMesh::createTriMesh(std::vector<Point3f>              vertexBuffer,
+													  std::vector<uint32_t>             indexBuffer,
+													  const std::vector<uint32_t>      &faceSizeBuffer,
 													  std::shared_ptr<TextureAttribute> texAttri,
 													  std::shared_ptr<NormalAttribute>  normAttri)
 {
 	size_t triCount = tessellatedCount(faceSizeBuffer, TriangleMesh::getFaceSize());
 
-	return std::make_shared<TriangleMesh>(vertexBuffer,
-										  indexBuffer,
+	return std::make_shared<TriangleMesh>(std::move(vertexBuffer),
+										  std::move(indexBuffer),
 										  faceSizeBuffer,
 										  triCount,
 										  texAttri,

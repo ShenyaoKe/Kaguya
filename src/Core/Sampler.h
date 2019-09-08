@@ -1,17 +1,25 @@
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#include "Core\Kaguya.h"
+#include "Core/Kaguya.h"
+
+#include "Math/MathUtil.h"
+#include "Math/Vector.h"
 
 namespace Kaguya
 {
 
-struct cameraSampler
+struct Sampler
 {
-	int32_t imgX, imgY;
-	Float lensU, lensV;
-	Float time;
+	virtual Float generate1D() const { return unitRandom(10); }
+	virtual Point2f generate2D() const { return Point2f(unitRandom(10), unitRandom(10)); }
+
+};
+
+struct CameraSample
+{
+	Point2f mFilm;
+	Point2f mLens;
+	Float mTime;
 };
 
 }

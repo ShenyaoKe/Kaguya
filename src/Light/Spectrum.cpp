@@ -3,37 +3,66 @@
 namespace Kaguya
 {
 
-Spectrum::Spectrum()
+#ifdef USE_LEGACY_SPECTRUM
+LegacySpectrum::LegacySpectrum()
 {
-	color = COLOR_WHITE;
-	intensity = 1;
+	mColor = COLOR_WHITE;
+	mIntensity = 1;
 }
-Spectrum::Spectrum(Float its, ColorRGBA spc)
-{
-	intensity = its;
-	color = spc;
-}
-Spectrum::Spectrum(ColorRGBA spc)
-{
-	color = spc;
-	intensity = 1;
-}
-Spectrum::~Spectrum()
+
+LegacySpectrum::LegacySpectrum(Float its)
+	: mColor(COLOR_WHITE)
+	, mIntensity(its)
 {
 }
-ColorRGBA Spectrum::operator*(const ColorRGBA &color2) const
+
+LegacySpectrum::LegacySpectrum(Float its, ColorRGBA spc)
 {
-	return color * color2 * intensity;
+	mIntensity = its;
+	mColor = spc;
 }
-ColorRGBA operator*(const ColorRGBA &color, const Spectrum &spec)
+
+LegacySpectrum::LegacySpectrum(ColorRGBA spc)
+{
+	mColor = spc;
+	mIntensity = 1;
+}
+
+LegacySpectrum::~LegacySpectrum()
+{
+}
+
+ColorRGBA LegacySpectrum::operator*(const ColorRGBA &color2) const
+{
+	return mColor * color2 * mIntensity;
+}
+
+LegacySpectrum LegacySpectrum::operator*(Float t) const
+{
+	return LegacySpectrum(mIntensity * t, mColor);
+}
+
+LegacySpectrum LegacySpectrum::operator/(Float t) const
+{
+	return LegacySpectrum(mIntensity / t, mColor);
+}
+
+ColorRGBA operator*(const ColorRGBA &color, const LegacySpectrum &spec)
 {
 	return spec * color;
 }
-void Spectrum::printInfo() const
+
+LegacySpectrum operator*(Float t, const LegacySpectrum & spec)
 {
-	std::cout << "Intensity:\t" << intensity << std::endl;
-	std::cout << "Color:";
-	color.printInfo();
+	return spec * t;
 }
+
+void LegacySpectrum::printInfo() const
+{
+	std::cout << "Intensity:\t" << mIntensity << std::endl;
+	std::cout << "Color:";
+	mColor.printInfo();
+}
+#endif
 
 }

@@ -59,15 +59,15 @@ public:
 	~OGLViewer();
 
 protected:
-	void initializeGL() Q_DECL_OVERRIDE;
-	void paintGL() Q_DECL_OVERRIDE;
-	void resizeGL(int w, int h) Q_DECL_OVERRIDE;
+	void initializeGL() override;
+	void paintGL() override;
+	void resizeGL(int w, int h) override;
 
-	void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-	void mouseMoveEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-	void wheelEvent(QWheelEvent *e) Q_DECL_OVERRIDE;
+	void keyPressEvent(QKeyEvent *e) override;
+	void mousePressEvent(QMouseEvent *e) override;
+	void mouseReleaseEvent(QMouseEvent *e) override;
+	void mouseMoveEvent(QMouseEvent *e) override;
+	void wheelEvent(QWheelEvent *e) override;
 private:
 	RenderBufferObject createRenderObject(const RenderBufferTrait &trait);
 
@@ -87,7 +87,8 @@ private: // OpenGL variables
 	std::unique_ptr<Scene> mScene;
 
 	std::vector<RenderBufferObject>    mRBOs;
-	std::vector<GLfloat> filmgate, resgate;
+	std::vector<GLfloat> filmgate;// , resgate;
+	static const int sResolutionGateVertexCount;
 	GLuint resgate_vbo, resgate_vao;
 
 	std::shared_ptr<GLSLProgram> triShader, quadShader, curveShader;

@@ -1,6 +1,4 @@
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef KAGUYA_CORE
 #define KAGUYA_CORE
@@ -125,7 +123,13 @@ class Bounds2;
 template <typename T>
 class Bounds3;
 
-class Spectrum;
+class RenderPrimitive;
+
+template<uint32_t nSpectrumSample>
+class CoefSpectrum;
+class RGBSpectrum;
+typedef RGBSpectrum Spectrum;
+
 class Light;
 
 struct KdAccelNode;
@@ -149,8 +153,8 @@ class OrthographicCamera;
 
 class RenderBuffer;
 
-const int default_resX = 640;
-const int default_resY = 480;
+const uint32_t default_resX = 640;
+const uint32_t default_resY = 480;
 
 }
 

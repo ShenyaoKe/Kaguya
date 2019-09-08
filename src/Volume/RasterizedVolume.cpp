@@ -5,7 +5,8 @@ namespace Kaguya
 
 RasterizedVolume::RasterizedVolume(
 	const TriangleMesh* src, const KdTreeAccel* tree, Float div)
-	: mesh(src), kdtree(tree)
+	: kdtree(tree)
+	, mesh(src)
 	, division(div)
 {
 	rasterize();
@@ -49,7 +50,6 @@ void RasterizedVolume::exportVBO(std::vector<float>* vtx_array) const
 void RasterizedVolume::rasterize()
 {
 	const Bounds3f &bound = kdtree->treeBound;
-	Vector3f diag = bound.diagnal();
 	int zaxis = bound.maxExtent();
 	int xaxis = (zaxis + 1) % 3;
 	int yaxis = (zaxis + 2) % 3;
@@ -84,7 +84,7 @@ void RasterizedVolume::rasterize()
 			{
 				Point3f curPos = rayPos;
 				//curPos[zaxis] += hitLen[0];
-				for (int i = 0; i < hitLen.size() - 1; i += 2)
+				for (size_t i = 0; i < hitLen.size() - 1; i += 2)
 				{
 					curPos[zaxis] += hitLen[i];
 					Float newDP = hitLen[i + 1] + curPos[zaxis];

@@ -45,10 +45,10 @@ void PerspectiveCamera::updateCamToScreen()
 		horisize, vertsize, mFocalLength, mNearPlane, mFarPlane));
 }
 
-Float PerspectiveCamera::generateRay(const cameraSampler &sample,
+Float PerspectiveCamera::generateRay(const CameraSample &sample,
 									 Ray* ray) const
 {
-	Point3f pCam = RasterToCamera(Point3f(sample.imgX, sample.imgY, 0));
+	Point3f pCam = RasterToCamera(Point3f(sample.mFilm.x, sample.mFilm.y, 0));
 	*ray = Ray(Point3f(), normalize(Vector3f(pCam)));
 	// Depth of Field Operations;
 	if (mLensRadius > 0.)
@@ -68,16 +68,16 @@ Float PerspectiveCamera::generateRay(const cameraSampler &sample,
 		ray->o = Point3f(lensU, lensV, 0);
 		ray->d = normalize(focusP - ray->o);
 	}
-	CameraToWorld(*ray, ray);
+	CameraToWorld(*ray, *ray);
 	return 1.0;
 }
 
-void PerspectiveCamera::renderImg(int x, int y, ColorRGBA &pixColor)
+void PerspectiveCamera::renderImg(int /*x*/, int /*y*/, ColorRGBA &/*pixColor*/)
 {
 	//film.setRGBA(x, y, pixColor);
 }
 
-void PerspectiveCamera::saveResult(const char* filename)
+void PerspectiveCamera::saveResult(const char* /*filename*/)
 {
 	//film.writeFile(filename);
 }

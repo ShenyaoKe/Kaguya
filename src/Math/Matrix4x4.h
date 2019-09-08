@@ -186,11 +186,11 @@ inline Vector3f Matrix4x4::operator()(const Vector3f &v) const
 	);
 }
 
-inline Ray Matrix4x4::operator()(const Ray & ray) const
+inline Ray Matrix4x4::operator()(const Ray &ray) const
 {
 	Ray ret((*this)(ray.o), (*this)(ray.d), ray.tMin, ray.tMax);
 	ret.time = ray.time;
-	ret.dp = ray.dp;
+	ret.mId = ray.mId;
 	return ret;
 }
 

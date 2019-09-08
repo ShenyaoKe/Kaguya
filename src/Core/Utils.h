@@ -13,9 +13,14 @@ inline bool endsWith(const std::string &src, const std::string &ext,
 	// true if both strings are empty
 	if (src.length() == 0) return ext.length() == 0;
 
-	int pos = src.length() - ext.length();
+	size_t srcLen = src.length();
+	size_t extLen = ext.length();
 	// true if second string is shorter than first
-	if (pos < 0) return false;
+	if (srcLen < extLen)
+	{
+		return false;
+	}
+	size_t pos = srcLen - extLen;
 
 	// directly compare two string if case sensitive
 	if (isCaseSensitive)
@@ -24,7 +29,7 @@ inline bool endsWith(const std::string &src, const std::string &ext,
 	}
 	else
 	{
-		for (int i = 0; i < ext.length(); i++)
+		for (size_t i = 0; i < ext.length(); i++)
 		{
 			if (tolower(src[pos + i]) != tolower(ext[i]))
 			{
@@ -36,7 +41,7 @@ inline bool endsWith(const std::string &src, const std::string &ext,
 }
 
 inline bool startsWith(const char* src, const char* prefix,
-					   bool isCaseSensitive = true)
+					   bool /*isCaseSensitive*/ = true)
 {
 
 	/*if (isCaseSensitive)

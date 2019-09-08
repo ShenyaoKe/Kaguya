@@ -4,18 +4,19 @@
 #include "Geometry/Mesh.h"
 #include "IO/ObjLoader.h"
 #include "IO/SceneLoader.h"
-#include <embree2/rtcore_ray.h>
+#include <embree3/rtcore_ray.h>
 #include <QImage>
 
 namespace Kaguya
 {
+
+const int OGLViewer::sResolutionGateVertexCount = 4;
 
 OGLViewer::OGLViewer(QWidget* parent)
 	: QOpenGLWidget(parent)
 	, selectMode(OBJECT_SELECT)
 	, mRenderBuffer(new RenderBuffer(default_resX, default_resY))
 	, mScene(SceneLoader::load("scene/unitest_scene.json"))
-	, resgate{ 0, 0, /**/ 640, 0, /**/ 640, 480, /**/ 0, 480 }
 {
 	// Set surface format for current widget
 	QSurfaceFormat format;
@@ -41,12 +42,12 @@ OGLViewer::~OGLViewer()
 /************************************************************************/
 void OGLViewer::initializeGL()
 {
-	// OpenGL extention initialization
+	// OpenGL extension initialization
 	glewInit();
 
-	// Print OpenGL vertion
-	cout << "Renderer: " << glGetString(GL_RENDERER) << endl;
-	cout << "OpenGL version supported " << glGetString(GL_VERSION) << endl;
+	// Print OpenGL version
+	std::cout << "Renderer: " << glGetString(GL_RENDERER) << endl;
+	std::cout << "OpenGL version supported " << glGetString(GL_VERSION) << endl;
 
 	// Enable OpenGL features
 	glEnable(GL_MULTISAMPLE);
@@ -58,10 +59,10 @@ void OGLViewer::initializeGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glFrontFace(GL_CCW); // set counter-clock-wise vertex order to mean the front
 
-						 //////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
-						 // Create model_shader files
-						 //#ifdef _DEBUG
+	// Create model_shader files
+	//#ifdef _DEBUG
 	triShader = std::make_shared<GLSLProgram>("resources/shaders/TriangleMesh_vs.glsl",
 											  "resources/shaders/TriangleMesh_fs.glsl",
 											  "resources/shaders/TriangleMesh_gs.glsl");
@@ -72,7 +73,8 @@ void OGLViewer::initializeGL()
 												"resources/shaders/Curve_fs.glsl",
 												"resources/shaders/Curve_gs.glsl");
 	gate_shader = std::make_unique<GLSLProgram>("resources/shaders/gate_vs.glsl",
-												"resources/shaders/gate_fs.glsl");
+												"resources/shaders/gate_fs.glsl",
+												"resources/shaders/gate_gs.glsl");
 
 	for (size_t i = 0; i < mScene->getPrimitiveCount(); i++)
 	{
@@ -80,6 +82,7 @@ void OGLViewer::initializeGL()
 	}
 
 	gate_shader->add_uniformv("transform");
+	bindReslotionGate();
 }
 
 RenderBufferObject OGLViewer::createRenderObject(const RenderBufferTrait &trait)
@@ -134,12 +137,18 @@ RenderBufferObject OGLViewer::createRenderObject(const RenderBufferTrait &trait)
 
 void OGLViewer::bindReslotionGate()
 {
+	const GLfloat filmWidth = view_cam->getFilm().width;
+	const GLfloat filmHeight = view_cam->getFilm().height;
+	const std::array<Point2f, sResolutionGateVertexCount> resoluationGate{
+		Point2f(0, 0), Point2f(filmWidth, 0),
+		Point2f(filmWidth, filmHeight), Point2f(0, filmHeight) };
+	printf("Film of (%f, %f)\n", filmWidth, filmHeight);
 	// DSA
 	// Create VAO
 	glCreateBuffers(1, &resgate_vbo);
 	glNamedBufferData(resgate_vbo,
-					  sizeof(GLfloat) * resgate.size(),
-					  &resgate[0],
+					  sizeof(Point2f) * resoluationGate.size(),
+					  resoluationGate.data(),
 					  GL_STATIC_DRAW);
 
 	// VAO
@@ -152,13 +161,13 @@ void OGLViewer::bindReslotionGate()
 							  0,
 							  resgate_vbo,
 							  0,
-							  sizeof(float) * 2);
+							  sizeof(Point2f));
 	glVertexArrayAttribBinding(resgate_vao, 0, 0);
 }
 
 void OGLViewer::paintGL()
 {
-	// Make curent window
+	// Make current window
 	makeCurrent();
 	glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
 	// Clear background and color buffer
@@ -187,9 +196,10 @@ void OGLViewer::paintGL()
 	glBindVertexArray(resgate_vao);
 	gate_shader->use_program();
 	glUniformMatrix4fv((*gate_shader)("transform"), 1, GL_FALSE,
-					   view_cam->screen_to_raster());
+					   view_cam->raster_to_screen());
+
 	glLineWidth(2.0);
-	glDrawArrays(GL_LINE_LOOP, 0, resgate.size() / 2);
+	glDrawArrays(GL_LINE_LOOP, 0, sResolutionGateVertexCount);
 
 	glBindVertexArray(0);
 	gate_shader->unuse();
@@ -308,6 +318,7 @@ void OGLViewer::saveFrameBuffer()
 void OGLViewer::renderPixels()
 {
 	makeCurrent();
+
 	clock_t startT, endT;
 	startT = clock();
 	ConsoleProgressBar progBar;
@@ -317,14 +328,17 @@ void OGLViewer::renderPixels()
 	cameraSampler camsmp;
 	Transform w2o;
 
-	QImage retImg(default_resX, default_resY, QImage::Format_ARGB32);
+	const Film& film = view_cam->getFilm();
+
+	QImage retImg(film.width, film.height, QImage::Format_ARGB32);
 
 	Point3f lightpos(3, 10, 1);
 	Float cosVal;
 	Intersection isec;
-	for (int j = 0; j < default_resY; j++)
+	mRenderBuffer->cleanBuffer();
+	for (uint32_t j = 0; j < film.height; j++)
 	{
-		for (int i = 0; i < default_resX; i++)
+		for (uint32_t i = 0; i < film.width; i++)
 		{
 			camsmp.imgX = i;
 			camsmp.imgY = j;
@@ -356,12 +370,12 @@ void OGLViewer::renderPixels()
 				int rgb[]{ static_cast<int>((traceRay.Ng.x*0.5f + 0.5f) * 255),
 					static_cast<int>((traceRay.Ng.y*0.5f + 0.5f) * 255),
 					static_cast<int>((traceRay.Ng.z*0.5f + 0.5f) * 255) };
-				retImg.setPixelColor(i, default_resY - j - 1,
+				retImg.setPixelColor(i, film.height - j - 1,
 									 QColor(rgb[0], rgb[1], rgb[2]));
 
 			}
 		}
-		progBar.print(j / float(default_resY));
+		progBar.print(j / float(film.height));
 	}
 	progBar.complete();
 

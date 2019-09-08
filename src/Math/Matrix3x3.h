@@ -6,6 +6,8 @@
 //
 #pragma once
 
+#include <cstring>
+
 #include "Math/MathUtil.h"
 #include "Math/Vector.h"
 #include "Core/MemoryControl.h"
@@ -203,7 +205,9 @@ inline Matrix3x3 Matrix3x3::inverse() const
 	Float det = this->determinant();
 	if (det == 0)
 	{
+#ifdef _DEBUG
 		std::cout << "The matrix is non-inversable!" << std::endl;
+#endif
 		return Matrix3x3();
 	}
 	adjM = adjoint();

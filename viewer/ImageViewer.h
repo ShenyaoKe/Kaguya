@@ -22,7 +22,10 @@ static GLint ogl_ver_minor;
 enum class DISPLAY_TYPE
 {
 	BEAUTY = 0,
-	P, N, DPDU, DPDV
+	P,
+	N,
+	DPDU,
+	DPDV
 
 };
 
@@ -55,9 +58,9 @@ public:
 	void setImageResolution(uint32_t w, uint32_t h);
 	void updateTexture();
 protected:
-	void initializeGL() Q_DECL_OVERRIDE;
-	void paintGL() Q_DECL_OVERRIDE;
-	void resizeGL(int w, int h) Q_DECL_OVERRIDE;
+	void initializeGL() override;
+	void paintGL() override;
+	void resizeGL(int w, int h) override;
 private:
 	float frame[8];// { 0,0, w,0, w,h, 0,h }
 	uint32_t imgsize[2];
@@ -68,7 +71,7 @@ private:
 	GLuint tex;
 	GLuint64 texHandle;
 	uint32_t texLen;
-	const void* textures;
+	const void* mTextures;
 	DISPLAY_TYPE texType;
 
 	friend class ImageViewer;

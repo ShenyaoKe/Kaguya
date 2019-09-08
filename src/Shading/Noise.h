@@ -106,8 +106,8 @@ inline Float PerlinNoise1D(Float x)
 
 	for (int i = 0; i < n; i++)
 	{
-		Float freq = pow(2.0, i);
-		Float amp = pow(p, i);
+		Float freq = std::pow(2.0, i);
+		Float amp = std::pow(p, i);
 		total += interpolateNoise(x * freq) * amp;
 	}
 	return total;
@@ -147,8 +147,8 @@ inline Float PerlinNoise1D::getValue(Float x)
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2.0, i);
-		Float amp = pow(p, i);
+		Float freq = std::pow(2.0, i);
+		Float amp = std::pow(p, i);
 		total += interpolateNoise(x * freq) * amp;
 	}
 	return total;
@@ -199,8 +199,8 @@ inline Float PerlinNoise2D::getValue(const Point2f &uv) const
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2.0, i);
-		Float amp = pow(p, i);
+		Float freq = std::pow(2.0, i);
+		Float amp = std::pow(p, i);
 		total += interpolateNoise(uv.x * width * freq, uv.y * height * freq) * amp;
 		//total += interpolateNoise(uv.x * freq, uv.y * freq) * amp;
 	}
@@ -259,8 +259,8 @@ inline Float PerlinNoise3D::getValue(const Point3f &uv) const
 
 	for (int i = 0; i < oct; i++)
 	{
-		Float freq = pow(2.0, i);
-		Float amp = pow(p, i);
+		Float freq = std::pow(2.0, i);
+		Float amp = std::pow(p, i);
 		total += interpolateNoise(uv.x * width * freq,
 								  uv.y * height * freq,
 								  uv.z * depth * freq) * amp;

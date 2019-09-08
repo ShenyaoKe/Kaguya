@@ -8,6 +8,8 @@
 #include "Math/Vector.h"
 #include "Light/Spectrum.h"
 
+#ifdef USE_LEGACY_SPECTRUM
+
 namespace Kaguya::Legacy
 {
 
@@ -32,7 +34,7 @@ class Light
 {
 protected:
 	LIGHT_TYPE type = LT_NULL;
-	Spectrum lightSpectrum;
+	LegacySpectrum lightSpectrum;
 	Float exposure = 0;
 	//ColorRGB color = ColorRGB(1.0, 1.0, 1.0);
 	LIGHT_DECAY_TYPE decayType = DECAY_CONSTANT;
@@ -41,7 +43,7 @@ protected:
 public:
 
 	Light();
-	Light(const Spectrum &its);
+	Light(const LegacySpectrum &its);
 	virtual ~Light();
 
 	virtual void setExposure(Float xps);
@@ -49,7 +51,7 @@ public:
 	virtual void setRadius(Float rd);
 
 	virtual LIGHT_TYPE getLightType() const;
-	virtual Spectrum getSpectrum(const Intersection* isec) const;
+	virtual LegacySpectrum getSpectrum(const Intersection* isec) const;
 	virtual Float getDistance(const Intersection* isec) const;
 	virtual void printInfo() const;
 };
@@ -62,7 +64,7 @@ class directionalLight :public Light
 public:
 	directionalLight();
 	directionalLight(const Vector3f &vec);
-	directionalLight(const Vector3f &vec, const Spectrum &spt);
+	directionalLight(const Vector3f &vec, const LegacySpectrum &spt);
 	~directionalLight();
 
 	void printInfo() const;
@@ -80,7 +82,7 @@ class pointLight :public Light
 public:
 	pointLight();
 	pointLight(const Point3f &p, Float its);
-	pointLight(const Point3f &p, const Spectrum &spt);
+	pointLight(const Point3f &p, const LegacySpectrum &spt);
 	~pointLight();
 
 	void printInfo() const;
@@ -106,7 +108,7 @@ public:
 	spotLight();
 	spotLight(const Point3f &p, const Vector3f &d);
 	spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo);
-	spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const Spectrum &spt);
+	spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const LegacySpectrum &spt);
 	~spotLight();
 
 	void printInfo() const;
@@ -134,8 +136,8 @@ class areaLight :public Light
 public:
 	areaLight();
 	areaLight(const Point3f &p, Float shpSize);
-	areaLight(const Point3f &p, Float shpSize, const Spectrum &spt);
-	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt);
+	areaLight(const Point3f &p, Float shpSize, const LegacySpectrum &spt);
+	areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const LegacySpectrum &spt);
 	~areaLight();
 
 	Float getIntensity(const Intersection* isec) const;
@@ -145,3 +147,4 @@ private:
 };
 
 }
+#endif

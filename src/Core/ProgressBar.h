@@ -4,11 +4,15 @@
 class ConsoleProgressBar
 {
 public:
-	ConsoleProgressBar() : mBarStr(cBarSize, ' '), mCursorIdx(0) {}
+	ConsoleProgressBar() : mBarStr{ ' ' }, mCursorIdx(0)
+	{
+		reset();//mBarStr.back() = '\0';
+	}
 
 	void reset(const char token = ' ')
 	{
-		mBarStr.assign(cBarSize, token);
+		mBarStr.fill(token);
+		//mBarStr.back() = '\0';
 		mCursorIdx = 0;
 	}
 
@@ -19,18 +23,20 @@ public:
 
 		if (newIndex >= mCursorIdx)
 		{
-			size_t replaceCount = newIndex - mCursorIdx;
-			mBarStr.replace(mCursorIdx, replaceCount, replaceCount, '=');
+			//size_t replaceCount = newIndex - mCursorIdx;
+			//mBarStr.replace(mCursorIdx, replaceCount, replaceCount, '=');
+			std::fill(mBarStr.begin() + mCursorIdx, mBarStr.begin() + newIndex, '=');
 		}
 		else
 		{
-			size_t replaceCount = mCursorIdx - newIndex;
-			mBarStr.replace(newIndex + 1, replaceCount, replaceCount, ' ');
+			//size_t replaceCount = mCursorIdx - newIndex;
+			//mBarStr.replace(newIndex + 1, replaceCount, replaceCount, ' ');
+			std::fill(mBarStr.begin() + newIndex + 1, mBarStr.begin() + mCursorIdx, ' ');
 		}
 		mBarStr[newIndex] = '>';
 		mCursorIdx = newIndex;
 
-		std::cout << "\r" "[" << mBarStr << "] ";
+		std::cout << "\r" "[" << mBarStr.data() << "] ";
 		std::cout.width(6);
 		std::cout << std::fixed << std::setprecision(2) << percent * 100 << "%    " << std::flush;
 	}
@@ -38,7 +44,7 @@ public:
 	void complete()
 	{
 		reset('=');
-		std::cout << "\r" "[" << mBarStr << "] Completed!    "
+		std::cout << "\r" "[" << mBarStr.data() << "] Completed!    "
 			<< std::flush << std::endl;
 
 		reset();
@@ -47,6 +53,7 @@ public:
 private:
 	static const size_t cBarSize = 51;
 
-	std::string mBarStr;
+	std::array<char, cBarSize> mBarStr;
+	//std::string mBarStr;
 	size_t mCursorIdx;
 };

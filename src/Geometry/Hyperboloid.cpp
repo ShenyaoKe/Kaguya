@@ -43,7 +43,7 @@ void geoHyperboloid::setHyperboloidType(HYPERBOLOID_TYPE newType)
 {
 	hbType = newType;
 }
-bool geoHyperboloid::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
+bool geoHyperboloid::intersect(const Ray &inRay, Intersection* /*isec*/, Float* tHit, Float* /*rayEpsilon*/) const
 {
 	Point3f rp = inRay.o;
 	Vector3f rd = inRay.d;// Ray postion and ray direction.	
@@ -60,7 +60,7 @@ bool geoHyperboloid::intersect(const Ray &inRay, Intersection* isec, Float* tHit
 	}
 	else//delta > 0
 	{
-		Float t1 = (coeB - sqrt(delta)) / coeA;
+		Float t1 = (coeB - std::sqrt(delta)) / coeA;
 		Float t2 = 2 * coeB / coeA - t1;
 		// 		t1 /= coeA;
 		// 		t2 /= coeA;
@@ -85,7 +85,7 @@ return Normalize(Normal3f(
 -2 * (pos.y - c.y) / sqr(sb),
 2 * (pos.z - c.z) / sqr(sc)));
 }*/
-bool geoHyperboloid::isInside(const Point3f &pPos) const
+bool geoHyperboloid::isInside(const Point3f &/*pPos*/) const
 {
 	return 0;
 }

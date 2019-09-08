@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera/Camera.h"
+#include "Camera/ProjectiveCamera.h"
 
 namespace Kaguya
 {
@@ -20,7 +20,7 @@ public:
 	//void setResolution(int resX, int resY);
 	//void setSample(int aaSample);
 	void updateCamToScreen() override;
-	Float generateRay(const cameraSampler &sample, Ray* ray) const override;
+	Float generateRay(const CameraSample &sample, Ray* ray) const override;
 
 	void setDoF(Float lr, Float fd);
 	void renderImg(int x, int y, ColorRGBA &pixColor);

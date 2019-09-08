@@ -60,7 +60,7 @@ public:
 	}
 	explicit ColorRGB(Float red, Float green, Float blue) : r(red), g(green), b(blue) {}
 
-	virtual ~ColorRGB() {};
+	~ColorRGB() {};
 	//ColorRGB(Float hue, Float saturation, Float value);
 	ColorRGB operator+(const ColorRGB &color2) const { return ColorRGB(r + color2.r, g + color2.g, b + color2.b); }
 	ColorRGB operator-(const ColorRGB &color2) const { return ColorRGB(r - color2.r, g - color2.g, b - color2.b); }
@@ -68,6 +68,7 @@ public:
 	ColorRGB operator/(const ColorRGB &color2) const { return ColorRGB(r / color2.r, g / color2.g, b / color2.b); }
 	ColorRGB operator*(Float n) const { return ColorRGB(r * n, g * n, b * n); }
 	ColorRGB operator/(Float n) const { return ColorRGB(r / n, g / n, b / n); }
+	ColorRGB &operator=(const ColorRGB &color2) { r = color2.r; g = color2.g; b = color2.b; return *this; }
 
 	ColorRGB &operator+=(const ColorRGB &color2) { *this = *this + color2; return *this; }
 	ColorRGB &operator-=(const ColorRGB &color2) { *this = *this - color2; return *this; }
@@ -77,11 +78,11 @@ public:
 	friend ColorRGB operator*(Float n, const ColorRGB &color) { return color * n; }
 	friend std::ostream &operator<<(std::ostream &os, const ColorRGB &color);
 
-	virtual void setRGB(Float red, Float green, Float blue) { r = red; g = green; b = blue; };
-	virtual void setWebColor(unsigned char red, unsigned char green, unsigned char blue) { r = red / 255.0; g = green / 255.0; b = blue / 255.0; };
-	//virtual void setRGB(unsigned short red, unsigned short green, unsigned short blue){ r = red / 255.0; g = green / 255.0; b = blue / 255.0; };
-	virtual Float getLuma() { return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
-	virtual void printInfo() const { std::cout << "Color data\n\tRed:\t" << this->r << "\n\tGreen:\t" << this->g << "\n\tBlue:\t" << this->b << std::endl; }
+	void setRGB(Float red, Float green, Float blue) { r = red; g = green; b = blue; };
+	void setWebColor(unsigned char red, unsigned char green, unsigned char blue) { r = red / 255.0; g = green / 255.0; b = blue / 255.0; };
+	//void setRGB(unsigned short red, unsigned short green, unsigned short blue){ r = red / 255.0; g = green / 255.0; b = blue / 255.0; };
+	Float getLuma() { return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+	void printInfo() const { std::cout << "Color data\n\tRed:\t" << this->r << "\n\tGreen:\t" << this->g << "\n\tBlue:\t" << this->b << std::endl; }
 
 	ColorHSV conv2hsv() const;
 	//inline ColorRGB hsv2rgb();
@@ -92,35 +93,32 @@ public:
 
 };
 
-class ColorRGBA :public ColorRGB
+class ColorRGBA
 {
-private:
 public:
+	Float r, g, b; // RGB 0-1.0
 	Float a;//alpha channel
-	ColorRGBA() : ColorRGB(), a(1) {}
+	ColorRGBA() : r(0), g(0), b(0), a(1) {}
 	explicit ColorRGBA(int red, int green, int blue)
-		: ColorRGB(red, green, blue), a(1)
+		: r(static_cast<Float>(red) / 255.0f)
+		, g(static_cast<Float>(green) / 255.0f)
+		, b(static_cast<Float>(blue) / 255.0f)
+		, a(1)
 	{
 	}
-	explicit ColorRGBA(Float red, Float green, Float blue)
-		: ColorRGB(red, green, blue), a(1)
+	explicit ColorRGBA(Float red, Float green, Float blue, Float alpha = Float(1))
+		: r(red), g(green), b(blue), a(alpha)
 	{
 	}
-	explicit ColorRGBA(Float red, Float green, Float blue, Float alpha)
-		: ColorRGB(red, green, blue), a(alpha)
-	{
-	}
-	explicit ColorRGBA(ColorRGB rgb) : ColorRGB(rgb.r, rgb.g, rgb.b), a(1) {}
-	explicit ColorRGBA(ColorRGB rgb, Float alpha)
-		: ColorRGB(rgb.r, rgb.g, rgb.b), a(alpha)
-	{
-	}
+	ColorRGBA(const ColorRGB &rgb, Float alpha = Float(1)) : r(rgb.r), g(rgb.g), b(rgb.b), a(alpha) {}
+    ColorRGBA(const ColorRGBA &other) noexcept = default;
 	~ColorRGBA() {}
 
 	ColorRGBA operator+(const ColorRGBA &color2) const { return ColorRGBA(r + color2.r, g + color2.g, b + color2.b, a + color2.a); }
 	ColorRGBA operator-(const ColorRGBA &color2) const { return ColorRGBA(r - color2.r, g - color2.g, b - color2.b, a - color2.a); }
 	ColorRGBA operator*(const ColorRGBA &color2) const { return ColorRGBA(r * color2.r, g * color2.g, b * color2.b, a * color2.a); }
 	ColorRGBA operator/(const ColorRGBA &color2) const { return ColorRGBA(r / color2.r, g / color2.g, b / color2.b, a / color2.a); }
+	ColorRGBA &operator=(const ColorRGBA &color2);
 	ColorRGBA operator*(Float n) const { return ColorRGBA(r * n, g * n, b * n, a * n); }
 	ColorRGBA operator/(Float n) const { return ColorRGBA(r / n, g / n, b / n, a / n); }
 
@@ -128,7 +126,7 @@ public:
 	ColorRGBA &operator-=(const ColorRGBA &color2) { *this = *this - color2; return *this; }
 	ColorRGBA &operator*=(Float n) { *this = *this * n; return *this; }
 	ColorRGBA &operator/=(Float n) { *this = *this / n; return *this; }
-	ColorRGBA &operator=(const ColorRGB &color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
+	//ColorRGBA &operator=(const ColorRGB &color2) { this->r = color2.r; this->g = color2.g; this->b = color2.b; return *this; }
 	friend ColorRGBA operator*(Float n, const ColorRGBA &color1) { return color1 * n; }
 	friend std::ostream &operator<<(std::ostream &os, const ColorRGBA &color);
 
@@ -137,42 +135,43 @@ public:
 
 	ColorRGBA multiplyRGB(Float n) const { return ColorRGBA(r * n, g * n, b * n, a); }
 
-	//void setRGBA(Float red, Float green, Float blue){ setRGB(red, green, blue); };
-	void setRGBA(Float red, Float green, Float blue, Float alpha) { setRGB(red, green, blue); a = alpha; };
 	//void setRGBA(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha){ setRGB(red, green, blue); a = alpha / 255.0; };
 	//void setRGBA(unsigned short red, unsigned short green, unsigned short blue, unsigned short alpha){ setRGB(red, green, blue); a = alpha / 255.0; };
 	void printInfo() const { std::cout << "Color data\n\tRed:\t" << this->r << "\n\tGreen:\t" << this->g << "\n\tBlue:\t" << this->b << "\n\tAlpha:\t" << this->a << std::endl; };
 
-	ColorHSVA conv2hsva() const;
+	ColorHSV conv2hsv() const;
 
 	void clamp();
 	ColorRGBA returnClamp();
 };
+
+inline ColorRGBA& ColorRGBA::operator=(const Kaguya::ColorRGBA &color2)
+{
+	r = color2.r; g = color2.g; b = color2.b; a = color2.a; return *this;
+}
 inline ColorRGBA compAdd(const ColorRGBA &color1, const ColorRGBA &color2)
 {
-	ColorRGBA tmp = color1 * color1.a + color2 * (1 - color1.a);
-	//
-	return tmp;
+	return color1 * color1.a + color2 * (1 - color1.a);
 }
 // HSV color space
 class ColorHSV
 {
 public:
 	Float h, s, v;//H is from 0-360
-	ColorHSV();
-	ColorHSV(Float hue, Float saturation, Float value) { h = hue; s = saturation; v = value; }
+	ColorHSV() : h(0), s(0), v(0) {}
+	ColorHSV(Float hue, Float saturation, Float value) : h(hue), s(saturation), v(value) {}
 
-	ColorRGBA conv2rgb() const;
+	ColorRGB conv2rgb() const;
 
 	void clamp();
 };
 
 
-inline ColorRGBA ColorHSV::conv2rgb() const
+inline ColorRGB ColorHSV::conv2rgb() const
 {
-	ColorRGBA ret;
+	ColorRGB ret;
 	//Float r, g, b;
-	Float h0 = h / 60.0;
+	Float h0 = h / 60.0f;
 
 	Float chroma = s * v;
 	Float x = chroma * (1.0 - std::abs(fmod(h0, 2.0) - 1.0));
@@ -222,8 +221,6 @@ inline ColorRGBA ColorHSV::conv2rgb() const
 		ret.b = (min + x);
 	}
 	return ret;
-	//std::cout << "New RGB:" << r << ", " << g << ", " << b << ", " << std::endl;
-	//std::cout << "HSV:" << h << ", " << s << ", " << v << ", " << std::endl;
 }
 
 inline void ColorHSV::clamp()
@@ -242,39 +239,33 @@ inline void ColorHSV::clamp()
 
 inline void ColorRGB::clamp()
 {
-	r = r > 1 ? 1 : (r < 0 ? 0 : r);
-	g = g > 1 ? 1 : (g < 0 ? 0 : g);
-	b = b > 1 ? 1 : (b < 0 ? 0 : b);
+	r = std::clamp(r, Float(0), Float(1));
+	g = std::clamp(g, Float(0), Float(1));
+	b = std::clamp(b, Float(0), Float(1));
 }
 inline ColorRGB ColorRGB::returnClamp()
 {
-	Float retR = r > 1 ? 1 : (r < 0 ? 0 : r);
-	Float retG = g > 1 ? 1 : (g < 0 ? 0 : g);
-	Float retB = b > 1 ? 1 : (b < 0 ? 0 : b);
+	Float retR = std::clamp(r, Float(0), Float(1));
+	Float retG = std::clamp(g, Float(0), Float(1));
+	Float retB = std::clamp(b, Float(0), Float(1));
 	return ColorRGB(retR, retG, retB);
 }
 inline void ColorRGBA::clamp()
 {
-	ColorRGB::clamp();
-	a = a > 1 ? 1 : (a < 0 ? 0 : a);
+	r = std::clamp(r, Float(0), Float(1));
+	g = std::clamp(g, Float(0), Float(1));
+	b = std::clamp(b, Float(0), Float(1));
+	a = std::clamp(a, Float(0), Float(1));
 }
 
 inline ColorRGBA ColorRGBA::returnClamp()
 {
-	ColorRGBA ret;
-	ret.r = r > 1 ? 1 : (r < 0 ? 0 : r);
-	ret.g = g > 1 ? 1 : (g < 0 ? 0 : g);
-	ret.b = b > 1 ? 1 : (b < 0 ? 0 : b);
-	ret.a = a > 1 ? 1 : (a < 0 ? 0 : a);
-	//ColorRGBA ret(retR, retG, retB, retA);
-	return ret;// ColorRGBA(retR, retG, retB, retA);
+	Float retR = std::clamp(r, Float(0), Float(1));
+	Float retG = std::clamp(g, Float(0), Float(1));
+	Float retB = std::clamp(b, Float(0), Float(1));
+	Float retA = std::clamp(a, Float(0), Float(1));
+	return ColorRGBA(retR, retG, retB, retA);
 }
-
-/*
-const ColorHSVA &ColorRGBA::conv2hsva() const
-{
-return;
-}*/
 
 //Convert RGB color data to HSV
 inline ColorHSV ColorRGB::conv2hsv() const
@@ -315,8 +306,6 @@ inline ColorHSV ColorRGB::conv2hsv() const
 		ret.h = (ret.h >= 0) ? ret.h : (ret.h + 360.0); //
 	}
 	return ret;
-	//std::cout << "RGB:" << r << ", " << g << ", " << b << ", " << std::endl;
-	//std::cout << "HSV:" << h << ", " << s << ", " << v << ", " << std::endl;
 }
 
 inline std::ostream &operator<<(std::ostream &os, const ColorRGB &color)
@@ -329,6 +318,12 @@ inline std::ostream &operator<<(std::ostream &os, const ColorRGBA &color)
 	os << "Color data\n\tRed:\t" << color.r << "\n\tGreen:\t" << color.g << "\n\tBlue:\t" << color.b << "\n\tAlpha:\t" << color.a;
 	return os;
 }
+
+inline ColorHSV ColorRGBA::conv2hsv() const
+{
+	return ColorRGB(r, g, b).conv2hsv();
+}
+
 //Color Preset
 // From https://pythonhosted.org/ete2/reference/reference_svgcolors.html
 //Red Colors

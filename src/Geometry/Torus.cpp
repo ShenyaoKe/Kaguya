@@ -17,7 +17,7 @@ geoTorus::geoTorus(const Point3f &pos, Float radius, Float secRadius)
 	sr = secRadius;
 }
 
-bool geoTorus::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
+bool geoTorus::intersect(const Ray &inRay, Intersection* /*isec*/, Float* /*tHit*/, Float* /*rayEpsilon*/) const
 {
 	//Float coeA = inRay.d * inRay.d;//len == 1
 	Float coeB = dot(inRay.d, (inRay.o - c));
@@ -36,7 +36,7 @@ bool geoTorus::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Floa
 	}
 	else//delta > 0
 	{
-		Float t1 = coeB - sqrt(delta);
+		//Float t1 = coeB - std::sqrt(delta);
 		//Float t2 = 2 * coeB - t1;
 		// 		if (t1 <= 0)
 		// 		{

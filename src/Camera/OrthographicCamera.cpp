@@ -39,7 +39,7 @@ void OrthographicCamera::updateCamToScreen()
 		horisize, vertsize, mScalor, mNearPlane, mFarPlane));
 }
 
-Float OrthographicCamera::generateRay(const cameraSampler &sample, Ray* ray) const
+Float OrthographicCamera::generateRay(const CameraSample &/*sample*/, Ray* /*ray*/) const
 {
 	// TODO: Add orthographic ray generation
 	return 0;

@@ -1,4 +1,4 @@
-#version 450
+#version 400
 layout(location = 0) in vec2 vp;
 
 uniform mat4 transform;

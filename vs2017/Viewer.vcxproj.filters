@@ -158,6 +158,9 @@
     <None Include="..\scene\unitest_scene.json">
       <Filter>Scene Files</Filter>
     </None>
+    <None Include="..\resources\shaders\gate_gs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\resources\Kaguya.rc">

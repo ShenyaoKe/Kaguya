@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	mViewer->setFocusPolicy(Qt::StrongFocus);
 
-	/*connect(ui.render_button, &QPushButton::clicked, m_oglviewer, &OGLViewer::renderpixels);*/
 	connect(mUi.render_button, &QPushButton::clicked, this, &MainWindow::connectimg);
 }
 

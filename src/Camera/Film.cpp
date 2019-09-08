@@ -127,15 +127,17 @@ Point2f Film::getFilmPos(Float imgX, Float imgY) const
 
 Point2f Film::getImgPos(Float filmX, Float filmY) const//need to change later
 {
-	Float tmpIx, tmpIy;
+	Float tmpIx(0), tmpIy(0);
 	switch (resFT)
 	{
 	case FRG_HORIZONTAL_FIT:
 		tmpIx = filmX * width / horiApert;
-		tmpIy = (filmY + 0.5 * (horiApert * height / width - vertApert)) * height;
+		tmpIy = (filmY + 0.5f * (horiApert * height / width - vertApert)) * height;
+		break;
 	case FRG_VERTICAL_FIT:
-		tmpIx = (filmX + 0.5 * (vertApert * width / height - horiApert)) * width;
+		tmpIx = (filmX + 0.5f * (vertApert * width / height - horiApert)) * width;
 		tmpIy = filmY * height / vertApert;
+		break;
 	default:
 		break;
 	}

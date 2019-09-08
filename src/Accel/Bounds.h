@@ -92,9 +92,9 @@ public:
 			pMax[i] = std::max(pMax[i], box.pMax[i]);
 		}
 	}
-	friend Bounds2 Union(const Bounds2<T> &box, const Point2<T> &p);
-	friend Bounds2 Union(const Bounds2<T> &box1, const Bounds2<T> &box2);
-	friend bool overlaps(const Bounds2<T> &box0, const Bounds2<T> &box1);
+	//friend Bounds2 Union(const Bounds2<T> &box, const Point2<T> &p);
+	//friend Bounds2 Union(const Bounds2<T> &box1, const Bounds2<T> &box2);
+	//friend bool overlaps(const Bounds2<T> &box0, const Bounds2<T> &box1);
 
 	int maxExtent() const
 	{

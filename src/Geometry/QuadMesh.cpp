@@ -10,14 +10,14 @@
 namespace Kaguya
 {
 
-QuadMesh::QuadMesh(std::vector<Point3f>             &vertexBuffer,
-				   std::vector<uint32_t>            &indexBuffer,
-				   std::vector<uint32_t>            &faceSizeBuffer,
+QuadMesh::QuadMesh(std::vector<Point3f>              vertexBuffer,
+				   std::vector<uint32_t>             indexBuffer,
+				   const std::vector<uint32_t>      &faceSizeBuffer,
 				   size_t                            totalPrimCount,
 				   std::shared_ptr<TextureAttribute> texAttri,
 				   std::shared_ptr<NormalAttribute>  normAttri,
 				   bool                              isTessellated)
-	: PolyMesh(vertexBuffer, indexBuffer,
+	: PolyMesh(std::move(vertexBuffer), std::move(indexBuffer),
 			   vertexBuffer.size(), totalPrimCount,
 			   texAttri, normAttri)
 {
@@ -57,24 +57,24 @@ void QuadMesh::printInfo(const std::string &msg) const
 	{
 		std::cout << msg << std::endl;
 	}
-	for (int i = 0; i < mVertexBuffer.size(); i++)
+	for (size_t i = 0; i < mVertexBuffer.size(); i++)
 	{
 		std::cout << "Vertex:\t" << mVertexBuffer[i] << std::endl;
 	}
-	for (int i = 0; i < mIndexBuffer.size(); i++)
+	for (size_t i = 0; i < mIndexBuffer.size(); i++)
 	{
 		/*std::cout << "Faces:\t";
 		vids[i].printInfo();*/
 	}
 }
 
-bool QuadMesh::intersect(const Ray &inRay, Intersection* isec,
-						 Float* tHit, Float* rayEpsilon) const
+bool QuadMesh::intersect(const Ray &/*inRay*/, Intersection* /*isec*/,
+						 Float* /*tHit*/, Float* /*rayEpsilon*/) const
 {
 	return false;
 }
 
-void QuadMesh::postIntersect(const Ray &inRay, Intersection* isec) const
+void QuadMesh::postIntersect(const Ray &/*inRay*/, Intersection* /*isec*/) const
 {
 	// TODO: Implement post-intersection method
 }
@@ -110,7 +110,7 @@ void QuadMesh::getTessellated(TessBuffer &trait) const
 }
 
 void QuadMesh::tessellate(std::vector<uint32_t> &indexBuffer,
-						  std::vector<uint32_t> &faceSizeBuffer,
+						  const std::vector<uint32_t> &faceSizeBuffer,
 						  size_t                 tessellatedCount)
 {
 	size_t nCurrentPosition = indexBuffer.size();
@@ -145,7 +145,7 @@ void QuadMesh::tessellate(std::vector<uint32_t> &indexBuffer,
 			{
 				curFaceSize++;
 			}
-			for (int j = curFaceSize; j >= sQuadFaceSize; j -= 2)
+			for (size_t j = curFaceSize; j >= sQuadFaceSize; j -= 2)
 			{
 				indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j - 2];
 				indexBuffer[--nLastPosition] = indexBuffer[nCurrentPosition + j - 3];

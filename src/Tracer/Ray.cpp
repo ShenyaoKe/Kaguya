@@ -6,14 +6,16 @@ namespace Kaguya
 
 Ray::Ray(const Point3f &pos, const Vector3f &dir,
 		 Float minT, Float maxT)
-	: o(pos), d(normalize(dir))
-	, tMin(minT), tMax(maxT)
+	: o(pos)
+	, tMin(minT)
+	, d(normalize(dir))
 	, time(0)
+	, tMax(maxT)
 	, mask(sInvalidGeomID)
+	, mId(0)
 	, geomID(sInvalidGeomID)
 	, primID(sInvalidGeomID)
 	, instID(sInvalidGeomID)
-	, dp(0)
 {
 }
 

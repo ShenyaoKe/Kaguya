@@ -40,10 +40,7 @@ void Scene::commitScene()
 	rtcCommitScene(mSceneContext);
 }
 
-bool Scene::intersect(Ray &inRay,
-					  Intersection* isec,
-					  Float* /*tHit*/,
-					  Float* /*rayEpsilon*/) const
+bool Scene::intersect(Ray &inRay, Intersection* isec) const
 {
 #ifdef KAGUYA_DOUBLE_AS_FLOAT
 	RTCRay ray = EmbreeUtils::safeConvert(inRay);
@@ -146,6 +143,8 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
 		indexType = RTC_FORMAT_UINT4;
 		break;
 	default:
+		geomType = RTC_GEOMETRY_TYPE_USER;
+		indexType = RTC_FORMAT_UNDEFINED;
 		break;
 	}
 
@@ -180,7 +179,7 @@ void Scene::buildPolygonalMesh(const PolyMesh* prim)
 							   buffer.nPrimtives);
 
 	rtcCommitGeometry(embreeMesh);
-	unsigned int geomID = rtcAttachGeometry(mSceneContext, embreeMesh);
+	unsigned int geomID __attribute__((unused)) = rtcAttachGeometry(mSceneContext, embreeMesh);
 	rtcReleaseGeometry(embreeMesh);
 }
 

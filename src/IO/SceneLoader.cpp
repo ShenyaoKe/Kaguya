@@ -108,6 +108,8 @@ std::shared_ptr<Camera> SceneLoader::loadCamera(const rapidjson::Value &jsonCame
 		auto &film = retCamPtr->getFilm();
 		film.setResolution(jsonCamera["resolution"][0].GetUint(),
 						   jsonCamera["resolution"][1].GetUint());
+		retCamPtr->updateRasterToScreen();
+		retCamPtr->updateRasterToCam();
 	}
 	if (jsonCamera.HasMember("film_type"))
 	{
@@ -167,7 +169,7 @@ std::shared_ptr<Geometry> SceneLoader::loadGeometry(const rapidjson::Value &json
 		if (!strcmp(typeStr, "mesh"))
 		{
 			MeshType meshType = MeshType::POLYGONAL_MESH;
-			uint32_t subdivLevel = 1;
+			uint32_t subdivLevel __attribute__((unused)) = 1;
 			if (jsonCamera.HasMember("is_subdiv"))
 			{
 				if (jsonCamera["is_subdiv"].GetBool())

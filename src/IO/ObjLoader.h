@@ -40,7 +40,7 @@ public:
 	static std::vector<std::shared_ptr<Geometry>> load(const std::string &filename);
 	static std::shared_ptr<TriangleMesh> loadTriangleMesh(const std::string &filename);
 
-	static bool loadRawBuffers(ObjBuffers &outBuffers, const std::string &filename);
+	static bool loadRawBuffers(ObjBuffers &retBuffers, const std::string &filename);
 
 private:
 	index_t facetype(const char* str, int32_t* val);
@@ -81,7 +81,7 @@ private:
 	std::shared_ptr<TextureAttribute>       texAttr;
 	std::shared_ptr<NormalAttribute>        normAttr;
 
-	std::vector<std::shared_ptr<Geometry>> mPrims;
+	std::vector<std::shared_ptr<Geometry>>  mPrims;
 
 	std::string                             mFilename;
 };

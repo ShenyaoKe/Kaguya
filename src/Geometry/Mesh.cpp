@@ -40,7 +40,7 @@ bool objFileParser::parse(const char*            filename,
 	while (true)
 	{
 		lineHeader[0] = lineHeader[1] = 0;
-		err = fscanf(fp, "%2s", &lineHeader);
+		err = fscanf(fp, "%2s", lineHeader);
 		if (err == EOF)
 		{
 			break;
@@ -71,7 +71,7 @@ bool objFileParser::parse(const char*            filename,
 		else if (strcmp(lineHeader, "f") == 0)
 		{
 			//PolyIndex fid;
-			err = fscanf(fp, "%s", &buff);
+			err = fscanf(fp, "%s", buff);
 			indices[1] = indices[2] = 0;
 			index_t ft = facetype(buff, indices);
 			auto addIndex = [](std::vector<uint32_t> &indices,
@@ -81,7 +81,7 @@ bool objFileParser::parse(const char*            filename,
 			};
 
 			addIndex(faceId, vertCount, indices[0]);
-			int count = 1;
+			uint32_t count = 1;
 			endflg = fgetc(fp);
 			switch (ft)
 			{
@@ -144,13 +144,13 @@ bool objFileParser::parse(const char*            filename,
 		// Comment
 		else if (strcmp(lineHeader, "#") == 0)
 		{
-			fscanf(fp, "%[^\r\n]", &buff);
+			fscanf(fp, "%[^\r\n]", buff);
 		}
 		// Others
 		else
 		{
 			// skip everything except \n or \r
-			fscanf(fp, "%[^\r\n]", &buff);
+			fscanf(fp, "%[^\r\n]", buff);
 		}
 	}
 	fclose(fp);
@@ -182,9 +182,7 @@ std::shared_ptr<Mesh> createMesh(const std::string &filename, MeshType meshType)
 			return nullptr;
 		}
 	}
-	/*else if (Utils::endsWith(filename, "ply"))
-	{
-	}*/
+
 	texAttr = texcoordsIndexBuffer.size() == faceIndexBuffer.size()
 		? new TextureAttribute(textureCoords, texcoordsIndexBuffer)
 		: new TextureAttribute;

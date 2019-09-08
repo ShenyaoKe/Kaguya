@@ -15,7 +15,7 @@ RTCDevice createDevice(const char* cfg)
 
 void deleteDevice()
 {
-	rtcDeleteDevice(sEmbreeDevice);
+	rtcReleaseDevice(sEmbreeDevice);
 	sEmbreeDevice = nullptr;
 }
 

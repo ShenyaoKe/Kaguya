@@ -50,7 +50,7 @@ void TextureMapping::setDir(const Vector3f &view, const Vector3f &upVec)
 	ny = normalize(cross(nx, nz));
 }
 
-Point2f TextureMapping::posToUV(const Point3f &pos) const
+Point2f TextureMapping::posToUV(const Point3f &/*pos*/) const
 {
 	return Point2f();
 }

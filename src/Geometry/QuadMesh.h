@@ -8,9 +8,9 @@ namespace Kaguya
 class QuadMesh : public PolyMesh
 {
 public:
-	QuadMesh(std::vector<Point3f>             &vertexBuffer,
-			 std::vector<uint32_t>            &indexBuffer,
-			 std::vector<uint32_t>            &faceSizeBuffer,
+	QuadMesh(std::vector<Point3f>              vertexBuffer,
+			 std::vector<uint32_t>             indexBuffer,
+			 const std::vector<uint32_t>      &faceSizeBuffer,
 			 size_t                            totalPrimCount,
 			 std::shared_ptr<TextureAttribute> texAttri,
 			 std::shared_ptr<NormalAttribute>  normAttri,
@@ -37,8 +37,8 @@ public:
 
 private:
 	void tessellate(std::vector<uint32_t> &indexBuffer,
-					std::vector<uint32_t> &faceSizeBuffer,
-					size_t                 tessellatedCount) override;
+                    const std::vector<uint32_t> &faceSizeBuffer,
+                    size_t                 tessellatedCount) override;
 
 	const static uint32_t sQuadFaceSize = 4;
 

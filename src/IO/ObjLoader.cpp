@@ -9,9 +9,10 @@ namespace Kaguya
 
 ObjLoader::ObjLoader(const std::string &filename)
 	: fp(std::fopen(filename.c_str(), "r"))
-	, vertCount(0), vertRange{}
-	, uvCount(0), uvRange{}
-	, normCount(0), normRange{}
+	, vertRange{}
+	, uvRange{}
+	, normRange{}
+	, vertCount(0), uvCount(0), normCount(0)
 	, mFilename(filename)
 {
 	if (fp != nullptr)
@@ -41,6 +42,7 @@ ObjLoader::index_t ObjLoader::facetype(const char* str, int32_t* val)
 		{
 			return VN;//101
 		}
+		return V;
 	default:// V
 		return V;;//001
 	}
@@ -56,7 +58,7 @@ void ObjLoader::parse(std::FILE* fp)
 	while (true)
 	{
 		lineHeader[0] = lineHeader[1] = 0;
-		err = fscanf(fp, "%6s", &lineHeader);
+		err = fscanf(fp, "%6s", lineHeader);
 		if (err == EOF)
 		{
 			break;
@@ -105,7 +107,7 @@ void ObjLoader::parse(std::FILE* fp)
 		else if (Utils::startsWith(lineHeader, "#"))
 		{
 			// Skip comments
-			fscanf(fp, "%[^\r\n]", &buff);
+			fscanf(fp, "%[^\r\n]", buff);
 		}
 		else if (Utils::startsWith(lineHeader, "g"))
 		{
@@ -116,7 +118,7 @@ void ObjLoader::parse(std::FILE* fp)
 		else
 		{
 			// skip everything except \n or \r
-			fscanf(fp, "%[^\r\n]", &buff);
+			fscanf(fp, "%[^\r\n]", buff);
 		}
 	}
 	fclose(fp);
@@ -124,12 +126,14 @@ void ObjLoader::parse(std::FILE* fp)
 
 void ObjLoader::parseFace(std::FILE* fp)
 {
-	int err;
 	char buff[256] = {};
 	int32_t indices[3];
 	char endflg;
 
-	err = fscanf(fp, "%s", &buff);
+	int err = fscanf(fp, "%s", buff);
+	if (err == EOF) {
+		return;
+	}
 	indices[1] = indices[2] = 0;
 	index_t ft = facetype(buff, indices);
 	auto addIndex = [] (std::vector<uint32_t> &indices, int32_t id,
@@ -294,7 +298,7 @@ std::shared_ptr<TriangleMesh> ObjLoader::loadTriangleMesh(const std::string &fil
 	return nullptr;
 }
 
-bool ObjLoader::loadRawBuffers(ObjBuffers &outBuffers, const std::string &filename)
+bool ObjLoader::loadRawBuffers(ObjBuffers &retBuffers, const std::string &filename)
 {
 	ObjLoader loader(filename);
 
@@ -302,13 +306,13 @@ bool ObjLoader::loadRawBuffers(ObjBuffers &outBuffers, const std::string &filena
 	{
 		return false;
 	}
-	outBuffers.vertexBuffer = std::move(loader.vertexBuffer);
-	outBuffers.uvBuffer = std::move(loader.uvBuffer);
-	outBuffers.normBuffer = std::move(loader.normBuffer);
-	outBuffers.faceIndexBuffer = std::move(loader.faceIndexBuffer);
-	outBuffers.uvIndexBuffer = std::move(loader.uvIndexBuffer);
-	outBuffers.normIndexBuffer = std::move(loader.normIndexBuffer);
-	outBuffers.faceSizeBuffer = std::move(loader.faceSizeBuffer);
+	retBuffers.vertexBuffer    = std::move(loader.vertexBuffer);
+	retBuffers.uvBuffer        = std::move(loader.uvBuffer);
+	retBuffers.normBuffer      = std::move(loader.normBuffer);
+	retBuffers.faceIndexBuffer = std::move(loader.faceIndexBuffer);
+	retBuffers.uvIndexBuffer   = std::move(loader.uvIndexBuffer);
+	retBuffers.normIndexBuffer = std::move(loader.normIndexBuffer);
+	retBuffers.faceSizeBuffer  = std::move(loader.faceSizeBuffer);
 
 	return true;
 }

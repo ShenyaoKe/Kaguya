@@ -1,7 +1,7 @@
 #pragma once
 
+#include <cstring>
 #include <iostream>
-//using namespace std;
 
 namespace Kaguya
 {
@@ -59,6 +59,8 @@ private:
 
 template <typename T>
 AlignedArray2D<T>::AlignedArray2D(size_t rows, size_t cols, bool runConstructor)
+	: mRows(0), mCols(0)
+	, mRawPtr(nullptr)
 {
 	// Allocate data
 	allocate(rows, cols);

@@ -169,6 +169,12 @@ inline T cubic(const T &data)
 	return data * data * data;
 }
 
+template <typename T>
+inline T quatric(const T &data)
+{
+	return sqr(data) * sqr(data);
+}
+
 /************************************************************************/
 /* Interpolation Methods                                                */
 /************************************************************************/

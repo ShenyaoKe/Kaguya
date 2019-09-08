@@ -27,20 +27,19 @@ public:
 
 public:
 	Point3f o;// Origin point position
-	KAGUYA_PADDING_BYTE(4)
+	mutable Float tMin;
 
 	Vector3f d;// Ray Direction
-	KAGUYA_PADDING_BYTE(4)
-
-	mutable Float tMin;
-	mutable Float tMax;
-
 	Float time;
-	uint32_t mask;
 
+	mutable Float tMax;
+	uint32_t mask;
+	uint32_t mId; // Ray Id
+	uint32_t mFlags;
+
+	// Intersection Information
 	// Unnormalized Geometry Normal
 	Normal3f Ng;
-	KAGUYA_PADDING_BYTE(4)
 
 	// Barycentric coordinates of intersection
 	mutable Float u;
@@ -52,9 +51,6 @@ public:
 	uint32_t primID;
 	// Instance ID
 	uint32_t instID;
-
-	uint32_t dp;//ray depth count
-	KAGUYA_PADDING_BYTE(8)
 };
 
 }

@@ -28,10 +28,7 @@ public:
 		mLights.push_back(light);
 	}
 
-	bool intersect(Ray &inRay,
-				   Intersection* isec,
-				   Float* tHit,
-				   Float* rayEpsilon) const;
+	bool intersect(Ray &inRay, Intersection* isec) const;
 
 	RenderBufferTrait getRenderBuffer(uint32_t geomID) const;
 	size_t getPrimitiveCount() const
@@ -43,13 +40,18 @@ public:
 		return mLights.size();
 	}
 
-	std::shared_ptr<Camera> getCamera()
+	std::shared_ptr<Camera>& getCamera()
 	{
 		return mCamera;
 	}
-	const std::shared_ptr<Camera> getCamera() const
+	const std::shared_ptr<Camera>& getCamera() const
 	{
 		return mCamera;
+	}
+
+	const std::vector<std::shared_ptr<Light>>& getLights() const
+	{
+		return mLights;
 	}
 
 private:

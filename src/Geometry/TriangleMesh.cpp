@@ -8,9 +8,9 @@
 namespace Kaguya
 {
 
-TriangleMesh::TriangleMesh(std::vector<Point3f>             &vertexBuffer,
-						   std::vector<uint32_t>            &indexBuffer,
-						   std::vector<uint32_t>            &faceSizeBuffer,
+TriangleMesh::TriangleMesh(std::vector<Point3f>              vertexBuffer,
+						   std::vector<uint32_t>             indexBuffer,
+						   const std::vector<uint32_t>      &faceSizeBuffer,
 						   size_t                            totalPrimCount,
 						   std::shared_ptr<TextureAttribute> texAttri,
 						   std::shared_ptr<NormalAttribute>  normAttri,
@@ -49,7 +49,7 @@ void TriangleMesh::bounding()
 	}
 }
 
-void TriangleMesh::printInfo(const std::string &msg) const
+void TriangleMesh::printInfo(const std::string &/*msg*/) const
 {
 	/* if (!msg.empty())
 	{
@@ -74,8 +74,8 @@ void TriangleMesh::printInfo(const std::string &msg) const
 	}*/
 }
 
-bool TriangleMesh::intersect(const Ray &inRay, Intersection* isec,
-							 Float* tHit, Float* rayEpsilon) const
+bool TriangleMesh::intersect(const Ray &/*inRay*/, Intersection* /*isec*/,
+							 Float* /*tHit*/, Float* /*rayEpsilon*/) const
 {
 	return false;
 }
@@ -88,12 +88,12 @@ void TriangleMesh::postIntersect(const Ray &inRay, Intersection* isec) const
 	uint32_t id2 = mIndexBuffer[primID * sTriFaceSize + 1];
 	uint32_t id3 = mIndexBuffer[primID * sTriFaceSize + 2];
 
-	isec->Ng = inRay.Ng;
-	isec->UV = { inRay.u, inRay.v };
-	Float s = isec->UV.x;
-	Float t = isec->UV.y;
+	isec->mGeomN = inRay.Ng;
+	isec->mUV = { inRay.u, inRay.v };
+	Float s = isec->mUV.x;
+	Float t = isec->mUV.y;
 	Float w = 1.0 - s - t;
-	isec->P = mVertexBuffer[id1] * w
+	isec->mPos = mVertexBuffer[id1] * w
 		+ mVertexBuffer[id2] * s
 		+ mVertexBuffer[id3] * t;
 }
@@ -129,8 +129,8 @@ void TriangleMesh::getTessellated(TessBuffer &trait) const
 }
 
 void TriangleMesh::tessellate(std::vector<uint32_t> &indexBuffer,
-							  std::vector<uint32_t> &faceSizeBuffer,
-							  size_t                 tessellatedCount)
+							  const std::vector<uint32_t> &faceSizeBuffer,
+							  size_t tessellatedCount)
 {
 	size_t nCurrentPosition = indexBuffer.size();
 	size_t nLastPosition = tessellatedCount * sTriFaceSize;
@@ -159,7 +159,7 @@ bool TriangleUtils::intersect(const Point3f &p0,
 							  Ray &inRay,
 							  Float* tHit, Float* rayEpsilon)
 {
-	// Moller¨CTrumbore Intersection Algorithm
+	// Mollerï¿½CTrumbore Intersection Algorithm
 	Vector3f v1 = p1 - p0;
 	Vector3f v2 = p2 - p0;
 	Vector3f areaVec = cross(v1, v2);
@@ -197,7 +197,7 @@ bool TriangleUtils::intersectWatertight(const Point3f &p0,
 										const Point3f &p1,
 										const Point3f &p2,
 										Ray &inRay,
-										Float* tHit, Float* rayEpsilon)
+										Float* /*tHit*/, Float* /*rayEpsilon*/)
 {
 	Vector3f vro = Vector3f(inRay.o);
 	Point3f v0 = p0 - vro;
@@ -242,8 +242,8 @@ bool TriangleUtils::intersectWatertight(const Point3f &p0,
 	Float invDet = 1.0f / det;
 	// TODO: finish intersection
 	// Barycentric Coordinates
-	Float u = e0 * invDet;
-	Float v = e1 * invDet;
+	Float u __attribute__((unused)) = e0 * invDet;
+	Float v __attribute__((unused)) = e1 * invDet;
 
 	return true;
 }
@@ -251,11 +251,11 @@ bool TriangleUtils::intersectWatertight(const Point3f &p0,
 void TriangleUtils::postIntersect(const Point3f &p0,
 								  const Point3f &p1,
 								  const Point3f &p2,
-								  const Ray &inRay,
-								  Intersection* isec)
+								  const Ray &/*inRay*/,
+								  Intersection* /*isec*/)
 {
-	Vector3f v1 = p1 - p0;
-	Vector3f v2 = p2 - p0;
+	Vector3f v1 __attribute__((unused)) = p1 - p0;
+	Vector3f v2 __attribute__((unused)) = p2 - p0;
 
 	// Compute dpdu, dpdv
 	//

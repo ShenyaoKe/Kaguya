@@ -5,15 +5,14 @@ namespace Kaguya
 
 Bounds3f Transform::operator()(const Bounds3f &bbox) const
 {
-	const Transform &M = *this;
-	Bounds3f ret(M(bbox.pMin));
-	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMin.z)));
-	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMin.z)));
-	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMin.y, bbox.pMax.z)));
-	ret = Union(ret, M(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMax.z)));
-	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMin.z)));
-	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMax.z)));
-	ret = Union(ret, M(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMax.z)));
+	Bounds3f ret(m(bbox.pMin));
+	ret = Union(ret, m(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMin.z)));
+	ret = Union(ret, m(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, m(Point3f(bbox.pMin.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, m(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMax.z)));
+	ret = Union(ret, m(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, m(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, m(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMax.z)));
 	return ret;
 }
 
@@ -22,16 +21,16 @@ Ray Transform::operator()(const Ray &ray) const
 	return m(ray);
 }
 
-void Transform::operator()(const Ray &ray, Ray* ret) const
+void Transform::operator()(Ray &retRay, const Ray &ray) const
 {
-	ret->d = m(ray.d);
-	ret->o = m(ray.o);
-	if (&ray != ret)
+	retRay.d = m(ray.d);
+	retRay.o = m(ray.o);
+	if (&ray != &retRay)
 	{
-		ret->tMin = ray.tMin;
-		ret->tMax = ray.tMax;
-		ret->time = ray.time;
-		ret->dp = ray.dp;
+		retRay.tMin = ray.tMin;
+		retRay.tMax = ray.tMax;
+		retRay.time = ray.time;
+		retRay.mId   = ray.mId;
 	}
 }
 
@@ -52,6 +51,55 @@ Normal3f Transform::operator()(const Normal3f &n) const
 		mInv.mtx[0][0] * x + mInv.mtx[0][1] * x + mInv.mtx[0][2] * x,
 		mInv.mtx[1][0] * y + mInv.mtx[1][1] * y + mInv.mtx[1][2] * y,
 		mInv.mtx[2][0] * z + mInv.mtx[2][1] * z + mInv.mtx[2][2] * z);
+}
+
+Point3f Transform::invXform(const Point3f &p) const
+{
+	return mInv(p);
+}
+
+Vector3f Transform::invXform(const Vector3f &v) const
+{
+	return mInv(v);
+}
+Normal3f Transform::invXform(const Normal3f & n) const
+{
+	Float x = n.x, y = n.y, z = n.z;
+	return Normal3f(
+		m.mtx[0][0] * x + m.mtx[0][1] * x + m.mtx[0][2] * x,
+		m.mtx[1][0] * y + m.mtx[1][1] * y + m.mtx[1][2] * y,
+		m.mtx[2][0] * z + m.mtx[2][1] * z + m.mtx[2][2] * z);
+}
+
+Bounds3f Transform::invXform(const Bounds3f & bbox) const
+{
+	Bounds3f ret(mInv(bbox.pMin));
+	ret = Union(ret, mInv(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMin.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMin.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMin.x, bbox.pMax.y, bbox.pMax.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMin.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMax.x, bbox.pMin.y, bbox.pMax.z)));
+	ret = Union(ret, mInv(Point3f(bbox.pMax.x, bbox.pMax.y, bbox.pMax.z)));
+	return ret;
+}
+
+Ray Transform::invXform(const Ray & ray) const
+{
+	return mInv(ray);
+}
+
+void Transform::invXform(Ray &retRay, const Ray &ray) const
+{
+	retRay.d = mInv(ray.d);
+	retRay.o = mInv(ray.o);
+	if (&ray != &retRay)
+	{
+		retRay.tMin = ray.tMin;
+		retRay.tMax = ray.tMax;
+		retRay.time = ray.time;
+		retRay.mId   = ray.mId;
+	}
 }
 
 void Transform::setMat(const Matrix4x4 &mat)

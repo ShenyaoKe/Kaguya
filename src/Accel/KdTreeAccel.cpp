@@ -3,8 +3,6 @@
 namespace Kaguya
 {
 
-static int leafCount(0);
-
 char axisChar[4] = { 'X', 'Y', 'Z', 'L' };
 
 KdTreeAccel::KdTreeAccel(const std::vector<Geometry*> &prims,
@@ -70,7 +68,6 @@ void KdTreeAccel::buildTree(KdAccelNode* node,
 	//Interior node parameters
 	int bestAxis = -1, bestOffest = -1;//Split axis and split index*2
 	Float bestCost = INFINITY;
-	Float oldCost = np;
 	Float totalSA = bound.surfaceArea();
 	Float invTotalSA = 1.0 / totalSA;
 	Vector3f bbDiag = bound.pMax - bound.pMin;
@@ -224,7 +221,7 @@ bool KdTreeAccel::intersect(const Ray &inRay,
 		{
 			Intersection* tmpQuery = new Intersection();
 			Float hitDist;
-			for (int i = 0; i < node->primIndex.size(); ++i)
+			for (size_t i = 0; i < node->primIndex.size(); ++i)
 			{
 				int idx = node->primIndex[i];
 
@@ -237,7 +234,7 @@ bool KdTreeAccel::intersect(const Ray &inRay,
 							*isec = *tmpQuery;
 							*tHit = hitDist;
 							*rayEpsilon = rayEp;
-							isec->shape = primitives[idx];
+							isec->mShape = primitives[idx];
 							isHit = true;
 						}
 					}
@@ -417,7 +414,7 @@ void KdAccelNode::printInfo() const
 			std::cout << "no primitive in this leaf\n"\
 				"Pmin:\t" << (bbox.pMax - bbox.pMin) << std::endl;
 		}
-		for (int i = 0; i < primIndex.size(); ++i)
+		for (size_t i = 0; i < primIndex.size(); ++i)
 		{
 			std::cout << primIndex[i] << "\t";
 		}

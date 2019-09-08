@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera\Camera.h"
+#include "Camera/ProjectiveCamera.h"
 
 namespace Kaguya
 {
@@ -12,7 +12,7 @@ public:
 	~OrthographicCamera();
 
 	void updateCamToScreen() override;
-	Float generateRay(const cameraSampler &sample, Ray* ray) const override;
+	Float generateRay(const CameraSample &sample, Ray* ray) const override;
 
 	void setScalor(Float scalor) { mScalor = scalor; }
 	//void zoom(Float x_val = 0, Float y_val = 0, Float z_val = 0);

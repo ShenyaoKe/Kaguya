@@ -5,27 +5,28 @@ namespace Kaguya
 {
 
 Intersection::Intersection(
-	const Point3f &_p, const Normal3f &_n,
-	const Vector3f &_dpdu, const Vector3f &_dpdv,
-	const Normal3f &_dndu, const Normal3f &_dndv,
-	const Point2f &_uv, const Geometry* shp)
-	: P(_p), Ng(_n)
-	, dPdu(_dpdu), dPdv(_dpdv)
-	, dNdu(_dndu), dNdv(_dndv), UV(_uv), shape(shp)
+	const Point3f &p, const Normal3f &n,
+	const Vector3f &dPdu, const Vector3f &dPdv,
+	const Normal3f &dNdu, const Normal3f &dNdv,
+	const Point2f &uv, const Geometry* shape)
+	:  mShape(shape)
+	, mPos(p), mGeomN(n), mUV(uv)
+	, mPu(dPdu), mPv(dPdv)
+	, mNu(dNdu), mNv(dNdv)
 {
-	shading.N = Ng;
-	shading.dPds = dPdu;
-	shading.dPdt = dPdv;
-	shading.dNds = dNdu;
-	shading.dNdt = dNdv;
+	mShadingN = mGeomN;
+	mPs = mPu;
+	mPt = mPv;
+	mNs = mNu;
+	mNt = mNv;
 }
 
-void Intersection::calculateDir(const Vector3f &inDir, const Normal3f &nVec)
+void Intersection::calculateDir(const Vector3f &/*inDir*/, const Normal3f &nVec)
 {
-	Ng = nVec;
+	mGeomN = nVec;
 	//reflectDir = inDir - Vector3f(normal * Dot(inDir, normal) * 2);
 }
-void Intersection::calculateDir(const Vector3f &inDir)
+void Intersection::calculateDir(const Vector3f &/*inDir*/)
 {
 	//reflectDir = inDir - Vector3f(normal * Dot(inDir, normal) * 2);
 }

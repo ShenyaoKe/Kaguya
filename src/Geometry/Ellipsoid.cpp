@@ -29,10 +29,10 @@ void geoEllipsoid::setSemiAxes(Float semiA, Float semiB, Float semiC)
 	sb = semiB;
 	sc = semiC;
 }
-bool geoEllipsoid::intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const
+bool geoEllipsoid::intersect(const Ray &inRay, Intersection* /*isec*/, Float* /*tHit*/, Float* /*rayEpsilon*/) const
 {
 	Point3f rp = inRay.o;
-	Vector3f rd = inRay.d;// Ray postion and ray direction.
+	Vector3f rd = inRay.d;// Ray position and ray direction.
 	Float coeA = (rd.x / sa) * (rd.x / sa) + (rd.y / sb) * (rd.y / sb) + (rd.z / sc) * (rd.z / sc);
 	Float coeB = (c.x - rp.x) * rd.x / (sa * sa) + (c.y - rp.y) * rd.y / (sb * sb) + (c.z - rp.z) * rd.z / (sc * sc);
 	Float coeC = (rp.x - c.x) * (rp.x - c.x) / (sa * sa) + (rp.y - c.y) * (rp.y - c.y) / (sb * sb) + (rp.z - c.z) * (rp.z - c.z) / (sc * sc) - 1;
@@ -44,7 +44,7 @@ bool geoEllipsoid::intersect(const Ray &inRay, Intersection* isec, Float* tHit, 
 	}
 	else//delta > 0
 	{
-		Float t1 = coeB - sqrt(delta);
+		Float t1 = coeB - std::sqrt(delta);
 		Float t2 = 2 * coeB - t1;
 
 		inRay.setT(t1 / coeA, t2 / coeA);
@@ -57,7 +57,6 @@ bool geoEllipsoid::intersect(const Ray &inRay, Intersection* isec, Float* tHit, 
 			return true;
 		}
 	}
-	return 0;
 }
 /*
 Vector3D geoEllipsoid::getNormal(const Point3f &pos) const
@@ -68,9 +67,9 @@ return Normalize(Vector3D(
 2 * (pos.y - c.y) / (sb * sb),
 2 * (pos.z - c.z) / (sc * sc)));
 }*/
-bool geoEllipsoid::isInside(const Point3f &pPos) const
+bool geoEllipsoid::isInside(const Point3f &/*pPos*/) const
 {
-	return 0;
+	return false;
 }
 
 }

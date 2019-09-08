@@ -50,7 +50,7 @@ public:
 
 public:
 	Float horiApert, vertApert;//mm
-	int width, height;// width, height from image class
+	uint32_t width, height;// width, height from image class
 	Transform RasterToFilm, FilmToScreen;
 
 	FIT_RESOLUTION_GATE resFT = FRG_HORIZONTAL_FIT;

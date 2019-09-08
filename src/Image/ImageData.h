@@ -47,9 +47,9 @@ public:
 	ImageData(const ImageData &src);
 	virtual~ImageData();
 
-	const uint32_t getWidth() const { return mWidth; }
-	const uint32_t getHeight() const { return mHeight; }
-	const uint32_t getBPP() const { return mBPP; }
+	uint32_t getWidth() const { return mWidth; }
+	uint32_t getHeight() const { return mHeight; }
+	uint32_t getBPP() const { return mBPP; }
 	const ColorRGBA &getRGBA(uint32_t x, uint32_t y) const;
 	const ColorRGBA &getRGBA(uint32_t idx) const;
 	void setRGBA(uint32_t x, uint32_t y, const ColorRGBA &color);

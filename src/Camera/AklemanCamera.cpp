@@ -1,6 +1,7 @@
 #include "AklemanCamera.h"
 #include "Shading/Texture.h"
 
+namespace Kaguya {
 
 AklemanCamera::AklemanCamera()
 	: PerspectiveCamera()
@@ -8,23 +9,26 @@ AklemanCamera::AklemanCamera()
 }
 
 AklemanCamera::AklemanCamera(const Point3f    &eyePos,
-                               const Vector3f   &viewDir,
-                               const Vector3f   &upVec,
-                                     Texture*    posImg,
-                                     Texture*    dirImg,
-                                     Float       tp,
-                                     Float       td,
-                                     Float       lr,
-                                     Float       fd)
+							 const Vector3f   &viewDir,
+							 const Vector3f   &upVec,
+							 Texture*    posImg,
+							 Texture*    dirImg,
+							 Float       tp,
+							 Float       td,
+							 Float       lr,
+							 Float       fd)
     : PerspectiveCamera(eyePos, eyePos + viewDir, upVec, lr, fd)
-    , tpos(tp), tdir(td), posTex(posImg), dirTex(dirImg)
+    , posTex(posImg), dirTex(dirImg)
+    , tpos(tp), tdir(td)
 {
 }
+
 AklemanCamera::~AklemanCamera()
 {
 	posTex = nullptr;
 	dirTex = nullptr;
 }
+
 /*
 Ray abstractCamera::generateRay(Float imgX, Float imgY) const
 {
@@ -58,4 +62,6 @@ void AklemanCamera::setAbstraction(Float tp, Float td)
 {
 	tpos = tp;
 	tdir = td;
+}
+
 }

@@ -3,6 +3,7 @@
 #include "Geometry/Intersection.h"
 #include "Shading/Texture.h"
 
+#ifdef USE_LEGACY_SPECTRUM
 namespace Kaguya::Legacy
 {
 /************************************************************************/
@@ -11,7 +12,7 @@ namespace Kaguya::Legacy
 Light::Light()
 {
 }
-Light::Light(const Spectrum &its)
+Light::Light(const LegacySpectrum &its)
 {
 	lightSpectrum = its;
 }
@@ -34,14 +35,14 @@ LIGHT_TYPE Light::getLightType() const
 {
 	return type;
 }
-Spectrum Light::getSpectrum(const Intersection* isec) const
+LegacySpectrum Light::getSpectrum(const Intersection* isec) const
 {
 	//Spectrum ret;// = Spectrum(getIntensity(isec), lightSpectrum.color);
-	return Spectrum();
+	return LegacySpectrum();
 }
 Float Light::getDistance(const Intersection* isec) const
 {
-	return (pos - isec->P).length();
+	return (pos - isec->mPos).length();
 }
 void Light::printInfo() const
 {
@@ -60,7 +61,7 @@ directionalLight::directionalLight(const Vector3f &vec)
 {
 	dir = normalize(vec); type = LT_DIRECTIONAL_LIGHT;
 }
-directionalLight::directionalLight(const Vector3f &vec, const Spectrum &spt)
+directionalLight::directionalLight(const Vector3f &vec, const LegacySpectrum &spt)
 {
 	dir = normalize(vec); lightSpectrum = spt; type = LT_DIRECTIONAL_LIGHT;
 }
@@ -87,9 +88,9 @@ pointLight::pointLight()
 }
 pointLight::pointLight(const Point3f &p, Float its)
 {
-	pos = p; lightSpectrum.intensity = its; type = LT_POINT_LIGHT;
+	pos = p; lightSpectrum.mIntensity = its; type = LT_POINT_LIGHT;
 }
-pointLight::pointLight(const Point3f &p, const Spectrum &spt)
+pointLight::pointLight(const Point3f &p, const LegacySpectrum &spt)
 {
 	pos = p; lightSpectrum = spt; type = LT_POINT_LIGHT;
 }
@@ -125,7 +126,7 @@ spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Fl
 	dropoff = dpo;
 	type = LT_SPOT_LIGHT;
 }
-spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const Spectrum &spt)
+spotLight::spotLight(const Point3f &p, const Vector3f &d, Float ca, Float pa, Float dpo, const LegacySpectrum &spt)
 {
 	pos = p;
 	dir = normalize(d);
@@ -156,7 +157,7 @@ void spotLight::setDropOff(Float dpo)
 Float spotLight::getIntensity(const Intersection* isec) const
 {
 	Float dist = getDistance(isec);
-	Float tmpIts = dot(isec->P - pos, dir);
+	Float tmpIts = dot(isec->mPos - pos, dir);
 
 	if (penumbraAngle != 0)
 	{
@@ -196,7 +197,7 @@ areaLight::areaLight(const Point3f &p, Float shpSize)
 	size = shpSize;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Point3f &p, Float shpSize, const Spectrum &spt)
+areaLight::areaLight(const Point3f &p, Float shpSize, const LegacySpectrum &spt)
 {
 	nx = Vector3f(1, 0, 0);
 	ny = Vector3f(0, 1, 0);
@@ -206,7 +207,7 @@ areaLight::areaLight(const Point3f &p, Float shpSize, const Spectrum &spt)
 	lightSpectrum = spt;
 	type = LT_AREA_LIGHT;
 }
-areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const Spectrum &spt)
+areaLight::areaLight(const Point3f &p, const Vector3f &dir, const Vector3f &up, Float shpSize, const LegacySpectrum &spt)
 {
 	nz = normalize(dir);
 	nx = normalize(cross(nz, up));
@@ -228,18 +229,19 @@ Float areaLight::getIntensity(const Intersection* isec) const
 	//
 	if (exposure == 0 && decayType == DECAY_CONSTANT)
 	{
-		return lightSpectrum.intensity;
+		return lightSpectrum.mIntensity;
 		;
 	}
 	else if (decayType == DECAY_CONSTANT)
 	{
-		return lightSpectrum.intensity * pow(2, exposure);
+		return lightSpectrum.mIntensity * pow(2, exposure);
 	}
 	else
 	{
 		Float dist = getDistance(isec);
-		return lightSpectrum.intensity * pow(2, exposure) / dist / dist;
+		return lightSpectrum.mIntensity * pow(2, exposure) / dist / dist;
 	}
 }
 
 }
+#endif

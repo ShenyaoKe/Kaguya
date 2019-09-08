@@ -58,6 +58,7 @@ inline index_t facetype(const char* str, int32_t* val)
 		{
 			return VN;//101
 		}
+		return V;
 	default:// V
 		return V;;//001
 	}

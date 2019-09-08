@@ -4,7 +4,7 @@ namespace Kaguya
 {
 
 ImageData* TextureSynthesis::synth(const ImageData * sample,
-								   int wdt, int hgt, int nr)
+								   int /*wdt*/, int /*hgt*/, int nr)
 {
 	int srcW = sample->getWidth();
 	int srcH = sample->getHeight();

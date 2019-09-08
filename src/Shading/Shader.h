@@ -6,6 +6,7 @@
 //
 #pragma once
 
+#if 0
 #include "Core/Kaguya.h"
 #include "Geometry/Intersection.h"
 #include "Shading/Texture.h"
@@ -185,3 +186,4 @@ return getSpecularAt(intersectPoint, reflectDir, retDiff, light);
 }*/
 
 }
+#endif

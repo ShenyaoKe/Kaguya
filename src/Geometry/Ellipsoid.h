@@ -14,9 +14,9 @@ public:
 	geoEllipsoid(const Point3f &pos, Float semiA, Float semiB, Float semiC);
 
 	void setSemiAxes(Float semiA, Float semiB, Float semiC);
-	bool intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const;
+	bool intersect(const Ray &inRay, Intersection* isec, Float* tHit, Float* rayEpsilon) const override;
 
-	bool isInside(const Point3f &pPos) const;
+	bool isInside(const Point3f &pPos) const override;
 
 public:
 	Point3f c;//center

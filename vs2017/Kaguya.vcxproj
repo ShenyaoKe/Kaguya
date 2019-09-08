@@ -14,19 +14,19 @@
     <ProjectGuid>{E26467AF-7A85-484E-A54D-0488CA2D9F07}</ProjectGuid>
     <RootNamespace>cgClasses</RootNamespace>
     <ProjectName>Kaguya</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\src\;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -68,7 +68,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;embree3.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
@@ -94,7 +94,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)../lib/$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>FreeImage.lib;embree.lib</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;embree3.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(PlatformTarget)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
@@ -108,6 +108,7 @@
     <ClInclude Include="..\src\Camera\Film.h" />
     <ClInclude Include="..\src\Camera\OrthographicCamera.h" />
     <ClInclude Include="..\src\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="..\src\Camera\ProjectiveCamera.h" />
     <ClInclude Include="..\src\Core\EmbreeUtils.h" />
     <ClInclude Include="..\src\Core\error.h" />
     <ClInclude Include="..\src\Core\ProgressBar.h" />
@@ -140,10 +141,13 @@
     <ClInclude Include="..\src\Image\TextureSynthesis.h" />
     <ClInclude Include="..\src\IO\ObjLoader.h" />
     <ClInclude Include="..\src\IO\SceneLoader.h" />
+    <ClInclude Include="..\src\Light\AreaLight.h" />
     <ClInclude Include="..\src\Light\EnvironmentMap.h" />
     <ClInclude Include="..\src\Light\LegacyLight.h" />
     <ClInclude Include="..\src\Light\Light.h" />
+    <ClInclude Include="..\src\Light\PointLight.h" />
     <ClInclude Include="..\src\Light\Spectrum.h" />
+    <ClInclude Include="..\src\Light\SpotLight.h" />
     <ClInclude Include="..\src\Math\Vector.h" />
     <ClInclude Include="..\src\Math\MathUtil.h" />
     <ClInclude Include="..\src\Math\Matrix3x3.h" />
@@ -168,6 +172,7 @@
     <ClCompile Include="..\src\Camera\Film.cpp" />
     <ClCompile Include="..\src\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="..\src\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="..\src\Camera\ProjectiveCamera.cpp" />
     <ClCompile Include="..\src\Core\EmbreeUtils.cpp" />
     <ClCompile Include="..\src\Core\error.cpp" />
     <ClCompile Include="..\src\Core\MemoryControl.cpp" />
@@ -192,7 +197,10 @@
     <ClCompile Include="..\src\Geometry\Torus.cpp" />
     <ClCompile Include="..\src\IO\ObjLoader.cpp" />
     <ClCompile Include="..\src\IO\SceneLoader.cpp" />
+    <ClCompile Include="..\src\Light\AreaLight.cpp" />
     <ClCompile Include="..\src\Light\Light.cpp" />
+    <ClCompile Include="..\src\Light\PointLight.cpp" />
+    <ClCompile Include="..\src\Light\SpotLight.cpp" />
     <ClCompile Include="..\src\Math\Transform.cpp" />
     <ClCompile Include="..\src\Shading\BxDF.cpp" />
     <ClCompile Include="..\src\Shading\Material.cpp" />

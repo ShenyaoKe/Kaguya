@@ -120,8 +120,8 @@ bool geoSphere::intersect(const Ray &inRay,
 	return true;
 }
 
-void geoSphere::postIntersect(const Ray &inRay,
-							  Intersection* isec) const
+void geoSphere::postIntersect(const Ray &/*inRay*/,
+							  Intersection* /*isec*/) const
 {
 	// TODO: Move post intersection from intersect
 }

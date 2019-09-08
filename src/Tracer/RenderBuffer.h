@@ -22,6 +22,8 @@ public:
 	void resize(uint32_t w, uint32_t h);
 	void clear();
 	bool empty() const;
+
+	void cleanBuffer();
 	void setBuffer(uint32_t x, uint32_t y,
 				   const Intersection &isec, Float zdepth);
 

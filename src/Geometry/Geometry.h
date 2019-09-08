@@ -98,8 +98,7 @@ public:
 						   Float* tHit,
 						   Float* rayEpsilon) const = 0;
 
-	virtual void postIntersect(const Ray &inRay,
-							   Intersection* isec) const = 0;
+	virtual void postIntersect(const Ray &inRay, Intersection* isec) const = 0;
 
 	// Surface Area
 	virtual Float area() const { return 0; }
@@ -108,12 +107,12 @@ public:
 	virtual Float pdf() const { return 1; }
 
 	// Shading
-	virtual void getShadingGeometry(const Transform &obj2world,
-									Intersection* isec) const
+	virtual void getShadingGeometry(const Transform &/*obj2world*/,
+									Intersection* /*isec*/) const
 	{
 	}
 
-	virtual bool isInside(const Point3f &pPos) const { return false; }
+	virtual bool isInside(const Point3f &/*pPos*/) const { return false; }
 
 	virtual void printInfo(const std::string &msg = "") const;
 

@@ -41,8 +41,8 @@ class PolyMesh : public Mesh
 {
 public:
 	PolyMesh() {}
-	PolyMesh(std::vector<Point3f>             &vertexBuffer,
-			 std::vector<uint32_t>            &indexBuffer,
+	PolyMesh(std::vector<Point3f>              vertexBuffer,
+			 std::vector<uint32_t>             indexBuffer,
 			 size_t                            vertexCount,
 			 size_t                            faceCount,
 			 std::shared_ptr<TextureAttribute> texAttri,
@@ -60,23 +60,23 @@ public:
 
 	void getRenderBuffer(RenderBufferTrait* trait) const override;
 
-	static size_t tessellatedCount(std::vector<uint32_t> &faceSizeBuffer, size_t faceSize);
+	static size_t tessellatedCount(const std::vector<uint32_t> &faceSizeBuffer, size_t faceSize);
 
-	static std::shared_ptr<PolyMesh> createPolyMesh(std::vector<Point3f>             &vertexBuffer,
-													std::vector<uint32_t>            &indexBuffer,
-													std::vector<uint32_t>            &faceSizeBuffer,
+	static std::shared_ptr<PolyMesh> createPolyMesh(std::vector<Point3f>              vertexBuffer,
+													std::vector<uint32_t>             indexBuffer,
+													const std::vector<uint32_t>      &faceSizeBuffer,
 													std::shared_ptr<TextureAttribute> texAttri,
 													std::shared_ptr<NormalAttribute>  normAttri);
 
-	static std::shared_ptr<TriangleMesh> createTriMesh(std::vector<Point3f>             &vertexBuffer,
-													   std::vector<uint32_t>            &indexBuffer,
-													   std::vector<uint32_t>            &faceSizeBuffer,
+	static std::shared_ptr<TriangleMesh> createTriMesh(std::vector<Point3f>              vertexBuffer,
+													   std::vector<uint32_t>             indexBuffer,
+													   const std::vector<uint32_t>      &faceSizeBuffer,
 													   std::shared_ptr<TextureAttribute> texAttri,
 													   std::shared_ptr<NormalAttribute>  normAttri);
 
 protected:
 	virtual void tessellate(std::vector<uint32_t> &indexBuffer,
-							std::vector<uint32_t> &faceSizeBuffer,
+							const std::vector<uint32_t> &faceSizeBuffer,
 							size_t                 tessellatedCount) = 0;
 
 protected:

@@ -69,6 +69,26 @@ bool RenderBuffer::empty() const
 {
 	return p.size() == 0;
 }
+
+void RenderBuffer::cleanBuffer()
+{
+	std::fill(beauty.begin(), beauty.end(), 0.0f);
+	std::fill(diff.begin(), diff.end(), 0.0f);
+	std::fill(spec.begin(), spec.end(), 0.0f);
+
+	std::fill(p.begin(), p.end(), 0.0f);
+	std::fill(n.begin(), n.end(), 0.0f);
+	std::fill(dpdu.begin(), dpdu.end(), 0.0f);
+	std::fill(dpdv.begin(), dpdv.end(), 0.0f);
+	std::fill(dndu.begin(), dndu.end(), 0.0f);
+	std::fill(dndv.begin(), dndv.end(), 0.0f);
+
+	std::fill(uv.begin(), uv.end(), 0.0f);
+	std::fill(z.begin(), z.end(), 0.0f);
+
+	std::fill(id.begin(), id.end(), 0);
+}
+
 void RenderBuffer::setBuffer(uint32_t x, uint32_t y,
 							 const Intersection &isec, Float zdepth)
 {
@@ -77,16 +97,16 @@ void RenderBuffer::setBuffer(uint32_t x, uint32_t y,
 
 	size_t id3 = index * 3, id2 = index << 1;
 
-	Vec3ToFloats(isec.P, p, id3);
-	Vec3ToFloats(isec.Ng, n, id3);
-	Vec3ToFloats(isec.dPdu, dpdu, id3);
-	Vec3ToFloats(isec.dPdv, dpdv, id3);
-	Vec3ToFloats(isec.dNdu, dndu, id3);
-	Vec3ToFloats(isec.dNdv, dndv, id3);
+	Vec3ToFloats(isec.mPos, p, id3);
+	Vec3ToFloats(isec.mGeomN, n, id3);
+	Vec3ToFloats(isec.mPu, dpdu, id3);
+	Vec3ToFloats(isec.mPv, dpdv, id3);
+	Vec3ToFloats(isec.mNu, dndu, id3);
+	Vec3ToFloats(isec.mNv, dndv, id3);
 
-	Vec2ToFloats(isec.UV, uv, id2);
+	Vec2ToFloats(isec.mUV, uv, id2);
 	z[index] = static_cast<float>(zdepth);
-	id[index] = isec.shape->getGeomID();
+	id[index] = isec.mShape->getGeomID();
 }
 
 }

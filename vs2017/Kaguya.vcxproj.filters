@@ -276,6 +276,18 @@
     <ClInclude Include="..\src\Core\RenderPrimitive.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Light\AreaLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\PointLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Light\SpotLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera\ProjectiveCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Accel\KdTreeAccel.cpp">
@@ -418,6 +430,18 @@
     </ClCompile>
     <ClCompile Include="..\src\Core\RenderPrimitive.cpp">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\AreaLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\PointLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Light\SpotLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera\ProjectiveCamera.cpp">
+      <Filter>Source Files\camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

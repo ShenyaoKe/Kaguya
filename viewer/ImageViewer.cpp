@@ -36,31 +36,31 @@ void ImageViewer::switchTexture()
 	case 0:
 	{
 		mImagePanel->texType = DISPLAY_TYPE::BEAUTY;
-		mImagePanel->textures = static_cast<const void*>(rbuf->beauty.data());
+		mImagePanel->mTextures = static_cast<const void*>(rbuf->beauty.data());
 		break;
 	}
 	case 1:
 	{
 		mImagePanel->texType = DISPLAY_TYPE::P;
-		mImagePanel->textures = static_cast<const void*>(rbuf->p.data());
+		mImagePanel->mTextures = static_cast<const void*>(rbuf->p.data());
 		break;
 	}
 	case 2:
 	{
 		mImagePanel->texType = DISPLAY_TYPE::N;
-		mImagePanel->textures = static_cast<const void*>(rbuf->n.data());
+		mImagePanel->mTextures = static_cast<const void*>(rbuf->n.data());
 		break;
 	}
 	case 3:
 	{
 		mImagePanel->texType = DISPLAY_TYPE::DPDU;
-		mImagePanel->textures = static_cast<const void*>(rbuf->dpdu.data());
+		mImagePanel->mTextures = static_cast<const void*>(rbuf->dpdu.data());
 		break;
 	}
 	case 4:
 	{
 		mImagePanel->texType = DISPLAY_TYPE::DPDV;
-		mImagePanel->textures = static_cast<const void*>(rbuf->dpdv.data());
+		mImagePanel->mTextures = static_cast<const void*>(rbuf->dpdv.data());
 		break;
 	}
 	default:
@@ -78,7 +78,7 @@ ImageViewerPanel::ImageViewerPanel(QWidget *parent)
 	//, frame{ 0,0, 640,0, 640,480, 0,480 }
 	, frame{ -1,-1, 1,-1, 1,1, -1,1 }
 	, imgsize{ 640, 480 }
-	, textures(nullptr)
+	, mTextures(nullptr)
 	, texType(DISPLAY_TYPE::BEAUTY)
 {
 	QSurfaceFormat format;
@@ -105,7 +105,7 @@ void ImageViewerPanel::setImageResolution(uint32_t w, uint32_t h)
 void ImageViewerPanel::updateTexture()
 {
 	makeCurrent();
-	if (textures != nullptr)
+	if (mTextures)
 	{
 		switch (texType)
 		{
@@ -113,13 +113,13 @@ void ImageViewerPanel::updateTexture()
 		{
 			for (size_t i = 0; i < imgsize[0] * imgsize[1]; i++)
 			{
-				if (((Float*)textures)[i] > 0)
+				if (((Float*)mTextures)[i] > 0)
 				{
-					cout << ((Float*)textures)[i] << endl;
+					cout << ((Float*)mTextures)[i] << endl;
 				}
 			}
 			glTextureStorage2D(tex, 1, GL_RGBA32F, imgsize[0], imgsize[1]);
-			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGBA, GL_FLOAT, textures);
+			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGBA, GL_FLOAT, mTextures);
 			break;
 		}
 		case DISPLAY_TYPE::P:
@@ -128,7 +128,7 @@ void ImageViewerPanel::updateTexture()
 		case DISPLAY_TYPE::DPDV:
 		{
 			glTextureStorage2D(tex, 1, GL_RGB32F, imgsize[0], imgsize[1]);
-			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, textures);
+			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, mTextures);
 			break;
 		}
 		default:
@@ -177,7 +177,7 @@ void ImageViewerPanel::initializeGL()
 
 		glVertexArrayElementBuffer(vao, ibo);
 
-		// Setup textures
+		// Setup mTextures
 		int texSize = 4;
 		glCreateTextures(GL_TEXTURE_2D, 1, &tex);
 		glTextureParameteri(tex, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -188,7 +188,7 @@ void ImageViewerPanel::initializeGL()
 		glTextureStorage2D(tex, 1, GL_RGB32F, imgsize[0], imgsize[1]);
 		if (texLen > 0)
 		{
-			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, textures);
+			glTextureSubImage2D(tex, 0, 0, 0, imgsize[0], imgsize[1], GL_RGB, GL_FLOAT, mTextures);
 		}
 		texHandle = glGetTextureHandleARB(tex);
 		glMakeTextureHandleResidentARB(texHandle);
@@ -220,7 +220,7 @@ void ImageViewerPanel::paintGL()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindVertexArray(vao);
 	shaderP->use_program();
-	if (textures)
+	if (mTextures)
 	{
 		glUniformHandleui64ARB((*shaderP)["tex"], texHandle);
 	}

@@ -1,5 +1,7 @@
 #include "Shading/Shader.h"
-#include "Geometry/DifferentialGeometry.h"
+#include "Geometry/Intersection.h"
+
+#if 0
 
 namespace Kaguya
 {
@@ -283,3 +285,4 @@ ColorRGBA Gooch::getColor(const DifferentialGeometry* queryPoint, const Light* l
 */
 
 }
+#endif

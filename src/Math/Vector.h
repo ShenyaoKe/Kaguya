@@ -557,7 +557,7 @@ public:
 	template <typename U>
 	Normal3<T> &operator*=(U s)
 	{
-		Assert(!isNaN(f));
+		Assert(!isNaN(s));
 		x *= s; y *= s; z *= s;
 		return *this;
 	}
@@ -712,7 +712,7 @@ int maxDimension(const Vector3<T> &v)
 template <typename T>
 Point2<T> permute(const Point2<T> &p, int x, int y)
 {
-	return Point2<T>(p[x], p[y], p[z]);
+	return Point2<T>(p[x], p[y]);
 }
 
 template <typename T>
@@ -724,7 +724,7 @@ Point3<T> permute(const Point3<T> &p, int x, int y, int z)
 template <typename T>
 Vector2<T> permute(const Vector2<T> &v, int x, int y)
 {
-	return Vector2<T>(v[x], v[y], v[z]);
+	return Vector2<T>(v[x], v[y]);
 }
 
 template <typename T>

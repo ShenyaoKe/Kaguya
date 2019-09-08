@@ -343,7 +343,6 @@ ImageData* filter::edgeDetect(const ImageData* src,
 	AlignedArray2D<int> gX(3, 3);
 	AlignedArray2D<int> gY(3, 3);
 
-	Float gMax(0), gMin(0);
 	/*Float** res;
 	Aligned_2DArray(res, width, height);*/
 
@@ -526,7 +525,6 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	ImageData* ret = new ImageData(width, height);
 	//int radius = 3;
 	int size = (radius << 1) + 1;
-	int kSize = sqr(size);
 	AlignedArray2D<Float> gKernel(size, size);//Spatial Weight
 	AlignedArray2D<Float> sKernel(size, size);//Similarity Weight
 	Float sigmaD = radius / 3.0;// Sigma for gaussian, Can be adjusted
@@ -559,7 +557,6 @@ ImageData* filter::bilateral(const ImageData* src, int radius)
 	startT = clock();
 
 	AlignedArray2D<Float>* lumaImg = src->getLuma();
-	//std::cout << kSize << std::endl;
 	for (int i = 0; i < width; i++)
 	{
 		for (int j = 0; j < height; j++)
